@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)SDL2-2.0.5\include;$(SolutionDir)glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)glew-2.1.0\lib\Release\Win32;$(SolutionDir)SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)WinLibraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)WinLibraries\freeglut\lib;$(SolutionDir)WinLibraries\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)glew-2.1.0\include;$(SolutionDir)SDL2-2.0.5\include;$(IncludePath)</IncludePath>
@@ -83,7 +83,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
@@ -129,9 +129,17 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opengl_renderer.cpp" />
+    <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opengl_renderer.h" />
+    <ClInclude Include="sprite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Character.bmp" />
+    <Image Include="Assets\Character.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
