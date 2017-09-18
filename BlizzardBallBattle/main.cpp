@@ -1,11 +1,19 @@
 //Using SDL and standard IO
-#include <SDL.h>
+#ifdef __APPLE__
+  #ifdef TARGET_OS_MAC
+    #include <SDL2/SDL.h>
+    #include <GLUT/glut.h>
+    #include <opengl/GL.h>
+  #endif
+#elif defined _WIN32 || defined _WIN64
+  #include <SDL.h>
+  #include <GL/glut.h>
+  #include <GL/GL.h>
+#endif 
 #include <stdio.h>
 #include <string>
 #define GL3_PROTOTYPES 1
 #include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/GL.h>
 #include <iostream>
 #include "sprite.h"
 

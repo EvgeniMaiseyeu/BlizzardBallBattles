@@ -5,7 +5,7 @@
     "tasks": [{
         "taskName": "main",
         "type": "shell",
-        "command": "g++",
+        "command": "clang++ ./BlizzardBallBattle/main.cpp -lSDL2 -g",
         "args": [
             "./BlizzardBallBattle/main.cpp"
         ],

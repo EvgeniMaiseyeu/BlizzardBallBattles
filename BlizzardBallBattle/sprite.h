@@ -1,9 +1,17 @@
 #pragma once
 
 #include <iostream>
-#include <GL/glew.h>
+#ifdef __APPLE__
+#ifdef TARGET_OS_MAC
+  #include <SDL2/SDL.h>
+  #include <GLUT/glut.h>
+  #include <opengl/GL.h>
+#endif
+#elif defined _WIN32 || defined _WIN64
+#include <SDL.h>
 #include <GL/glut.h>
 #include <GL/GL.h>
+#endif 
 
 struct Vector2 {
   GLfloat x;
