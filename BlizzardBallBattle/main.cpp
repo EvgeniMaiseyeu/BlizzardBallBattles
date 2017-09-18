@@ -7,7 +7,7 @@
 #include <GL/glut.h>
 #include <GL/GL.h>
 #include <iostream>
-//#include <SDL_image.h> not shipped with SDL
+#include <SDL_image.h>
 #include "sprite.h"
 #include "shader.h"
 
@@ -151,29 +151,35 @@ void RunGame()
   glBindVertexArray(0); //Unbind BAO
 
   ////
-  //SDL Load Image Needed
-  //SDL_Surface* image = IMG_Load("Box.jpg");
+  //SDL_Surface* image = IMG_Load("Assets/Character.png");
   //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
   //glGenerateMipmap(GL_TEXTURE_2D);
   //SDL_FreeSurface(image);
   //glBindTexture(GL_TEXTURE_2D, 0); ﻿
   ////
 
-  //Sprite Start
-  SDL_Surface *temp = SDL_LoadBMP("Assets/Character.bmp");
+  //Texture
   GLuint texture;
-  
-  if (temp != NULL) {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //BGR for .bmp, RGB for .png
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_BGR, temp->w, temp->h, 0, GL_BGR, GL_UNSIGNED_BYTE, temp->pixels);
-    glGetError();
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  SDL_Surface *temp = IMG_Load("Assets/Character.png");
+  if (temp == NULL) {
+    //ERROR
+    int hit = 1;
   }
 
-  if (temp) {
-    SDL_FreeSurface(temp);
-  }
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
+  glGenerateMipmap(GL_TEXTURE_2D);
+  SDL_FreeSurface(temp);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  //EndTexture
 
   Sprite character(texture);
   //Sprite End
@@ -195,8 +201,14 @@ void RunGame()
 
     //Render Triangle
     ourShader.Use();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(glGetUniformLocation(ourShader.Program, "ourTexture"), 0);
+
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     //Render characters
@@ -215,6 +227,7 @@ void RunGame()
 
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
 }
 
 bool HandlePolledEvent(SDL_Event event) {
