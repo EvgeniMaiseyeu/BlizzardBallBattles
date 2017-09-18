@@ -1,4 +1,4 @@
-//Using SDL and standard IO
+﻿//Using SDL and standard IO
 #include <SDL.h>
 #include <stdio.h>
 #include <string>
@@ -7,27 +7,15 @@
 #include <GL/glut.h>
 #include <GL/GL.h>
 #include <iostream>
+//#include <SDL_image.h> not shipped with SDL
 #include "sprite.h"
+#include "shader.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const char* TITLE = "Blizzard Ball Battle";
 const int MAX_FPS = 60;
-
-const GLchar* vertexShaderSource = "#version 450 core\n"
-"layout ( location = 0 ) in vec3 position; \n"
-"void main( ) \n"
-"{\n"
-"gl_position = vec4(position.x, position.y, position.z, 1.0);\n"
-"}";
-
-const GLchar* fragmentShaderSource = "#version 450 core\n"
-"out vec4 color; \n"
-"void main( ) \n"
-"{\n"
-"color = vec4(1.0f, 0.5f, 2.0f, 1.0f);\n"
-"}";
 
 //Rendering variables
 SDL_Window* mainWindow = NULL;
@@ -76,6 +64,9 @@ bool Init()
 
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   return true;
 }
 
@@ -117,65 +108,56 @@ void RunGame()
   bool gameLoop = true;
   int lastTicks = SDL_GetTicks();
 
-  ////Shader Start
-  GLint success;
-  GLchar infoLog[512];
+  Shader ourShader("vertex_shader.vs", "fragment_shader.fs");
 
-  //Compile Vertex
-  GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glCompileShader(vertexShader);
-  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cout << "ERROR: ShaderVertex Compilation Failed: " << infoLog << std::endl;
-  }
-
-  //Compile Fragment
-  GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  glCompileShader(fragmentShader);
-  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-    std::cout << "ERROR: ShaderFragment Compilation Failed: " << infoLog << std::endl;
-  }
-
-  //Link ShaderProgram
-  GLuint shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-  glLinkProgram(shaderProgram);
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-  if (!success) {
-    glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
-    std::cout << "ERROR: ShaderProgram Attachments Failed: " << infoLog << std::endl;
-  }
-
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-  //Shader End
-
-  //Quad points
-  GLfloat triangleVertices[] = {
-    -0.5f, 0.0f, 0.0f, //bottom left
-    0.5f, 0.0f, 0.0f, //bottom right
-    0.0f, 0.5f, 0.0f, //top center
+  //Triangle points
+  GLfloat quadVertices[] = {
+    //Position            //Color             //Texture Coordinates
+    0.5f, 0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,  //Top Right
+    0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f,  //Bottom Right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,  //Bottom Left
+    -0.5f, 0.5f, 0.0f,    1.0f, 0.0f, 1.0f,   0.0f, 1.0f   //Top Left
   };
 
-  GLuint VBO, VAO;
+  GLuint indices[] = {
+    0, 1, 3, // First Triangle
+    1, 2, 3  // Second Triangle
+  };
+
+  GLuint VBO, VAO, EBO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
+
   glBindVertexArray(VAO);
+
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
-  //4 points cause quad, 3 points cause x/y/z
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+  //4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
+  //position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
   glEnableVertexAttribArray(0);
+  //color attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
+  //textture coordinate attribute
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+  glEnableVertexAttribArray(2);
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
+  glBindVertexArray(0); //Unbind BAO
+
+  ////
+  //SDL Load Image Needed
+  //SDL_Surface* image = IMG_Load("Box.jpg");
+  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+  //glGenerateMipmap(GL_TEXTURE_2D);
+  //SDL_FreeSurface(image);
+  //glBindTexture(GL_TEXTURE_2D, 0); ﻿
+  ////
 
   //Sprite Start
   SDL_Surface *temp = SDL_LoadBMP("Assets/Character.bmp");
@@ -206,13 +188,13 @@ void RunGame()
     }
 
     //Refresh Screen
-    glClearColor(1.0, 0.0, 1.0, 1.0);
+    glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     ////Render code
 
-    //Render Quad
-    glUseProgram(shaderProgram);
+    //Render Triangle
+    ourShader.Use();
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
