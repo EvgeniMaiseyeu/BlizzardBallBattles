@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/GL.h>
+#include "transform.h"
 
 struct Vector2 {
   GLfloat x;
@@ -20,17 +21,14 @@ struct Vector2 {
 
 class Sprite {
 private :
-  GLuint _textureBufferID;
-  Vector2 _position;
-  Vector2 _scale;
-  float _rotation; //0 facing right, 90 down, -90 up, 180 backwards
+  GLuint textureBufferID;
+  Vector2 position;
+  Vector2 scale;
+  float rotation; //0 facing right, 90 down, -90 up, 180 backwards
+  Transform transform;
 
 public:
-  void setPosition(Vector2 newPosition);
-  void SetPosition(float x, float y);
-  void SetXPosition(float x);
-  void SetYPosition(float y);
-  Vector2 getPosition();
+  Transform getTransform();
   Sprite(GLuint textureBufferID);
   void render();
   void update();
