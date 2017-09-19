@@ -3,6 +3,13 @@
 Sprite::Sprite(GLuint textureBuffersID) {
   textureBufferID = textureBuffersID;
   position = Vector2();
+  transform = new Transform();
+}
+
+Sprite::~Sprite() {
+  if (transform != NULL) {
+    delete(transform);
+  }
 }
 
 void Sprite::render() {
@@ -10,6 +17,6 @@ void Sprite::render() {
   glDrawArrays(GL_QUADS, 0, 4);
 }
 
-Transform Sprite::getTransform() {
+Transform* Sprite::getTransform() {
   return transform;
 }

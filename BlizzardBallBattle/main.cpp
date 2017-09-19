@@ -13,8 +13,8 @@
 #include "transform.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 960;
 const char* TITLE = "Blizzard Ball Battle";
 const int MAX_FPS = 60;
 
@@ -110,7 +110,6 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   Shader ourShader("vertex_shader.vs", "fragment_shader.fs");
-
   //Triangle points
   GLfloat quadVertices[] = {
     //Position            //Color             //Texture Coordinates
@@ -151,14 +150,6 @@ void RunGame()
 
   glBindVertexArray(0); //Unbind BAO
 
-  ////
-  //SDL_Surface* image = IMG_Load("Assets/Character.png");
-  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
-  //glGenerateMipmap(GL_TEXTURE_2D);
-  //SDL_FreeSurface(image);
-  //glBindTexture(GL_TEXTURE_2D, 0); ﻿
-  ////
-
   //Texture
   GLuint texture;
   glGenTextures(1, &texture);
@@ -182,7 +173,8 @@ void RunGame()
   glBindTexture(GL_TEXTURE_2D, 0);
   //EndTexture
 
-  Sprite character(texture);
+  Sprite sprite(texture);
+  sprite.getTransform()->setScale(0.25f);
 
   //Sprite End
 
@@ -203,12 +195,17 @@ void RunGame()
 
     //Render Triangle
     ourShader.Use();
+    sprite.getTransform()->addRotation(0.01f);
+    sprite.getTransform()->addTranslation(0.002f, 0.001f);
 
+    if (sprite.getTransform() != sprite.getTransform()) {
+      bool bullshit = true;
+    }
     
     //fuck your rotations
 
     GLint transformLocation = glGetUniformLocation(ourShader.Program, "transform");
-    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, character.getTransform());
+    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(sprite.getTransform()));
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -220,7 +217,7 @@ void RunGame()
     glBindVertexArray(0);
 
     //Render characters
-    character.render();
+    sprite.render();
 
     SDL_GL_SwapWindow(mainWindow);
 

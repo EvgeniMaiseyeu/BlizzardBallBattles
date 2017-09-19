@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include <GL/GL.h>
 #include "transform.h"
+#include "shader.h"
 
 struct Vector2 {
   GLfloat x;
@@ -25,11 +26,12 @@ private :
   Vector2 position;
   Vector2 scale;
   float rotation; //0 facing right, 90 down, -90 up, 180 backwards
-  Transform transform;
+  Transform* transform;
 
 public:
-  Transform getTransform();
+  Transform* getTransform();
   Sprite(GLuint textureBufferID);
+  ~Sprite();
   void render();
   void update();
 };
