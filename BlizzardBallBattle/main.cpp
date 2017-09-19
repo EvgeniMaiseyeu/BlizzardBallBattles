@@ -10,6 +10,7 @@
 #include <SDL_image.h>
 #include "sprite.h"
 #include "shader.h"
+#include "matrix_math.h"
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -182,6 +183,7 @@ void RunGame()
   //EndTexture
 
   Sprite character(texture);
+  Transform transform;
   //Sprite End
 
   while (gameLoop) {
@@ -201,6 +203,12 @@ void RunGame()
 
     //Render Triangle
     ourShader.Use();
+
+    
+    //fuck your rotations
+
+    GLint transformLocation = glGetUniformLocation(ourShader.Program, "transform");
+    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, transform);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);

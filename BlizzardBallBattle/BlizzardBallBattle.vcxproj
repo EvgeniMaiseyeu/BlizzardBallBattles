@@ -133,6 +133,7 @@
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="matrix_math.h" />
     <ClInclude Include="opengl_renderer.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />
