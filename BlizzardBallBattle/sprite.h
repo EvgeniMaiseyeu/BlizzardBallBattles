@@ -27,6 +27,7 @@ private :
   Vector2 scale;
   float rotation; //0 facing right, 90 down, -90 up, 180 backwards
   Transform* transform;
+  Shader* activeShader;
 
 public:
   Transform* getTransform();
@@ -34,4 +35,7 @@ public:
   ~Sprite();
   void render();
   void update();
+  void setActiveShader(Shader* shader);
+  Shader* getShader();
+  GLuint getTextureBufferID();
 };

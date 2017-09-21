@@ -4,20 +4,24 @@
 #include "sprite.h"
 #include "shader.h"
 #include "transform.h"
+#include "rendering_engine.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
 
+RenderingEngine* renderingEngine;
+
 int main(int argc, char *argv[])
 {
-  if (!Init()) {
+  renderingEngine = new RenderingEngine();
+  if (!renderingEngine->Init()) {
     return -1;
   }
 
-
   RunGame();
 
-  Cleanup();
+  renderingEngine->Cleanup();
+  delete(renderingEngine);
 
   return 0;
 }
@@ -27,14 +31,13 @@ void RunGame()
   bool gameLoop = true;
   int lastTicks = SDL_GetTicks();
 
+  //Sprites for testing
   Shader ourShader("vertex_shader.vs", "fragment_shader.fs");
-  //Triangle points
-
-  
-
+  GLuint texture = renderingEngine->GenerateTexture("Assets/Character.png");
   Sprite sprite(texture);
+  renderingEngine->addSpriteForRendering(&sprite);
+  sprite.setActiveShader(&ourShader);
   sprite.getTransform()->setScale(0.25f);
-
   //Sprite End
 
   while (gameLoop) {
@@ -46,39 +49,13 @@ void RunGame()
       }
     }
 
-    //Refresh Screen
-    glClearColor(1.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    renderingEngine->Render();
 
-    ////Render code
-
-    //Render Quad
-    ourShader.Use();
-    sprite.getTransform()->addRotation(0.01f);
-    sprite.getTransform()->addTranslation(0.002f, 0.001f);
-
-    if (sprite.getTransform() != sprite.getTransform()) {
-      bool bullshit = true;
+    if (sprite.getTransform()->getX() > 1.0f) {
+      sprite.getTransform()->setX(-1.0f);
     }
-    
-    //fuck your rotations
-
-    GLint transformLocation = glGetUniformLocation(ourShader.Program, "transform");
-    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(sprite.getTransform()));
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(glGetUniformLocation(ourShader.Program, "ourTexture"), 0);
-
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-
-    //Render characters
-    sprite.render();
-
-    SDL_GL_SwapWindow(mainWindow);
+    sprite.getTransform()->addX(0.02f);
+    sprite.getTransform()->addRotation(0.1f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
@@ -88,10 +65,6 @@ void RunGame()
       SDL_Delay(delay);
     }
   }
-
-  glDeleteVertexArrays(1, &VAO);
-  glDeleteBuffers(1, &VBO);
-  glDeleteBuffers(1, &EBO);
 }
 
 bool HandlePolledEvent(SDL_Event event) {
@@ -111,21 +84,21 @@ bool HandlePolledEvent(SDL_Event event) {
       break;
     case SDLK_r:
       // Cover with red and update
-      glClearColor(1.0, 0.0, 0.0, 1.0);
-      glClear(GL_COLOR_BUFFER_BIT);
-      SDL_GL_SwapWindow(mainWindow);
+      //ClearColor(1.0, 0.0, 0.0, 1.0);
+      //Clear(GL_COLOR_BUFFER_BIT);
+      //L_GL_SwapWindow(mainWindow);
       break;
     case SDLK_g:
       // Cover with green and update
-      glClearColor(0.0, 1.0, 0.0, 1.0);
-      glClear(GL_COLOR_BUFFER_BIT);
-      SDL_GL_SwapWindow(mainWindow);
+      //ClearColor(0.0, 1.0, 0.0, 1.0);
+      //Clear(GL_COLOR_BUFFER_BIT);
+      //L_GL_SwapWindow(mainWindow);
       break;
     case SDLK_b:
       // Cover with blue and update
-      glClearColor(0.0, 0.0, 1.0, 1.0);
-      glClear(GL_COLOR_BUFFER_BIT);
-      SDL_GL_SwapWindow(mainWindow);
+      //ClearColor(0.0, 0.0, 1.0, 1.0);
+      //Clear(GL_COLOR_BUFFER_BIT);
+      //L_GL_SwapWindow(mainWindow);
       break;
     default:
       break;

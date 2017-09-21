@@ -20,3 +20,20 @@ void Sprite::render() {
 Transform* Sprite::getTransform() {
   return transform;
 }
+
+
+void Sprite::update() {
+
+}
+
+void Sprite::setActiveShader(Shader* shader) {
+  activeShader = shader;
+}
+
+Shader* Sprite::getShader() {
+  return activeShader;
+}
+
+GLuint Sprite::getTextureBufferID() {
+  return textureBufferID;
+}

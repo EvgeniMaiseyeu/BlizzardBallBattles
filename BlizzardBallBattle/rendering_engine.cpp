@@ -1,7 +1,7 @@
 #include "rendering_engine.h"
 
 RenderingEngine::RenderingEngine() {
-  quadVertices = new GLfloat[] {
+  quadVertices = {
     //Position            //Color             //Texture Coordinates
     0.5f, 0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,  //Top Right
     0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f,  //Bottom Right
@@ -9,10 +9,11 @@ RenderingEngine::RenderingEngine() {
     -0.5f, 0.5f, 0.0f,    1.0f, 0.0f, 1.0f,   0.0f, 1.0f   //Top Left
   };
 
-  indices = new GLuint[] {
+  indices = {
     0, 1, 3, // First Triangle
     1, 2, 3  // Second Triangle
   };
+
 }
 
 bool RenderingEngine::SetOpenGLAttributes() {
@@ -66,7 +67,7 @@ bool RenderingEngine::Init() {
   }
 
   // Create our window centered as an OpenGL window
-  mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+  mainWindow = SDL_CreateWindow("Blizzard Ball Battle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
   // Check that everything worked out okay
   if (!mainWindow) {
@@ -99,7 +100,6 @@ bool RenderingEngine::Init() {
   ////End OpenGL Viewport
 
   ////Setup VBO/VAO/EBO's. This is for the concept of sprite specifically where we assume it will all be quads (two triangles) to make a sprite
-  GLuint VBO, VAO, EBO;
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
   glGenBuffers(1, &EBO);
@@ -107,10 +107,11 @@ bool RenderingEngine::Init() {
   glBindVertexArray(VAO);
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices.data(), GL_STATIC_DRAW);
+
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 
   //4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
   //position attribute
@@ -126,33 +127,14 @@ bool RenderingEngine::Init() {
   glBindVertexArray(0); //Unbind BAO
   ////End VBO/VAO/EBO
 
-  //Setup Texture, extract out
-  GLuint texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  SDL_Surface *temp = IMG_Load("Assets/Character.png");
-  if (temp == NULL) {
-    //ERROR
-    int hit = 1;
-  }
-
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
-  glGenerateMipmap(GL_TEXTURE_2D);
-  SDL_FreeSurface(temp);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  //EndTexture
-
   return true;
 }
 
 void RenderingEngine::Cleanup() {
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
+
   // Delete our OpengL context
   if (glContext != NULL) {
     SDL_GL_DeleteContext(glContext);
@@ -165,16 +147,60 @@ void RenderingEngine::Cleanup() {
 
   // Shutdown SDL 2
   SDL_Quit();
+}
 
-  //Clear our vertices/indices
-  if (quadVertices != NULL) {
-    delete(quadVertices);
+
+GLuint RenderingEngine::GenerateTexture(std::string textureFileName) {
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  SDL_Surface *temp = IMG_Load(textureFileName.c_str());
+  if (temp == NULL) {
+    //ERROR
+    int hit = 1;
   }
-  if (indices != NULL) {
-    delete(indices);
-  }
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
+  glGenerateMipmap(GL_TEXTURE_2D);
+  SDL_FreeSurface(temp);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  return texture;
 }
 
 void RenderingEngine::Render() {
+  //Refresh Screen
+  glClearColor(1.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT);
 
+  for each (Sprite* sprite in activeSprites) {
+    sprite->getShader()->Use();
+    GLint transformLocation = glGetUniformLocation(sprite->getShader()->Program, "transform");
+    glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(sprite->getTransform()));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, sprite->getTextureBufferID());
+    glUniform1i(glGetUniformLocation(sprite->getShader()->Program, "ourTexture"), 0);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    sprite->render();
+  }
+
+  SDL_GL_SwapWindow(mainWindow);
+}
+
+
+void RenderingEngine::addSpriteForRendering(Sprite* sprite) {
+  activeSprites.push_back(sprite);
 }
