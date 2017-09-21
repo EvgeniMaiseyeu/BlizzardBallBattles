@@ -6,12 +6,14 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 960;
 const int MAX_FPS = 60;
 
+//#include <string>
 
-#ifdef __APPLE__
-#define BASE_PATH "./BlizzardBallBattle/"
-#elif defined _WIN32 || defined _WIN64
-#define BASE_PATH = "./"
-#endif 
+
+//#ifdef __APPLE__
+//#define BASE_PATH "./BlizzardBallBattle/"
+//#elif defined _WIN32 || defined _WIN64
+//#define BASE_PATH = "./"
+//#endif 
 
 
 #endif // ! SHARED_CONSTS

@@ -25,6 +25,20 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
     //Stream to string
     vertexCode = vShaderStream.str();
     fragmentCode = fShaderStream.str();
+     
+    int vsCodeLen = vertexCode.length();
+    if (vsCodeLen > 2 && vertexCode[vsCodeLen-1] == '\c' && vertexCode[vsCodeLen] == '\r') {
+      vertexCode.pop_back();
+      vertexCode.pop_back();
+      vertexCode.push_back('\r');
+    }
+
+    int fsCodeLen = fragmentCode.length();
+    if (fsCodeLen > 2 && fragmentCode[fsCodeLen - 1] == '\c' && fragmentCode[fsCodeLen] == '\r') {
+      fragmentCode.pop_back();
+      fragmentCode.pop_back();
+      fragmentCode.push_back('\r');
+    }
   }
   catch (ifstream::failure e) {
     cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << endl;

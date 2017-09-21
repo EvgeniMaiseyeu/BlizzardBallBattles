@@ -9,6 +9,7 @@
 #include "shader.h"
 #include "transform.h"
 #include "rendering_engine.h"
+#include "HelperFunctions.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -36,8 +37,9 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   //Sprites for testing
-  Shader ourShader(BASE_PATH "vertex_shader.vs", BASE_PATH "fragment_shader.fs");
-  GLuint texture = renderingEngine->GenerateTexture(BASE_PATH "Assets/Character.png");
+  
+  Shader ourShader(BuildPath("vertex_shader.vs").c_str(), BuildPath("fragment_shader.fs").c_str());
+  GLuint texture = renderingEngine->GenerateTexture(BuildPath("Assets/Character.png"));
   Sprite sprite(texture);
   renderingEngine->addSpriteForRendering(&sprite);
   sprite.setActiveShader(&ourShader);

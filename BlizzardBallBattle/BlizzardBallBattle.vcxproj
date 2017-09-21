@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rendering_engine.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLHeaders.h" />
+    <ClInclude Include="HelperFunctions.h" />
     <ClInclude Include="rendering_engine.h" />
     <ClInclude Include="shared_constants.h" />
     <ClInclude Include="transform.h" />
