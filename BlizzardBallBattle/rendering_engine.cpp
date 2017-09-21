@@ -128,10 +128,12 @@ GLuint RenderingEngine::GenerateTexture(std::string textureFileName) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   SDL_Surface *temp = IMG_Load(textureFileName.c_str());
-  if (temp == NULL) {
-    //ERROR
-    int hit = 1;
+  const char* error = SDL_GetError();
+
+  if (strlen(error) > 0) {
+    std::cout << error << std::endl;
   }
+
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
   glGenerateMipmap(GL_TEXTURE_2D);
   SDL_FreeSurface(temp);
