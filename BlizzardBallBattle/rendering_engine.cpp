@@ -59,16 +59,15 @@ bool RenderingEngine::Init() {
   // Create our window centered as an OpenGL window
   mainWindow = SDL_CreateWindow("Blizzard Ball Battle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
-  // Create our opengl context and attach it to our window
-  glContext = SDL_GL_CreateContext(mainWindow);
- 
-
   // Check that everything worked out okay
   if (!mainWindow) {
     std::cout << "Unable to create window\n";
     CheckSDLError(__LINE__);
     return false;
   }
+  
+  // Create our opengl context and attach it to our window
+  glContext = SDL_GL_CreateContext(mainWindow);
 
   // This makes our buffer swap syncronized with the monitor's vertical refresh
   SDL_GL_SetSwapInterval(1);

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include "shared_constants.h"
 #include "sprite.h"
 #include "shader.h"
 #include "transform.h"
@@ -35,8 +36,8 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   //Sprites for testing
-  Shader ourShader("vertex_shader.vs", "fragment_shader.fs");
-  GLuint texture = renderingEngine->GenerateTexture("Assets/Character.png");
+  Shader ourShader(BASE_PATH "vertex_shader.vs", BASE_PATH "fragment_shader.fs");
+  GLuint texture = renderingEngine->GenerateTexture(BASE_PATH "Assets/Character.png");
   Sprite sprite(texture);
   renderingEngine->addSpriteForRendering(&sprite);
   sprite.setActiveShader(&ourShader);
