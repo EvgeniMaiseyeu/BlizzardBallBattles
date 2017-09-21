@@ -1,6 +1,6 @@
 //Using SDL and standard IO
-#define GL3_PROTOTYPES 1
 #include "GLHeaders.h"
+#define GL3_PROTOTYPES 1
 #include <stdio.h>
 #include <string>
 #include <iostream>

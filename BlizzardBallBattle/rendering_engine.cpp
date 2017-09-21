@@ -1,4 +1,5 @@
 #include "rendering_engine.h"
+
 RenderingEngine::RenderingEngine() {
   quadVertices = {
     //Position            //Color             //Texture Coordinates
@@ -17,7 +18,7 @@ bool RenderingEngine::SetOpenGLAttributes() {
   int result = 0;
   // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  // 4.5 relased August 2014, with 4.6 in July of 2017. Going with 4.5 in hopes that modern GPUs
+  // OpenGL 3.3 using GLSL 330
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
   // Turn on double buffering with a 24bit Z buffer.
@@ -50,14 +51,18 @@ bool RenderingEngine::Init() {
     std::cout << "Failed to init SDL\n";
     return false;
   }
-  // Create our opengl context and attach it to our window
-  glContext = SDL_GL_CreateContext(mainWindow);
+
   if (!SetOpenGLAttributes()) {
     return false;
   }
 
   // Create our window centered as an OpenGL window
   mainWindow = SDL_CreateWindow("Blizzard Ball Battle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+
+  // Create our opengl context and attach it to our window
+  glContext = SDL_GL_CreateContext(mainWindow);
+ 
+
   // Check that everything worked out okay
   if (!mainWindow) {
     std::cout << "Unable to create window\n";
@@ -67,16 +72,16 @@ bool RenderingEngine::Init() {
 
   // This makes our buffer swap syncronized with the monitor's vertical refresh
   SDL_GL_SetSwapInterval(1);
-  ////End SDL
+
   ////Setup glew
   glewExperimental = GL_TRUE;
   glewInit();
-  ////End glew
+
   ////Setup OpenGL Viewport
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  ////End OpenGL Viewport
+
   ////Setup VBO/VAO/EBO's. This is for the concept of sprite specifically where we assume it will all be quads (two triangles) to make a sprite
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -97,7 +102,7 @@ bool RenderingEngine::Init() {
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
   glEnableVertexAttribArray(2);
   glBindVertexArray(0); //Unbind BAO
-  ////End VBO/VAO/EBO
+
   return true;
 }
 void RenderingEngine::Cleanup() {

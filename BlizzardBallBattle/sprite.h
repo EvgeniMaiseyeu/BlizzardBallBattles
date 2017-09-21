@@ -8,9 +8,7 @@
 #include <GLUT/glut.h>
 #include <GLFW/glfw3.h>
 #elif defined _WIN32 || defined _WIN64
-#include <SDL.h>
-#include <GL/glut.h>
-#include <GL/GL.h>
+#include "GLHeaders.h"
 #endif
 #include "transform.h"
 #include "shader.h"

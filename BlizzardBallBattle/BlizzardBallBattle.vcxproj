@@ -134,6 +134,7 @@
     <ClCompile Include="transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GLHeaders.h" />
     <ClInclude Include="rendering_engine.h" />
     <ClInclude Include="shared_constants.h" />
     <ClInclude Include="transform.h" />

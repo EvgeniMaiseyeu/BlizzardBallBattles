@@ -19,6 +19,7 @@ private:
   array<GLuint, 6> indices;
   GLuint VBO, VAO, EBO;
   vector<Sprite*> activeSprites;
+
   bool SetOpenGLAttributes();
   void PrintSDL_GL_Attributes();
   void CheckSDLError(int line);
