@@ -1,13 +1,12 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <SDL2/SDL.h>
-#include <GLUT/glut.h>
 
 #include <iostream>
 #ifdef __APPLE__
-#ifdef TARGET_OS_MAC
-#endif
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include <GLUT/glut.h>
+#include <GLFW/glfw3.h>
 #elif defined _WIN32 || defined _WIN64
 #include <SDL.h>
 #include <GL/glut.h>

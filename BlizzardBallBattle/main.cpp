@@ -1,11 +1,10 @@
 //Using SDL and standard IO
 #define GL3_PROTOTYPES 1
-#include <GL/glew.h>
-#include <SDL2/SDL.h>
-#include <GLUT/glut.h>
 #ifdef __APPLE__
-  #ifdef TARGET_OS_MAC
-  #endif
+  #include <GL/glew.h>
+  #include <SDL2/SDL.h>
+  #include <GLUT/glut.h>
+  #include <GLFW/glfw3.h>
 #elif defined _WIN32 || defined _WIN64
   #include <SDL.h>
   #include <GL/glut.h>
@@ -21,19 +20,34 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const char* TITLE = "Blizzard Ball Battle";
 const int MAX_FPS = 60;
-
-const GLchar* vertexShaderSource = "#version 450 core\n"
+/*
+const GLchar* vertexShaderSource = "#version 150 core\n"
 "layout ( location = 0 ) in vec3 position; \n"
 "void main( ) \n"
 "{\n"
 "gl_position = vec4(position.x, position.y, position.z, 1.0);\n"
 "}";
 
-const GLchar* fragmentShaderSource = "#version 450 core\n"
+const GLchar* fragmentShaderSource = "#version 150 core\n"
 "out vec4 color; \n"
 "void main( ) \n"
 "{\n"
 "color = vec4(1.0f, 0.5f, 2.0f, 1.0f);\n"
+"}";
+*/
+
+const GLchar* vertexShaderSource = "#version 410\n"
+"in vec3 position; \n"
+"void main( ) \n"
+"{\n"
+"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+"}";
+
+const GLchar* fragmentShaderSource = "#version 410\n"
+"out vec4 color; \n"
+"void main( ) \n"
+"{\n"
+"color = vec4(1.0f, 0.5f, 1.0f, 1.0f);\n"
 "}";
 
 //Rendering variables
@@ -57,6 +71,10 @@ bool Init()
     return false;
   }
 
+  if (!SetOpenGLAttributes()) {
+    return false;
+  }
+
   // Create our window centered as an OpenGL window
   mainWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
@@ -70,10 +88,6 @@ bool Init()
   // Create our opengl context and attach it to our window
   glContext = SDL_GL_CreateContext(mainWindow);
 
-  if (!SetOpenGLAttributes()) {
-    return false;
-  }
-
   // This makes our buffer swap syncronized with the monitor's vertical refresh
   SDL_GL_SetSwapInterval(1);
 
@@ -83,6 +97,9 @@ bool Init()
 
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+
+  printf("Version: %s\n\n", glGetString( GL_VERSION ));
+
   return true;
 }
 
@@ -90,14 +107,14 @@ bool SetOpenGLAttributes()
 {
   //All SDL_Gl_SetAttribute returns negative on fail, 0 on success. If result is zero, all succeeded
   int result = 0;
-
-  // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
-  result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  
+    // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
+    result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
   // 4.5 relased August 2014, with 4.6 in July of 2017. Going with 4.5 in hopes that modern GPUs
-  result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-  result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
-
+  result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);  
+  
   // Turn on double buffering with a 24bit Z buffer.
   // You may need to change this to 16 or 32 for your system
   result += SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
