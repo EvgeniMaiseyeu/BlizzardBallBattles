@@ -1,38 +1,39 @@
 #include "sprite.h"
 
-void Sprite::setPosition(Vector2 newPosition) {
-  _position = newPosition;
+Sprite::Sprite(GLuint textureBuffersID) {
+  textureBufferID = textureBuffersID;
+  position = Vector2();
+  transform = new Transform();
 }
 
-void Sprite::SetPosition(float x, float y) {
-  Vector2 vector(x, y);
-  _position = vector;
-}
-
-void Sprite::SetXPosition(float x) {
-  Vector2 vector(x, _position.y);
-  _position = vector;
-}
-
-void Sprite::SetYPosition(float y) {
-  Vector2 vector(_position.x, y);
-  _position = vector;
-}
-
-Vector2 Sprite::getPosition() {
-  return _position;
-}
-
-Sprite::Sprite(GLuint textureBufferID) {
-  _textureBufferID = textureBufferID;
-  _position = Vector2();
+Sprite::~Sprite() {
+  if (transform != NULL) {
+    delete(transform);
+  }
 }
 
 void Sprite::render() {
-  glBindTexture(GL_TEXTURE_2D, _textureBufferID);
+  glBindTexture(GL_TEXTURE_2D, textureBufferID);
   glDrawArrays(GL_QUADS, 0, 4);
 }
 
+Transform* Sprite::getTransform() {
+  return transform;
+}
+
+
 void Sprite::update() {
 
+}
+
+void Sprite::setActiveShader(Shader* shader) {
+  activeShader = shader;
+}
+
+Shader* Sprite::getShader() {
+  return activeShader;
+}
+
+GLuint Sprite::getTextureBufferID() {
+  return textureBufferID;
 }
