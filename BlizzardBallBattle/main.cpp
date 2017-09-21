@@ -1,9 +1,10 @@
 //Using SDL and standard IO
+#define GL3_PROTOTYPES 1
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include <GLUT/glut.h>
 #ifdef __APPLE__
   #ifdef TARGET_OS_MAC
-    #include <SDL2/SDL.h>
-    #include <GLUT/glut.h>
-    #include <opengl/GL.h>
   #endif
 #elif defined _WIN32 || defined _WIN64
   #include <SDL.h>
@@ -11,9 +12,7 @@
   #include <GL/GL.h>
 #endif 
 #include <stdio.h>
-#include <string>
-#define GL3_PROTOTYPES 1
-#include <GL/glew.h>
+#include <string.h>
 #include <iostream>
 #include "sprite.h"
 
@@ -214,12 +213,12 @@ void RunGame()
     }
 
     //Refresh Screen
-    glClearColor(1.0, 0.0, 1.0, 1.0);
+    glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     ////Render code
 
-    //Render Quad
+    //Render Triangle //It should be drawing a empty triangle, but the background should be pink. Changed to red to confirm
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);

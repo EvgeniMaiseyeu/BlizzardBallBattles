@@ -5,10 +5,7 @@
     "tasks": [{
         "taskName": "main",
         "type": "shell",
-        "command": "clang++ ./BlizzardBallBattle/main.cpp -lSDL2 -g",
-        "args": [
-            "./BlizzardBallBattle/main.cpp"
-        ],
+        "command": "clang++ ./BlizzardBallBattle/*.cpp -framework OpenGL -lGLEW -lSDL2 -g",
         "group": {
             "kind": "build",
             "isDefault": true

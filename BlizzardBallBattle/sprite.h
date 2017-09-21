@@ -1,33 +1,38 @@
 #pragma once
 
+#include <GL/glew.h>
+#include <SDL2/SDL.h>
+#include <GLUT/glut.h>
+
 #include <iostream>
 #ifdef __APPLE__
 #ifdef TARGET_OS_MAC
-  #include <SDL2/SDL.h>
-  #include <GLUT/glut.h>
-  #include <opengl/GL.h>
 #endif
 #elif defined _WIN32 || defined _WIN64
 #include <SDL.h>
 #include <GL/glut.h>
 #include <GL/GL.h>
-#endif 
+#endif
 
-struct Vector2 {
+struct Vector2
+{
   GLfloat x;
   GLfloat y;
-  Vector2(float _x, float _y) {
+  Vector2(float _x, float _y)
+  {
     x = _x;
     y = _y;
   }
-  Vector2() {
+  Vector2()
+  {
     x = 0.0;
     y = 0.0;
   }
 };
 
-class Sprite {
-private :
+class Sprite
+{
+private:
   GLuint _textureBufferID;
   Vector2 _position;
   Vector2 _scale;
