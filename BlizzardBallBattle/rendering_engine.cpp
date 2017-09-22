@@ -16,13 +16,13 @@ RenderingEngine::RenderingEngine() {
 bool RenderingEngine::SetOpenGLAttributes() {
   //All SDL_Gl_SetAttribute returns negative on fail, 0 on success. If result is zero, all succeeded
   int result = 0;
-  // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
+  //SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  // OpenGL 3.3 using GLSL 330
+  //OpenGL 3.3 using GLSL 330
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   result += SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-  // Turn on double buffering with a 24bit Z buffer.
-  // You may need to change this to 16 or 32 for your system
+  //Turn on double buffering with a 24bit Z buffer
+  //You may need to change this to 16 or 32 for your system
   result += SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   return result == 0;
 }
@@ -104,6 +104,7 @@ bool RenderingEngine::Init() {
 
   return true;
 }
+
 void RenderingEngine::Cleanup() {
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
@@ -119,6 +120,7 @@ void RenderingEngine::Cleanup() {
   // Shutdown SDL 2
   SDL_Quit();
 }
+
 GLuint RenderingEngine::GenerateTexture(std::string textureFileName) {
   GLuint texture;
   glGenTextures(1, &texture);
@@ -128,15 +130,20 @@ GLuint RenderingEngine::GenerateTexture(std::string textureFileName) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   SDL_Surface *temp = IMG_Load(textureFileName.c_str());
-  const char* error = SDL_GetError();
-
-  if (strlen(error) > 0) {
-    std::cout << error << std::endl;
-  }
 
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
   glGenerateMipmap(GL_TEXTURE_2D);
-  SDL_FreeSurface(temp);
+
+  const char* sdlError = SDL_GetError();
+  GLenum glError = glGetError();
+  if (strlen(sdlError) > 0) {
+    std::cout << sdlError << std::endl;
+  }
+  if (glError != GL_NO_ERROR) {
+    std::cout << glError << std::endl;
+  }
+
+  SDL_FreeSurface(temp); 
   glBindTexture(GL_TEXTURE_2D, 0);
   return texture;
 }
