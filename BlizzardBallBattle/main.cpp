@@ -38,8 +38,8 @@ void RunGame()
 
   //Sprites for testing
   
-  Shader ourShader(BuildPath("vertex_shader.vs").c_str(), BuildPath("fragment_shader.fs").c_str());
-  GLuint texture = renderingEngine->GenerateTexture(BuildPath("Assets/Character.png"));
+  Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
+  GLuint texture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
   Sprite sprite(texture);
   renderingEngine->addSpriteForRendering(&sprite);
   sprite.setActiveShader(&ourShader);
