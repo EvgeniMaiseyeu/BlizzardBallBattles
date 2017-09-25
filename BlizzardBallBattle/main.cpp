@@ -36,7 +36,7 @@ void RunGame()
   bool gameLoop = true;
   int lastTicks = SDL_GetTicks();
 
-  //Sprites for testing
+  //Sprites for testing d
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
   GLuint texture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
   GLuint snowTexture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
