@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 #include <math.h>
+#include "shared_constants.h"
+#include <iostream>
 
 class Transform {
 private:

@@ -5,6 +5,10 @@
         "fstream": "cpp",
         "locale": "cpp",
         "sstream": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "condition_variable": "cpp",
+        "thread": "cpp",
+        "algorithm": "cpp",
+        "ratio": "cpp"
     }
 }

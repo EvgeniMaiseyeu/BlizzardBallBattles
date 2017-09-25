@@ -37,13 +37,33 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   //Sprites for testing
-  
   Shader ourShader(BuildPath("vertex_shader.vs").c_str(), BuildPath("fragment_shader.fs").c_str());
   GLuint texture = renderingEngine->GenerateTexture(BuildPath("Assets/Character.png"));
-  Sprite sprite(texture);
-  renderingEngine->addSpriteForRendering(&sprite);
-  sprite.setActiveShader(&ourShader);
-  sprite.getTransform()->setScale(0.25f);
+
+  float width = getGameWidth();
+  float height = getGameHeight();
+  float leftBounding = getGameLeftX();
+  float bottomBounding = getGameBottomY();
+
+  for(int x = 0; x < width; x++) {
+    for(int y = 0; y < height; y++ ) {
+      Sprite* sprite = new Sprite(texture);
+      renderingEngine->addSpriteForRendering(sprite);
+      sprite->setActiveShader(&ourShader);
+      sprite->getTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+    }
+  }
+
+  Sprite newSprite(texture);
+  newSprite.setActiveShader(&ourShader);
+  renderingEngine->addSpriteForRendering(&newSprite);
+  newSprite.getTransform()->setPosition(2.5f, 2.5f);
+  newSprite.getTransform()->setScale(3.0f);
+
+  std::cout << "WIDTH: " << width << " HEIGHT: " << height << std::endl;
+
+
+  //sprite.getTransform()->setScale(0.25f);
   //Sprite End
 
   while (gameLoop) {
@@ -57,11 +77,7 @@ void RunGame()
 
     renderingEngine->Render();
 
-    if (sprite.getTransform()->getX() > 1.0f) {
-      sprite.getTransform()->setX(-1.0f);
-    }
-    sprite.getTransform()->addX(0.02f);
-    sprite.getTransform()->addRotation(0.1f);
+    newSprite.getTransform()->addRotation(0.2f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();

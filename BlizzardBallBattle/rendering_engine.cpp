@@ -2,11 +2,11 @@
 
 RenderingEngine::RenderingEngine() {
   quadVertices = {
-    //Position            //Color             //Texture Coordinates
-    0.5f, 0.5f, 0.0f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,  //Top Right
-    0.5f, -0.5f, 0.0f,    0.0f, 1.0f, 0.0f,   1.0f, 0.0f,  //Bottom Right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,  //Bottom Left
-    -0.5f, 0.5f, 0.0f,    1.0f, 0.0f, 1.0f,   0.0f, 1.0f   //Top Left
+    //Position           //Texture Coordinates
+    0.5f, 0.5f, 0.0f,    1.0f, 1.0f,  //Top Right
+    0.5f, -0.5f, 0.0f,   1.0f, 0.0f,  //Bottom Right
+    -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,  //Bottom Left
+    -0.5f, 0.5f, 0.0f,   0.0f, 1.0f   //Top Left
   };
   indices = {
     0, 1, 3, // First Triangle
@@ -78,8 +78,13 @@ bool RenderingEngine::Init() {
 
   ////Setup OpenGL Viewport
   glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  glEnable(GL_TEXTURE_2D); ///
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  //glMatrixMode(GL_PROJECTION); ///
+  //gluOrtho2D(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT); /// 
+  //glMatrixMode(GL_MODELVIEW); ///
 
   ////Setup VBO/VAO/EBO's. This is for the concept of sprite specifically where we assume it will all be quads (two triangles) to make a sprite
   glGenVertexArrays(1, &VAO);
@@ -92,14 +97,14 @@ bool RenderingEngine::Init() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
   //4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
   //position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
   glEnableVertexAttribArray(0);
   //color attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
+  //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+  //glEnableVertexAttribArray(1);
   //textture coordinate attribute
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+  glEnableVertexAttribArray(1);
   glBindVertexArray(0); //Unbind BAO
 
   return true;
@@ -154,12 +159,22 @@ void RenderingEngine::Render() {
   for (size_t i = 0; i < activeSprites.size(); i++) {
     Sprite* sprite = activeSprites[i];
     sprite->getShader()->Use();
+    //Pass in transform
     GLint transformLocation = glGetUniformLocation(sprite->getShader()->Program, "transform");
     glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(sprite->getTransform()));
+
+    //Pass in aspect ratio
+    GLint aspectRatioLocation = glGetUniformLocation(sprite->getShader()->Program, "aspectRatio");
+    glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+
+    //Pass in texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, sprite->getTextureBufferID());
-    glUniform1i(glGetUniformLocation(sprite->getShader()->Program, "ourTexture"), 0);
+    GLint ourTextureLocation = glGetUniformLocation(sprite->getShader()->Program, "ourTexture");
+    glUniform1i(ourTextureLocation, 0);
+    //Bind vertex array
     glBindVertexArray(VAO);
+    //Draw
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
