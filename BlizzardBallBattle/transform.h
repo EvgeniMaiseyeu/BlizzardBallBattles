@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include <math.h>
-#include "shared_constants.h"
+#include "HelperFunctions.h"
 #include <iostream>
 
 class Transform {

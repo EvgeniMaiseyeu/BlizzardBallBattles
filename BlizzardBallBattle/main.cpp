@@ -39,6 +39,8 @@ void RunGame()
   //Sprites for testing
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
   GLuint texture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
+  GLuint snowTexture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
+  GLuint iceTexture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
 
   float width = getGameWidth();
   float height = getGameHeight();
@@ -46,22 +48,28 @@ void RunGame()
   float bottomBounding = getGameBottomY();
 
   for(int x = 0; x < width; x++) {
+    GLuint textureToUse = snowTexture;
+    if (x >= width * 0.4f && x <= width * 0.6f ) {
+      textureToUse = iceTexture;
+    }
     for(int y = 0; y < height; y++ ) {
-      Sprite* sprite = new Sprite(texture);
+      Sprite* sprite = new Sprite(textureToUse);
       renderingEngine->addSpriteForRendering(sprite);
       sprite->setActiveShader(&ourShader);
       sprite->getTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
   }
 
-  Sprite newSprite(texture);
-  newSprite.setActiveShader(&ourShader);
-  renderingEngine->addSpriteForRendering(&newSprite);
-  newSprite.getTransform()->setPosition(2.5f, 2.5f);
-  newSprite.getTransform()->setScale(3.0f);
+  Sprite player1(texture);
+  player1.setActiveShader(&ourShader);
+  renderingEngine->addSpriteForRendering(&player1);
+  player1.getTransform()->setPosition(-GAME_WIDTH / 4.0f, 0);
 
-  std::cout << "WIDTH: " << width << " HEIGHT: " << height << std::endl;
-
+  Sprite player2(texture);
+  player2.setActiveShader(&ourShader);
+  renderingEngine->addSpriteForRendering(&player2);
+  player2.getTransform()->setPosition(GAME_WIDTH / 4.0f, 0);
+  player2.getTransform()->setRotation(180.0f);
 
   //sprite.getTransform()->setScale(0.25f);
   //Sprite End
@@ -77,7 +85,8 @@ void RunGame()
 
     renderingEngine->Render();
 
-    newSprite.getTransform()->addRotation(0.2f);
+    player1.getTransform()->addRotation(0.2f);
+    player2.getTransform()->addX(-0.1f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
