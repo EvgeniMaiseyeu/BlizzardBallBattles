@@ -3,7 +3,7 @@ public:
     Sprite sprite;
     Texture texture;
     SpriteRenderer(Entity* entity) {
-        this.entity = entity;
+        super(entity);
         SpriteRendererManager.subscribe(entity.id, this)
     }
 
