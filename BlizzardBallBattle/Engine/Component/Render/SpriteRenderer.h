@@ -7,11 +7,11 @@ public:
         SpriteRendererManager.subscribe(entity.id, this)
     }
 
-    render() {
+    void render() {
         Transform transform = entity.getComponent<Transform>();
         if (transform == null)
             SpriteRendererManager.unsubscribe(entity.id);
-        render()
+        //render code
     }
 private:
     Entity entity;

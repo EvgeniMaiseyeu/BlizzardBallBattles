@@ -1,5 +1,6 @@
-class SpriteRendererManager() {
+class SpriteRendererManager {
 public:
+    SpriteRenderer[] spriteRenderers;
     void Subscribe(int id, SpriteRender* spriteRenderer) {
         spriteRenderers.push(id, spriteRenderer)
     }
