@@ -4,6 +4,7 @@
 
 class GameObject {
 public:
+    std::vector<Component*>;
     GameObject();
     Component* GetComponent(int id);
     int AddComponent();

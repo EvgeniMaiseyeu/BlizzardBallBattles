@@ -13,6 +13,4 @@ public:
             SpriteRendererManager.unsubscribe(entity.id);
         //render code
     }
-private:
-    Entity entity;
 }
