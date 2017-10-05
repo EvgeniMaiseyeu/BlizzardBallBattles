@@ -10,14 +10,19 @@
 #include "transform.h"
 #include "rendering_engine.h"
 #include "HelperFunctions.h"
+#include "GameManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
 
 RenderingEngine* renderingEngine;
 
+GameManager* gameManager;
+
 int main(int argc, char *argv[])
 {
+  gameManager = new GameManager();
+
   renderingEngine = new RenderingEngine();
   if (!renderingEngine->Init()) {
     return -1;
@@ -50,6 +55,7 @@ void RunGame()
     //Handle events like key pressed
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }

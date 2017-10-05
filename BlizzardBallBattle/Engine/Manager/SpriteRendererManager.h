@@ -11,5 +11,5 @@ public:
 
     void Subscribe(int id, SpriteRender* spriteRenderer);
     void UnSubscribe(int id);
-    void Update();
+    void Update(int ticks);
 }
