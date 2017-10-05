@@ -47,6 +47,7 @@ void RunGame()
   float leftBounding = getGameLeftX();
   float bottomBounding = getGameBottomY();
 
+
   for(int x = 0; x < width; x++) {
     GLuint textureToUse = snowTexture;
     if (x >= width * 0.4f && x <= width * 0.6f ) {
