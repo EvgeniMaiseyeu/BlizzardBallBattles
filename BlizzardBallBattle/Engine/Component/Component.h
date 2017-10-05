@@ -1,11 +1,8 @@
-
-
+#include "Entity.h"
 
 class Component {
 public:
-    Component(Entity* entity) {
-        this.entity = entity;
-    }
+    Component(Entity* entity);
 private:
     Entity* entity;
 }

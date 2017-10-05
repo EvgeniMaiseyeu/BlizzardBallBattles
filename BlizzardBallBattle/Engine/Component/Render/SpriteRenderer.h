@@ -1,16 +1,12 @@
-class SpriteRenderer {
-public:
-    Sprite sprite;
-    Texture texture;
-    SpriteRenderer(Entity* entity) {
-        super(entity);
-        SpriteRendererManager.subscribe(entity.id, this)
-    }
+#include "Entity.h"
+#include "Component.h"
 
-    void render() {
-        Transform transform = entity.getComponent<Transform>();
-        if (transform == null)
-            SpriteRendererManager.unsubscribe(entity.id);
-        //render code
-    }
+class SpriteRenderer:Component {
+public:
+    //Sprite* sprite;
+    //Texture* texture;
+
+    SpriteRenderer(Entity* entity);
+
+    void Render();
 }

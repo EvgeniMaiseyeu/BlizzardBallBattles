@@ -1,17 +1,24 @@
 
 #include "Component.h"
+#include <string>
+#include <typeinfo>
 #include <vector>
 
 class GameObject {
+private:
+    typedef pair<string, std::vector<Component*>> components;
+
 public:
-    std::vector<Component*>;
+
     GameObject();
-    Component* GetComponent(int id);
-    int AddComponent();
-    void RemoveComponent(int id);
 
-    bool HasComponent();
+    Component* GetComponent(string *type);
+    Component* GetComponents(string *type);
+    void AddComponent(Component *component);
+    void RemoveComponent(string *type);
 
-    template <class T>
-    vector<Component*> GetComponentsByType();
+    bool HasComponent(string *type);
+
+    //template <class T>
+    //vector<Component*> GetComponentsByType();
 }

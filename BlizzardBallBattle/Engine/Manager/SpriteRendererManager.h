@@ -1,14 +1,15 @@
+#include <map>
+
 class SpriteRendererManager {
+private:
+    SpriteRendererManager *instance;
+
 public:
-    SpriteRenderer[] spriteRenderers;
-    void Subscribe(int id, SpriteRender* spriteRenderer) {
-        spriteRenderers.push(id, spriteRenderer)
-    }
-    void UnSubscribe(int id) {
-        spriteRenderers.remove(id);
-    }
-    void Update() {
-        foreach(spriteRenderer in spriteRenderers)
-            spriteRenderer.render();
-    }
+    typedef pair<int, SpriteRenderer*> spriteRenderers;
+
+    static SpriteRendererManager* getInstance();
+
+    void Subscribe(int id, SpriteRender* spriteRenderer);
+    void UnSubscribe(int id);
+    void Update();
 }
