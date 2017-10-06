@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "GLHeaders.h"
 #include <stdio.h>
@@ -33,3 +33,4 @@ public:
 };
 
 
+*/

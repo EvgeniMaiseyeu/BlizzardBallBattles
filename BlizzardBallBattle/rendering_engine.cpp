@@ -1,4 +1,4 @@
-#include "rendering_engine.h"
+/*#include "rendering_engine.h"
 
 RenderingEngine::RenderingEngine() {
   quadVertices = {
@@ -185,4 +185,4 @@ void RenderingEngine::Render() {
 void RenderingEngine::addSpriteForRendering(Sprite* sprite) {
   activeSprites.push_back(sprite);
 }
-
+*/

@@ -5,7 +5,22 @@
     "tasks": [{
         "taskName": "main",
         "type": "shell",
-        "command": "clang++ -std=c++11 ./BlizzardBallBattle/*.cpp -framework OpenGL -lGLEW -lSDL2 -lSDL2_image -g",
+        "command": "clang++",
+        "args" : [
+            "-std=c++11",
+            "./BlizzardBallBattle/*.cpp",
+            "./BlizzardBallBattle/Engine/Component/*.cpp",
+            "-I${workspaceRoot}/BlizzardBallBattle",
+            "-I${workspaceRoot}/BlizzardBallBattle/Engine",
+            "-I${workspaceRoot}/BlizzardBallBattle/Engine/Component",
+            "-I${workspaceRoot}/BlizzardBallBattle/Engine/Component/Render",
+            "-I${workspaceRoot}/BlizzardBallBattle/Engine/Manager",
+            "-I${workspaceRoot}/BlizzardBallBattle/Game",
+            "-framework OpenGL",
+            "-lGLEW",
+            "-lSDL2",
+            "-lSDL2_image",
+            "-g" ],
         "group": {
             "kind": "build",
             "isDefault": true

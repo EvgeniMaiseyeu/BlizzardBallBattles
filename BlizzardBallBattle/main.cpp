@@ -8,25 +8,25 @@
 #include "sprite.h"
 #include "shader.h"
 #include "transform.h"
-#include "rendering_engine.h"
 #include "HelperFunctions.h"
+#include "GameManager.h" //Engine/Manager/GameManager.h
+#include "SpriteRendererManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
 
-RenderingEngine* renderingEngine;
+GameManager* gameManager;
 
 int main(int argc, char *argv[])
 {
-  renderingEngine = new RenderingEngine();
-  if (!renderingEngine->Init()) {
+  gameManager = new GameManager();
+  if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
 
   RunGame();
-
-  renderingEngine->Cleanup();
-  delete(renderingEngine);
+  SpriteRendererManager::GetInstance()->Cleanup();
+  delete(SpriteRendererManager::GetInstance());
 
   return 0;
 }
@@ -38,9 +38,9 @@ void RunGame()
 
   //Sprites for testing d
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-  GLuint texture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-  GLuint snowTexture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
-  GLuint iceTexture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
+  GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
+  GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
+  GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
 
   float width = getGameWidth();
   float height = getGameHeight();
@@ -55,7 +55,7 @@ void RunGame()
     }
     for(int y = 0; y < height; y++ ) {
       Sprite* sprite = new Sprite(textureToUse);
-      renderingEngine->addSpriteForRendering(sprite);
+      SpriteRendererManager::GetInstance()->addSpriteForRendering(sprite);
       sprite->setActiveShader(&ourShader);
       sprite->getTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
@@ -63,28 +63,32 @@ void RunGame()
 
   Sprite player1(texture);
   player1.setActiveShader(&ourShader);
-  renderingEngine->addSpriteForRendering(&player1);
+  SpriteRendererManager::GetInstance()->addSpriteForRendering(&player1);
   player1.getTransform()->setPosition(-GAME_WIDTH / 4.0f, 0);
 
   Sprite player2(texture);
   player2.setActiveShader(&ourShader);
-  renderingEngine->addSpriteForRendering(&player2);
+  SpriteRendererManager::GetInstance()->addSpriteForRendering(&player2);
   player2.getTransform()->setPosition(GAME_WIDTH / 4.0f, 0);
   player2.getTransform()->setRotation(180.0f);
 
   //sprite.getTransform()->setScale(0.25f);
   //Sprite End
 
+  float timeDelta = 0.0f;
+
+
   while (gameLoop) {
     //Handle events like key pressed
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+      gameManager->Update(timeDelta);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
     }
 
-    renderingEngine->Render();
+    //renderingEngine->Render();
 
     player1.getTransform()->addRotation(0.2f);
     player2.getTransform()->addX(-0.1f);
@@ -93,6 +97,7 @@ void RunGame()
     int newTicks = SDL_GetTicks();
     int delay = 1000 / MAX_FPS - SDL_GetTicks() + lastTicks;
     if (delay > 0) {
+      timeDelta = newTicks - lastTicks;
       lastTicks = newTicks;
       SDL_Delay(delay);
     }
