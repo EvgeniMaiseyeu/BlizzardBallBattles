@@ -2,14 +2,18 @@
 
 #include "GameObject.h"
 #include "Component.h"
-#include "SpriteRendererManager.h"
+#include "Shader.h"
 
-class SpriteRenderer:Component {
+class SpriteRenderer : public Component {
+private:
+  GLuint textureBufferID;
+  Shader* activeShader;
+
 public:
-    //Sprite* sprite;
-    //Texture* texture;
-
     SpriteRenderer(GameObject* gameObject);
-
     void Render();
+    void SetActiveShader(Shader* shader);
+    void SetActiveTexture(GLuint textureBufferID);
+    Shader* GetShader();
+    GLuint GetTextureBufferID();
 };

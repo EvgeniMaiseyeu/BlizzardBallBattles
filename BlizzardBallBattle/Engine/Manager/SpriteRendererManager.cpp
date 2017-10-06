@@ -185,20 +185,21 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     for (size_t i = 0; i < activeSprites.size(); i++) {
-      Sprite* sprite = activeSprites[i];
-      sprite->getShader()->Use();
+      SpriteRenderer* spriteRenderer = activeSprites[i];
+      spriteRenderer->GetShader()->Use();
       //Pass in transform
-      GLint transformLocation = glGetUniformLocation(sprite->getShader()->Program, "transform");
-      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(sprite->getTransform()));
+      GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
+      Transform transform = *((Transform*)(spriteRenderer->GetGameObject()->GetComponent("Transform")));
+      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, transform);
   
       //Pass in aspect ratio
-      GLint aspectRatioLocation = glGetUniformLocation(sprite->getShader()->Program, "aspectRatio");
+      GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
       glUniform1f(aspectRatioLocation, ASPECT_RATIO);
   
       //Pass in texture
       glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, sprite->getTextureBufferID());
-      GLint ourTextureLocation = glGetUniformLocation(sprite->getShader()->Program, "ourTexture");
+      glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetTextureBufferID());
+      GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
       glUniform1i(ourTextureLocation, 0);
       //Bind vertex array
       glBindVertexArray(VAO);
@@ -206,12 +207,12 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
       glDrawArrays(GL_TRIANGLES, 0, 3);
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
-      sprite->render();
+      spriteRenderer->Render();
     }
     SDL_GL_SwapWindow(mainWindow);
   }
 
-  void SpriteRendererManager::addSpriteForRendering(Sprite* sprite) {
+  void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {
     activeSprites.push_back(sprite);
   }
   

@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include "shared_constants.h"
-#include "sprite.h"
-#include "shader.h"
-#include "transform.h"
+#include "SharedConstants.h"
+#include "Shader.h"
+#include "Transform.h"
 #include "HelperFunctions.h"
 #include "GameManager.h" //Engine/Manager/GameManager.h
 #include "SpriteRendererManager.h"
+#include "GameObject.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -47,60 +47,55 @@ void RunGame()
   float leftBounding = getGameLeftX();
   float bottomBounding = getGameBottomY();
 
-
+  //Setup Tiles
   for(int x = 0; x < width; x++) {
     GLuint textureToUse = snowTexture;
     if (x >= width * 0.4f && x <= width * 0.6f ) {
       textureToUse = iceTexture;
     }
     for(int y = 0; y < height; y++ ) {
-      Sprite* sprite = new Sprite(textureToUse);
-      SpriteRendererManager::GetInstance()->addSpriteForRendering(sprite);
-      sprite->setActiveShader(&ourShader);
-      sprite->getTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+      GameObject* tile = new GameObject();
+      tile->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(tile));
+      SpriteRenderer* spriteRenderer = (SpriteRenderer*)tile->GetComponent("SpriteRenderer");
+      spriteRenderer->SetActiveTexture(textureToUse);
+      spriteRenderer->SetActiveShader(&ourShader);
+      ((Transform*)tile->GetComponent("Transform"))->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
   }
 
-  Sprite player1(texture);
-  player1.setActiveShader(&ourShader);
-  SpriteRendererManager::GetInstance()->addSpriteForRendering(&player1);
-  player1.getTransform()->setPosition(-GAME_WIDTH / 4.0f, 0);
-
-  Sprite player2(texture);
-  player2.setActiveShader(&ourShader);
-  SpriteRendererManager::GetInstance()->addSpriteForRendering(&player2);
-  player2.getTransform()->setPosition(GAME_WIDTH / 4.0f, 0);
-  player2.getTransform()->setRotation(180.0f);
-
-  //sprite.getTransform()->setScale(0.25f);
-  //Sprite End
+  //Setup spinning player
+  GameObject* player1 = new GameObject();
+  player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
+  SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
+  spriteRenderer->SetActiveTexture(texture);
+  spriteRenderer->SetActiveShader(&ourShader);
 
   float timeDelta = 0.0f;
-
 
   while (gameLoop) {
     //Handle events like key pressed
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-      gameManager->Update(timeDelta);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
     }
 
-    //renderingEngine->Render();
+    //Update game
+    gameManager->Update(timeDelta);
 
-    player1.getTransform()->addRotation(0.2f);
-    player2.getTransform()->addX(-0.1f);
+    //Temporary place where we update GameObjects
+    ((Transform*)player1->GetComponent("Transform"))->addRotation(0.5f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
-    int delay = 1000 / MAX_FPS - SDL_GetTicks() + lastTicks;
+    int difference = newTicks - lastTicks;
+    int delay = 1000 / MAX_FPS - difference;
     if (delay > 0) {
-      timeDelta = newTicks - lastTicks;
-      lastTicks = newTicks;
       SDL_Delay(delay);
     }
+    timeDelta = newTicks - lastTicks;
+    lastTicks = newTicks;
   }
 }
 

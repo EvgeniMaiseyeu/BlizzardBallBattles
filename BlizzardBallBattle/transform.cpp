@@ -1,4 +1,4 @@
-#include "transform.h"
+#include "Transform.h"
 
 Transform::operator GLfloat*() {
   if (values == NULL) {
@@ -27,7 +27,7 @@ Transform::operator GLfloat*() {
   return values;
 }
 
-Transform::Transform() {
+Transform::Transform(GameObject* gameObject) : Component(gameObject) {
   scale = 1.0f;
   x = 0.0f;
   y = 0.0f;

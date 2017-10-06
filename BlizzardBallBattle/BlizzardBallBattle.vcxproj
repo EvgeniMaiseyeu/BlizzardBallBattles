@@ -136,10 +136,8 @@
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="rendering_engine.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="transform.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Component\Component.h" />
@@ -152,11 +150,9 @@
     <ClInclude Include="FBORenderTexture.h" />
     <ClInclude Include="GLHeaders.h" />
     <ClInclude Include="HelperFunctions.h" />
-    <ClInclude Include="rendering_engine.h" />
-    <ClInclude Include="shared_constants.h" />
-    <ClInclude Include="transform.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="sprite.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SharedConstants.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "shared_constants.h"
+#include "SharedConstants.h"
 
 std::string BuildPath(char* fileName);
 

@@ -1,6 +1,8 @@
 #include "GameObject.h"
+#include "Transform.h"
 
-GameObject::GameObject() {   
+GameObject::GameObject() {
+  AddComponent("Transform", (Component*)new Transform(this));
 }
 
 Component* GameObject::GetComponent(std::string type) {
@@ -11,14 +13,14 @@ std::vector<Component*> GameObject::GetComponents(std::string type) {
     return components[type];
 }
 
-void GameObject::AddComponent(Component *component) {
-    std::string type = typeid(component).name();
-    if (!HasComponent(type)) {
+void GameObject::AddComponent(std::string componentKey, Component *component) {
+    //std::string type = typeid(component).name(); NOTE: This returns "class Component *" for a SpriteRenderer type, not a valid way to get the string type of a object
+    if (!HasComponent(componentKey)) {
         std::vector<Component*> typeList;
         typeList.push_back(component);
-        components[type] = typeList;
+        components[componentKey] = typeList;
     } else {
-        components[type].push_back(component);
+        components[componentKey].push_back(component);
     }
 }
 

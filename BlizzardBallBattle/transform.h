@@ -4,8 +4,9 @@
 #include <math.h>
 #include "HelperFunctions.h"
 #include <iostream>
+#include "Component.h"
 
-class Transform {
+class Transform : public Component {
 private:
   float x;
   float y;
@@ -14,7 +15,7 @@ private:
   GLfloat* values;
 
 public:
-  Transform();
+  Transform(GameObject* gameObject);
   ~Transform();
   void addTranslation(float xToAdd, float yToAdd);
   void addX(float xToAdd);

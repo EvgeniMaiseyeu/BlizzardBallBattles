@@ -6,23 +6,23 @@
 #include <string>
 #define GL3_PROTOTYPES 1
 #include <iostream>
-#include "shared_constants.h"
+#include "SharedConstants.h"
 #include <vector>
-#include "sprite.h"
 #include <array>
 #include "SpriteRenderer.h"
+#include "Transform.h"
 
 class SpriteRendererManager {
 private:
     //Singleton variables
     static SpriteRendererManager *instance;
-    vector<Sprite*> activeSprites;
+    std::vector<SpriteRenderer*> activeSprites;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
     SDL_GLContext glContext = NULL;
-    array<GLfloat, 32> quadVertices;
-    array<GLuint, 6> indices;
+    std::array<GLfloat, 32> quadVertices;
+    std::array<GLuint, 6> indices;
     GLuint VBO, VAO, EBO;
 
     //Rendering methods
@@ -42,5 +42,5 @@ public:
     void Cleanup();
     void Render();
     GLuint GenerateTexture(std::string textureFileName);
-    void addSpriteForRendering(Sprite* sprite);
+    void AddSpriteForRendering(SpriteRenderer* sprite);
 };

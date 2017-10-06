@@ -16,7 +16,7 @@ public:
 
     Component* GetComponent(std::string type);
     std::vector<Component*> GetComponents(std::string type);
-    void AddComponent(Component *component);
+    void AddComponent(std::string componentKey, Component *component);
     void RemoveComponent(std::string type);
 
     bool HasComponent(std::string type);
