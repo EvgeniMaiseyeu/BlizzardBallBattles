@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Component.h"
+#include "SpriteRendererManager.h"
 
 class SpriteRenderer:Component {
 public:

@@ -1,9 +1,9 @@
 #include "GameManager.h"
 
 GameManager::GameManager() {
-    SpriteRendererManager.GetInstance();
+    SpriteRendererManager::GetInstance();
 }
 
 void GameManager::Update(int ticks) {
-    SpriteRendererManager.GetInstance().update(ticks);
+    SpriteRendererManager::GetInstance()->Update(ticks);
 }

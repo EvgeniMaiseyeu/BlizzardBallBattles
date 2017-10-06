@@ -1,18 +1,21 @@
 #include "SpriteRendererManager.h"
 
-static SpriteRendererManager* SpriteRendererManager::GetInstance() {
-    if (SpriteRendererManager.instance == null)
-        SpriteRendererManager.instance = new SpriteRendererManager();
-    return SpriteRendererManager.instance;
+//Statics must be given definitions
+SpriteRendererManager* SpriteRendererManager::instance;
+
+SpriteRendererManager* SpriteRendererManager::GetInstance() {
+    if (instance == NULL)
+        instance = new SpriteRendererManager();
+    return instance;
 }
 
-void SpriteRendererManager::Subscribe(int id, SpriteRenderer* spriteRenderer) {
+/*void SpriteRendererManager::Subscribe(int id, SpriteRenderer* spriteRenderer) {
     spriteRenderers[id] = spriteRenderer;
 }
 
 void SpriteRendererManager::UnSubscribe(int id) {
     spriteRenderers.erase(id);
-}
+}*/
 
 void SpriteRendererManager::Update(int ticks) {
     Render();

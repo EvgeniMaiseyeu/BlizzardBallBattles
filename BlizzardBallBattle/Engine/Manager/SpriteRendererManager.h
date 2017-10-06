@@ -31,12 +31,10 @@ private:
     void CheckSDLError(int line);
 
 public:
-    typedef pair<int, SpriteRenderer*> spriteRenderers;
-
     static SpriteRendererManager* GetInstance();
 
-    void Subscribe(int id, SpriteRenderer* spriteRenderer);
-    void UnSubscribe(int id);
+    //void Subscribe(int id, SpriteRenderer* spriteRenderer);
+    //void UnSubscribe(int id);
     void Update(int ticks);
 
     SpriteRendererManager();

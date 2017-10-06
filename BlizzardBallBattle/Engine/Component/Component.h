@@ -5,6 +5,6 @@ class GameObject;
 class Component {
 public:
     Component(GameObject* gameObject);
-private:
+protected:
     GameObject* gameObject;
 };

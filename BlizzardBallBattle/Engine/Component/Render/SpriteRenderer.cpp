@@ -1,13 +1,12 @@
 #include "SpriteRenderer.h"
 
-SpriteRenderer::SpriteRenderer(GameObject* gameObject) {
-    super(gameObject);
-    SpriteRendererManager.GetInstance().subscribe(gameObject.id, this)
+SpriteRenderer::SpriteRenderer(GameObject* gameObject) : Component(gameObject) {
+  //SpriteRendererManager::GetInstance().subscribe(gameObject.id, this);
 }
 
 void SpriteRenderer::Render() {
-    Transform* transform = gameObject.getComponent<Transform>();
-    if (transform == null)
-        SpriteRendererManager.GetInstance().unsubscribe(gameObject.id);
+    //Transform* transform = gameObject.getComponent<Transform>();
+    //if (transform == null)
+    //    SpriteRendererManager::GetInstance().unsubscribe(gameObject.id);
     //render code
 }
