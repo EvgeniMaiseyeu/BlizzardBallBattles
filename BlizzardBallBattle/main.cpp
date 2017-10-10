@@ -11,6 +11,8 @@
 #include "GameManager.h" //Engine/Manager/GameManager.h
 #include "SpriteRendererManager.h"
 #include "GameObject.h"
+#include "ComponentTemplate.h"
+#include "GameObjectTemplate.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -69,6 +71,12 @@ void RunGame()
   SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
   spriteRenderer->SetActiveTexture(texture);
   spriteRenderer->SetActiveShader(&ourShader);
+
+  //###TEMPLATE OBJECT EXAMPLE###//
+  //Create it, who's constructor adds ComponentTemplate
+  GameObjectTemplate* gameObjectTemplate = new GameObjectTemplate();
+  //Now calling it's method, which calls ComponentTemplates ExampleMethod too
+  gameObjectTemplate->ExampleMethod();
 
   float timeDelta = 0.0f;
 
