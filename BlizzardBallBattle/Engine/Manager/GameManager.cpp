@@ -1,5 +1,9 @@
 #include "GameManager.h"
 
+GameManager::GameManager() {
+    SpriteRendererManager::GetInstance();
+}
+
 void GameManager::Update(int ticks) {
-    SpriteRendererManager.getInstance().update(ticks);
+    SpriteRendererManager::GetInstance()->Update(ticks);
 }

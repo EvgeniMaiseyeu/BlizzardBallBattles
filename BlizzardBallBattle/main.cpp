@@ -4,34 +4,31 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include "shared_constants.h"
-#include "sprite.h"
-#include "shader.h"
-#include "transform.h"
-#include "rendering_engine.h"
+#include "SharedConstants.h"
+#include "Shader.h"
+#include "Transform.h"
 #include "HelperFunctions.h"
-#include "GameManager.h"
+#include "GameManager.h" //Engine/Manager/GameManager.h
+#include "SpriteRendererManager.h"
+#include "GameObject.h"
+#include "ComponentTemplate.h"
+#include "GameObjectTemplate.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
-
-RenderingEngine* renderingEngine;
 
 GameManager* gameManager;
 
 int main(int argc, char *argv[])
 {
   gameManager = new GameManager();
-
-  renderingEngine = new RenderingEngine();
-  if (!renderingEngine->Init()) {
+  if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
 
   RunGame();
-
-  renderingEngine->Cleanup();
-  delete(renderingEngine);
+  SpriteRendererManager::GetInstance()->Cleanup();
+  delete(SpriteRendererManager::GetInstance());
 
   return 0;
 }
@@ -41,15 +38,47 @@ void RunGame()
   bool gameLoop = true;
   int lastTicks = SDL_GetTicks();
 
-  //Sprites for testing
-  
+  //Sprites for testing d
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-  GLuint texture = renderingEngine->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-  Sprite sprite(texture);
-  renderingEngine->addSpriteForRendering(&sprite);
-  sprite.setActiveShader(&ourShader);
-  sprite.getTransform()->setScale(0.25f);
-  //Sprite End
+  GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
+  GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
+  GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
+
+  float width = getGameWidth();
+  float height = getGameHeight();
+  float leftBounding = getGameLeftX();
+  float bottomBounding = getGameBottomY();
+
+  //Setup Tiles
+  for(int x = 0; x < width; x++) {
+    GLuint textureToUse = snowTexture;
+    if (x >= width * 0.4f && x <= width * 0.6f ) {
+      textureToUse = iceTexture;
+    }
+    for(int y = 0; y < height; y++ ) {
+      GameObject* tile = new GameObject();
+      tile->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(tile));
+      SpriteRenderer* spriteRenderer = (SpriteRenderer*)tile->GetComponent("SpriteRenderer");
+      spriteRenderer->SetActiveTexture(textureToUse);
+      spriteRenderer->SetActiveShader(&ourShader);
+      ((Transform*)tile->GetComponent("Transform"))->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+    }
+  }
+
+  //Setup spinning player
+  GameObject* player1 = new GameObject();
+  player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
+  SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
+  spriteRenderer->SetActiveTexture(texture);
+  spriteRenderer->SetActiveShader(&ourShader);
+
+  //###TEMPLATE OBJECT EXAMPLE###//
+  //Create it, who's constructor adds ComponentTemplate
+  GameObjectTemplate* gameObjectTemplate = new GameObjectTemplate();
+  //Now calling it's method, which calls ComponentTemplates ExampleMethod too
+  gameObjectTemplate->ExampleMethod();
+
+  float timeDelta = 0.0f;
 
   while (gameLoop) {
     //Handle events like key pressed
@@ -61,21 +90,21 @@ void RunGame()
       }
     }
 
-    renderingEngine->Render();
+    //Update game
+    gameManager->Update(timeDelta);
 
-    if (sprite.getTransform()->getX() > 1.0f) {
-      sprite.getTransform()->setX(-1.0f);
-    }
-    sprite.getTransform()->addX(0.02f);
-    sprite.getTransform()->addRotation(0.1f);
+    //Temporary place where we update GameObjects
+    ((Transform*)player1->GetComponent("Transform"))->addRotation(0.5f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
-    int delay = 1000 / MAX_FPS - SDL_GetTicks() + lastTicks;
+    int difference = newTicks - lastTicks;
+    int delay = 1000 / MAX_FPS - difference;
     if (delay > 0) {
-      lastTicks = newTicks;
       SDL_Delay(delay);
     }
+    timeDelta = newTicks - lastTicks;
+    lastTicks = newTicks;
   }
 }
 

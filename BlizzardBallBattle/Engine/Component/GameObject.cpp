@@ -1,32 +1,33 @@
 #include "GameObject.h"
+#include "Transform.h"
 
 GameObject::GameObject() {
-    
+  AddComponent("Transform", (Component*)new Transform(this));
 }
 
-Component* GameObject::GetComponent(string *type) {
+Component* GameObject::GetComponent(std::string type) {
     return components[type].front();
 }
 
-Component* GameObject::GetComponents(string *type) {
+std::vector<Component*> GameObject::GetComponents(std::string type) {
     return components[type];
 }
 
-void GameObject::AddComponent(Component *component) {
-    string *type = typeid(component).name();
-    if (components[type] == null) {
+void GameObject::AddComponent(std::string componentKey, Component *component) {
+    //std::string type = typeid(component).name(); NOTE: This returns "class Component *" for a SpriteRenderer type, not a valid way to get the string type of a object
+    if (!HasComponent(componentKey)) {
         std::vector<Component*> typeList;
         typeList.push_back(component);
-        components[type] = typeList;
+        components[componentKey] = typeList;
     } else {
-        comonents[type].push_back(component);
+        components[componentKey].push_back(component);
     }
 }
 
-void GameObject::RemoveComponents(string *type) {
+void GameObject::RemoveComponent(std::string type) {
     components[type].clear();
 }
 
-bool GameObject::HasComponent(string *type) {
-    return components[type] != null;
+bool GameObject::HasComponent(std::string type) {
+    return components.count(type);
 }

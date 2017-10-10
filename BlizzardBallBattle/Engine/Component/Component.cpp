@@ -1,5 +1,9 @@
 #include "Component.h"
 
-Component::Component(Entity* entity) {
-    this.entity = entity;
+Component::Component(GameObject* gameObject) {
+    this->gameObject = gameObject;
+}
+
+GameObject* Component::GetGameObject() {
+  return gameObject;
 }

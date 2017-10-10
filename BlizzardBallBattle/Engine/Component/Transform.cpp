@@ -1,4 +1,4 @@
-#include "transform.h"
+#include "Transform.h"
 
 Transform::operator GLfloat*() {
   if (values == NULL) {
@@ -10,20 +10,24 @@ Transform::operator GLfloat*() {
     };
   }
 
-  float scaleRotCos = scale * cos(rotation);
-  float scaleRotSin = scale * sin(rotation);
+  float scaleRotCos = scale / GAME_WIDTH * 2.0 * cos(rotation * 3.14159 / 180.0);
+  float scaleRotSin = scale / GAME_WIDTH * 2.0 * sin(rotation * 3.14159 / 180.0);
+
+  float glX = x;
+  float glY = y;
+  worldPositionToOpenGLPosition(&glX, &glY);
 
   values[0] = scaleRotCos;
   values[1] = -scaleRotSin;
   values[4] = scaleRotSin;
   values[5] = scaleRotCos;
-  values[12] = x;
-  values[13] = y;
+  values[12] = glX;
+  values[13] = glY;
 
   return values;
 }
 
-Transform::Transform() {
+Transform::Transform(GameObject* gameObject) : Component(gameObject) {
   scale = 1.0f;
   x = 0.0f;
   y = 0.0f;

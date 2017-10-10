@@ -1,8 +1,11 @@
-#include "Entity.h"
+#pragma once
+
+class GameObject;
 
 class Component {
 public:
-    Component(Entity* entity);
-private:
-    Entity* entity;
-}
+    Component(GameObject* gameObject);
+    GameObject* GetGameObject();
+protected:
+    GameObject* gameObject;
+};

@@ -9,6 +9,8 @@ uniform mat4 transform;
 uniform float aspectRatio;
 
 void main() {
+	//sin/cos may be reversed
+    position *= 2.0f;
 	vec4 pos = transform * vec4(position, 1.0);
 	pos.y *= aspectRatio;
 	gl_Position = pos;
