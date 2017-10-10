@@ -2,7 +2,7 @@
 #pragma once
 
 //Include the header file and any other headers that will be required
-#include "ComponentTemplate.h"
+#include "Component.h"
 #include <iostream>
 
 class ComponentTemplate : public Component {

@@ -22,7 +22,7 @@ GameObjectTemplate::~GameObjectTemplate() {
 
 //An example method showing how you can create your own methods that ca do anything
 void GameObjectTemplate::ExampleMethod() {
-    std::cout << "GameObjectTemplate's ExampleMethod was called") << std::endl;
+    std::cout << "GameObjectTemplate's ExampleMethod was called" << std::endl;
 
     //For our example, we will grab the ComponentTemplate component and call it's ExampleMethod
     ComponentTemplate* component = (ComponentTemplate*)GetComponent("ComponentTemplate");

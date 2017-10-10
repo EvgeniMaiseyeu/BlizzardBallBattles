@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObject.h"
 #include "ComponentTemplate.h"
 #include "Example.h"
 
@@ -20,4 +21,4 @@ public:
     ~GameObjectTemplate();
     //Any public methods you want other Components/GameObjects to have access too
     void ExampleMethod();
-}
+};
