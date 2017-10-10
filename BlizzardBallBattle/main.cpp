@@ -84,7 +84,6 @@ void RunGame()
     //Handle events like key pressed
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-      gameManager.update(lastTicks);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
