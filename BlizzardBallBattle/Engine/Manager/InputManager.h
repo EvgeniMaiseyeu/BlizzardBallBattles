@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 class InputManager {
 public:
     Keys[] keys;
@@ -22,4 +22,4 @@ public:
     bool HandlePolledEvent(SDL_Event event) {
           keys[event.key.keysym.sym]
       }
-};
+};*/

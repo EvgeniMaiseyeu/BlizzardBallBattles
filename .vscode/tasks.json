@@ -6,7 +6,7 @@
         "taskName": "main",
         "type": "shell",
         "command": "clang++",
-        "args" : [
+        "args": [
             "-std=c++11",
             "./BlizzardBallBattle/*.cpp",
             "./BlizzardBallBattle/Engine/Component/*.cpp",
@@ -32,7 +32,8 @@
             "-lGLEW",
             "-lSDL2",
             "-lSDL2_image",
-            "-g" ],
+            "-g"
+        ],
         "group": {
             "kind": "build",
             "isDefault": true

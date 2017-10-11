@@ -189,8 +189,8 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
       spriteRenderer->GetShader()->Use();
       //Pass in transform
       GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-      Transform transform = *((Transform*)(spriteRenderer->GetGameObject()->GetComponent("Transform")));
-      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, transform);
+      Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
   
       //Pass in aspect ratio
       GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");

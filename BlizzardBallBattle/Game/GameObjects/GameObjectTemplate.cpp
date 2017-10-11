@@ -8,7 +8,7 @@ By default, GameObject's base class has a Transform component
 */
 GameObjectTemplate::GameObjectTemplate() {
     //Adding a base component. You create the new Component, pass it 'this', cast to a Component* then add it
-    AddComponent("ComponentTemplate", (Component*)new ComponentTemplate(this));
+    AddComponent<ComponentTemplate*>(new ComponentTemplate(this));
 
     dataToDestroyForExample = new ExampleClass();
 }
@@ -25,6 +25,6 @@ void GameObjectTemplate::ExampleMethod() {
     std::cout << "GameObjectTemplate's ExampleMethod was called" << std::endl;
 
     //For our example, we will grab the ComponentTemplate component and call it's ExampleMethod
-    ComponentTemplate* component = (ComponentTemplate*)GetComponent("ComponentTemplate");
+    ComponentTemplate* component = GetComponent<ComponentTemplate*>();
     component->ExampleMethod();
 }

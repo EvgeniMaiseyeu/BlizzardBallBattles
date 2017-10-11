@@ -57,18 +57,18 @@ void RunGame()
     }
     for(int y = 0; y < height; y++ ) {
       GameObject* tile = new GameObject();
-      tile->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(tile));
-      SpriteRenderer* spriteRenderer = (SpriteRenderer*)tile->GetComponent("SpriteRenderer");
+      tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
+      SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
       spriteRenderer->SetActiveTexture(textureToUse);
       spriteRenderer->SetActiveShader(&ourShader);
-      ((Transform*)tile->GetComponent("Transform"))->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
   }
 
   //Setup spinning player
   GameObject* player1 = new GameObject();
-  player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
-  SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
+  player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
+  SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
   spriteRenderer->SetActiveTexture(texture);
   spriteRenderer->SetActiveShader(&ourShader);
 
@@ -93,7 +93,7 @@ void RunGame()
     gameManager->Update(timeDelta);
 
     //Temporary place where we update GameObjects
-    ((Transform*)player1->GetComponent("Transform"))->addRotation(0.5f);
+    player1->GetComponent<Transform*>()->addRotation(0.5f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
