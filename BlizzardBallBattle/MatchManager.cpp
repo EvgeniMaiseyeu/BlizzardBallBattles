@@ -45,16 +45,16 @@ void MatchManager::StartGame()
 	// Player
 	GameObject* playerOne = new GameObject();
 	Battler* playerOneStats = new Battler(playerOne, 1);
-	playerOne->AddComponent("Battler", playerOneStats);
+	playerOne->AddComponent<Battler*>(playerOneStats);
 	RegisterCharacter(playerOneStats);
 	//AI
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
 		GameObject* unit = new GameObject();
 		Battler* unitStats = new Battler(unit, 1);
-		unit->AddComponent("Battler", unitStats);
+		unit->AddComponent<Battler*>(unitStats);
 		AI* unitAI = new AI(unit);
-		unit->AddComponent("AI", unitAI);
+		unit->AddComponent<AI*>(unitAI);
 		RegisterCharacter(unitStats);
 		aiUnits.push_back(unitAI);
 	}
@@ -62,16 +62,16 @@ void MatchManager::StartGame()
 	//Team 2
 	GameObject* playerTwo = new GameObject();
 	Battler* playerTwoStats = new Battler(playerTwo, 2);
-	playerTwo->AddComponent("Battler", playerTwoStats);
+	playerTwo->AddComponent<Battler*>(playerTwoStats);
 	RegisterCharacter(playerTwoStats);
 
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
 		GameObject* unit = new GameObject();
 		Battler* unitStats = new Battler(unit, 2);
-		unit->AddComponent("Battler", unitStats);
+		unit->AddComponent<Battler*>(unitStats);
 		AI* unitAI = new AI(unit);
-		unit->AddComponent("AI", unitAI);
+		unit->AddComponent<AI*>(unitAI);
 		RegisterCharacter(unitStats);
 		aiUnits.push_back(unitAI);
 	}
