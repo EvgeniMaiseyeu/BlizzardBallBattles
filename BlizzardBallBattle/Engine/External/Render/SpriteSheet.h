@@ -18,10 +18,11 @@ private:
     int currentIndex;
     int columnCount;
     int rowCount;
+    int skipLastFrames;
     void ReloadTextCoordinates();
 
 public:
-    SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount);
+    SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames = 0);
     ~SpriteSheet();
     virtual void BindTextCoordinates(GLuint glCBO);
     virtual GLuint GetTextureBufferID();

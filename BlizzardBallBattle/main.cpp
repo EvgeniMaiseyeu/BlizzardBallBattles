@@ -41,7 +41,7 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   //Sprites for testing d
-  Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
+  Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());
   GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
   GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
   GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
@@ -72,16 +72,19 @@ void RunGame()
   GameObject* player1 = new GameObject();
   player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
   SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
-  spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 1, 1));
+  spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 5, 3, 1));
   spriteRenderer->SetActiveShader(&ourShader);
+  player1->GetComponent<Transform*>()->setRotation(-90.0f); //My spritesheet is 90 degrees off
+  player1->GetComponent<Transform*>()->setScale(10.0f);
 
   //###TEMPLATE OBJECT EXAMPLE###//
   //Create it, who's constructor adds ComponentTemplate
   GameObjectTemplate* gameObjectTemplate = new GameObjectTemplate();
-  //Now calling it's method, which calls ComponentTemplates ExampleMethod too
+  //Now calling it's method, which calls ComponentTemplates ExampleMethobd too
   gameObjectTemplate->ExampleMethod();
 
   float timeDelta = 0.0f;
+  int frameSkipper = 0;
 
   while (gameLoop) {
     //Handle events like key pressed
@@ -96,9 +99,11 @@ void RunGame()
     gameManager->Update(timeDelta);
 
     //Temporary place where we update GameObjects
-    player1->GetComponent<Transform*>()->addRotation(0.5f);
-    //SpriteSheet* spriteSheet = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
-    //spriteSheet->NextIndex();
+    if (frameSkipper++ % (MAX_FPS / 4) == 0) {
+      player1->GetComponent<Transform*>()->addRotation(0.5f);
+      SpriteSheet* spriteSheet = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
+      spriteSheet->NextIndex();
+    }
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
