@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
+#include "InputManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -82,8 +83,10 @@ void RunGame()
 
   while (gameLoop) {
     //Handle events like key pressed
+    InputManager::GetInstance()->UpdateKeys();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+      InputManager::GetInstance()->HandlePolledEvent(event);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
