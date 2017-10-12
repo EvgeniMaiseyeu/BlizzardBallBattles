@@ -25,11 +25,17 @@ void SpriteRendererManager::Update(int ticks) {
 
 SpriteRendererManager::SpriteRendererManager() {
     quadVertices = {
-      //Position           //Texture Coordinates
-      0.5f, 0.5f, 0.0f,    1.0f, 1.0f,  //Top Right
-      0.5f, -0.5f, 0.0f,   1.0f, 0.0f,  //Bottom Right
-      -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,  //Bottom Left
-      -0.5f, 0.5f, 0.0f,   0.0f, 1.0f   //Top Left
+      //Position         
+      0.5f, 0.5f, 0.0f,  //Top Right
+      0.5f, -0.5f, 0.0f, //Bottom Right
+      -0.5f, -0.5f, 0.0f,//Bottom Left
+      -0.5f, 0.5f, 0.0f, //Top Left
+    };
+    textCoordinates = {
+          1.0f, 1.0f,  //Top Right
+          1.0f, 0.0f,  //Bottom Right
+          0.0f, 0.0f,  //Bottom Left
+          0.0f, 1.0f   //Top Left
     };
     indices = {
       0, 1, 3, // First Triangle
@@ -117,6 +123,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
+    glGenBuffers(1, &CBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices.data(), GL_STATIC_DRAW);
@@ -124,13 +131,15 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
     //4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
     //position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
     //color attribute
     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
     //glEnableVertexAttribArray(1);
     //textture coordinate attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glBindBuffer(GL_ARRAY_BUFFER, CBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textCoordinates), textCoordinates.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(1);
     glBindVertexArray(0); //Unbind BAO
   
@@ -187,6 +196,8 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     for (size_t i = 0; i < activeSprites.size(); i++) {
       SpriteRenderer* spriteRenderer = activeSprites[i];
       spriteRenderer->GetShader()->Use();
+      spriteRenderer->GetSprite()->BindTextCoordinates(CBO);
+
       //Pass in transform
       GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
       Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
@@ -198,16 +209,18 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   
       //Pass in texture
       glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetTextureBufferID());
+      glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetSprite()->GetTextureBufferID());
       GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
       glUniform1i(ourTextureLocation, 0);
+
       //Bind vertex array
       glBindVertexArray(VAO);
       //Draw
       glDrawArrays(GL_TRIANGLES, 0, 3);
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
-      spriteRenderer->Render();
+
+      //spriteRenderer->Render();
     }
     SDL_GL_SwapWindow(mainWindow);
   }
@@ -215,5 +228,3 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {
     activeSprites.push_back(sprite);
   }
-  
-  

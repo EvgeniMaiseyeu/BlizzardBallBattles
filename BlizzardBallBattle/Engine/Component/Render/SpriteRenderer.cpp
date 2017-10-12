@@ -14,14 +14,14 @@ void SpriteRenderer::SetActiveShader(Shader* shader) {
   activeShader = shader;
 }
 
-void SpriteRenderer::SetActiveTexture(GLuint textureBufferID) {
-  this->textureBufferID = textureBufferID;
-}
-
 Shader* SpriteRenderer::GetShader() {
   return activeShader;
 }
 
-GLuint SpriteRenderer::GetTextureBufferID() {
-  return textureBufferID;
+void SpriteRenderer::SetActiveSprite(ISprite* sprite) {
+  activeSprite = sprite;
+}
+
+ISprite* SpriteRenderer::GetSprite() {
+  return activeSprite;
 }

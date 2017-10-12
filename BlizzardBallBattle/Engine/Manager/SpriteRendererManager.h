@@ -21,9 +21,10 @@ private:
     //Rendering variables
     SDL_Window* mainWindow = NULL;
     SDL_GLContext glContext = NULL;
-    std::array<GLfloat, 32> quadVertices;
+    std::array<GLfloat, 12> quadVertices;
+    std::array<GLfloat, 8> textCoordinates;
     std::array<GLuint, 6> indices;
-    GLuint VBO, VAO, EBO;
+    GLuint VBO, VAO, EBO, CBO; //VertexBufferObject, VertexArrayObject, ElementsBufferObject, CoordinateBufferObject
 
     //Rendering methods
     bool SetOpenGLAttributes();

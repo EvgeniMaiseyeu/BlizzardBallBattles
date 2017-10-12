@@ -13,6 +13,8 @@
 #include "GameObject.h"
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
+#include "Sprite.h"
+#include "SpriteSheet.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -59,17 +61,18 @@ void RunGame()
       GameObject* tile = new GameObject();
       tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
       SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
-      spriteRenderer->SetActiveTexture(textureToUse);
+      spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
       spriteRenderer->SetActiveShader(&ourShader);
       tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
   }
 
   //Setup spinning player
+  GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
   GameObject* player1 = new GameObject();
   player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
   SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
-  spriteRenderer->SetActiveTexture(texture);
+  spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 1, 1));
   spriteRenderer->SetActiveShader(&ourShader);
 
   //###TEMPLATE OBJECT EXAMPLE###//
@@ -94,6 +97,8 @@ void RunGame()
 
     //Temporary place where we update GameObjects
     player1->GetComponent<Transform*>()->addRotation(0.5f);
+    //SpriteSheet* spriteSheet = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
+    //spriteSheet->NextIndex();
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();
