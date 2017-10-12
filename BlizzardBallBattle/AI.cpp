@@ -5,7 +5,7 @@ AI::AI(GameObject* gameObject) : Component(gameObject)
 {
 	try {
 		// Ensure that the gameobject this AI component is on has a Battler component
-		Battler* battler = (Battler*)gameObject->GetComponent("Battler");
+		Battler* battler = gameObject->GetComponent<Battler*>();
 		myBattler = battler;
 	}
 	catch (...) {
