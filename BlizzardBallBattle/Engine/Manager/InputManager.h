@@ -1,25 +1,32 @@
 #pragma once
 
-class InputManager {
-public:
-    Keys[] keys;
-    void SubscribeKey(int key) {
-        keys.push(key)
-    }
+#include "GLHeaders.h"
+#include <map>
+#include <iostream>
 
-    void UnSubscribeKey(int key) {
-        keys.remove(key);
-    }
+class InputManager
+{
+  public:
+    enum KeyAction
+    {
+        NONE,
+        PRESSED,
+        HELD,
+        RELEASED
+    };
 
-    void Update() { 
-        while (SDL_PollEvent(&event)) {
-            if (!HandlePolledEvent(event)) {
-                gameLoop = false;
-            }
-        }
-    }
+    static InputManager* GetInstance();
 
-    bool HandlePolledEvent(SDL_Event event) {
-          keys[event.key.keysym.sym]
-      }
+    bool onKeyPressed(SDL_Keycode code);
+    bool onKey(SDL_Keycode code);
+    bool onKeyReleased(SDL_Keycode code);
+    KeyAction getKeyState(SDL_Keycode code);
+    bool HandlePolledEvent(SDL_Event event);
+    void UpdateKeys();
+
+private:
+    
+        static InputManager *instance;
+        std::map<SDL_Keycode, KeyAction> keys;
+
 };
