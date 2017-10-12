@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Battler.cpp" />
+    <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />

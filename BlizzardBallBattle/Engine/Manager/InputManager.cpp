@@ -43,7 +43,7 @@ void InputManager::UpdateKeys() {
     }
 }
 
-bool InputManager::HandlePolledEvent(SDL_Event event)
+void InputManager::HandlePolledEvent(SDL_Event event)
 {
     SDL_Keycode code = event.key.keysym.sym;
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
