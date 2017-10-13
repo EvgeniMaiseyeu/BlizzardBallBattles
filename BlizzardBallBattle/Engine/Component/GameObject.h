@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include "Transform.h"
+#include "Vector2.h"
 #include <string>
 #include <typeinfo>
 #include <vector>

@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
+#include "Vector2.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -93,7 +94,9 @@ void RunGame()
     gameManager->Update(timeDelta);
 
     //Temporary place where we update GameObjects
-    player1->GetComponent<Transform*>()->addRotation(0.5f);
+   // player1->GetComponent<Transform*>()->addRotation(0.5f);
+
+	player1->GetComponent<Transform*>()->rotation = 0.5f;
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();

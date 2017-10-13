@@ -8,28 +8,33 @@
 
 class Transform : public Component {
 private:
-  float x;
-  float y;
-  float rotation;
-  float scale;
+  float _x;
+  float _y;
+  float _rotation;
+  float _scale;
   GLfloat* values;
 
 public:
   Transform(GameObject* gameObject);
   ~Transform();
   void addTranslation(float xToAdd, float yToAdd);
-  void addX(float xToAdd);
-  void addY(float yToAdd);
+
+  __declspec (property (put = setX, get = getX)) float x;
   void setX(float newX);
-  void setY(float newY);
-  void setPosition(float newX, float newY);
-  void addRotation(float byDegrees);
-  void setRotation(float newAngle);
-  void addScale(float scaleToAdd);
-  void setScale(float newScale);
   float getX();
+
+  __declspec (property (put = setY, get = getY)) float y;
+  void setY(float newY);
   float getY();
-  float getRotation();
+  
+  void setPosition(float newX, float newY);
+
+  __declspec (property (put = setScale, get = getScale)) float scale;
+  void setScale(float newScale);
   float getScale();
+
+  __declspec (property (put = setRotation, get = getRotation)) float rotation;
+  void setRotation(float newAngle);
+  float getRotation();
   operator GLfloat*();
 };

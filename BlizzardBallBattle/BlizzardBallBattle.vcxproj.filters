@@ -34,15 +34,18 @@
     <Filter Include="Source Files\Engine\External\Render">
       <UniqueIdentifier>{ec078cd6-4902-4fab-a4d9-cf10c6de76fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Components">
+      <UniqueIdentifier>{8238f8b1-e91c-4fca-be94-76d1028719de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\GameObjects">
+      <UniqueIdentifier>{ec13ecbd-5586-4b5a-a5a4-cec6d9049a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\External\Math">
+      <UniqueIdentifier>{9e03b18d-8053-4711-a068-cdc82b0f53f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\ComponentTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Component.cpp">
@@ -75,14 +78,20 @@
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Components\ComponentTemplate.cpp">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Physics.cpp">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Math\Vector2.cpp">
+      <Filter>Source Files\Engine\External\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\ComponentTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Engine.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
@@ -125,6 +134,18 @@
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Components\ComponentTemplate.h">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Physics.h">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Math\Vector2.h">
+      <Filter>Source Files\Engine\External\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.png">
@@ -133,10 +154,5 @@
     <Image Include="Assets\Character.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fragment_shader.fs">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>
