@@ -13,7 +13,7 @@ public:
     static NetworkingManager* GetInstance();
     void Host();
     void Join();
-    void Send();
+    void Send(std::string *msg);
     void Receive();
     void Accept();
 };

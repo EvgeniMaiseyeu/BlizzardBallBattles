@@ -61,18 +61,16 @@ void NetworkingManager::Accept() {
     std::cout << "SDLNet_TCP_Accept:A>A>A WE DID IT ACCETP" << std::endl;
 }
 
-void NetworkingManager::Send() {
+void NetworkingManager::Send(std::string *msg) {
     // send a hello over sock
     //TCPsocket sock;
     int result,len;
-    std::string *test = new std::string("HELLO");
-
-    len = test->length();
+    len = msg->length() + 1;
 
     if (client != NULL)
-        result=SDLNet_TCP_Send(client, test, len);
+        result=SDLNet_TCP_Send(client, msg->c_str(), len);
     else
-        result=SDLNet_TCP_Send(socket, test, len);
+        result=SDLNet_TCP_Send(socket, msg->c_str(), len);
     if(result<len) {
         printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
     }
@@ -85,10 +83,13 @@ void NetworkingManager::Receive() {
 int result;
 char msg[MAXLEN];
 
-result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
+if (client != NULL)
+    result=SDLNet_TCP_Recv(client, msg, MAXLEN);
+else
+    result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
 if(result<=0) {
     // An error may have occured, but sometimes you can just ignore it
     // It may be good to disconnect sock because it is likely invalid now.
 }
- std::cout << "MESSAGE: " << std::string(msg) << std::endl;
+ std::cout << "MESSAGE: [" << std::string(msg) << "]" << std::endl;
 }

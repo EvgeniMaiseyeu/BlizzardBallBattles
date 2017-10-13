@@ -138,7 +138,7 @@ void RunGame()
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_s)) {
-      NetworkingManager::GetInstance()->Send();
+      NetworkingManager::GetInstance()->Send(new std::string("JUST SO SLIPPERY"));
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_r)) {
