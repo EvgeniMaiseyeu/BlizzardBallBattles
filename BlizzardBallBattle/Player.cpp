@@ -3,7 +3,7 @@
 
 Player::Player(Shader* shader, GLuint textureBufferID) {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
-	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<Transform*>();
+	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
 	renderer->SetActiveShader(shader);
 	renderer->SetActiveTexture(textureBufferID);
 }
