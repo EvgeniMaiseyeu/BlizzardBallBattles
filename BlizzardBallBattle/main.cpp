@@ -15,6 +15,7 @@
 #include "GameObjectTemplate.h"
 #include "InputManager.h"
 #include "MessageManager.h"
+#include "NetworkingManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -122,6 +123,26 @@ void RunGame()
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
+      NetworkingManager::GetInstance()->Host();
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_a)) {
+      NetworkingManager::GetInstance()->Accept();
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
+      NetworkingManager::GetInstance()->Join();
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_s)) {
+      NetworkingManager::GetInstance()->Send();
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_r)) {
+      NetworkingManager::GetInstance()->Receive();
     }
 
     //Update game
