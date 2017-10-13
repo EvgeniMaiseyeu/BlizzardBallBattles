@@ -131,6 +131,7 @@
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Battler.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
+    <ClCompile Include="Engine\Manager\MessageManager.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />
@@ -146,12 +147,11 @@
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Battler.h" />
+    <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="MatchManager.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\GameObject.h" />
@@ -182,9 +182,6 @@
     <Image Include="Assets\Character.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fragment_shader.fs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
