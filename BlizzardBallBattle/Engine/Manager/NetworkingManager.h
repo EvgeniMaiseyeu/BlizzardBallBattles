@@ -6,7 +6,7 @@ class NetworkingManager {
 private:
     static NetworkingManager* instance;
     TCPsocket socket;
-    TCPsocket client;
+    TCPsocket client = NULL;
 
 public:
     NetworkingManager();
