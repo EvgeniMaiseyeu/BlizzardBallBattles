@@ -12,6 +12,10 @@
 #include "SpriteRendererManager.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "ComponentTemplate.h"
+#include "GameObjectTemplate.h"
+#include "InputManager.h"
+#include "MessageManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -58,11 +62,11 @@ void RunGame()
     }
     for(int y = 0; y < height; y++ ) {
       GameObject* tile = new GameObject();
-      tile->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(tile));
-      SpriteRenderer* spriteRenderer = (SpriteRenderer*)tile->GetComponent("SpriteRenderer");
+      tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
+      SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
       spriteRenderer->SetActiveTexture(textureToUse);
       spriteRenderer->SetActiveShader(&ourShader);
-      ((Transform*)tile->GetComponent("Transform"))->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
     }
   }
 
@@ -70,6 +74,7 @@ void RunGame()
   /*GameObject* player1 = new GameObject();
   player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
   SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
+
   spriteRenderer->SetActiveTexture(texture);
   spriteRenderer->SetActiveShader(&ourShader);
   Transform* transform = (Transform*)player1->GetComponent("Transform");
@@ -88,33 +93,72 @@ void RunGame()
   //fkfkfkfkfkfkfkfkfkCHENNNNNNNNNNNNNNNNNNNNNNNNNNNNN       玩家就是一个图片，雪球也可以用一样的代码弄。
   //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
   chensPlayer1 = new Player(&ourShader, texture);
-  Transform* transform = (Transform*)chensPlayer1->GetComponent("Transform");
+  Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
   transform->setPosition(-7, 2);
   transform->setScale(3.0f);
 
   snowBall1 = new Player(&ourShader, iceTexture);
-  transform = (Transform*)snowBall1->GetComponent("Transform");
+  transform = (Transform*)snowBall1->GetComponent<Transform*>();
   transform->setPosition(-7, 0);
   transform->setScale(1.0f);
 
   //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
   chensPlayer2 = new Player(&ourShader, texture2);
-  transform = (Transform*)chensPlayer2->GetComponent("Transform");
+  transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
   transform->setPosition(10, 2);
   transform->setScale(3.0f);
 
   snowBall2 = new Player(&ourShader, iceTexture);
-  transform = (Transform*)snowBall2->GetComponent("Transform");
+  transform = (Transform*)snowBall2->GetComponent<Transform*>();
   transform->setPosition(10, 0);
   transform->setScale(1.0f);
   
 
+  //###TEMPLATE OBJECT EXAMPLE###//
+  //Create it, who's constructor adds ComponentTemplate
+  GameObjectTemplate* gameObjectTemplate = new GameObjectTemplate();
+  //Now calling it's method, which calls ComponentTemplates ExampleMethod too
+  gameObjectTemplate->ExampleMethod();
+
   float timeDelta = 0.0f;
+
+  //MESSAGING EXAMPLE
+  //subscribe a function to the event "test", store the unique id for this event for later removal.
+  int id = MessageManager::Subscribe("test", [](std::map<std::string, void*> data) -> void {
+
+    //converting a void* to its respective std::string*. Do it this way if its not a primitive type.
+    std::string *str = static_cast<std::string *>(data["somedata"]);
+
+    //converting a void* to its respective int*, do it this way if its primitive data type.
+    int *in = (int *)(&data["someint"]);
+
+    //printing out the data we got from the data.
+    std::cout << *in << " " << *str << std::endl;
+  });
+
+  //create data map to pass into the callback, notice how the data is pointers.
+  std::map<std::string, void*> data;
+  std::string* s = new std::string("AMAZING");
+  data["somedata"] = s;
+  data["someint"] = (int *)44;
+
+  //send the event.
+  MessageManager::SendEvent("test", data);
+
+  //unsubscribe the listener from the event.
+  MessageManager::UnSubscribe("test", id);
+
+  //send the event again. No listeners for this event so nothing happens.
+  MessageManager::SendEvent("test", data);
+
+  //MESSAGING EXAMPLE END
 
   while (gameLoop) {
     //Handle events like key pressed
+    InputManager::GetInstance()->UpdateKeys();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+      InputManager::GetInstance()->HandlePolledEvent(event);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
@@ -124,8 +168,9 @@ void RunGame()
     gameManager->Update(timeDelta);
 
     //Temporary place where we update GameObjects
-    ((Transform*)snowBall1->GetComponent("Transform"))->addRotation(20.0f);
-	((Transform*)snowBall2->GetComponent("Transform"))->addRotation(-20.0f);
+    ((Transform*)snowBall1->GetComponent<Transform*>())->addRotation(20.0f);
+	((Transform*)snowBall2->GetComponent<Transform*>())->addRotation(-20.0f);
+   // player1->GetComponent<Transform*>()->addRotation(0.5f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
     int newTicks = SDL_GetTicks();

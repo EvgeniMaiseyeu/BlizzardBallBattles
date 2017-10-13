@@ -110,7 +110,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
     //glMatrixMode(GL_PROJECTION); ///
-    //gluOrtho2D(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT); /// 
+    //gluOrtho2D(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT); ///
     //glMatrixMode(GL_MODELVIEW); ///
   
     ////Setup VBO/VAO/EBO's. This is for the concept of sprite specifically where we assume it will all be quads (two triangles) to make a sprite
@@ -189,8 +189,8 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
       spriteRenderer->GetShader()->Use();
       //Pass in transform
       GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-      Transform transform = *((Transform*)(spriteRenderer->GetGameObject()->GetComponent("Transform")));
-      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, transform);
+      Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
   
       //Pass in aspect ratio
       GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");

@@ -13,81 +13,150 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{91828a22-7160-468f-b30b-a3eef79dd11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{97be5687-77dd-452a-9781-1f2cab4e5c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component">
+      <UniqueIdentifier>{6c33051b-c954-4270-a5e6-23c3b1d7b897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\External">
+      <UniqueIdentifier>{db908365-3200-4dd9-aa9c-ab5d58231861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Manager">
+      <UniqueIdentifier>{758818ec-fa4c-4e10-9a92-0755c33422df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component\Render">
+      <UniqueIdentifier>{298b58ee-977e-4009-b157-c6807c07dbb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\External\Render">
+      <UniqueIdentifier>{ec078cd6-4902-4fab-a4d9-cf10c6de76fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\AI">
+      <UniqueIdentifier>{1e0a9db0-40ad-4421-9a25-de05057c3e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Player">
+      <UniqueIdentifier>{9261b64c-90f8-458d-ad33-3d0a7c666370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Managers">
+      <UniqueIdentifier>{1ff942b1-dd8e-428f-84d5-714e39781fa9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HelperFunctions.cpp">
+    <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Manager\GameManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component\GameObject.cpp">
+    <ClCompile Include="Game\Components\ComponentTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Component.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Engine.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\GameObject.cpp">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Transform.cpp">
+      <Filter>Source Files\Engine\Component</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Render\SpriteRenderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine\Component\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Engine\External\HelperFunctions.cpp">
+      <Filter>Source Files\Engine\External</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Engine\External\Render\Shader.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\ShaderFactory.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\GameManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Source Files\Game\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Battler.cpp">
+      <Filter>Source Files\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchManager.cpp">
+      <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLHeaders.h">
+    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HelperFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FBORenderTexture.h">
+    <ClInclude Include="Game\Components\ComponentTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\GameManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\SpriteRendererManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Component.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\GameObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Component.h">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Transform.h">
+      <Filter>Source Files\Engine\Component</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Render\SpriteRenderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Engine\Component\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\External\GLHeaders.h">
+      <Filter>Source Files\Engine\External</Filter>
     </ClInclude>
-    <ClInclude Include="SharedConstants.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\External\SharedConstants.h">
+      <Filter>Source Files\Engine\External</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\External\HelperFunctions.h">
+      <Filter>Source Files\Engine\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\FBORenderTexture.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\Shader.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\ShaderFactory.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\GameManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\InputManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\SpriteRendererManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Source Files\Game\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Battler.h">
+      <Filter>Source Files\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchManager.h">
+      <Filter>Source Files\Game\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
@@ -102,9 +171,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex_shader.vs">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="fragment_shader.fs">
       <Filter>Source Files</Filter>
     </None>
