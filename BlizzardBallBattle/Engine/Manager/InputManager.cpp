@@ -16,7 +16,7 @@ bool InputManager::onKeyPressed(SDL_Keycode code) {
 
 bool InputManager::onKey(SDL_Keycode code) {
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
-    if (it != keys.end())
+    if (it != keys.end()) 
         return it->second != InputManager::KeyAction::NONE;
 }
 
