@@ -31,8 +31,8 @@ void NetworkingManagerTemp::SendQueuedEvents() {
 }
 
 void NetworkingManagerTemp::SendEventToReceiver(std::map<std::string, void*> data) {
-    std::string key = (char*)data["key"];
-    std::cout << "Sending Event " << key << std::endl;
+    std::string key = (std::string*)data["key"];
+    std::cout << "Sending Event " << key << " x:" << (char*)data["x"] << std::endl;
     MessageManager::SendEvent(key, data );
 }
 
@@ -96,7 +96,7 @@ std::map<std::string, void*> NetworkingManagerTemp::DeserializeMessage(std::stri
             readingKey = true;
             readingValue = false;
             if (curChar == ',') {
-                data[currentKey] = (void*)currentValue.c_str();
+                data[currentKey] = (void*)new std::string(currentValue);
                 std::cout << currentKey << " " << (char*)data[currentKey] << std::endl;
             }
             std::string newCurrentString = "";
@@ -111,7 +111,7 @@ std::map<std::string, void*> NetworkingManagerTemp::DeserializeMessage(std::stri
             continue;
         } else if (curChar == '}') {
             //End
-            data[currentKey] = (void*)currentValue.c_str();
+            data[currentKey] = (void*)new std::string(currentValue);
             std::cout << currentKey << " " << (char*)data[currentKey] << std::endl;
             break;
         }

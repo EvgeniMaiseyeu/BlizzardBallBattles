@@ -13,8 +13,11 @@ Transform::operator GLfloat*() {
   float scaleRotCos = scale / GAME_WIDTH * 2.0 * cos(rotation * 3.14159 / 180.0);
   float scaleRotSin = scale / GAME_WIDTH * 2.0 * sin(rotation * 3.14159 / 180.0);
 
-  float glX = x;
-  float glY = y;
+  
+
+  float glX = x; //x = 5
+  float glY = y; //y = 5
+
   worldPositionToOpenGLPosition(&glX, &glY);
 
   values[0] = scaleRotCos;
