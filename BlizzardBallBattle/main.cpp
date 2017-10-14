@@ -1,4 +1,4 @@
-//Using SDL and standard IO
+﻿//Using SDL and standard IO
 #include "GLHeaders.h"
 #define GL3_PROTOTYPES 1
 #include <stdio.h>
@@ -11,6 +11,7 @@
 #include "GameManager.h" //Engine/Manager/GameManager.h
 #include "SpriteRendererManager.h"
 #include "GameObject.h"
+#include "Player.h"
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
 #include "Vector2.h"
@@ -19,8 +20,10 @@
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
+bool ThrowBall = false;
 
 GameManager* gameManager;
+Player *chensPlayer1, *chensPlayer2, *snowBall1, *snowBall2; //Chens player object, to be refactored when possible
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +31,6 @@ int main(int argc, char *argv[])
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
-
   RunGame();
   SpriteRendererManager::GetInstance()->Cleanup();
   delete(SpriteRendererManager::GetInstance());
@@ -44,6 +46,7 @@ void RunGame()
   //Sprites for testing d
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
   GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
+  GLuint texture2 = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
   GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
   GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
 
@@ -68,12 +71,53 @@ void RunGame()
     }
   }
 
-  //Setup spinning player
-  GameObject* player1 = new GameObject();
-  player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
-  SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
+  //Setup spinning player     制作玩家和雪球在这里。。。。
+  /*GameObject* player1 = new GameObject();
+  player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
+  SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
+
   spriteRenderer->SetActiveTexture(texture);
   spriteRenderer->SetActiveShader(&ourShader);
+  Transform* transform = (Transform*)player1->GetComponent("Transform");
+  transform->setPosition(10, 8);
+
+  GameObject* player2 = new GameObject();
+  player2->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player2));
+  spriteRenderer = (SpriteRenderer*)player2->GetComponent("SpriteRenderer");
+  spriteRenderer->SetActiveTexture(texture);
+  spriteRenderer->SetActiveShader(&ourShader);
+  transform = (Transform*)player2->GetComponent("Transform");
+  transform->setPosition(-5, 4);
+  transform->setScale(2.0f);*/
+  
+
+  //fkfkfkfkfkfkfkfkfkCHENNNNNNNNNNNNNNNNNNNNNNNNNNNNN       玩家就是一个图片，雪球也可以用一样的代码弄。
+  //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
+  chensPlayer1 = new Player(&ourShader, texture);
+  Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
+  transform->setPosition(-7, 2);
+  InputManager* inputManager = InputManager::GetInstance();
+  transform->setScale(3.0f);
+
+  snowBall1 = new Player(&ourShader, iceTexture);
+  transform = (Transform*)snowBall1->GetComponent<Transform*>();
+  transform->setPosition(-7, 0);
+  inputManager = InputManager::GetInstance();
+  transform->setScale(1.0f);
+
+  //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
+  chensPlayer2 = new Player(&ourShader, texture2);
+  transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
+  transform->setPosition(10, 2);
+  inputManager = InputManager::GetInstance();
+  transform->setScale(3.0f);
+
+  snowBall2 = new Player(&ourShader, iceTexture);
+  transform = (Transform*)snowBall2->GetComponent<Transform*>();
+  transform->setPosition(10, 0);
+  inputManager = InputManager::GetInstance();
+  transform->setScale(1.0f);
+  
 
   //###TEMPLATE OBJECT EXAMPLE###//
   //Create it, who's constructor adds ComponentTemplate
@@ -125,16 +169,19 @@ void RunGame()
       }
     }
 
-    //Update game
+    //Update game   把那些sdl w 的控制方法从最底部移到这里
     gameManager->Update(timeDelta);
+	chensPlayer1->Update(timeDelta);
+	chensPlayer2->Update(timeDelta);
+	snowBall1->Update(timeDelta);
+	snowBall2->Update(timeDelta);
 
     //Temporary place where we update GameObjects
     player1->GetComponent<Transform*>()->setRotation(player1->GetComponent<Transform*>()->getRotation() + 0.5f);
 
-	//player1->GetComponent<Transform*>()->rotation = 0.5f;
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
-    int newTicks = SDL_GetTicks();
+    int newTicks = SDL_GetTicks(); 
     int difference = newTicks - lastTicks;
     int delay = 1000 / MAX_FPS - difference;
     if (delay > 0) {
@@ -153,6 +200,8 @@ bool HandlePolledEvent(SDL_Event event) {
 
   //KeyDown is actually KeyHeld, with SDL_KEYUP being on release.
   //Need state machine to keeep track of proper Pressed/Held/Release states, this event could update them
+  
+
   if (event.type == SDL_KEYDOWN)
   {
     switch (event.key.keysym.sym)
@@ -160,29 +209,43 @@ bool HandlePolledEvent(SDL_Event event) {
     case SDLK_ESCAPE:
       continueGameLoop = false;
       break;
-    case SDLK_r:
-      // Cover with red and update
-      //ClearColor(1.0, 0.0, 0.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
+    case SDLK_w: //When W is pressed   这里是怎样移动玩家
+		chensPlayer1->PressedUp();
+		snowBall1->PressedUp();
       break;
-    case SDLK_g:
-      // Cover with green and update
-      //ClearColor(0.0, 1.0, 0.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
+    case SDLK_a: //When A is pressed
+		chensPlayer1->PressedLeft();
+		snowBall1->PressedLeft();
       break;
-    case SDLK_b:
-      // Cover with blue and update
-      //ClearColor(0.0, 0.0, 1.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
+    case SDLK_s:
+		chensPlayer1->PressedDown();
+		snowBall1->PressedDown();
       break;
+	case SDLK_d:
+		chensPlayer1->PressedRight();
+		snowBall1->PressedRight();
+		break;
+	case SDLK_i: //When W is pressed   这里是怎样移动玩家
+		chensPlayer2->PressedUp();
+		snowBall2->PressedUp();
+		break;
+	case SDLK_j: //When A is pressed
+		chensPlayer2->PressedLeft();
+		snowBall2->PressedLeft();
+		break;
+	case SDLK_k:
+		chensPlayer2->PressedDown();
+		snowBall2->PressedDown();
+		break;
+	case SDLK_l:
+		chensPlayer2->PressedRight();
+		snowBall2->PressedRight();
+		break;
     default:
       break;
     }
   }
-
+  
   return continueGameLoop;
 }
 

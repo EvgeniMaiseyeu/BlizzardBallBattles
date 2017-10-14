@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0D909B57-AFD6-44B4-B192-3F9AD4D73850}</ProjectGuid>
     <RootNamespace>BlizzardBallBattle</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -131,6 +131,8 @@
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Battler.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
+    <ClCompile Include="Engine\Manager\MessageManager.cpp" />
+    <ClCompile Include="Game\GameObjects\Player.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />
@@ -152,6 +154,8 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Battler.h" />
+    <ClInclude Include="Engine\Manager\MessageManager.h" />
+    <ClInclude Include="Game\GameObjects\Player.h" />
     <ClInclude Include="MatchManager.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\GameObject.h" />
@@ -169,6 +173,12 @@
     <ClInclude Include="Engine\Manager\GameManager.h" />
     <ClInclude Include="Engine\Manager\InputManager.h" />
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h" />
+    <ClInclude Include="FBORenderTexture.h" />
+    <ClInclude Include="GLHeaders.h" />
+    <ClInclude Include="HelperFunctions.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SharedConstants.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
   </ItemGroup>
