@@ -2,8 +2,6 @@
 
 #include "Component.h"
 
-#define RENDER_LAYER_DEFAULT 0
-
 class Renderer : public Component {
 protected:
     int layer;

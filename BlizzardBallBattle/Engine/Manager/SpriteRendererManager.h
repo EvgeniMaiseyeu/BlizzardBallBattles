@@ -11,12 +11,15 @@
 #include <array>
 #include "SpriteRenderer.h"
 #include "Transform.h"
+#include <unordered_set>
+
 
 class SpriteRendererManager {
 private:
     //Singleton variables
     static SpriteRendererManager *instance;
     std::vector<SpriteRenderer*> activeSprites;
+    std::unordered_set<int> disabledLayers;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
@@ -44,4 +47,9 @@ public:
     void Render();
     GLuint GenerateTexture(std::string textureFileName);
     void AddSpriteForRendering(SpriteRenderer* sprite);
+    
+    void DisableRenderingLayer(int layer);
+    void EnableRenderingLayer(int layer);
+    void EnableAllRenderingLayers();
+    bool IsRenderingLayerEnabled(int layer);
 };

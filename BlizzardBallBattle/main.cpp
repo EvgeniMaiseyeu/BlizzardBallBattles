@@ -74,6 +74,8 @@ void RunGame()
     }
   }
 
+  SpriteRendererManager::GetInstance()->DisableRenderingLayer(RENDER_LAYER_DEFAULT);
+
   //Setup spinning player
   GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
   GameObject* player1 = new GameObject();

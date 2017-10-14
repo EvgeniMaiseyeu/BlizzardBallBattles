@@ -200,36 +200,55 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
     for (size_t i = 0; i < activeSprites.size(); i++) {
       SpriteRenderer* spriteRenderer = activeSprites[i];
-      spriteRenderer->GetShader()->Use();
-      spriteRenderer->GetSprite()->BindTextCoordinates(CBO);
 
-      //Pass in transform
-      GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-      Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
-      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
+      if (IsRenderingLayerEnabled(spriteRenderer->GetLayer())) {
+        spriteRenderer->GetShader()->Use();
+        spriteRenderer->GetSprite()->BindTextCoordinates(CBO);
   
-      //Pass in aspect ratio
-      GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
-      glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+        //Pass in transform
+        GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
+        Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
+    
+        //Pass in aspect ratio
+        GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
+        glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+    
+        //Pass in texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetSprite()->GetTextureBufferID());
+        GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
+        glUniform1i(ourTextureLocation, 0);
   
-      //Pass in texture
-      glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetSprite()->GetTextureBufferID());
-      GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
-      glUniform1i(ourTextureLocation, 0);
-
-      //Bind vertex array
-      glBindVertexArray(VAO);
-      //Draw
-      glDrawArrays(GL_TRIANGLES, 0, 3);
-      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-      glBindVertexArray(0);
-
-      //spriteRenderer->Render();
+        //Bind vertex array
+        glBindVertexArray(VAO);
+        //Draw
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+  
+        //spriteRenderer->Render();
+      }
     }
     SDL_GL_SwapWindow(mainWindow);
   }
 
   void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {
     activeSprites.push_back(sprite);
+  }
+
+  void SpriteRendererManager::DisableRenderingLayer(int layer) {
+    disabledLayers.insert(layer);
+  }
+
+  void SpriteRendererManager::EnableRenderingLayer(int layer) {
+    disabledLayers.erase(layer);
+  }
+
+  void SpriteRendererManager::EnableAllRenderingLayers() {
+    disabledLayers.clear();
+  }
+
+  bool SpriteRendererManager::IsRenderingLayerEnabled(int layer) {
+    return disabledLayers.find(layer) == disabledLayers.end();
   }
