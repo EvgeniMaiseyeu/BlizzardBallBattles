@@ -90,6 +90,9 @@
     <ClCompile Include="Engine\External\Math\Vector2.cpp">
       <Filter>Source Files\Engine\External\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">

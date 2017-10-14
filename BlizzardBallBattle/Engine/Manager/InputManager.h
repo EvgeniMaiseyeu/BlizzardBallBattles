@@ -21,7 +21,7 @@ class InputManager
     bool onKey(SDL_Keycode code);
     bool onKeyReleased(SDL_Keycode code);
     KeyAction getKeyState(SDL_Keycode code);
-    bool HandlePolledEvent(SDL_Event event);
+    void HandlePolledEvent(SDL_Event event);
     void UpdateKeys();
 
 private:
