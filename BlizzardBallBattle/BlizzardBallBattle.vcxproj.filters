@@ -42,7 +42,7 @@
     </Filter>
     <Filter Include="Source Files\Engine\External\Math">
       <UniqueIdentifier>{9e03b18d-8053-4711-a068-cdc82b0f53f8}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="Source Files\Game\AI">
       <UniqueIdentifier>{1e0a9db0-40ad-4421-9a25-de05057c3e1d}</UniqueIdentifier>
     </Filter>
@@ -98,7 +98,7 @@
     </ClCompile>
     <ClCompile Include="Engine\External\Math\Vector2.cpp">
       <Filter>Source Files\Engine\External\Math</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
@@ -112,6 +112,12 @@
       <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\MessageManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -169,7 +175,7 @@
     </ClInclude>
     <ClInclude Include="Engine\External\Math\Vector2.h">
       <Filter>Source Files\Engine\External\Math</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="AI.h">
       <Filter>Source Files\Game\AI</Filter>
     </ClInclude>
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\MessageManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
