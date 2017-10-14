@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include <iostream>
 
 Transform::operator GLfloat*() {
   if (values == NULL) {
@@ -10,11 +11,15 @@ Transform::operator GLfloat*() {
     };
   }
 
+
   float scaleRotCos = scale / GAME_WIDTH * 2.0 * cos(rotation * 3.14159 / 180.0);
   float scaleRotSin = scale / GAME_WIDTH * 2.0 * sin(rotation * 3.14159 / 180.0);
 
-  float glX = x;
-  float glY = y;
+  
+
+  float glX = x; //x = 5
+  float glY = y; //y = 5
+
   worldPositionToOpenGLPosition(&glX, &glY);
 
   values[0] = scaleRotCos;
@@ -51,6 +56,12 @@ void Transform::setPosition(float newX, float newY) {
   y = newY;
 }
 
+void Transform::setPosition(float newX, float newY, float newZ) {
+  x = newX;
+  y = newY;
+  z = newZ;
+}
+
 void Transform::addX(float xToAdd) {
   x += xToAdd;
 }
@@ -59,12 +70,20 @@ void Transform::addY(float yToAdd) {
   y += yToAdd;
 }
 
+void Transform::addZ(float zToAdd) {
+  z += zToAdd;
+}
+
 void Transform::setX(float newX) {
   x = newX;
 }
 
 void Transform::setY(float newY) {
   y = newY;
+}
+
+void Transform::setZ(float newZ) {
+  z = newZ;
 }
 
 void Transform::addRotation(float byDegrees) {
@@ -89,6 +108,10 @@ float Transform::getX() {
 
 float Transform::getY() {
   return y;
+}
+
+float Transform::getZ() {
+  return z;
 }
 
 float Transform::getRotation() {

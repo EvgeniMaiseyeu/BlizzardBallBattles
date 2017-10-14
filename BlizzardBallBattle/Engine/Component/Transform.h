@@ -10,6 +10,8 @@ class Transform : public Component {
 private:
   float x;
   float y;
+  float z;
+  int zLayer;
   float rotation;
   float scale;
   GLfloat* values;
@@ -20,15 +22,19 @@ public:
   void addTranslation(float xToAdd, float yToAdd);
   void addX(float xToAdd);
   void addY(float yToAdd);
+  void addZ(float zToAdd);
   void setX(float newX);
   void setY(float newY);
+  void setZ(float zToSet);
   void setPosition(float newX, float newY);
+  void setPosition(float newX, float newY, float newZ);
   void addRotation(float byDegrees);
   void setRotation(float newAngle);
   void addScale(float scaleToAdd);
   void setScale(float newScale);
   float getX();
   float getY();
+  float getZ();
   float getRotation();
   float getScale();
   operator GLfloat*();

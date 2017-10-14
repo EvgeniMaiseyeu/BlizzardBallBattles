@@ -15,6 +15,11 @@
 #include "GameObjectTemplate.h"
 #include "Sprite.h"
 #include "SpriteSheet.h"
+#include "InputManager.h"
+#include "MessageManager.h"
+#include "Sender.h"
+#include "Receiver.h"
+#include "NetworkingManagerTemp.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -63,7 +68,7 @@ void RunGame()
       SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
       spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
       spriteRenderer->SetActiveShader(&ourShader);
-      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
     }
   }
 
@@ -71,11 +76,20 @@ void RunGame()
   GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
   GameObject* player1 = new GameObject();
   player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
+  player1->AddComponent<Sender*>(new Sender(player1, "Player"));
   SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
   spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 5, 3, 1));
   spriteRenderer->SetActiveShader(&ourShader);
   player1->GetComponent<Transform*>()->setRotation(-90.0f); //My spritesheet is 90 degrees off
   player1->GetComponent<Transform*>()->setScale(10.0f);
+
+  GameObject* player2 = new GameObject();
+  player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
+  player2->AddComponent<Receiver*>(new Receiver(player2, "Player"));
+  spriteRenderer = player2->GetComponent<SpriteRenderer*>();
+  spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 5, 3, 1));
+  spriteRenderer->SetActiveShader(&ourShader);
+  
 
   //###TEMPLATE OBJECT EXAMPLE###//
   //Create it, who's constructor adds ComponentTemplate
@@ -86,10 +100,44 @@ void RunGame()
   float timeDelta = 0.0f;
   int frameSkipper = 0;
 
+  //MESSAGING EXAMPLE
+  //subscribe a function to the event "test", store the unique id for this event for later removal.
+  int id = MessageManager::Subscribe("test", [](std::map<std::string, void*> data) -> void {
+
+    //converting a void* to its respective std::string*. Do it this way if its not a primitive type.
+    std::string *str = static_cast<std::string *>(data["somedata"]);
+
+    //converting a void* to its respective int*, do it this way if its primitive data type.
+    int *in = (int *)(&data["someint"]);
+
+    //printing out the data we got from the data.
+    std::cout << *in << " " << *str << std::endl;
+  }, (void*)0);
+
+  //create data map to pass into the callback, notice how the data is pointers.
+  std::map<std::string, void*> data;
+  std::string* s = new std::string("AMAZING");
+  data["somedata"] = s;
+  data["someint"] = (int *)44;
+
+  //send the event.
+  MessageManager::SendEvent("test", data);
+
+  //unsubscribe the listener from the event.
+  MessageManager::UnSubscribe("test", id);
+
+  //send the event again. No listeners for this event so nothing happens.
+  MessageManager::SendEvent("test", data);
+
+  //MESSAGING EXAMPLE END
+
   while (gameLoop) {
+    std::cout << "GAME LOOP" << std::endl;
     //Handle events like key pressed
+    InputManager::GetInstance()->UpdateKeys();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+      InputManager::GetInstance()->HandlePolledEvent(event);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
@@ -97,7 +145,13 @@ void RunGame()
 
     //Update game
     gameManager->Update(timeDelta);
+    player1->GetComponent<Sender*>()->SendUpdate();
+    std::cout << "PLAYER 1::ACTUAL X :" << player1->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player1->GetComponent<Transform*>()->getRotation() << std::endl;
+    std::cout << "PLAYER 2::ACTUAL X :" << player2->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player2->GetComponent<Transform*>()->getRotation() << std::endl;
+    
+    NetworkingManagerTemp::GetInstance()->SendQueuedEvents();
 
+    //std::cout << "ACTUALLY DONE!!!!!!!!" << std::endl;
     //Temporary place where we update GameObjects
     if (frameSkipper++ % (MAX_FPS / 4) == 0) {
       player1->GetComponent<Transform*>()->addRotation(0.5f);
