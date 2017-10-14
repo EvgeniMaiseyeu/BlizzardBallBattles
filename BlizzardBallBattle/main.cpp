@@ -66,7 +66,7 @@ void RunGame()
       SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
       spriteRenderer->SetActiveTexture(textureToUse);
       spriteRenderer->SetActiveShader(&ourShader);
-      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5);
+      tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
     }
   }
 
@@ -126,6 +126,7 @@ void RunGame()
   //MESSAGING EXAMPLE END
 
   while (gameLoop) {
+    std::cout << "GAME LOOP" << std::endl;
     //Handle events like key pressed
     InputManager::GetInstance()->UpdateKeys();
     SDL_Event event;
@@ -139,6 +140,8 @@ void RunGame()
     //Update game
     gameManager->Update(timeDelta);
     player1->GetComponent<Sender*>()->SendUpdate();
+    std::cout << "PLAYER 1::ACTUAL X :" << player1->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player1->GetComponent<Transform*>()->getRotation() << std::endl;
+    std::cout << "PLAYER 2::ACTUAL X :" << player2->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player2->GetComponent<Transform*>()->getRotation() << std::endl;
     
     NetworkingManagerTemp::GetInstance()->SendQueuedEvents();
 
