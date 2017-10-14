@@ -14,6 +14,8 @@
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
 #include "Vector2.h"
+#include "InputManager.h"
+#include "MessageManager.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -81,10 +83,43 @@ void RunGame()
 
   float timeDelta = 0.0f;
 
+  //MESSAGING EXAMPLE
+  //subscribe a function to the event "test", store the unique id for this event for later removal.
+  int id = MessageManager::Subscribe("test", [](std::map<std::string, void*> data) -> void {
+
+    //converting a void* to its respective std::string*. Do it this way if its not a primitive type.
+    std::string *str = static_cast<std::string *>(data["somedata"]);
+
+    //converting a void* to its respective int*, do it this way if its primitive data type.
+    int *in = (int *)(&data["someint"]);
+
+    //printing out the data we got from the data.
+    std::cout << *in << " " << *str << std::endl;
+  });
+
+  //create data map to pass into the callback, notice how the data is pointers.
+  std::map<std::string, void*> data;
+  std::string* s = new std::string("AMAZING");
+  data["somedata"] = s;
+  data["someint"] = (int *)44;
+
+  //send the event.
+  MessageManager::SendEvent("test", data);
+
+  //unsubscribe the listener from the event.
+  MessageManager::UnSubscribe("test", id);
+
+  //send the event again. No listeners for this event so nothing happens.
+  MessageManager::SendEvent("test", data);
+
+  //MESSAGING EXAMPLE END
+
   while (gameLoop) {
     //Handle events like key pressed
+    InputManager::GetInstance()->UpdateKeys();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+      InputManager::GetInstance()->HandlePolledEvent(event);
       if (!HandlePolledEvent(event)) {
         gameLoop = false;
       }
