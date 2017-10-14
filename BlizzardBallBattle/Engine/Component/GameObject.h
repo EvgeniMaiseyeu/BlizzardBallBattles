@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.h"
+#include "GameManager.h"
 #include <string>
 #include <typeinfo>
 #include <vector>
@@ -9,6 +9,7 @@
 class GameObject {
 private:
     std::map<std::string, std::vector<Component*>> components;
+    int id;
     
     template <typename T>
     std::string GetClassName() {
@@ -18,6 +19,10 @@ private:
 public:
 
     GameObject();
+
+    int getId() {
+        return id;
+    }
 
     template <typename T> 
     T GetComponent() {
@@ -50,7 +55,10 @@ public:
     bool HasComponent() {
         return components.count(GetClassName<T>()) > 0;
     }
+
+    void Update(int ticks);
     
+    ~GameObject();
 
     //template <class T>
     //vector<Component*> GetComponentsByType();

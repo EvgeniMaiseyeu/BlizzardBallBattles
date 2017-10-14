@@ -23,8 +23,17 @@
                     "${workspaceRoot}/BlizzardBallBattle/Engine",
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Component",
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Render",
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/Component/AI",
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Physics",
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Sound",
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Transform",  
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/External",  
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/External/Render",  
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Manager",
-                    "${workspaceRoot}/BlizzardBallBattle/Game"
+                    "${workspaceRoot}/BlizzardBallBattle/Game",
+                    "${workspaceRoot}/BlizzardBallBattle/Game/Components",
+                    "${workspaceRoot}/BlizzardBallBattle/Game/ExternalClasses",
+                    "${workspaceRoot}/BlizzardBallBattle/Game/GameObjects"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

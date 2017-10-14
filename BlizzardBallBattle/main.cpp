@@ -19,11 +19,8 @@
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
 
-GameManager* gameManager;
-
 int main(int argc, char *argv[])
 {
-  gameManager = new GameManager();
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
@@ -37,8 +34,9 @@ int main(int argc, char *argv[])
 
 void RunGame()
 {
-  bool gameLoop = true;
-  int lastTicks = SDL_GetTicks();
+  //put this in gamemanager beginloop
+    SpriteRendererManager::GetInstance();
+    MatchManager::GetInstance()->StartGame();
 
   //Sprites for testing d
   Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
@@ -113,73 +111,5 @@ void RunGame()
 
   //MESSAGING EXAMPLE END
 
-  while (gameLoop) {
-    //Handle events like key pressed
-    InputManager::GetInstance()->UpdateKeys();
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-      InputManager::GetInstance()->HandlePolledEvent(event);
-      if (!HandlePolledEvent(event)) {
-        gameLoop = false;
-      }
-    }
-
-    //Update game
-    gameManager->Update(timeDelta);
-
-    //Temporary place where we update GameObjects
-    player1->GetComponent<Transform*>()->addRotation(0.5f);
-
-    //Cap at MAX_FPS (60) FPS and delay the uneeded time
-    int newTicks = SDL_GetTicks();
-    int difference = newTicks - lastTicks;
-    int delay = 1000 / MAX_FPS - difference;
-    if (delay > 0) {
-      SDL_Delay(delay);
-    }
-    timeDelta = newTicks - lastTicks;
-    lastTicks = newTicks;
-  }
+  GameManager::GetInstance()->BeginLoop();
 }
-
-bool HandlePolledEvent(SDL_Event event) {
-  bool continueGameLoop = true;
-
-  if (event.type == SDL_QUIT)
-    continueGameLoop = false;
-
-  //KeyDown is actually KeyHeld, with SDL_KEYUP being on release.
-  //Need state machine to keeep track of proper Pressed/Held/Release states, this event could update them
-  if (event.type == SDL_KEYDOWN)
-  {
-    switch (event.key.keysym.sym)
-    {
-    case SDLK_ESCAPE:
-      continueGameLoop = false;
-      break;
-    case SDLK_r:
-      // Cover with red and update
-      //ClearColor(1.0, 0.0, 0.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
-      break;
-    case SDLK_g:
-      // Cover with green and update
-      //ClearColor(0.0, 1.0, 0.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
-      break;
-    case SDLK_b:
-      // Cover with blue and update
-      //ClearColor(0.0, 0.0, 1.0, 1.0);
-      //Clear(GL_COLOR_BUFFER_BIT);
-      //L_GL_SwapWindow(mainWindow);
-      break;
-    default:
-      break;
-    }
-  }
-
-  return continueGameLoop;
-}
-

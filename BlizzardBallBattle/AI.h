@@ -5,7 +5,6 @@
 
 #include "Component.h"
 #include <exception>
-#include "GameObject.h"
 #include "Battler.h"
 #include <vector>
 #include <iostream>

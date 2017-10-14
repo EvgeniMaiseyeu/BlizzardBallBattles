@@ -1,4 +1,5 @@
 #include "SpriteRendererManager.h"
+#include "GameObject.h"
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
@@ -169,10 +170,10 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     const char* sdlError = SDL_GetError();
     GLenum glError = glGetError();
     if (strlen(sdlError) > 0) {
-      std::cout << sdlError << std::endl;
+      std::cout << "GENERATE TEXTURE ERROR " << sdlError << std::endl;
     }
     if (glError != GL_NO_ERROR) {
-      std::cout << glError << std::endl;
+      std::cout << "GENERATE TEXTURE ERROR " << glError << std::endl;
     }
   
     SDL_FreeSurface(temp); 

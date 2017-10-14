@@ -3,7 +3,6 @@
 #define BATTLER_H
 
 #include "Component.h"
-#include "GameObject.h"
 
 class Battler :
 	public Component
