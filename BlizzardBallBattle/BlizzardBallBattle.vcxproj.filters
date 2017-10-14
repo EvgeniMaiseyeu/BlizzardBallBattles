@@ -99,9 +99,6 @@
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="AI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Battler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -128,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="Game\GameObjects\Player.cpp">
       <Filter>Source Files\Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Source Files\Game\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +188,6 @@
     <ClInclude Include="Engine\External\Math\Vector2.h">
       <Filter>Source Files\Engine\External\Math</Filter>
     </ClInclude>
-    <ClInclude Include="AI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Battler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -221,13 +221,8 @@
     <ClInclude Include="Engine\Manager\MessageManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Character.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Character.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="AI.h">
+      <Filter>Source Files\Game\AI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

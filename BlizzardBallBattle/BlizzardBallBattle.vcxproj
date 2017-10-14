@@ -182,12 +182,6 @@
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Character.bmp" />
-    <Image Include="Assets\Character.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
