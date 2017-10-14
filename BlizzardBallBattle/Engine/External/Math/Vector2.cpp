@@ -25,8 +25,8 @@ float Vector2::getMagnitude() {
 }
 
 void Vector2::normalize() {
-	_x /= magnitude;
-	_y /= magnitude;
+	_x /= _magnitude;
+	_y /= _magnitude;
 }
 
 
@@ -48,15 +48,15 @@ Vector2 Vector2::operator/(float value)
 
 Vector2 Vector2::operator+(Vector2 v)
 {
-	_x += v.x;
-	_y += v.y;
+	_x += v.getX();
+	_y += v.getY();
 	return *this;
 }
 
 Vector2 Vector2::operator-(Vector2 v)
 {
-	_x -= v.x;
-	_y -= v.y;
+	_x -= v.getX();
+	_y -= v.getY();
 	return *this;
 }
 

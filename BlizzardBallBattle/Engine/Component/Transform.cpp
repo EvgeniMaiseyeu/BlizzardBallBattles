@@ -28,10 +28,10 @@ Transform::operator GLfloat*() {
 }
 
 Transform::Transform(GameObject* gameObject) : Component(gameObject) {
-  scale = 1.0f;
-  x = 0.0f;
-  y = 0.0f;
-  rotation = 0.0f;
+  _scale = 1.0f;
+  _x = 0.0f;
+  _y = 0.0f;
+  _rotation = 0.0f;
   values = NULL;
 }
 
