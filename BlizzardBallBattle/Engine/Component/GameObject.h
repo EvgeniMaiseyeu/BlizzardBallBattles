@@ -27,7 +27,7 @@ public:
 		if (components[GetClassName<T>()].size() > 0) {
 			return (T)components[GetClassName<T>()].front();
 		}
-		throw std::exception("Called GetComponent when no components existed");
+		throw std::runtime_error("Called GetComponent when no components existed");
     }
     
     template <typename T> 

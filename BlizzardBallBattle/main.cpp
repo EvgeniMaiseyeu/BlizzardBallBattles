@@ -177,7 +177,6 @@ void RunGame()
 	snowBall2->Update(timeDelta);
 
     //Temporary place where we update GameObjects
-    player1->GetComponent<Transform*>()->setRotation(player1->GetComponent<Transform*>()->getRotation() + 0.5f);
 
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
