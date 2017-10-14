@@ -15,6 +15,9 @@
 #include "GameObjectTemplate.h"
 #include "InputManager.h"
 #include "MessageManager.h"
+#include "Sender.h"
+#include "Receiver.h"
+#include "NetworkingManagerTemp.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -70,9 +73,18 @@ void RunGame()
   //Setup spinning player
   GameObject* player1 = new GameObject();
   player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
+  player1->AddComponent<Sender*>(new Sender(player1, "Player"));
   SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
   spriteRenderer->SetActiveTexture(texture);
   spriteRenderer->SetActiveShader(&ourShader);
+
+  GameObject* player2 = new GameObject();
+  player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
+  player2->AddComponent<Receiver*>(new Receiver(player2, "Player"));
+  spriteRenderer = player2->GetComponent<SpriteRenderer*>();
+  spriteRenderer->SetActiveTexture(texture);
+  spriteRenderer->SetActiveShader(&ourShader);
+  
 
   //###TEMPLATE OBJECT EXAMPLE###//
   //Create it, who's constructor adds ComponentTemplate
@@ -94,7 +106,7 @@ void RunGame()
 
     //printing out the data we got from the data.
     std::cout << *in << " " << *str << std::endl;
-  });
+  }, (void*)0);
 
   //create data map to pass into the callback, notice how the data is pointers.
   std::map<std::string, void*> data;
@@ -126,7 +138,11 @@ void RunGame()
 
     //Update game
     gameManager->Update(timeDelta);
+    player1->GetComponent<Sender*>()->SendUpdate();
+    
+    NetworkingManagerTemp::GetInstance()->SendQueuedEvents();
 
+    //std::cout << "ACTUALLY DONE!!!!!!!!" << std::endl;
     //Temporary place where we update GameObjects
     player1->GetComponent<Transform*>()->addRotation(0.5f);
 

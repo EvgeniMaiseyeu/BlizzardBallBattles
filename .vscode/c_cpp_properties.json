@@ -23,6 +23,7 @@
                     "${workspaceRoot}/BlizzardBallBattle/Engine",
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Component",
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Render",
+                    "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Networking",
                     "${workspaceRoot}/BlizzardBallBattle/Engine/Manager",
                     "${workspaceRoot}/BlizzardBallBattle/Game"
                 ],
