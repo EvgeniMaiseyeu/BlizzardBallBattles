@@ -95,22 +95,26 @@ void RunGame()
   chensPlayer1 = new Player(&ourShader, texture);
   Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
   transform->setPosition(-7, 2);
+  InputManager* inputManager = InputManager::GetInstance();
   transform->setScale(3.0f);
 
   snowBall1 = new Player(&ourShader, iceTexture);
   transform = (Transform*)snowBall1->GetComponent<Transform*>();
   transform->setPosition(-7, 0);
+  inputManager = InputManager::GetInstance();
   transform->setScale(1.0f);
 
   //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
   chensPlayer2 = new Player(&ourShader, texture2);
   transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
   transform->setPosition(10, 2);
+  inputManager = InputManager::GetInstance();
   transform->setScale(3.0f);
 
   snowBall2 = new Player(&ourShader, iceTexture);
   transform = (Transform*)snowBall2->GetComponent<Transform*>();
   transform->setPosition(10, 0);
+  inputManager = InputManager::GetInstance();
   transform->setScale(1.0f);
   
 
@@ -164,8 +168,12 @@ void RunGame()
       }
     }
 
-    //Update game
+    //Update game   把那些sdl w 的控制方法从最底部移到这里
     gameManager->Update(timeDelta);
+	chensPlayer1->Update(timeDelta);
+	chensPlayer2->Update(timeDelta);
+	snowBall1->Update(timeDelta);
+	snowBall2->Update(timeDelta);
 
     //Temporary place where we update GameObjects
     ((Transform*)snowBall1->GetComponent<Transform*>())->addRotation(20.0f);
@@ -173,7 +181,7 @@ void RunGame()
    // player1->GetComponent<Transform*>()->addRotation(0.5f);
 
     //Cap at MAX_FPS (60) FPS and delay the uneeded time
-    int newTicks = SDL_GetTicks();
+    int newTicks = SDL_GetTicks(); 
     int difference = newTicks - lastTicks;
     int delay = 1000 / MAX_FPS - difference;
     if (delay > 0) {
@@ -237,7 +245,7 @@ bool HandlePolledEvent(SDL_Event event) {
       break;
     }
   }
-
+  
   return continueGameLoop;
 }
 

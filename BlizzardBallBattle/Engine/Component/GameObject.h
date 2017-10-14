@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include <vector>
 #include <map>
+#include <exception>
 
 class GameObject {
 private:
@@ -21,7 +22,10 @@ public:
 
     template <typename T> 
     T GetComponent() {
-        return (T)components[GetClassName<T>()].front();
+		if (components[GetClassName<T>()].size() > 0) {
+			return (T)components[GetClassName<T>()].front();
+		}
+		throw std::exception("Called GetComponent when no components existed");
     }
     
     template <typename T> 

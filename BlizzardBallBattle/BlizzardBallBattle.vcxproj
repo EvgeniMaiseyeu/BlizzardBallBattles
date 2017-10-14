@@ -132,6 +132,7 @@
     <ClCompile Include="Battler.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="Engine\Manager\MessageManager.cpp" />
+    <ClCompile Include="Game\GameObjects\Player.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />
@@ -146,12 +147,12 @@
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Battler.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
+    <ClInclude Include="Game\GameObjects\Player.h" />
     <ClInclude Include="MatchManager.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\GameObject.h" />
@@ -170,7 +171,6 @@
     <ClInclude Include="FBORenderTexture.h" />
     <ClInclude Include="GLHeaders.h" />
     <ClInclude Include="HelperFunctions.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SharedConstants.h" />
     <ClInclude Include="Transform.h" />
