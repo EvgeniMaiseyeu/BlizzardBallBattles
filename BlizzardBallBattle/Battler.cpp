@@ -1,9 +1,14 @@
 #include "Battler.h"
 
 
-Battler::Battler(GameObject* gameObject, int team) : Component(gameObject)
+Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject()
 {
 	teamID = team;
+	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
+	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
+	renderer->SetActiveShader(shader);
+	renderer->SetActiveTexture(textureBufferID);
+
 }
 
 Battler::~Battler()

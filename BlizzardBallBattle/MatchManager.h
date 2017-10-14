@@ -17,6 +17,8 @@ private:
 	std::vector<Battler*> teamTwo;
 	std::vector<AI*> aiUnits;
 	const int TEAM_SIZE = 20;
+	void CreateMap(Shader *shader);
+	void CreateBattlers(Shader *shader);
 public:
 	static MatchManager* GetInstance();
 	MatchManager();

@@ -145,7 +145,6 @@
     <ClCompile Include="Engine\External\Render\Shader.cpp" />
     <ClCompile Include="Engine\External\Render\ShaderFactory.cpp" />
     <ClCompile Include="Engine\Manager\GameManager.cpp" />
-    <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp" />
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />

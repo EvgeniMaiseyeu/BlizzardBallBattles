@@ -1,10 +1,6 @@
 #include "Player.h"
 
-Player::Player(Shader* shader, GLuint textureBufferID) {
-	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
-	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
-	renderer->SetActiveShader(shader);
-	renderer->SetActiveTexture(textureBufferID);
+Player::Player() : Component(gameObject) {
 	
 }
 
@@ -31,27 +27,27 @@ void Player::Update(float timeDelta) {
 }
 
 void Player::PressedDown() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0, -0.2f);
+	//Transform* transform = (Transform*)GetComponent<Transform*>();
+	//transform->addTranslation(0, -0.2f);
 }
 
 void Player::PressedRight() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0.2f, 0);
+	//Transform* transform = (Transform*)GetComponent<Transform*>();
+	//transform->addTranslation(0.2f, 0);
 	
 
 }
 
 void Player::PressedUp() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0, 0.2f);
+	//Transform* transform = (Transform*)GetComponent<Transform*>();
+	//transform->addTranslation(0, 0.2f);
 	
 
 }
 
 void Player::PressedLeft() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(-0.2f, 0);
+	//Transform* transform = (Transform*)GetComponent<Transform*>();
+	//transform->addTranslation(-0.2f, 0);
 	
 
 }

@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Engine\External\Math">
       <UniqueIdentifier>{9e03b18d-8053-4711-a068-cdc82b0f53f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Managers">
+      <UniqueIdentifier>{7122cab2-7d8b-4895-8074-9ef09d7d3b2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,15 +102,6 @@
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Battler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MatchManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Manager\InputManager.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Manager\MessageManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
@@ -122,15 +116,24 @@
     </ClCompile>
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameObjects\Player.cpp">
-      <Filter>Source Files\Game\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AI.cpp">
       <Filter>Source Files\Game\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Battler.cpp">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchManager.cpp">
+      <Filter>Source Files\Game\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjects\Player.cpp">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,12 +191,6 @@
     <ClInclude Include="Engine\External\Math\Vector2.h">
       <Filter>Source Files\Engine\External\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Battler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FBORenderTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -215,14 +212,20 @@
     <ClInclude Include="Engine\Manager\MessageManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameObjects\Player.h">
-      <Filter>Source Files\Game\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Manager\MessageManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="AI.h">
       <Filter>Source Files\Game\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Battler.h">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchManager.h">
+      <Filter>Source Files\Game\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjects\Player.h">
+      <Filter>Source Files\Game\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

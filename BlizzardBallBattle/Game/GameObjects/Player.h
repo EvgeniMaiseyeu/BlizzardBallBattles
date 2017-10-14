@@ -5,11 +5,11 @@
 #include "Transform.h"
 #include "InputManager.h"
 
-class Player : public GameObject {
+class Player : public Component {
 private:
 
 public:
-	Player(Shader* shader, GLuint textureBufferID);
+	Player();
 	void PressedLeft();
 	void PressedRight();
 	void PressedUp();

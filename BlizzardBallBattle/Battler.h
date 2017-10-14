@@ -4,13 +4,14 @@
 
 #include "Component.h"
 #include "GameObject.h"
+#include "SpriteRenderer.h"
 
 class Battler :
-	public Component
+	public GameObject
 {
 public:
 	int teamID;
-	Battler(GameObject* gameObject, int team);
+	Battler(int team, Shader* shader, GLuint textureBufferID);
 	~Battler();
 	//TODO: Implement vectors
 	//void MoveTo(Vector2 position) 
