@@ -20,6 +20,7 @@
 #include "Sender.h"
 #include "Receiver.h"
 #include "NetworkingManagerTemp.h"
+#include "UserDefinedRenderLayers.h"
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
@@ -68,6 +69,7 @@ void RunGame()
       SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
       spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
       spriteRenderer->SetActiveShader(&ourShader);
+      spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
       tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
     }
   }

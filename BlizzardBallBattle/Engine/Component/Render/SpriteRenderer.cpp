@@ -1,7 +1,7 @@
 #include "SpriteRenderer.h"
 #include "SpriteRendererManager.h"
 
-SpriteRenderer::SpriteRenderer(GameObject* gameObject) : Component(gameObject) {
+SpriteRenderer::SpriteRenderer(GameObject* gameObject) : Renderer(gameObject) {
   SpriteRendererManager::GetInstance()->AddSpriteForRendering(this); //.subscribe(gameObject.id, this); NOTE: Not subscribing/unsubscribing for now
 }
 

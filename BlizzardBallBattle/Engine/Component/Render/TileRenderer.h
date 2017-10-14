@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.h"
+#include "Renderer.h"
 
 struct SheetDescription {
     GLuint tileMapTextureID;
@@ -8,21 +8,17 @@ struct SheetDescription {
     float height;
 };
 
-struct TileData {
-    
-}
-
 class TileLayerGenerator {
 public:
     virtual int[][] GenerateMap() = 0;
-    virtual std::map<int, TileData>
-}
+    virtual std::map<int, int> GenerateMapping() = 0; //??
+};
 
-class TileRenderer : public Component {
+class TileRenderer : public Renderer {
 private:
 
 public:
     TileRenderer(GameObject* gameObject, SheetDescription sheetDescription);
-    GenerateWorld(onst initializer_list<int> &il);
-}
+    GenerateWorld(TileLayerGenerator generator);
+};
 

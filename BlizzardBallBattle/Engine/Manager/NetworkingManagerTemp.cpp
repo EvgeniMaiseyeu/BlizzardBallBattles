@@ -15,6 +15,7 @@ void NetworkingManagerTemp::PrepareMessageForSending(std::string key, std::map<s
     messagesToSend.push_back(message);
 }
 
+//TODO: Do over time
 void NetworkingManagerTemp::SendQueuedEvents() {
     std::string packet = "[";
     for(size_t i = 0; i < messagesToSend.size(); i++) {
