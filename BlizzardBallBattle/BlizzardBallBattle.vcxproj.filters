@@ -111,6 +111,9 @@
     <ClCompile Include="MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
