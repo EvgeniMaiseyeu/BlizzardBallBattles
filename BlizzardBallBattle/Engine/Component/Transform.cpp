@@ -51,6 +51,12 @@ void Transform::setPosition(float newX, float newY) {
   _y = newY;
 }
 
+void Transform::setPosition(float newX, float newY, float newZ) {
+	_x = newX;
+	_y = newY;
+	_z = newZ;
+}
+
 void Transform::setX(float newX) {
   _x = newX;
 }

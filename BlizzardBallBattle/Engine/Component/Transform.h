@@ -10,6 +10,7 @@ class Transform : public Component {
 private:
   float _x;
   float _y;
+  float _z;
   float _rotation;
   float _scale;
   GLfloat* values;
@@ -28,6 +29,7 @@ public:
   float getY();
   
   void setPosition(float newX, float newY);
+  void setPosition(float newX, float newY, float newZ);
 
   //__declspec (property (put = setScale, get = getScale)) float scale;
   void setScale(float newScale);
