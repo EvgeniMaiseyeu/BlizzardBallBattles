@@ -11,10 +11,8 @@
 #include "GameManager.h" //Engine/Manager/GameManager.h
 #include "SpriteRendererManager.h"
 #include "GameObject.h"
-#include "Player.h"
 #include "ComponentTemplate.h"
 #include "GameObjectTemplate.h"
-#include "Vector2.h"
 #include "Sprite.h"
 #include "SpriteSheet.h"
 #include "InputManager.h"
@@ -26,15 +24,16 @@
 
 void RunGame();
 bool HandlePolledEvent(SDL_Event event);
-bool ThrowBall = false;
 
-Player *chensPlayer1, *chensPlayer2, *snowBall1, *snowBall2; //Chens player object, to be refactored when possible
+GameManager* gameManager;
 
 int main(int argc, char *argv[])
 {
+  gameManager = new GameManager();
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
+
   RunGame();
   SpriteRendererManager::GetInstance()->Cleanup();
   delete(SpriteRendererManager::GetInstance());
@@ -48,12 +47,10 @@ void RunGame()
   int lastTicks = SDL_GetTicks();
 
   //Sprites for testing d
-  Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-  GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
-
+  Shader ourShader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());
   GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-  GLuint texture2 = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
   GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
+  GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
 
   float width = getGameWidth();
   float height = getGameHeight();
@@ -77,53 +74,6 @@ void RunGame()
     }
   }
 
-  //Setup spinning player     制作玩家和雪球在这里。。。。
-  /*GameObject* player1 = new GameObject();
-  player1->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player1));
-  SpriteRenderer* spriteRenderer = (SpriteRenderer*)player1->GetComponent("SpriteRenderer");
-
-  spriteRenderer->SetActiveTexture(texture);
-  spriteRenderer->SetActiveShader(&ourShader);
-  Transform* transform = (Transform*)player1->GetComponent("Transform");
-  transform->setPosition(10, 8);
-
-  GameObject* player2 = new GameObject();
-  player2->AddComponent("SpriteRenderer", (Component*)new SpriteRenderer(player2));
-  spriteRenderer = (SpriteRenderer*)player2->GetComponent("SpriteRenderer");
-  spriteRenderer->SetActiveTexture(texture);
-  spriteRenderer->SetActiveShader(&ourShader);
-  transform = (Transform*)player2->GetComponent("Transform");
-  transform->setPosition(-5, 4);
-  transform->setScale(2.0f);*/
-  
-
-  //fkfkfkfkfkfkfkfkfkCHENNNNNNNNNNNNNNNNNNNNNNNNNNNNN       玩家就是一个图片，雪球也可以用一样的代码弄。
-  //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-  /*chensPlayer1 = new Player(&ourShader, texture);
-  Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
-  transform->setPosition(-7, 2);
-  InputManager* inputManager = InputManager::GetInstance();
-  transform->setScale(3.0f);
-
-  snowBall1 = new Player(&ourShader, iceTexture);
-  transform = (Transform*)snowBall1->GetComponent<Transform*>();
-  transform->setPosition(-7, 0);
-  inputManager = InputManager::GetInstance();
-  transform->setScale(1.0f);
-
-  //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
-  chensPlayer2 = new Player(&ourShader, texture2);
-  transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
-  transform->setPosition(10, 2);
-  inputManager = InputManager::GetInstance();
-  transform->setScale(3.0f);
-
-  snowBall2 = new Player(&ourShader, iceTexture);
-  transform = (Transform*)snowBall2->GetComponent<Transform*>();
-  transform->setPosition(10, 0);
-  inputManager = InputManager::GetInstance();
-  transform->setScale(1.0f);*/
-  //SpriteRendererManager::GetInstance()->DisableRenderingLayer(RENDER_LAYER_DEFAULT);
 
   //Setup spinning player
   GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
@@ -181,13 +131,14 @@ void RunGame()
 
   //send the event again. No listeners for this event so nothing happens.
   MessageManager::SendEvent("test", data);
-
   
-  //MESSAGING EXAMPLE END
-  GameManager::GetInstance()->BeginLoop();
+   //MESSAGING EXAMPLE END
+  
+   GameManager::GetInstance()->BeginLoop();
 
-    //Update game   把那些sdl w 的控制方法从最底部移到这里
-    //gameManager->Update(timeDelta);
+   //DONE
+
+    //Update gam
     //player1->GetComponent<Sender*>()->SendUpdate();
     //std::cout << "PLAYER 1::ACTUAL X :" << player1->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player1->GetComponent<Transform*>()->getRotation() << std::endl;
     //std::cout << "PLAYER 2::ACTUAL X :" << player2->GetComponent<Transform*>()->getX() << "::ACTUAL ROTATION : " << player2->GetComponent<Transform*>()->getRotation() << std::endl;
@@ -196,12 +147,10 @@ void RunGame()
 
     //std::cout << "ACTUALLY DONE!!!!!!!!" << std::endl;
     //Temporary place where we update GameObjects
-    /*if (frameSkipper++ % (MAX_FPS / 4) == 0) {
-      player1->GetComponent<Transform*>()->addRotation(0.5f);
-      SpriteSheet* spriteSheet = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
-      spriteSheet->NextIndex();
-    }*/
+    //if (frameSkipper++ % (MAX_FPS / 4) == 0) {
+    //  player1->GetComponent<Transform*>()->addRotation(0.5f);
+    //  SpriteSheet* spriteSheet = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
+    //  spriteSheet->NextIndex();
+    //}
 
-    //Cap at MAX_FPS (60) FPS and delay the uneeded time
-  //}
-}
+  }
