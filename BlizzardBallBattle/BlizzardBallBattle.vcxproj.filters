@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Game\ExternalClasses">
       <UniqueIdentifier>{e82661f2-3fcd-4c6c-b4b1-85c047b50cbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Scenes">
+      <UniqueIdentifier>{d6c07c4c-3ac9-4e70-bb95-13f7bee98f58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,9 +105,6 @@
     <ClCompile Include="Engine\External\Math\Vector2.cpp">
       <Filter>Source Files\Engine\External\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Manager\InputManager.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Battler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,29 +141,41 @@
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.cpp">
-      <Filter>Source Files\Engine\Component\Networking</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.cpp">
-      <Filter>Source Files\Engine\Component\Networking</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Transform.cpp">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Tile.cpp">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Sprite.cpp">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\SpriteSheet.cpp">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Manager\NetworkingManagerTemp.cpp">
+    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\Example.cpp">
+    <ClCompile Include="Engine\Component\Networking\Receiver.cpp">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Networking\Sender.cpp">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\NetworkingTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\Tile.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\SpriteSheet.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\Sprite.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\ExternalClasses\Example.cpp">
       <Filter>Source Files\Game\ExternalClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Render\Renderer.cpp">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Render\TileRenderer.cpp">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\InputManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,30 +230,6 @@
     <ClInclude Include="Engine\External\Math\Vector2.h">
       <Filter>Source Files\Engine\External\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Battler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FBORenderTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLHeaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HelperFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SharedConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Manager\MessageManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
@@ -254,43 +242,55 @@
     <ClInclude Include="AI.h">
       <Filter>Source Files\Game\AI</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.h">
-      <Filter>Source Files\Engine\Component\Networking</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.h">
-      <Filter>Source Files\Engine\Component\Networking</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Transform.h">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\SpriteSheet.h">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Tile.h">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\TileSheetInfo.h">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\ISprite.h">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Sprite.h">
-      <Filter>Source Files\Engine\External\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\TransformState.h">
-      <Filter>Source Files\Engine\External</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Manager\NetworkingManagerTemp.h">
+    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\Example.h">
+    <ClInclude Include="Engine\Component\Networking\Receiver.h">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Networking\Sender.h">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\NetworkingTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\Tile.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\SpriteSheet.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\TileSheetInfo.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\ISprite.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\Sprite.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ExternalClasses\Example.h">
       <Filter>Source Files\Game\ExternalClasses</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\UserDefinedRenderLayers.h">
+    <ClInclude Include="Game\ExternalClasses\UserDefinedRenderLayers.h">
       <Filter>Source Files\Game\ExternalClasses</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\MatchManager.h">
+    <ClInclude Include="Engine\Component\Render\Renderer.h">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Render\TileRenderer.h">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\TransformState.h">
+      <Filter>Source Files\Engine\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Battler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

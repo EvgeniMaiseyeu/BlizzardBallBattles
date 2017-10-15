@@ -1,5 +1,8 @@
 #include "Player.h"
 #include "Sprite.h"
+#include "SpriteRenderer.h"
+#include "Transform.h"
+#include "InputManager.h"
 
 Player::Player(Shader* shader, GLuint textureBufferID) {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
@@ -10,7 +13,7 @@ Player::Player(Shader* shader, GLuint textureBufferID) {
 }
 
 //Will be called every frame
-void Player::Update(float timeDelta) {
+void Player::Update(int timeDelta) {
 	InputManager* inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(SDLK_a)) {
 		PressedDown();
