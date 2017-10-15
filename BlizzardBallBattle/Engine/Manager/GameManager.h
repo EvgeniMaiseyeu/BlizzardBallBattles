@@ -4,11 +4,12 @@
 #include "GLHeaders.h"
 #include "GameObject.h"
 #define GL3_PROTOTYPES 1
+#include "Scene.h"
 class GameManager 
 {
 public:
    GameManager();
-   void BeginLoop();
+   void BeginLoop(Scene* scene);
    void EndLoop();
    static GameManager* GetInstance();
 

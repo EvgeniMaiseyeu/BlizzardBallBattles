@@ -1,4 +1,5 @@
 #include "SpriteRendererManager.h"
+#include <iostream>
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;

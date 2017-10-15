@@ -19,7 +19,7 @@ GameManager::GameManager() {
  
 }
  
-void GameManager::BeginLoop()
+void GameManager::BeginLoop(Scene* scene)
 {
     lastTime = SDL_GetTicks();
     while (!breakLoop)
@@ -28,7 +28,9 @@ void GameManager::BeginLoop()
         int ticks = curTime - lastTime;
         lastTime = curTime;
         Update(ticks);
+        scene->OnUpdate();
     }
+    scene->OnEnd();
 }
  
 void GameManager::Update(int ticks)
