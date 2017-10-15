@@ -15,7 +15,7 @@ Player::Player(Shader* shader, GLuint textureBufferID) {
 //Will be called every frame
 void Player::Update(int timeDelta) {
 	InputManager* inputManager = InputManager::GetInstance();
-	if (inputManager->onKey(SDLK_a)) {
+	if (inputManager->onKey(SDLK_s)) {
 		PressedDown();
 	}
 	inputManager = InputManager::GetInstance();

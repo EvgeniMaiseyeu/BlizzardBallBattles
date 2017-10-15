@@ -156,6 +156,15 @@
     <ClCompile Include="Game\Managers\MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheetAnimationTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagingTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -268,6 +277,18 @@
     </ClInclude>
     <ClInclude Include="Game\Managers\MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheetAnimationTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MessagingTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.h">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

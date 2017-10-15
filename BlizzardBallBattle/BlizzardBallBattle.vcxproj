@@ -159,6 +159,9 @@
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MessagingTestScene.cpp" />
+    <ClCompile Include="PlayerTestScene.cpp" />
+    <ClCompile Include="SpriteSheetAnimationTestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
@@ -198,6 +201,10 @@
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h" />
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
+    <ClInclude Include="MessagingTestScene.h" />
+    <ClInclude Include="PlayerTestScene.h" />
+    <ClInclude Include="Scenes.h" />
+    <ClInclude Include="SpriteSheetAnimationTestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp" />
