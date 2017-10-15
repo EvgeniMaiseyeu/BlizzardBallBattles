@@ -11,6 +11,7 @@ class Battler :
 {
 public:
 	int teamID;
+	float moveSpeed;
 	Battler(int team, Shader* shader, GLuint textureBufferID);
 	~Battler();
 	//TODO: Implement vectors
@@ -18,6 +19,7 @@ public:
 	//void Face(Vector2 position);
 	//void TurnTo(Vector2 position);
 	void MoveTo(GameObject* gameObject);
+	void Move(Vector2 position);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
 	void ThrowSnowball();

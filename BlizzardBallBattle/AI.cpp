@@ -31,15 +31,20 @@ GameObject* AI::GetTarget()
 
 void AI::EngageTarget()
 {
-	int targetPosY = target->GetComponent<Transform*>()->getY();
-	int myPosY = GetGameObject()->GetComponent<Transform*>()->getY();
+	float targetPosY = target->GetComponent<Transform*>()->getY();
+	float myPosY = GetGameObject()->GetComponent<Transform*>()->getY();
 
 	// 2D Engage Target
 	//int myPosX = GetGameObject()->GetComponent<Transform>().getX();
 	//int targetPosX = target->GetComponent<Transform>().getX();
 	//Vector2 posDiff = Vector2((targetPosX - myPosX), (targetPosY - myPosY));
 	
-	int posDiffY = targetPosY - myPosY;
+	float posDiffY = targetPosY - myPosY;
+	Vector2 movePosition = Vector2(GetGameObject()->GetComponent<Transform*>()->getX, myPosY);
 
+	// TODO:: Add time.DeltaTime to this
+	movePosition.setY(movePosition.getY * myBattler->moveSpeed);
+
+	myBattler->Move(movePosition);
 }
 

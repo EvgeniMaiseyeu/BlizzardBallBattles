@@ -8,7 +8,7 @@ Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(
 	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
 	renderer->SetActiveShader(shader);
 	renderer->SetActiveTexture(textureBufferID);
-
+	moveSpeed = 1;
 }
 
 Battler::~Battler()
@@ -19,6 +19,11 @@ Battler::~Battler()
 void Battler::MoveTo(GameObject* gameObject)
 {
 
+}
+
+void Battler::Move(Vector2 position)
+{
+	GetComponent<Transform*>()->setPosition(position.getX, position.setY);
 }
 
 void Battler::Face(GameObject* gameObject)
