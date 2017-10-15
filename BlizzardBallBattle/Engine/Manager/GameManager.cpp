@@ -3,7 +3,8 @@
 GameManager::GameManager() 
 {
     SpriteRendererManager::GetInstance();
-	MatchManager::GetInstance()->StartGame();
+    MatchManager::GetInstance()->StartGame();
+    
 }
 
 void GameManager::Update(int ticks) 

@@ -81,7 +81,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> networking
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -130,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Battler.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.cpp" />
     <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Sprite.cpp" />
@@ -144,15 +149,27 @@
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />
     <ClCompile Include="Engine\Component\Physics.cpp" />
+=======
+    <ClCompile Include="Engine\Manager\InputManager.cpp" />
+    <ClCompile Include="MatchManager.cpp" />
+    <ClCompile Include="Engine\Component\Component.cpp" />
+    <ClCompile Include="Engine\Component\GameObject.cpp" />
+>>>>>>> networking
     <ClCompile Include="Engine\Component\Render\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Component\Transform.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\External\HelperFunctions.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Engine\External\Math\Vector2.cpp" />
     <ClCompile Include="Engine\External\Render\Shader.cpp" />
     <ClCompile Include="Engine\External\Render\ShaderFactory.cpp" />
     <ClCompile Include="Engine\Manager\GameManager.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
+=======
+    <ClCompile Include="Engine\External\Render\Shader.cpp" />
+    <ClCompile Include="Engine\External\Render\ShaderFactory.cpp" />
+    <ClCompile Include="Engine\Manager\GameManager.cpp" />
+>>>>>>> networking
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp" />
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />
@@ -161,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="Battler.h" />
+<<<<<<< HEAD
     <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.h" />
     <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\ISprite.h" />
@@ -179,12 +197,20 @@
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\GameObject.h" />
     <ClInclude Include="Engine\Component\Physics.h" />
+=======
+    <ClInclude Include="MatchManager.h" />
+    <ClInclude Include="Engine\Component\Component.h" />
+    <ClInclude Include="Engine\Component\GameObject.h" />
+>>>>>>> networking
     <ClInclude Include="Engine\Component\Render\SpriteRenderer.h" />
     <ClInclude Include="Engine\Component\Transform.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\External\GLHeaders.h" />
     <ClInclude Include="Engine\External\HelperFunctions.h" />
+<<<<<<< HEAD
     <ClInclude Include="Engine\External\Math\Vector2.h" />
+=======
+>>>>>>> networking
     <ClInclude Include="Engine\External\Render\FBORenderTexture.h" />
     <ClInclude Include="Engine\External\Render\Shader.h" />
     <ClInclude Include="Engine\External\Render\ShaderFactory.h" />
@@ -192,6 +218,7 @@
     <ClInclude Include="Engine\Manager\GameManager.h" />
     <ClInclude Include="Engine\Manager\InputManager.h" />
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h" />
+<<<<<<< HEAD
     <ClInclude Include="FBORenderTexture.h" />
     <ClInclude Include="GLHeaders.h" />
     <ClInclude Include="HelperFunctions.h" />
@@ -201,6 +228,20 @@
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
   </ItemGroup>
+=======
+    <ClInclude Include="Game\Components\ComponentTemplate.h" />
+    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Character.bmp" />
+    <Image Include="Assets\Character.png">
+      <DeploymentContent>true</DeploymentContent>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment_shader.fs" />
+  </ItemGroup>
+>>>>>>> networking
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,10 +1,11 @@
 #include "Player.h"
+#include "Sprite.h"
 
 Player::Player(Shader* shader, GLuint textureBufferID) {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
 	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
 	renderer->SetActiveShader(shader);
-	renderer->SetActiveTexture(textureBufferID);
+	renderer->SetActiveSprite(new Sprite(textureBufferID));
 	
 }
 
