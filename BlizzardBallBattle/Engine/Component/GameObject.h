@@ -56,7 +56,7 @@ public:
        return components.count(GetClassName<T>()) > 0;
    }
 
-   void Update(int ticks);
+   virtual void Update(int ticks);
    
    ~GameObject();
 

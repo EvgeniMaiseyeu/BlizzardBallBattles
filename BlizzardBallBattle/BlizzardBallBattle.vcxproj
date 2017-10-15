@@ -81,7 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\Managers;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -128,19 +128,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AI.cpp" />
-    <ClCompile Include="Battler.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Sprite.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\SpriteSheet.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Tile.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Manager\NetworkingManagerTemp.cpp" />
-    <ClCompile Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\Example.cpp" />
+    <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
+    <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
+    <ClCompile Include="Engine\External\Render\Sprite.cpp" />
+    <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
+    <ClCompile Include="Engine\External\Render\Tile.cpp" />
+    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp" />
+    <ClCompile Include="Game\Components\AI.cpp" />
+    <ClCompile Include="Game\ExternalClasses\Example.cpp" />
+    <ClCompile Include="Engine\Component\Render\Renderer.cpp" />
+    <ClCompile Include="Engine\Component\Render\TileRenderer.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="Engine\Manager\MessageManager.cpp" />
+    <ClCompile Include="Game\GameObjects\Battler.cpp" />
     <ClCompile Include="Game\GameObjects\Player.cpp" />
-    <ClCompile Include="MatchManager.cpp" />
+    <ClCompile Include="Game\Managers\MatchManager.cpp" />
+    <ClCompile Include="Game\Scenes\NetworkingTestScene.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
     <ClCompile Include="Engine\Component\GameObject.cpp" />
     <ClCompile Include="Engine\Component\Physics.cpp" />
@@ -152,30 +155,31 @@
     <ClCompile Include="Engine\External\Render\Shader.cpp" />
     <ClCompile Include="Engine\External\Render\ShaderFactory.cpp" />
     <ClCompile Include="Engine\Manager\GameManager.cpp" />
-    <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp" />
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AI.h" />
-    <ClInclude Include="Battler.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Receiver.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Component\Networking\Sender.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\ISprite.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Sprite.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\SpriteSheet.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\Tile.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\Render\TileSheetInfo.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\External\TransformState.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Engine\Manager\NetworkingManagerTemp.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\Example.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\Game\ExternalClasses\UserDefinedRenderLayers.h" />
-    <ClInclude Include="C:\Users\carsonroscoe\Documents\BlizzardBallBattles\BlizzardBallBattle\MatchManager.h" />
+    <ClInclude Include="Engine\Component\Networking\Receiver.h" />
+    <ClInclude Include="Engine\Component\Networking\Sender.h" />
+    <ClInclude Include="Engine\External\Render\ISprite.h" />
+    <ClInclude Include="Engine\External\Render\Sprite.h" />
+    <ClInclude Include="Engine\External\Render\SpriteSheet.h" />
+    <ClInclude Include="Engine\External\Render\Tile.h" />
+    <ClInclude Include="Engine\External\Render\TileSheetInfo.h" />
+    <ClInclude Include="Engine\External\TransformState.h" />
+    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h" />
+    <ClInclude Include="Engine\Component\Render\Renderer.h" />
+    <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
+    <ClInclude Include="Game\Components\AI.h" />
+    <ClInclude Include="Game\ExternalClasses\Example.h" />
+    <ClInclude Include="Game\ExternalClasses\UserDefinedRenderLayers.h" />
+    <ClInclude Include="Game\GameObjects\Battler.h" />
     <ClInclude Include="Game\GameObjects\Player.h" />
-    <ClInclude Include="MatchManager.h" />
+    <ClInclude Include="Game\Managers\MatchManager.h" />
+    <ClInclude Include="Game\Scenes\NetworkingTestScene.h" />
     <ClInclude Include="Engine\Component\Component.h" />
     <ClInclude Include="Engine\Component\GameObject.h" />
     <ClInclude Include="Engine\Component\Physics.h" />
@@ -192,12 +196,6 @@
     <ClInclude Include="Engine\Manager\GameManager.h" />
     <ClInclude Include="Engine\Manager\InputManager.h" />
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h" />
-    <ClInclude Include="FBORenderTexture.h" />
-    <ClInclude Include="GLHeaders.h" />
-    <ClInclude Include="HelperFunctions.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="SharedConstants.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
   </ItemGroup>

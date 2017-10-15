@@ -8,6 +8,6 @@ protected:
 
 public:
     Renderer(GameObject* gameObject);
-    int SetLayer(int newLayer);
+    void SetLayer(int newLayer);
     int GetLayer();
 };
