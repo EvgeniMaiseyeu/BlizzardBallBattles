@@ -1,15 +1,9 @@
 #include "Player.h"
-#include "Sprite.h"
-#include "SpriteRenderer.h"
-#include "Transform.h"
 #include "InputManager.h"
+#include "Battler.h"
+#include "Transform.h"
 
-Player::Player(Shader* shader, GLuint textureBufferID) {
-	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
-	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
-	renderer->SetActiveShader(shader);
-	renderer->SetActiveSprite(new Sprite(textureBufferID));
-	
+Player::Player(GameObject* gameObject) : Component(gameObject) {
 }
 
 //Will be called every frame
@@ -35,28 +29,35 @@ void Player::Update(int timeDelta) {
 }
 
 void Player::PressedDown() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0, -0.2f);
+	//Transform* transform = GetGameObject()->GetComponent<Transform*>();
+	//transform->addTranslation(0, -0.2f);
+
+	//Vector2* move = &Vector2(0, -0.2f);
+	Battler* myBattler = (Battler*)GetGameObject();
+	myBattler->Move(0, -0.2f);
 }
 
 void Player::PressedRight() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0.2f, 0);
-	
+	//Transform* transform = GetGameObject()->GetComponent<Transform*>();
+	//transform->addTranslation(0.2f, 0);
 
+	Battler* myBattler = (Battler*)GetGameObject();
+	myBattler->Move(0.2f, 0);
 }
 
 void Player::PressedUp() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(0, 0.2f);
-	
+	//Transform* transform = GetGameObject()->GetComponent<Transform*>();
+	//transform->addTranslation(0, 0.2f);
 
+	Battler* myBattler = (Battler*)GetGameObject();
+	myBattler->Move(0, 0.2f);
 }
 
 void Player::PressedLeft() {
-	Transform* transform = (Transform*)GetComponent<Transform*>();
-	transform->addTranslation(-0.2f, 0);
-	
+	//Transform* transform = GetGameObject()->GetComponent<Transform*>();
+	//transform->addTranslation(-0.2f, 0);
 
+	Battler* myBattler = (Battler*)GetGameObject();
+	myBattler->Move(-0.2f, 0);
 }
 

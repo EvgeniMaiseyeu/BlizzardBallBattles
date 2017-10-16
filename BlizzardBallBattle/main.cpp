@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
-
   RunGame();
   SpriteRendererManager::GetInstance()->Cleanup();
   delete(SpriteRendererManager::GetInstance());
@@ -26,10 +25,12 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  MatchManager::GetInstance()->StartGame();
 
-  PlayerTestScene* testScene = new PlayerTestScene();
+  SceneTemplate* testScene = new SceneTemplate();
   testScene->OnStart();
-  
+
+  //PlayerTestScene* testScene = new PlayerTestScene();
+  //testScene->OnStart();
+  //
   GameManager::GetInstance()->BeginLoop(testScene);
 }

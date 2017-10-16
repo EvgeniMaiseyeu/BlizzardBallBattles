@@ -3,11 +3,11 @@
 #include "GameObject.h"
 #include "Shader.h"
 
-class Player : public GameObject {
+class Player : public Component {
 private:
 
 public:
-	Player(Shader* shader, GLuint textureBufferID);
+	Player(GameObject* gameObject);
 	void PressedLeft();
 	void PressedRight();
 	void PressedUp();

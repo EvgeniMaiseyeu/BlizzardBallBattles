@@ -156,13 +156,16 @@
     <ClCompile Include="Game\Managers\MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTestScene.cpp">
+    <ClCompile Include="Game\Scenes\MessagingTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteSheetAnimationTestScene.cpp">
+    <ClCompile Include="Game\Scenes\PlayerTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="MessagingTestScene.cpp">
+    <ClCompile Include="Game\Scenes\SceneTemplate.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,16 +281,19 @@
     <ClInclude Include="Game\Managers\MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTestScene.h">
+    <ClInclude Include="Game\Scenes\MessagingTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteSheetAnimationTestScene.h">
+    <ClInclude Include="Game\Scenes\PlayerTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="MessagingTestScene.h">
+    <ClInclude Include="Game\Scenes\Scenes.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes.h">
+    <ClInclude Include="Game\Scenes\SceneTemplate.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
