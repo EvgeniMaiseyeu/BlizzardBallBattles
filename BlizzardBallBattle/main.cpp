@@ -93,26 +93,26 @@ void RunGame()
 
   //fkfkfkfkfkfkfkfkfkCHENNNNNNNNNNNNNNNNNNNNNNNNNNNNN       玩家就是一个图片，雪球也可以用一样的代码弄。
   //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-  chensPlayer1 = new Player(&ourShader, texture);
+  chensPlayer1 = new Player(&ourShader, texture, SDLK_a, SDLK_d, SDLK_w, SDLK_s);
   Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
   transform->setPosition(-7, 2);
   InputManager* inputManager = InputManager::GetInstance();
   transform->setScale(3.0f);
 
-  snowBall1 = new Player(&ourShader, iceTexture);
+  snowBall1 = new Player(&ourShader, iceTexture, SDLK_a, SDLK_d, SDLK_w, SDLK_s);
   transform = (Transform*)snowBall1->GetComponent<Transform*>();
   transform->setPosition(-7, 0);
   inputManager = InputManager::GetInstance();
   transform->setScale(1.0f);
 
   //GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
-  chensPlayer2 = new Player(&ourShader, texture2);
+  chensPlayer2 = new Player(&ourShader, texture2, SDLK_j, SDLK_l, SDLK_i, SDLK_k);
   transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
   transform->setPosition(10, 2);
   inputManager = InputManager::GetInstance();
   transform->setScale(3.0f);
 
-  snowBall2 = new Player(&ourShader, iceTexture);
+  snowBall2 = new Player(&ourShader, iceTexture, SDLK_j, SDLK_l, SDLK_i, SDLK_k);
   transform = (Transform*)snowBall2->GetComponent<Transform*>();
   transform->setPosition(10, 0);
   inputManager = InputManager::GetInstance();
@@ -202,7 +202,7 @@ bool HandlePolledEvent(SDL_Event event) {
   //Need state machine to keeep track of proper Pressed/Held/Release states, this event could update them
   
 
-  if (event.type == SDL_KEYDOWN)
+ /* if (event.type == SDL_KEYDOWN)
   {
     switch (event.key.keysym.sym)
     {
@@ -226,25 +226,25 @@ bool HandlePolledEvent(SDL_Event event) {
 		snowBall1->PressedRight();
 		break;
 	case SDLK_i: //When W is pressed   这里是怎样移动玩家
-		chensPlayer2->PressedUp();
-		snowBall2->PressedUp();
+		chensPlayer2->PressedUp1();
+		snowBall2->PressedUp1();
 		break;
 	case SDLK_j: //When A is pressed
-		chensPlayer2->PressedLeft();
-		snowBall2->PressedLeft();
+		chensPlayer2->PressedLeft1();
+		snowBall2->PressedLeft1();
 		break;
 	case SDLK_k:
-		chensPlayer2->PressedDown();
-		snowBall2->PressedDown();
+		chensPlayer2->PressedDown1();
+		snowBall2->PressedDown1();
 		break;
 	case SDLK_l:
-		chensPlayer2->PressedRight();
-		snowBall2->PressedRight();
+		chensPlayer2->PressedRight1();
+		snowBall2->PressedRight1();
 		break;
     default:
       break;
     }
-  }
+  }*/
   
   return continueGameLoop;
 }
