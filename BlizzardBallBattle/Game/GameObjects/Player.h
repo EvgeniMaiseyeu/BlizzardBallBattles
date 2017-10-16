@@ -12,18 +12,16 @@ private:
 	SDL_Keycode rightKey;
 	SDL_Keycode upKey;
 	SDL_Keycode downKey;
+	float distance;
+
 	
 public:
-	Player(Shader* shader, GLuint textureBufferID, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down);
+	Player(Shader* shader, GLuint textureBufferID, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down);
 	//void setKeys(leftKey, rightKey, downKey, upKey)
 	void PressedLeft();
 	void PressedRight();
 	void PressedUp();
 	void PressedDown();
-	//void PressedLeft1();
-	//void PressedRight1();
-	//void PressedUp1();
-	//void PressedDown1();
 	void Update(float timeDelta);
 };
 
