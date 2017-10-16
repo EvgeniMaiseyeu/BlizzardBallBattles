@@ -46,28 +46,24 @@ void PlayerTestScene::OnStart() {
 	//transform->setPosition(-7, 2);
 	//InputManager* inputManager = InputManager::GetInstance();
 	//transform->setScale(3.0f);
-
+//
 	//snowBall1 = new Player(ourShader, iceTexture);
 	//transform = (Transform*)snowBall1->GetComponent<Transform*>();
 	//transform->setPosition(-7, 0);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(1.0f);
-
-	////GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
+//
 	//chensPlayer2 = new Player(ourShader, texture2);
 	//transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
 	//transform->setPosition(10, 2);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(3.0f);
-
+//
 	//snowBall2 = new Player(ourShader, iceTexture);
 	//transform = (Transform*)snowBall2->GetComponent<Transform*>();
 	//transform->setPosition(10, 0);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(1.0f);
-
-
-	std::cout << "Ending NetworkingTestScene Setup" << std::endl;
 }
 
 void PlayerTestScene::OnEnd() {

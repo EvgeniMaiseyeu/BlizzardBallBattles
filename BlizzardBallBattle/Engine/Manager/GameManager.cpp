@@ -63,8 +63,9 @@ void GameManager::EndLoop()
  
 void GameManager::FPSThrottle(int ticks) {
     int delay = 1000 / MAX_FPS - ticks;
-    if (delay > 0)
+    if (delay > 0) {
         SDL_Delay(delay);
+    }
 }
  
 bool GameManager::IsQuitRequested(SDL_Event event)

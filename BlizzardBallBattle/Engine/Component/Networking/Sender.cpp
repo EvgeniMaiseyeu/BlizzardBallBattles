@@ -12,6 +12,5 @@ void Sender::SendUpdate() { //This may be an issue, passing pointers to things o
     payload["z"] = std::to_string(transform->getZ());
     payload["rotation"] = std::to_string(transform->getRotation());
     payload["scale"] = std::to_string(transform->getScale());
-    std::cout << "PLAYER1::SENDING::ID : " << this->ID + "::X : " << payload["x"] << std::endl;
     NetworkingManagerTemp::GetInstance()->PrepareMessageForSending(this->ID + "|UPDATE", payload);
 }
