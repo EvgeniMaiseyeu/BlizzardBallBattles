@@ -17,14 +17,14 @@ private:
 	std::vector<Battler*> teamTwo;
 	std::vector<AI*> aiUnits;
 	const int TEAM_SIZE = 20;
-	void CreateMap(Shader *shader);
-	void CreateBattlers(Shader *shader);
 public:
 	static MatchManager* GetInstance();
 	MatchManager();
 	~MatchManager();
 	void StartGame();
 	bool RegisterCharacter(Battler *character);
+	void CreateMap(Shader *shader, GLuint snowTexture, GLuint iceTexture);
+	void CreateBattlers(Shader *shader, GLuint characterTexture, GLuint spriteSheetTexture);
 	std::vector<Battler*> GetTeam(int teamID);
 };
 #endif

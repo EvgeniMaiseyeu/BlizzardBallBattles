@@ -1,19 +1,21 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Component.h"
+#include "Renderer.h"
 #include "Shader.h"
+#include "ISprite.h"
 
-class SpriteRenderer : public Component {
+class SpriteRenderer : public Renderer {
 private:
   GLuint textureBufferID;
   Shader* activeShader;
+  ISprite* activeSprite;
 
 public:
     SpriteRenderer(GameObject* gameObject);
     void Render();
     void SetActiveShader(Shader* shader);
-    void SetActiveTexture(GLuint textureBufferID);
+    void SetActiveSprite(ISprite* sprite);
     Shader* GetShader();
-    GLuint GetTextureBufferID();
+    ISprite* GetSprite();
 };

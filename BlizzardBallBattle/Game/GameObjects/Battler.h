@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "SpriteRenderer.h"
+#include "Vector2.h"
 
 class Battler :
 	public GameObject
@@ -14,12 +15,12 @@ public:
 	float moveSpeed;
 	Battler(int team, Shader* shader, GLuint textureBufferID);
 	~Battler();
-	//TODO: Implement vectors
-	//void MoveTo(Vector2 position) 
-	//void Face(Vector2 position);
-	//void TurnTo(Vector2 position);
+
+	void MoveTo(Vector2* position);
+	void Face(Vector2* position);
+	void TurnTo(Vector2* position);
+	void Move(float x, float y);
 	void MoveTo(GameObject* gameObject);
-	void Move(Vector2 position);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
 	void ThrowSnowball();

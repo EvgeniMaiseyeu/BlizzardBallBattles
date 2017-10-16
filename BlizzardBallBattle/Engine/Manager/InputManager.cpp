@@ -12,18 +12,21 @@ bool InputManager::onKeyPressed(SDL_Keycode code) {
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
     if (it != keys.end())
         return it->second == InputManager::KeyAction::PRESSED;
+	return false;
 }
 
 bool InputManager::onKey(SDL_Keycode code) {
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
     if (it != keys.end()) 
         return it->second != InputManager::KeyAction::NONE;
+	return false;
 }
 
 bool InputManager::onKeyReleased(SDL_Keycode code) {
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
     if (it != keys.end())
         return it->second == InputManager::KeyAction::RELEASED;
+	return false;
 }
 
 InputManager::KeyAction InputManager::getKeyState(SDL_Keycode code) {

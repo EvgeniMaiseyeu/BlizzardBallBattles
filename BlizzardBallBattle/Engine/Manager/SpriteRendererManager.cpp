@@ -1,4 +1,5 @@
 #include "SpriteRendererManager.h"
+#include <iostream>
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
@@ -25,11 +26,17 @@ void SpriteRendererManager::Update(int ticks) {
 
 SpriteRendererManager::SpriteRendererManager() {
     quadVertices = {
-      //Position           //Texture Coordinates
-      0.5f, 0.5f, 0.0f,    1.0f, 1.0f,  //Top Right
-      0.5f, -0.5f, 0.0f,   1.0f, 0.0f,  //Bottom Right
-      -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,  //Bottom Left
-      -0.5f, 0.5f, 0.0f,   0.0f, 1.0f   //Top Left
+      //Position         
+      0.5f, 0.5f, 0.0f,  //Top Right
+      0.5f, -0.5f, 0.0f, //Bottom Right
+      -0.5f, -0.5f, 0.0f,//Bottom Left
+      -0.5f, 0.5f, 0.0f, //Top Left
+    };
+    textCoordinates = {
+          1.0f, 1.0f,  //Top Right
+          1.0f, 0.0f,  //Bottom Right
+          0.0f, 0.0f,  //Bottom Left
+          0.0f, 1.0f   //Top Left
     };
     indices = {
       0, 1, 3, // First Triangle
@@ -117,6 +124,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
+    glGenBuffers(1, &CBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices.data(), GL_STATIC_DRAW);
@@ -124,13 +132,15 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
     //4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
     //position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
     //color attribute
     //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
     //glEnableVertexAttribArray(1);
     //textture coordinate attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glBindBuffer(GL_ARRAY_BUFFER, CBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textCoordinates), textCoordinates.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(1);
     glBindVertexArray(0); //Unbind BAO
   
@@ -185,34 +195,46 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     return texture;
   }
 
+  bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
+    return lhs->GetGameObject()->GetComponent<Transform*>()->getZ() < rhs->GetGameObject()->GetComponent<Transform*>()->getZ();
+  }
+
   void SpriteRendererManager::Render() {
     //Refresh Screen
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
+    std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
     for (size_t i = 0; i < activeSprites.size(); i++) {
       SpriteRenderer* spriteRenderer = activeSprites[i];
-      spriteRenderer->GetShader()->Use();
-      //Pass in transform
-      GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-      Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
-      glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
+
+      if (IsRenderingLayerEnabled(spriteRenderer->GetLayer())) {
+        spriteRenderer->GetShader()->Use();
+        spriteRenderer->GetSprite()->BindTextCoordinates(CBO);
   
-      //Pass in aspect ratio
-      GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
-      glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+        //Pass in transform
+        GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
+        Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
+    
+        //Pass in aspect ratio
+        GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
+        glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+    
+        //Pass in texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetSprite()->GetTextureBufferID());
+        GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
+        glUniform1i(ourTextureLocation, 0);
   
-      //Pass in texture
-      glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetTextureBufferID());
-      GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
-      glUniform1i(ourTextureLocation, 0);
-      //Bind vertex array
-      glBindVertexArray(VAO);
-      //Draw
-      glDrawArrays(GL_TRIANGLES, 0, 3);
-      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-      glBindVertexArray(0);
-      spriteRenderer->Render();
+        //Bind vertex array
+        glBindVertexArray(VAO);
+        //Draw
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+  
+        //spriteRenderer->Render();
+      }
     }
     SDL_GL_SwapWindow(mainWindow);
   }
@@ -220,5 +242,19 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {
     activeSprites.push_back(sprite);
   }
-  
-  
+
+  void SpriteRendererManager::DisableRenderingLayer(int layer) {
+    disabledLayers.insert(layer);
+  }
+
+  void SpriteRendererManager::EnableRenderingLayer(int layer) {
+    disabledLayers.erase(layer);
+  }
+
+  void SpriteRendererManager::EnableAllRenderingLayers() {
+    disabledLayers.clear();
+  }
+
+  bool SpriteRendererManager::IsRenderingLayerEnabled(int layer) {
+    return disabledLayers.find(layer) == disabledLayers.end();
+  }
