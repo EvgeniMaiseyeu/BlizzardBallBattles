@@ -121,7 +121,7 @@ void NetworkingManager::PollMessagesThread() {
     int result;
     char msg[MAXLEN];
 
-    while(1) { //replace with on connection lost
+    while(socket != NULL) { //replace with on connection lost
 
     if (client != NULL)
         result=SDLNet_TCP_Recv(client, msg, MAXLEN);
@@ -136,6 +136,7 @@ void NetworkingManager::PollMessagesThread() {
     std::string newMsg = msg;
     messageQueue->Push(newMsg);
     }
+    Close();
 }
 
 bool NetworkingManager::GetMessage(std::string &msg) {
