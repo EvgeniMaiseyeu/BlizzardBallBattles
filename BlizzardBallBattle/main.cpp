@@ -139,7 +139,7 @@ void RunGame()
 
     std::string *tmp;
     if (NetworkingManager::GetInstance()->GetMessage(tmp))
-      std::cout << "Message: " << tmp << std::endl;
+      std::cout << "Message: " << *tmp << std::endl;
 
     //Update game
     gameManager->Update(timeDelta);

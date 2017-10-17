@@ -111,7 +111,7 @@ void NetworkingManager::Send(std::string *msg) {
     }
 }
 
-bool NetworkingManager::Receive(std::string *message) {
+bool NetworkingManager::Receive(std::string &message) {
     // receive some text from sock
     //TCPsocket sock;
     #define MAXLEN 1024
@@ -127,13 +127,13 @@ bool NetworkingManager::Receive(std::string *message) {
         // It may be good to disconnect sock because it is likely invalid now.
         return false;
     }
-    message = new std::string(msg);
+    message = msg;
     return true;
 }
 
 void NetworkingManager::PollMessages() {
     receiverThread = std::thread(&NetworkingManager::PollMessagesThread, this);
-    receiverThread.join();
+    receiverThread.detach();
 }
 
 void NetworkingManager::PollMessagesThread() {

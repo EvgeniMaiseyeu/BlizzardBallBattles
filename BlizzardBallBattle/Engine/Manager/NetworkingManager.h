@@ -16,7 +16,7 @@ private:
     bool Host();
     bool Join();
     bool Close();
-    bool Receive(std::string *message);
+    bool Receive(std::string &message);
     void PollMessages();
     void PollMessagesThread();
 
