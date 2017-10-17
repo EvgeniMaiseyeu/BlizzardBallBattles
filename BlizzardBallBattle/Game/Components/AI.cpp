@@ -1,8 +1,9 @@
 #include "AI.h"
 #include "MatchManager.h"
 #include "Vector2.h"
+#include "Transform.h"
 
-AI::AI() : Component(gameObject)
+AI::AI(GameObject* gameObject) : Component(gameObject)
 {
 }
 
@@ -44,7 +45,6 @@ void AI::EngageTarget()
 
 	// TODO:: Add time.DeltaTime to this
 	movePosition.setY(movePosition.getY() * myBattler->moveSpeed);
-
-	myBattler->Move(movePosition);
+	//myBattler->Move(movePosition);
 }
 
