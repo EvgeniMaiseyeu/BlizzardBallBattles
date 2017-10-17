@@ -11,7 +11,7 @@
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+<Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{91828a22-7160-468f-b30b-a3eef79dd11a}</UniqueIdentifier>
@@ -60,6 +60,9 @@
     </Filter>
     <Filter Include="Source Files\Game\Managers">
       <UniqueIdentifier>{a470154a-1115-418d-8881-63db0e5e7242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component\Collider">
+      <UniqueIdentifier>{17b0ccb7-e680-4377-b52d-49a4f9e30b5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Component\Transform.cpp">
       <Filter>Source Files\Engine\Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp">
       <Filter>Source Files\Engine\Component\Networking</Filter>
@@ -167,6 +167,14 @@
     </ClCompile>
     <ClCompile Include="Game\Components\Player.cpp">
       <Filter>Source Files\Game\Components</Filter>
+    <ClCompile Include="Engine\Manager\NetworkingManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Collision\Collider.cpp">
+      <Filter>Source Files\Engine\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\GameScene_Alpha_Networked.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,9 +234,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Component\Transform.h">
       <Filter>Source Files\Engine\Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
-      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Networking\Receiver.h">
       <Filter>Source Files\Engine\Component\Networking</Filter>
@@ -295,6 +300,14 @@
     </ClInclude>
     <ClInclude Include="Game\Components\Player.h">
       <Filter>Source Files\Game\Components</Filter>
+    <ClInclude Include="Engine\Manager\NetworkingManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Collision\Collider.h">
+      <Filter>Source Files\Engine\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\GameScene_Alpha_Networked.h">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

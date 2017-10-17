@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include "MessageManager.h"
+#include "NetworkingManager.h"
  
 GameManager* GameManager::instance;
  
@@ -21,6 +22,7 @@ GameManager::GameManager() {
  
 void GameManager::BeginLoop(Scene* scene)
 {
+	scene->OnStart();
     lastTime = SDL_GetTicks();
     while (!breakLoop)
     {
@@ -33,25 +35,50 @@ void GameManager::BeginLoop(Scene* scene)
     scene->OnEnd();
 }
  
+bool isConnected = false;
+
 void GameManager::Update(int ticks)
 {
  
     //Handle SDL Events
     InputManager::GetInstance()->UpdateKeys();
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         InputManager::GetInstance()->HandlePolledEvent(event);
         breakLoop = IsQuitRequested(event);
     }
+
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
+        NetworkingManager::GetInstance()->CreateHost();
+        isConnected = true;
+      }
+      
+      if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
+        NetworkingManager::GetInstance()->CreateClient();
+        isConnected = true;
+      }
+
+    if (isConnected) {
+        std::string tmp;
+        if (NetworkingManager::GetInstance()->GetMessage(tmp))
+            NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
+    
+        NetworkingManager::GetInstance()->SendQueuedEvents();
+    }
  
     SpriteRendererManager::GetInstance()->Update(ticks);
  
+    
+
     for (std::map<int, GameObject*>::iterator it=gameObjects.begin(); it!=gameObjects.end(); ++it) {
         it->second->Update(ticks);
     }
  
     FPSThrottle(ticks);
  
+
+
     //Temporary place where we update GameObjects
     //player1->GetComponent<Transform *>()->addRotation(0.5f);
 }

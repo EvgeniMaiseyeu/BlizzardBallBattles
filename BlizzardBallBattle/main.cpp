@@ -4,7 +4,7 @@
 #include <iostream>
 #include "GameManager.h"
 #include "SpriteRendererManager.h"
-#include "MatchManager.h"
+#include "GameObject.h"
 #include "Scenes.h"
 
 void RunGame();
@@ -25,11 +25,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-
-  //NetworkingTestScene* testScene = new NetworkingTestScene();
-  //testScene->OnStart();
-  SceneTemplate* testScene = new SceneTemplate();
-  testScene->OnStart();
-  
-  GameManager::GetInstance()->BeginLoop(testScene);
+  GameManager::GetInstance()->BeginLoop(new GameScene_Alpha_Networked());
 }

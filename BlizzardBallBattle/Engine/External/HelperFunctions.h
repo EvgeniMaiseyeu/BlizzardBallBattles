@@ -17,3 +17,5 @@ float getGameLeftX();
 float getGameRightX();
 float getGameTopY();
 float getGameBottomY();
+float getUnitSize();
+float getFullBarSize();

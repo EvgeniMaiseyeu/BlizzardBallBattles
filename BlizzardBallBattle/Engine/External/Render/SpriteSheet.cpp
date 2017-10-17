@@ -1,11 +1,11 @@
 #include "SpriteSheet.h"
 #include <iostream>
 
-SpriteSheet::SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames) {
+SpriteSheet::SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames, int startIndex) {
     this->textureBufferID = textureBufferID;
     this->columnCount = columnCount;
     this->rowCount = rowCount;
-    this->currentIndex = 0;
+    this->currentIndex = startIndex;
     this->skipLastFrames = skipLastFrames;
     ReloadTextCoordinates();
 }
@@ -22,10 +22,6 @@ void SpriteSheet::BindTextCoordinates(GLuint glCBO) {
 GLuint SpriteSheet::GetTextureBufferID() {
     return textureBufferID;
 }
-
-
-//2*2=4
-//0, 1, 2, 3
 
 void SpriteSheet::NextIndex() {
     int maxIndex = columnCount * rowCount - 1;
@@ -60,8 +56,6 @@ void SpriteSheet::ReloadTextCoordinates() {
     float endY = startY - rowPercent;
     startY = 1 - startY;
     endY = 1 - endY;
-    std::cout << "ColumnPercent: " << columnPercent << " RowPercent: " << rowPercent << std::endl;
-    std::cout << currentIndex << " x{" << startX << " : " << endX << "} y{" << startY << " : " << endY << "}" << std::endl;
     textCoordinates = {
         endX, startY,  //Top Right
         endX, endY,    //Bottom Right
