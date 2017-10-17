@@ -47,11 +47,11 @@ void GameManager::Update(int ticks)
         breakLoop = IsQuitRequested(event);
     }
 
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
+    if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
         NetworkingManager::GetInstance()->CreateHost();
       }
       
-      if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
+      if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
         NetworkingManager::GetInstance()->CreateClient();
       }
 
