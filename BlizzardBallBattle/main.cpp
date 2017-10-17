@@ -32,7 +32,7 @@ void RunGame()
   //PlayerTestScene* testScene = new PlayerTestScene();
   //testScene->OnStart();
   
-  NetworkingTestScene* testScene = new NetworkingTestScene();
+  PlayerTestScene* testScene = new PlayerTestScene();
   testScene->OnStart();
 
   GameManager::GetInstance()->BeginLoop(testScene);
