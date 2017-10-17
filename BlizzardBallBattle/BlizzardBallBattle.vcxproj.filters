@@ -34,24 +34,36 @@
     <Filter Include="Source Files\Engine\External\Render">
       <UniqueIdentifier>{ec078cd6-4902-4fab-a4d9-cf10c6de76fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\AI">
-      <UniqueIdentifier>{1e0a9db0-40ad-4421-9a25-de05057c3e1d}</UniqueIdentifier>
+    <Filter Include="Source Files\Game\Components">
+      <UniqueIdentifier>{8238f8b1-e91c-4fca-be94-76d1028719de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Player">
-      <UniqueIdentifier>{9261b64c-90f8-458d-ad33-3d0a7c666370}</UniqueIdentifier>
+    <Filter Include="Source Files\Game\GameObjects">
+      <UniqueIdentifier>{ec13ecbd-5586-4b5a-a5a4-cec6d9049a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\External\Math">
+      <UniqueIdentifier>{9e03b18d-8053-4711-a068-cdc82b0f53f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\External\Math">
+      <UniqueIdentifier>{9e03b18d-8053-4711-a068-cdc82b0f53f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component\Networking">
+      <UniqueIdentifier>{17417113-6419-449b-a2f5-c3f147745385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component\Transform">
+      <UniqueIdentifier>{b29408ea-99f3-4c8e-a1aa-8543cb19d282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\ExternalClasses">
+      <UniqueIdentifier>{e82661f2-3fcd-4c6c-b4b1-85c047b50cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Scenes">
+      <UniqueIdentifier>{d6c07c4c-3ac9-4e70-bb95-13f7bee98f58}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Managers">
-      <UniqueIdentifier>{1ff942b1-dd8e-428f-84d5-714e39781fa9}</UniqueIdentifier>
+      <UniqueIdentifier>{a470154a-1115-418d-8881-63db0e5e7242}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\ComponentTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Component.cpp">
@@ -61,9 +73,6 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\GameObject.cpp">
-      <Filter>Source Files\Engine\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component\Transform.cpp">
       <Filter>Source Files\Engine\Component</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Render\SpriteRenderer.cpp">
@@ -84,26 +93,83 @@
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Components\ComponentTemplate.cpp">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Physics.cpp">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Math\Vector2.cpp">
+      <Filter>Source Files\Engine\External\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\MessageManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjects\Player.cpp">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Transform.cpp">
+      <Filter>Source Files\Engine\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Networking\Receiver.cpp">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Networking\Sender.cpp">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\NetworkingTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\Tile.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\SpriteSheet.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\Sprite.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\ExternalClasses\Example.cpp">
+      <Filter>Source Files\Game\ExternalClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Render\Renderer.cpp">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Render\TileRenderer.cpp">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Manager\InputManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="AI.cpp">
-      <Filter>Source Files\Game\AI</Filter>
+    <ClCompile Include="Game\GameObjects\Battler.cpp">
+      <Filter>Source Files\Game\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Battler.cpp">
-      <Filter>Source Files\Game\Player</Filter>
+    <ClCompile Include="Game\Components\AI.cpp">
+      <Filter>Source Files\Game\Components</Filter>
     </ClCompile>
-    <ClCompile Include="MatchManager.cpp">
+    <ClCompile Include="Game\Managers\MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\MessagingTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\PlayerTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\SceneTemplate.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\ComponentTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Engine.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
@@ -111,9 +177,6 @@
       <Filter>Source Files\Engine\Component</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Component.h">
-      <Filter>Source Files\Engine\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Transform.h">
       <Filter>Source Files\Engine\Component</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Render\SpriteRenderer.h">
@@ -146,27 +209,103 @@
     <ClInclude Include="Engine\Manager\SpriteRendererManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="AI.h">
-      <Filter>Source Files\Game\AI</Filter>
+    <ClInclude Include="Game\Components\ComponentTemplate.h">
+      <Filter>Source Files\Game\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Battler.h">
-      <Filter>Source Files\Game\Player</Filter>
+    <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
+      <Filter>Source Files\Game\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="MatchManager.h">
+    <ClInclude Include="Engine\Component\Physics.h">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Math\Vector2.h">
+      <Filter>Source Files\Engine\External\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\MessageManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjects\Player.h">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Transform.h">
+      <Filter>Source Files\Engine\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Networking\Receiver.h">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Networking\Sender.h">
+      <Filter>Source Files\Engine\Component\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\NetworkingTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\Tile.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\SpriteSheet.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\TileSheetInfo.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\ISprite.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\Sprite.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ExternalClasses\Example.h">
+      <Filter>Source Files\Game\ExternalClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\ExternalClasses\UserDefinedRenderLayers.h">
+      <Filter>Source Files\Game\ExternalClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Render\Renderer.h">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Render\TileRenderer.h">
+      <Filter>Source Files\Engine\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\TransformState.h">
+      <Filter>Source Files\Engine\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjects\Battler.h">
+      <Filter>Source Files\Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\AI.h">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Managers\MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\MessagingTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\PlayerTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\Scenes.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\SceneTemplate.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Character.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Assets\Character.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Character.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragment_shader.fs">
-      <Filter>Source Files</Filter>
-    </None>
+    <None Include="fragment_shader.fs" />
   </ItemGroup>
 </Project>

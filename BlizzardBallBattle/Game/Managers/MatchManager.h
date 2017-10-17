@@ -23,6 +23,8 @@ public:
 	~MatchManager();
 	void StartGame();
 	bool RegisterCharacter(Battler *character);
+	void CreateMap(Shader *shader, GLuint snowTexture, GLuint iceTexture);
+	void CreateBattlers(Shader *shader, GLuint characterTexture, GLuint spriteSheetTexture);
 	std::vector<Battler*> GetTeam(int teamID);
 };
 #endif
