@@ -4,6 +4,9 @@
 Physics::Physics(GameObject* gameObject) : Component(gameObject) {
 	_velocity = new Vector2(0, 0);
 	_aVelocity = new Vector2(0, 0);
+	_drag = 1;
+	_snowDrag = 1;
+	transform = gameObject->GetComponent<Transform*>();
 }
 
 void Physics::setVelocity(Vector2* value) {
@@ -38,8 +41,9 @@ float Physics::getDrag() {
 	return _drag;
 }
 
-void update() {
-	
+void Physics::Update(int ticks) {
+	transform->addX(_velocity->getX() * _drag * _snowDrag * ticks);
+	transform->addY(_velocity->getY() * _drag * _snowDrag * ticks);
 }
 
 Physics::~Physics() {

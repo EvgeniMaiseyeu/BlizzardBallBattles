@@ -69,9 +69,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Component.cpp">
-      <Filter>Source Files\Engine\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Engine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="Engine\Component\Transform.cpp">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp">
       <Filter>Source Files\Engine\Component\Networking</Filter>
     </ClCompile>
@@ -156,20 +150,26 @@
     <ClCompile Include="Game\Managers\MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\Physics.cpp">
+      <Filter>Source Files\Engine\Component\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Component.cpp">
+      <Filter>Source Files\Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagingTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="SpriteSheetAnimationTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="MessagingTestScene.cpp">
-      <Filter>Source Files\Game\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Physics.cpp">
-      <Filter>Source Files\Engine\Component\Physics</Filter>
+    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,9 +230,6 @@
     <ClInclude Include="Engine\Component\Transform.h">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Networking\Receiver.h">
       <Filter>Source Files\Engine\Component\Networking</Filter>
     </ClInclude>
@@ -281,23 +278,26 @@
     <ClInclude Include="Game\Managers\MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTestScene.h">
-      <Filter>Source Files\Game\Scenes</Filter>
+    <ClInclude Include="Engine\Component\Physics.h">
+      <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteSheetAnimationTestScene.h">
-      <Filter>Source Files\Game\Scenes</Filter>
+    <ClInclude Include="PhysicsManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="MessagingTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Scenes.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsManager.h">
-      <Filter>Source Files\Engine\Manager</Filter>
+    <ClInclude Include="SpriteSheetAnimationTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\Physics.h">
-      <Filter>Source Files\Engine\Component\Physics</Filter>
+    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

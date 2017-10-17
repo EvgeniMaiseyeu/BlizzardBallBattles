@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Component.h"
 #include "Vector2.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 class Physics : public Component {
 private:
+	Transform* transform;
 	float _snowDrag; //this is the slow factor from when the player or ai is hit or maybe even weather
 	float _drag; //this is the slow factor for projectiles ( and maybe for players on a different map such as an ice field )
 	Vector2* _velocity;
@@ -25,5 +27,5 @@ public:
 
 	void setDrag(float value);
 	float getDrag();
-	void update();
+	void Update(int ticks);
 };
