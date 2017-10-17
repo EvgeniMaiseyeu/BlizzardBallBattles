@@ -70,7 +70,7 @@ bool NetworkingManager::Join() {
     ip.host = 3232235623;
     ip.port = 5050;
     
-    if(SDLNet_ResolveHost(&ip,"192.168.0.104",9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,IP,9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
@@ -277,4 +277,9 @@ std::map<std::string, void*> NetworkingManager::DeserializeMessage(std::string m
 
     }
     return data;
+}
+
+void NetworkingManager::SetIP(char *ip) {
+    IP = ip;
+    std::cout << ip << std::endl;
 }

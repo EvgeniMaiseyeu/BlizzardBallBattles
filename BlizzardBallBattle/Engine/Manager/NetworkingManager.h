@@ -18,6 +18,7 @@ private:
     ThreadQueue<std::string> *messageQueue;
     std::thread receiverThread;
     std::vector<Message> messagesToSend;
+    char *IP = "127.0.0.1";
 
     TCPsocket socket = NULL;
     TCPsocket client = NULL;
@@ -43,4 +44,5 @@ public:
     void HandleParsingEvents(std::string packet);
     bool IsConnected();
     bool IsHost();
+    void SetIP(char *ip);
 };

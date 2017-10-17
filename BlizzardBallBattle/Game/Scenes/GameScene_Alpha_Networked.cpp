@@ -54,7 +54,7 @@ enum class TileIndex {
 };
 
 void GameScene_Alpha_Networked::OnStart() {
-	isConnected = false();
+	isConnected = false;
 	GenerateBackgroundTiles();
 }
 

@@ -6,6 +6,7 @@
 #include "SpriteRendererManager.h"
 #include "GameObject.h"
 #include "Scenes.h"
+#include "NetworkingManager.h"
 
 void RunGame();
 
@@ -14,6 +15,11 @@ int main(int argc, char *argv[])
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
+
+  if (argc > 1) {
+    NetworkingManager::GetInstance()->SetIP(argv[1]);
+  }
+
   RunGame();
   SpriteRendererManager::GetInstance()->Cleanup();
   delete(SpriteRendererManager::GetInstance());
@@ -25,5 +31,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  GameManager::GetInstance()->BeginLoop(new PlayerTestScene());
+  GameManager::GetInstance()->BeginLoop(new GameScene_Alpha_Networked());
 }
