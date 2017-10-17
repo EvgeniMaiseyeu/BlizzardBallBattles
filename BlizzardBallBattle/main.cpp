@@ -137,9 +137,9 @@ void RunGame()
       NetworkingManager::GetInstance()->Send(new std::string("JUST SO SLIPPERY"));
     }
 
-    std::string *tmp;
+    std::string tmp;
     if (NetworkingManager::GetInstance()->GetMessage(tmp))
-      std::cout << "Message: " << *tmp << std::endl;
+      std::cout << "Message: " << tmp << std::endl;
 
     //Update game
     gameManager->Update(timeDelta);

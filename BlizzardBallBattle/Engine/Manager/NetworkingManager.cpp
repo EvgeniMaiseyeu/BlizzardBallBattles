@@ -10,7 +10,7 @@ NetworkingManager* NetworkingManager::GetInstance() {
 
 NetworkingManager::NetworkingManager() {
     SDLNet_Init();
-    messageQueue = new ThreadQueue<std::string*>();
+    messageQueue = new ThreadQueue<std::string>();
 }
 
 bool NetworkingManager::CreateHost() {
@@ -80,7 +80,6 @@ bool NetworkingManager::Join() {
 bool NetworkingManager::Accept() {
     client=SDLNet_TCP_Accept(socket);
     if(!client) {
-        printf("SDLNet_TCP_Accept: %s\n", SDLNet_GetError());
         return false;
     }
     // communicate over new_tcpsock
@@ -102,6 +101,7 @@ void NetworkingManager::Send(std::string *msg) {
     int result,len;
     len = msg->length() + 1;
 
+    std::cout  << "SENDING: " << msg->c_str() << std::endl;
     if (client != NULL)
         result=SDLNet_TCP_Send(client, msg->c_str(), len);
     else
@@ -109,26 +109,6 @@ void NetworkingManager::Send(std::string *msg) {
     if(result<len) {
         printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
     }
-}
-
-bool NetworkingManager::Receive(std::string &message) {
-    // receive some text from sock
-    //TCPsocket sock;
-    #define MAXLEN 1024
-    int result;
-    char msg[MAXLEN];
-
-    if (client != NULL)
-        result=SDLNet_TCP_Recv(client, msg, MAXLEN);
-    else if (socket != NULL)
-        result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
-    if(result<=0) {
-        // An error may have occured, but sometimes you can just ignore it
-        // It may be good to disconnect sock because it is likely invalid now.
-        return false;
-    }
-    message = msg;
-    return true;
 }
 
 void NetworkingManager::PollMessages() {
@@ -148,17 +128,19 @@ void NetworkingManager::PollMessagesThread() {
     else if (socket != NULL)
         result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
     if(result<=0) {
+
         // An error may have occured, but sometimes you can just ignore it
         // It may be good to disconnect sock because it is likely invalid now.
         continue;
     }
-    messageQueue->Push(new std::string(msg));
+    std::string newMsg = msg;
+    messageQueue->Push(newMsg);
     }
 }
 
-bool NetworkingManager::GetMessage(std::string *message) {
+bool NetworkingManager::GetMessage(std::string &msg) {
     if (!messageQueue->IsEmpty()) {
-        messageQueue->Pop(message);
+        messageQueue->Pop(msg);
         return true;
     }
     return false;

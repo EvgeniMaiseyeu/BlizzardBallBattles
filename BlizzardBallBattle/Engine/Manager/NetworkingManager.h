@@ -7,7 +7,7 @@
 class NetworkingManager {
 private:
     static NetworkingManager* instance;
-    ThreadQueue<std::string*> *messageQueue;
+    ThreadQueue<std::string> *messageQueue;
     std::thread receiverThread;
 
     TCPsocket socket = NULL;
@@ -16,7 +16,6 @@ private:
     bool Host();
     bool Join();
     bool Close();
-    bool Receive(std::string &message);
     void PollMessages();
     void PollMessagesThread();
 
@@ -26,5 +25,5 @@ public:
     bool CreateHost();
     bool CreateClient();
     void Send(std::string *msg);
-    bool GetMessage(std::string *message);
+    bool GetMessage(std::string &msg);
 };
