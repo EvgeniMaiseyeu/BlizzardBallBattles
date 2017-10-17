@@ -2,7 +2,6 @@
 
 #include <string>
 #include "GameObject.h"
-#include "NetworkingManagerTemp.h"
 #include "Transform.h"
 #include <iostream>
 
@@ -15,4 +14,6 @@ private:
 public:
     Sender(GameObject* gameObject, std::string ID);
     void SendUpdate();
+    void SendNetworkMessage(std::string messageKey,  std::map<std::string, std::string> payload);
+    virtual void Update(int ticks);
 };

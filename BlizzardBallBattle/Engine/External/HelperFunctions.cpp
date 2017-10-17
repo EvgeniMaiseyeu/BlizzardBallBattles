@@ -49,3 +49,11 @@ float getGameHeight() {
 float getGameWidth() {
   return GAME_WIDTH;
 }
+
+float getUnitSize() {
+  return SCREEN_WIDTH / GAME_WIDTH;
+}
+
+float getFullBarSize() {
+  return SCREEN_HEIGHT - (((int)getGameHeight()) * getUnitSize());
+}
