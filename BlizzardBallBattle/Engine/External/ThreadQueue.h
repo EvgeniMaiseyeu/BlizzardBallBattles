@@ -13,7 +13,6 @@ public:
     void Push(T const &data) {
         std::unique_lock<std::mutex> lock (mutex);
         queue.push(data);
-        std::cout << "RECEIVING: " << data << std::endl;
         lock.unlock();
     }
 
