@@ -38,9 +38,6 @@ bool NetworkingManager::Host() {
     int timeoutTime = SDL_GetTicks();
     const int TIMEOUT = 60000;
 
-    ip.host = 2130706433;
-    ip.port = 5050;
-
     if(SDLNet_ResolveHost(&ip,NULL,9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
@@ -66,9 +63,6 @@ bool NetworkingManager::Host() {
 
 bool NetworkingManager::Join() {
     IPaddress ip;
-
-    ip.host = 3232235623;
-    ip.port = 5050;
     
     if(SDLNet_ResolveHost(&ip,IP,9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
