@@ -24,7 +24,6 @@ void NetworkingTestScene::OnStart() {
     SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
     spriteRenderer->SetActiveSprite((ISprite*)new Sprite(texture));
     spriteRenderer->SetActiveShader(ourShader);
-    player1->GetComponent<Transform*>()->setScale(5.0f);
   
     player2 = new GameObject();
     player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
