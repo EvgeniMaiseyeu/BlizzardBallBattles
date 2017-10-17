@@ -34,8 +34,6 @@ void GameManager::BeginLoop(Scene* scene)
     }
     scene->OnEnd();
 }
- 
-bool isConnected = false;
 
 void GameManager::Update(int ticks)
 {
@@ -51,15 +49,13 @@ void GameManager::Update(int ticks)
 
     if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
         NetworkingManager::GetInstance()->CreateHost();
-        isConnected = true;
       }
       
       if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
         NetworkingManager::GetInstance()->CreateClient();
-        isConnected = true;
       }
 
-    if (isConnected) {
+    if (NetworkingManager::GetInstance()->IsConnected()) {
         std::string tmp;
         while (NetworkingManager::GetInstance()->GetMessage(tmp))
             NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
