@@ -39,6 +39,15 @@ void GameManager::Update(int ticks)
  
     //Handle SDL Events
     InputManager::GetInstance()->UpdateKeys();
+
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
+      NetworkingManager::GetInstance()->CreateHost();
+    }
+    
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
+      NetworkingManager::GetInstance()->CreateClient();
+    }
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         InputManager::GetInstance()->HandlePolledEvent(event);
@@ -53,12 +62,16 @@ void GameManager::Update(int ticks)
  
     SpriteRendererManager::GetInstance()->Update(ticks);
  
+    
+
     for (std::map<int, GameObject*>::iterator it=gameObjects.begin(); it!=gameObjects.end(); ++it) {
         it->second->Update(ticks);
     }
  
     FPSThrottle(ticks);
  
+
+
     //Temporary place where we update GameObjects
     //player1->GetComponent<Transform *>()->addRotation(0.5f);
 }

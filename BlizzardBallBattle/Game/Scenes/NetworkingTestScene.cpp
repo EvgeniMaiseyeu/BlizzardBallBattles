@@ -16,7 +16,7 @@ void NetworkingTestScene::OnStart() {
 
     player1 = new GameObject();
     player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
-    player1->AddComponent<Sender*>(new Sender(player1, "Player"));
+    player1->AddComponent<Sender*>(new Sender(player1, "Player1"));
     SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
     spriteRenderer->SetActiveSprite((ISprite*)new Sprite(texture));
     spriteRenderer->SetActiveShader(ourShader);
@@ -24,7 +24,7 @@ void NetworkingTestScene::OnStart() {
   
     player2 = new GameObject();
     player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
-    player2->AddComponent<Receiver*>(new Receiver(player2, "Player"));
+    player2->AddComponent<Receiver*>(new Receiver(player2, "Player2"));
     spriteRenderer = player2->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new Sprite(texture));
     spriteRenderer->SetActiveShader(ourShader);

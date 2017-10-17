@@ -1,10 +1,4 @@
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
-      NetworkingManager::GetInstance()->CreateHost();
-    }
     
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
-      NetworkingManager::GetInstance()->CreateClient();
-    }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_s)) {
       NetworkingManager::GetInstance()->Send(new std::string("JUST SO SLIPPERY"));
