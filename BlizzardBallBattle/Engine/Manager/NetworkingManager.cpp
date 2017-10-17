@@ -113,8 +113,10 @@ void NetworkingManager::Send(std::string *msg) {
         result=SDLNet_TCP_Send(client, msg->c_str(), len);
     else if (socket != NULL)
         result=SDLNet_TCP_Send(socket, msg->c_str(), len);
-    else
+    else {
         Close();
+        return;
+    }
 
     if(result<len) {
         //printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
