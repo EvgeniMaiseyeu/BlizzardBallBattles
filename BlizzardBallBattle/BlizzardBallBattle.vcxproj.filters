@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Game\Managers">
       <UniqueIdentifier>{a470154a-1115-418d-8881-63db0e5e7242}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Component\Physics">
+      <UniqueIdentifier>{548faa41-dd12-4c02-81aa-ca9175bee65f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Game\GameObjects\GameObjectTemplate.cpp">
       <Filter>Source Files\Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component\Physics.cpp">
-      <Filter>Source Files\Engine\Component</Filter>
     </ClCompile>
     <ClCompile Include="Engine\External\Math\Vector2.cpp">
       <Filter>Source Files\Engine\External\Math</Filter>
@@ -165,6 +165,12 @@
     <ClCompile Include="MessagingTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Physics.cpp">
+      <Filter>Source Files\Engine\Component\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -211,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h">
       <Filter>Source Files\Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Physics.h">
-      <Filter>Source Files\Engine\Component</Filter>
     </ClInclude>
     <ClInclude Include="Engine\External\Math\Vector2.h">
       <Filter>Source Files\Engine\External\Math</Filter>
@@ -289,6 +292,12 @@
     </ClInclude>
     <ClInclude Include="Scenes.h">
       <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Physics.h">
+      <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

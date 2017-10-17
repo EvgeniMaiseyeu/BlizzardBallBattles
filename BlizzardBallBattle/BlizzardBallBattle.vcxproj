@@ -161,6 +161,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MessagingTestScene.cpp" />
     <ClCompile Include="PlayerTestScene.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="SpriteSheetAnimationTestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +203,7 @@
     <ClInclude Include="Game\Components\ComponentTemplate.h" />
     <ClInclude Include="Game\GameObjects\GameObjectTemplate.h" />
     <ClInclude Include="MessagingTestScene.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="PlayerTestScene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="SpriteSheetAnimationTestScene.h" />
