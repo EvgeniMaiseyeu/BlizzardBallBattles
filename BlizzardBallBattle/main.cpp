@@ -25,13 +25,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-
-  SpriteSheetAnimationTestScene* testScene = new SpriteSheetAnimationTestScene();
-  testScene->OnStart();
-
-  //PlayerTestScene* testScene = new PlayerTestScene();
-  //testScene->OnStart();
-  
-
-  GameManager::GetInstance()->BeginLoop(testScene);
+  GameManager::GetInstance()->BeginLoop(new PlayerTestScene());
 }

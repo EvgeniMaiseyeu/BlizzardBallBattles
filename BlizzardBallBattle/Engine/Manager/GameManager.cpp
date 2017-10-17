@@ -22,6 +22,7 @@ GameManager::GameManager() {
  
 void GameManager::BeginLoop(Scene* scene)
 {
+	scene->OnStart();
     lastTime = SDL_GetTicks();
     while (!breakLoop)
     {
