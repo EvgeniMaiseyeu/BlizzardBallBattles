@@ -96,6 +96,7 @@ bool NetworkingManager::Close() {
     return true;
 }
 
+//Host->Sending Messages->Client Exits->Host Crashes on line SDLNet_TCP_Send
 void NetworkingManager::Send(std::string *msg) {
     // send a hello over sock
     //TCPsocket sock;
@@ -108,12 +109,12 @@ void NetworkingManager::Send(std::string *msg) {
         result=SDLNet_TCP_Send(socket, msg->c_str(), len);
 
     if(result<len) {
-        //std::cout << "FAILED TO SEND: " << result << std::endl;
         //printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
     }
 }
 
 void NetworkingManager::PollMessages() {
+    messagesToSend.clear();
     receiverThread = std::thread(&NetworkingManager::PollMessagesThread, this);
     receiverThread.detach();
 }
@@ -174,7 +175,8 @@ void NetworkingManager::SendQueuedEvents() {
 
 void NetworkingManager::SendEventToReceiver(std::map<std::string, void*> data) {
     std::string* key = (std::string*)data["key"];
-    MessageManager::SendEvent(*key, data );
+    std::string value = *key;
+    MessageManager::SendEvent(value, data );
 }
 
 std::string NetworkingManager::SerializeMessage(Message message) {

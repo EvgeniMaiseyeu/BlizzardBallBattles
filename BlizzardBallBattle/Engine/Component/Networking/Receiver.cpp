@@ -7,14 +7,14 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
     std::cout << "RECEIVER SUBSCRIBBED" << std::endl;
 
     Subscribe("UPDATE",  [](std::map<std::string, void*> data) -> void {
-        float x = std::stof(*(std::string*)data["scale"]);
+        float x = std::stof(*(std::string*)data["x"]);
         float y = std::stof(*(std::string*)data["y"]);
         float z = std::stof(*(std::string*)data["z"]);
         float angle = std::stof(*(std::string*)data["rotation"]);
         float scale = std::stof(*(std::string*)data["scale"]);
         Receiver* self = (Receiver*)data["this"];
         Transform* transform = self->gameObject->GetComponent<Transform*>();
-        transform->setPosition(x + 1.0f, y, z );
+        transform->setPosition(x, y, z );
         transform->setRotation(angle);
         transform->setScale(scale);
     }, this);

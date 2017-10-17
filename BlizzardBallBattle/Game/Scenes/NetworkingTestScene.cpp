@@ -9,6 +9,10 @@
 #include "Receiver.h"
 #include "NetworkingManager.h"
 #include <iostream>
+#include "Player.h"
+#include "Battler.h"
+#include "GLHeaders.h"
+#include "InputManager.h"
 
 void NetworkingTestScene::OnStart() {
     ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
@@ -38,5 +42,20 @@ void NetworkingTestScene::OnEnd() {
 }
 
 void NetworkingTestScene::OnUpdate() {
-	player1->GetComponent<Transform*>()->addRotation(1);
+    if (InputManager::GetInstance()->onKey(SDLK_a)) {
+        player1->GetComponent<Transform*>()->addX(-0.1f);
+        player1->GetComponent<Transform*>()->setRotation(180);
+    }
+    if (InputManager::GetInstance()->onKey(SDLK_d)) {
+        player1->GetComponent<Transform*>()->addX(0.1f);
+        player1->GetComponent<Transform*>()->setRotation(0);
+    }
+    if (InputManager::GetInstance()->onKey(SDLK_s)) {
+        player1->GetComponent<Transform*>()->addY(-0.1f);
+        player1->GetComponent<Transform*>()->setRotation(90);
+    }
+    if (InputManager::GetInstance()->onKey(SDLK_w)) {
+        player1->GetComponent<Transform*>()->addY(0.1f);
+        player1->GetComponent<Transform*>()->setRotation(-90);
+    }
 }
