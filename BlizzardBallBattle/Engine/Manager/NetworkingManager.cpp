@@ -38,14 +38,15 @@ bool NetworkingManager::Host() {
     int timeoutTime = SDL_GetTicks();
     const int TIMEOUT = 60000;
 
-    if(SDLNet_ResolveHost(&ip,NULL,9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,NULL,5050)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
 
     socket=SDLNet_TCP_Open(&ip);
     if(!socket) {
-        printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+      //  printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+		std::string error = SDLNet_GetError();
         return false;
     }
     bool result = false;
@@ -64,7 +65,7 @@ bool NetworkingManager::Host() {
 bool NetworkingManager::Join() {
     IPaddress ip;
     
-    if(SDLNet_ResolveHost(&ip,IP,9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,IP,5050)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
@@ -198,28 +199,31 @@ std::string NetworkingManager::SerializeMessage(Message message) {
 
 void NetworkingManager::HandleParsingEvents(std::string packet) {
     std::vector<std::string> messages;
-    packet.erase(0, 1);
-    packet.pop_back();
-    std::string currentMessage = "";
-    bool reading = false;
-    while(packet.size() > 0) {
-        if (!reading) {
-            if (packet[0] == '{') {
-                reading = true;
-                currentMessage += packet[0];
-            }
-        } else {
-            currentMessage += packet[0];
-            if (packet[0] == '}') {
-                reading = false;
-                messages.push_back(currentMessage);
-                SendEventToReceiver(DeserializeMessage(currentMessage));
-                currentMessage = "";
-            }
-        }
+	if (packet.size() > 2) {
+		packet.erase(0, 1);
+		packet.pop_back();
+		std::string currentMessage;
+		bool reading = false;
+		while (packet.size() > 0) {
+			if (!reading) {
+				if (packet[0] == '{') {
+					reading = true;
+					currentMessage += packet[0];
+				}
+			}
+			else {
+				currentMessage += packet[0];
+				if (packet[0] == '}') {
+					reading = false;
+					messages.push_back(currentMessage);
+					SendEventToReceiver(DeserializeMessage(currentMessage));
+					currentMessage = "";
+				}
+			}
 
-        packet.erase(0, 1);
-    }
+			packet.erase(0, 1);
+		}
+	}
 }
 
 
