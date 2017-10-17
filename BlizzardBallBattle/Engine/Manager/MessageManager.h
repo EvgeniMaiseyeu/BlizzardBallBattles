@@ -2,15 +2,21 @@
 #include <string>
 #include <map>
 #include <stdlib.h>
-
 #include <iostream>
+#include <memory>
+
+typedef void (*Callback)(std::map<std::string, void*>);
+
+struct CallbackReceiver {
+    void* owner;
+    Callback callback;
+};
 
 class MessageManager {
 private:
     static MessageManager* instance;
     static MessageManager* GetInstance();
-    typedef void (*Callback)(std::map<std::string, void*>);
-    std::map<std::string, std::map<int, Callback> > subs;
+    std::map<std::string, std::map<int, CallbackReceiver> > subs;
 
 public:
     /*
@@ -20,7 +26,7 @@ public:
 
     Returns the unique id of this subscriber, required to unsubscribe from this event later.
     */
-    static int Subscribe(std::string event, Callback callback);
+    static int Subscribe(std::string event, Callback callback, void* owner);
 
     /*
     Unsubscribe from an event based on the id of the subscriber.

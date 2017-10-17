@@ -8,10 +8,11 @@
 
 class Transform : public Component {
 private:
-  float _x;
-  float _y;
-  float _rotation;
-  float _scale;
+  float x;
+  float y;
+  float z;
+  float rotation;
+  float scale;
   GLfloat* values;
 
 public:
@@ -19,21 +20,26 @@ public:
   ~Transform();
   void addTranslation(float xToAdd, float yToAdd);
 
-  __declspec (property (put = setX, get = getX)) float x;
+  void addX(float xToAdd);
+  void addY(float yToAdd);
+  void addZ(float zToAdd);
   void setX(float newX);
   float getX();
 
-  __declspec (property (put = setY, get = getY)) float y;
+  //__declspec (property (put = setY, get = getY)) float y;
   void setY(float newY);
-  float getY();
-  
-  void setPosition(float newX, float newY);
 
-  __declspec (property (put = setScale, get = getScale)) float scale;
+  void setZ(float zToSet);
+  void setPosition(float newX, float newY);
+  void setPosition(float newX, float newY, float newZ);
+  void addRotation(float byDegrees);
+  void addScale(float scaleToAdd);
   void setScale(float newScale);
+  float getY();
+  float getZ();
   float getScale();
 
-  __declspec (property (put = setRotation, get = getRotation)) float rotation;
+  //__declspec (property (put = setRotation, get = getRotation)) float rotation;
   void setRotation(float newAngle);
   float getRotation();
   operator GLfloat*();

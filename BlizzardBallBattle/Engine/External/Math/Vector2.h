@@ -13,14 +13,14 @@ public:
 	Vector2(float x, float y);
 	void normalize();
 
-	__declspec (property (get = getMagnitude)) float magnitude;
+	//__declspec (property (get = getMagnitude)) float magnitude;
 	float getMagnitude();
 	
-	__declspec (property (put = setX, get = getX)) float x;
+	//__declspec (property (put = setX, get = getX)) float x;
 	void setX(float value);
 	float getX();
 
-	__declspec (property (put = setY, get = getY)) float y;
+	//__declspec (property (put = setY, get = getY)) float y;
 	void setY(float value);
 	float getY();
 
