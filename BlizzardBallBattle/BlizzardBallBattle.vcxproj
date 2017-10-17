@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
     <ClCompile Include="Engine\External\Render\Sprite.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />
     <ClInclude Include="Engine\External\Render\ISprite.h" />
