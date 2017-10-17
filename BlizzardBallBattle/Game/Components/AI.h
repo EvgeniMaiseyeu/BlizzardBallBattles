@@ -16,8 +16,9 @@ class AI :
 private:
 	Battler* myBattler;
 	GameObject* target;
+	void EngageTarget();
 public:
-	AI(GameObject* gameObject);
+	AI();
 	~AI();
 	void Init();
 	GameObject* GetTarget();

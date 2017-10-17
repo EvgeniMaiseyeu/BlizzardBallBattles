@@ -1,4 +1,11 @@
 #include "MatchManager.h"
+#include "Sprite.h"
+#include "SpriteRenderer.h"
+#include "HelperFunctions.h"
+#include "UserDefinedRenderLayers.h"
+#include "Transform.h"
+#include "Player.h"
+#include "Sender.h"
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;
@@ -41,38 +48,73 @@ bool MatchManager::RegisterCharacter(Battler *character)
 
 void MatchManager::StartGame()
 {
+
+}
+
+void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTexture)
+{
+	float width = getGameWidth();
+	float height = getGameHeight();
+	float leftBounding = getGameLeftX();
+	float bottomBounding = getGameBottomY();
+
+	//Setup Tiles
+	for (int x = 0; x < width; x++) {
+		GLuint textureToUse = snowTexture;
+		if (x >= width * 0.4f && x <= width * 0.6f) {
+			textureToUse = iceTexture;
+		}
+		for (int y = 0; y < height; y++) {
+			GameObject* tile = new GameObject();
+			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
+			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
+			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
+			spriteRenderer->SetActiveShader(ourShader);
+			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
+			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+		}
+	}
+}
+
+void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture)
+{
 	// Team 1
 	// Player
-	GameObject* playerOne = new GameObject();
-	Battler* playerOneStats = new Battler(playerOne, 1);
-	playerOne->AddComponent<Battler*>(playerOneStats);
-	RegisterCharacter(playerOneStats);
+	Battler* playerOne = new Battler(1, ourShader, characterTexture);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s);
+	playerOne->AddComponent<Player*>(playerOneStats);
+	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
+	playerOneTransform->setScale(2.0f);
+	playerOneTransform->setPosition(-7, 2);
+	RegisterCharacter(playerOne);
+
+	//spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 5, 3, 1));
+	//playerOneTransform->setRotation(-90.0f); //Spritesheet is 90 degrees off
+
 	//AI
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
-		GameObject* unit = new GameObject();
-		Battler* unitStats = new Battler(unit, 1);
-		unit->AddComponent<Battler*>(unitStats);
-		AI* unitAI = new AI(unit);
+		Battler* unit = new Battler(1, ourShader, characterTexture);
+		AI* unitAI = (AI*)new Component(unit);
 		unit->AddComponent<AI*>(unitAI);
-		RegisterCharacter(unitStats);
+		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
 	}
 
 	//Team 2
-	GameObject* playerTwo = new GameObject();
-	Battler* playerTwoStats = new Battler(playerTwo, 2);
-	playerTwo->AddComponent<Battler*>(playerTwoStats);
-	RegisterCharacter(playerTwoStats);
-
+	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_j, SDLK_l, SDLK_i, SDLK_k);
+	playerTwo->AddComponent<Player*>(playerTwoStats);
+	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
+	playerTwoTransform->setScale(2.0f);
+	playerTwoTransform->setPosition(10, 2);
+	RegisterCharacter(playerTwo);
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
-		GameObject* unit = new GameObject();
-		Battler* unitStats = new Battler(unit, 2);
-		unit->AddComponent<Battler*>(unitStats);
-		AI* unitAI = new AI(unit);
+		Battler* unit = new Battler(2, ourShader, characterTexture);
+		AI* unitAI = (AI*)new Component(unit);
 		unit->AddComponent<AI*>(unitAI);
-		RegisterCharacter(unitStats);
+		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
 	}
 
