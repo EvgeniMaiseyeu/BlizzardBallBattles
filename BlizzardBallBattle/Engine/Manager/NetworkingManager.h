@@ -5,15 +5,18 @@
 class NetworkingManager {
 private:
     static NetworkingManager* instance;
-    TCPsocket socket;
+    TCPsocket socket = NULL;
     TCPsocket client = NULL;
+    bool Accept();
+    bool Host();
+    bool Join();
+    bool Close();
 
 public:
     NetworkingManager();
     static NetworkingManager* GetInstance();
-    void Host();
-    void Join();
+    bool CreateHost();
+    bool CreateClient();
     void Send(std::string *msg);
     void Receive();
-    void Accept();
 };

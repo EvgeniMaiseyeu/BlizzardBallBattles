@@ -12,53 +12,85 @@ NetworkingManager::NetworkingManager() {
     SDLNet_Init();
 }
 
-void NetworkingManager::Host() {
+bool NetworkingManager::CreateHost() {
+    return Host();
+}
+
+bool NetworkingManager::CreateClient() {
+    return Join();
+}
+
+bool NetworkingManager::Host() {
     // create a listening TCP socket on port 9999 (server)
     IPaddress ip;
+
+    int startConnTime = SDL_GetTicks();
+    int timeoutTime = SDL_GetTicks();
+    const int TIMEOUT = 60000;
 
     ip.host = 2130706433;
     ip.port = 5050;
 
     if(SDLNet_ResolveHost(&ip,NULL,9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
-        exit(1);
+        return false;
     }
 
     socket=SDLNet_TCP_Open(&ip);
     if(!socket) {
         printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
-        exit(2);
+        return false;
     }
-    std::cout << "SDLNet_TCP_OpenS??S?S: WE DID IT HOST" << std::endl;
+    bool result = false;
+    while(!(result = Accept()) || SDL_GetTicks() - startConnTime < TIMEOUT);
+    if  (result == false) {
+        std::cout << "No peer found, destroying server." << std::endl;
+        Close();
+        return false;
+    } else {
+        std::cout << "Connection established." << std::endl;
+        return true;
+    }
 }
 
-void NetworkingManager::Join() {
+bool NetworkingManager::Join() {
     IPaddress ip;
 
-    ip.host = 2130706433;
+    ip.host = 3232235623;
     ip.port = 5050;
     
-    if(SDLNet_ResolveHost(&ip,"localhost",9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,"192.168.0.103",9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
-        exit(1);
+        return false;
     }
     
     socket=SDLNet_TCP_Open(&ip);
     if(!socket) {
         printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
-        exit(2);
+        Close();
+        return false;
     }
     std::cout << "SDLNet_TCP_Open:A>A>A WE DID IT JOIN" << std::endl;
+    return true;
 }
 
-void NetworkingManager::Accept() {
+bool NetworkingManager::Accept() {
     client=SDLNet_TCP_Accept(socket);
     if(!client) {
         printf("SDLNet_TCP_Accept: %s\n", SDLNet_GetError());
-        return;
+        return false;
     }
     // communicate over new_tcpsock
     std::cout << "SDLNet_TCP_Accept:A>A>A WE DID IT ACCETP" << std::endl;
+    return true;
+}
+
+bool NetworkingManager::Close() {
+    if (client != NULL)
+        SDLNet_TCP_Close(client);
+    if (socket != NULL)
+        SDLNet_TCP_Close(socket);
+    return true;
 }
 
 void NetworkingManager::Send(std::string *msg) {

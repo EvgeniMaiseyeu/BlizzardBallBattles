@@ -126,15 +126,11 @@ void RunGame()
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
-      NetworkingManager::GetInstance()->Host();
-    }
-    
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_a)) {
-      NetworkingManager::GetInstance()->Accept();
+      NetworkingManager::GetInstance()->CreateHost();
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
-      NetworkingManager::GetInstance()->Join();
+      NetworkingManager::GetInstance()->CreateClient();
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_s)) {

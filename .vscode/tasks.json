@@ -32,7 +32,7 @@
             "-lGLEW",
             "-lSDL2",
             "-lSDL2_image",
-            "-lSDL_net",
+            "-lSDL2_net",
             "-g"
         ],
         "group": {
