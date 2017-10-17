@@ -10,6 +10,7 @@ NetworkingManager* NetworkingManager::GetInstance() {
 
 NetworkingManager::NetworkingManager() {
     SDLNet_Init();
+    messageQueue = new ThreadQueue<std::string*>();
 }
 
 bool NetworkingManager::CreateHost() {
@@ -42,14 +43,15 @@ bool NetworkingManager::Host() {
         return false;
     }
     bool result = false;
-    while(!(result = Accept()) || SDL_GetTicks() - startConnTime < TIMEOUT);
-    if  (result == false) {
+    while(!(result = Accept()) && SDL_GetTicks() - startConnTime < TIMEOUT);
+    if  (result) {
+        std::cout << "Connection established." << std::endl;
+        PollMessages();
+        return true;
+    } else {
         std::cout << "No peer found, destroying server." << std::endl;
         Close();
         return false;
-    } else {
-        std::cout << "Connection established." << std::endl;
-        return true;
     }
 }
 
@@ -71,6 +73,7 @@ bool NetworkingManager::Join() {
         return false;
     }
     std::cout << "SDLNet_TCP_Open:A>A>A WE DID IT JOIN" << std::endl;
+    PollMessages();
     return true;
 }
 
@@ -108,20 +111,55 @@ void NetworkingManager::Send(std::string *msg) {
     }
 }
 
-void NetworkingManager::Receive() {
+bool NetworkingManager::Receive(std::string *message) {
     // receive some text from sock
-//TCPsocket sock;
-#define MAXLEN 1024
-int result;
-char msg[MAXLEN];
+    //TCPsocket sock;
+    #define MAXLEN 1024
+    int result;
+    char msg[MAXLEN];
 
-if (client != NULL)
-    result=SDLNet_TCP_Recv(client, msg, MAXLEN);
-else
-    result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
-if(result<=0) {
-    // An error may have occured, but sometimes you can just ignore it
-    // It may be good to disconnect sock because it is likely invalid now.
+    if (client != NULL)
+        result=SDLNet_TCP_Recv(client, msg, MAXLEN);
+    else if (socket != NULL)
+        result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
+    if(result<=0) {
+        // An error may have occured, but sometimes you can just ignore it
+        // It may be good to disconnect sock because it is likely invalid now.
+        return false;
+    }
+    message = new std::string(msg);
+    return true;
 }
- std::cout << "MESSAGE: [" << std::string(msg) << "]" << std::endl;
+
+void NetworkingManager::PollMessages() {
+    receiverThread = std::thread(&NetworkingManager::PollMessagesThread, this);
+    receiverThread.join();
+}
+
+void NetworkingManager::PollMessagesThread() {
+    #define MAXLEN 1024
+    int result;
+    char msg[MAXLEN];
+
+    while(1) { //replace with on connection lost
+
+    if (client != NULL)
+        result=SDLNet_TCP_Recv(client, msg, MAXLEN);
+    else if (socket != NULL)
+        result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
+    if(result<=0) {
+        // An error may have occured, but sometimes you can just ignore it
+        // It may be good to disconnect sock because it is likely invalid now.
+        continue;
+    }
+    messageQueue->Push(new std::string(msg));
+    }
+}
+
+bool NetworkingManager::GetMessage(std::string *message) {
+    if (!messageQueue->IsEmpty()) {
+        messageQueue->Pop(message);
+        return true;
+    }
+    return false;
 }

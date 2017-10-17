@@ -136,10 +136,10 @@ void RunGame()
     if (InputManager::GetInstance()->onKeyPressed(SDLK_s)) {
       NetworkingManager::GetInstance()->Send(new std::string("JUST SO SLIPPERY"));
     }
-    
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_r)) {
-      NetworkingManager::GetInstance()->Receive();
-    }
+
+    std::string *tmp;
+    if (NetworkingManager::GetInstance()->GetMessage(tmp))
+      std::cout << "Message: " << tmp << std::endl;
 
     //Update game
     gameManager->Update(timeDelta);
