@@ -73,7 +73,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   bool SpriteRendererManager::Init() {
     ////Setup SDL
     // Initialize SDL's Video subsystem
-    if (SDL_Init(0) < 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
       std::cout << "Failed to init SDL\n";
       return false;
