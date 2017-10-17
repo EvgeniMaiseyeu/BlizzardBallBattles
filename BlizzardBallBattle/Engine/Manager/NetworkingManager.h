@@ -44,5 +44,5 @@ public:
     void SendQueuedEvents();
     void HandleParsingEvents(std::string packet);
     bool IsConnected();
-    bool IsHost()
+    bool IsHost();
 };
