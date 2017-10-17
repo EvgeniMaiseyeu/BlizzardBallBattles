@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "GLHeaders.h"
 #include "Shader.h"
+#include "Battler.h"
 
 class Player : public Component {
 private:
@@ -13,6 +14,8 @@ private:
 	SDL_Keycode upKey;
 	SDL_Keycode downKey;
 	float distance;
+	Battler* youBattler;
+	float center;
 
 	
 public:
@@ -22,5 +25,5 @@ public:
 	void PressedRight();
 	void PressedUp();
 	void PressedDown();
-	void Update(float timeDelta);
+	virtual void Update(int ticks);
 };

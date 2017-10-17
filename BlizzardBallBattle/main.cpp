@@ -26,10 +26,10 @@ void RunGame()
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
 
-  NetworkingTestScene* testScene = new NetworkingTestScene();
-  testScene->OnStart();
-  //PlayerTestScene* testScene = new PlayerTestScene();
+  //NetworkingTestScene* testScene = new NetworkingTestScene();
   //testScene->OnStart();
-  //
+  SceneTemplate* testScene = new SceneTemplate();
+  testScene->OnStart();
+  
   GameManager::GetInstance()->BeginLoop(testScene);
 }
