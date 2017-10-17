@@ -38,8 +38,6 @@ public:
     bool CreateClient();
     void Send(std::string *msg);
     bool GetMessage(std::string &msg);
-    //static NetworkingManagerTemp *instance;
-    //static NetworkingManagerTemp* GetInstance();
     void PrepareMessageForSending(std::string key, std::map<std::string, std::string> data);
     void SendQueuedEvents();
     void HandleParsingEvents(std::string packet);

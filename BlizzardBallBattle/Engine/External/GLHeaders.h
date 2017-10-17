@@ -14,6 +14,7 @@
 #include <GL/glut.h>
 #include <GL/GL.h>
 #include <SDL_image.h>
+#include <SDL_net.h>
 #endif 
 
 #endif

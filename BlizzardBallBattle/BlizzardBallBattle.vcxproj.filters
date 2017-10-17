@@ -114,9 +114,6 @@
     <ClCompile Include="Engine\Component\Transform.cpp">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Manager\NetworkingManagerTemp.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp">
       <Filter>Source Files\Engine\Component\Networking</Filter>
     </ClCompile>
@@ -167,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\NetworkingManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,9 +230,6 @@
     <ClInclude Include="Engine\Component\Transform.h">
       <Filter>Source Files\Engine\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Manager\NetworkingManagerTemp.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Networking\Receiver.h">
       <Filter>Source Files\Engine\Component\Networking</Filter>
     </ClInclude>
@@ -295,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\NetworkingManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
