@@ -10,6 +10,6 @@
       NetworkingManager::GetInstance()->Send(new std::string("JUST SO SLIPPERY"));
     }
 
-    std::string tmp;
-    if (NetworkingManager::GetInstance()->GetMessage(tmp))
-      std::cout << "Message: " << tmp << std::endl;
+    
+
+      

@@ -1,4 +1,5 @@
 #include "NetworkingManager.h"
+#include "MessageManager.h"
 
 NetworkingManager* NetworkingManager::instance;
 
@@ -145,4 +146,120 @@ bool NetworkingManager::GetMessage(std::string &msg) {
         return true;
     }
     return false;
+}
+
+void NetworkingManager::PrepareMessageForSending(std::string key, std::map<std::string, std::string> data) {
+    Message message;
+    message.key = key;
+    message.data = data;
+    messagesToSend.push_back(message);
+}
+
+//TODO: Do over time
+void NetworkingManager::SendQueuedEvents() {
+    std::string packet = "[";
+    for(size_t i = 0; i < messagesToSend.size(); i++) {
+        packet += SerializeMessage(messagesToSend[i]);
+        packet += ",";
+    }
+    packet.pop_back();
+    packet += "]";
+    //Submit it
+    messagesToSend.clear();
+
+
+    Send(&packet);
+}
+
+void NetworkingManager::SendEventToReceiver(std::map<std::string, void*> data) {
+    std::string* key = (std::string*)data["key"];
+    MessageManager::SendEvent(*key, data );
+}
+
+std::string NetworkingManager::SerializeMessage(Message message) {
+    std::string result = "{";
+    message.data["key"] = message.key.c_str();
+
+    for (const auto tuple : message.data) {
+        result += tuple.first + ":" + message.data[tuple.first] + ",";
+    }
+    result.pop_back();
+    result += "}";
+    return result;
+}
+
+
+void NetworkingManager::HandleParsingEvents(std::string packet) {
+    std::vector<std::string> messages;
+    packet.erase(0, 1);
+    packet.pop_back();
+    std::string currentMessage = "";
+    bool reading = false;
+    while(packet.size() > 0) {
+        if (!reading) {
+            if (packet[0] == '{') {
+                reading = true;
+                currentMessage += packet[0];
+            }
+        } else {
+            currentMessage += packet[0];
+            if (packet[0] == '}') {
+                reading = false;
+                messages.push_back(currentMessage);
+                SendEventToReceiver(DeserializeMessage(currentMessage));
+                currentMessage = "";
+            }
+        }
+
+        packet.erase(0, 1);
+    }
+}
+
+
+
+//TODO: Deserialize this:
+//Example: {key : Player|UPDATE,rotation : 37.000000,scale : 1.000000,x : 1.000000,y : 0.000000}
+
+std::map<std::string, void*> NetworkingManager::DeserializeMessage(std::string message) {
+    std::map<std::string, void*> data;
+    std::string currentKey = "";
+    std::string currentValue = "";
+    bool readingKey;
+    bool readingValue;
+    while(message.size() > 0) {
+        char curChar = message[0];
+        message.erase(0, 1);
+        
+        if (curChar == ',' || curChar == '{') {
+            //Start reading key
+            readingKey = true;
+            readingValue = false;
+            if (curChar == ',') {
+                data[currentKey] = (void*)new std::string(currentValue);
+            }
+            std::string newCurrentString = "";
+            std::string newCurrentValue = "";
+            currentKey = newCurrentString;
+            currentValue = newCurrentValue;
+            continue;
+        } else if (curChar == ':') {
+            //Start reading value
+            readingValue = true;
+            readingKey = false;
+            continue;
+        } else if (curChar == '}') {
+            //End
+            data[currentKey] = (void*)new std::string(currentValue);
+            break;
+        }
+        if (!isspace(curChar)) {
+            if (readingKey) {
+                currentKey += curChar;
+            } else if (readingValue) {
+                currentValue += curChar;
+            }
+        }
+
+    }
+    return data;
 }

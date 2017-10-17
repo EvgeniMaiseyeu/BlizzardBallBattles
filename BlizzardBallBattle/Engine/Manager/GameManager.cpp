@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include "MessageManager.h"
+#include "NetworkingManager.h"
  
 GameManager* GameManager::instance;
  
@@ -43,6 +44,12 @@ void GameManager::Update(int ticks)
         InputManager::GetInstance()->HandlePolledEvent(event);
         breakLoop = IsQuitRequested(event);
     }
+
+    std::string tmp;
+    if (NetworkingManager::GetInstance()->GetMessage(tmp))
+        NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
+
+    NetworkingManager::GetInstance()->SendQueuedEvents();
  
     SpriteRendererManager::GetInstance()->Update(ticks);
  

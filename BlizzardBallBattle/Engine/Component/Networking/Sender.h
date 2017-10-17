@@ -2,7 +2,6 @@
 
 #include <string>
 #include "GameObject.h"
-#include "NetworkingManagerTemp.h"
 #include "Transform.h"
 #include <iostream>
 

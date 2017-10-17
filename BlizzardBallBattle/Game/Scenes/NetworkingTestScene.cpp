@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Sender.h"
 #include "Receiver.h"
+#include "NetworkingManager.h"
 #include <iostream>
 
 void NetworkingTestScene::OnStart() {
@@ -39,5 +40,5 @@ void NetworkingTestScene::OnEnd() {
 void NetworkingTestScene::OnUpdate() {
 	player1->GetComponent<Transform*>()->addRotation(1);
     player1->GetComponent<Sender*>()->SendUpdate();
-    NetworkingManagerTemp::GetInstance()->SendQueuedEvents();
+    NetworkingManager::GetInstance()->SendQueuedEvents();
 }
