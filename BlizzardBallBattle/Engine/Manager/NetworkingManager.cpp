@@ -22,6 +22,14 @@ bool NetworkingManager::CreateClient() {
     return Join();
 }
 
+bool NetworkingManager::IsConnected() {
+    return socket != NULL;
+}
+
+bool NetworkingManager::IsHost() {
+    return client != NULL;
+}
+
 bool NetworkingManager::Host() {
     // create a listening TCP socket on port 9999 (server)
     IPaddress ip;

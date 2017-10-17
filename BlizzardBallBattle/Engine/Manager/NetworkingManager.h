@@ -43,4 +43,6 @@ public:
     void PrepareMessageForSending(std::string key, std::map<std::string, std::string> data);
     void SendQueuedEvents();
     void HandleParsingEvents(std::string packet);
+    bool IsConnected();
+    bool IsHost()
 };
