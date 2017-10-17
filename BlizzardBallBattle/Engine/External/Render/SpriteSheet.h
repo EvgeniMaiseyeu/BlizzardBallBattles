@@ -22,7 +22,7 @@ private:
     void ReloadTextCoordinates();
 
 public:
-    SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames = 0);
+    SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames = 0, int startIndex = 0);
     ~SpriteSheet();
     virtual void BindTextCoordinates(GLuint glCBO);
     virtual GLuint GetTextureBufferID();

@@ -26,7 +26,7 @@ void RunGame()
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
 
-  NetworkingTestScene* testScene = new NetworkingTestScene();
+  SpriteSheetAnimationTestScene* testScene = new SpriteSheetAnimationTestScene();
   testScene->OnStart();
 
   //PlayerTestScene* testScene = new PlayerTestScene();
