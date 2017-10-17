@@ -4,7 +4,7 @@
 #include <iostream>
 #include "GameManager.h"
 #include "SpriteRendererManager.h"
-#include "MatchManager.h"
+#include "GameObject.h"
 #include "Scenes.h"
 
 void RunGame();
@@ -31,6 +31,7 @@ void RunGame()
 
   //PlayerTestScene* testScene = new PlayerTestScene();
   //testScene->OnStart();
-  //
+  
+
   GameManager::GetInstance()->BeginLoop(testScene);
 }
