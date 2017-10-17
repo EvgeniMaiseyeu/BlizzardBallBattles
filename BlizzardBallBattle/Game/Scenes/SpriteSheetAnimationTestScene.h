@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Shader.h"
 
+
+
 class SpriteSheetAnimationTestScene : public Scene {
 private:
 	Shader* ourShader;
