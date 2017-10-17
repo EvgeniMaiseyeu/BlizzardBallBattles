@@ -38,7 +38,7 @@ bool NetworkingManager::Host() {
     int timeoutTime = SDL_GetTicks();
     const int TIMEOUT = 60000;
 
-    if(SDLNet_ResolveHost(&ip,NULL,9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,NULL,port)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
@@ -64,7 +64,7 @@ bool NetworkingManager::Host() {
 bool NetworkingManager::Join() {
     IPaddress ip;
     
-    if(SDLNet_ResolveHost(&ip,IP,9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,IP,port)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
@@ -271,7 +271,7 @@ std::map<std::string, void*> NetworkingManager::DeserializeMessage(std::string m
     return data;
 }
 
-void NetworkingManager::SetIP(char *ip) {
+void NetworkingManager::SetIP(char *ip, int p) {
     IP = ip;
-    std::cout << ip << std::endl;
+    port = p;
 }

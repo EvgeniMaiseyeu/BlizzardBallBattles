@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 
   if (argc > 1) {
     NetworkingManager::GetInstance()->SetIP(argv[1]);
+    if (argc > 2)
+    NetworkingManager::GetInstance()->SetIP(argv[1], atoi(argv[2]));
   }
 
   RunGame();

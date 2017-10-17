@@ -57,7 +57,7 @@ void GameManager::Update(int ticks)
 
     if (NetworkingManager::GetInstance()->IsConnected()) {
         std::string tmp;
-        while (NetworkingManager::GetInstance()->GetMessage(tmp))
+        if (NetworkingManager::GetInstance()->GetMessage(tmp))
             NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
     
         NetworkingManager::GetInstance()->SendQueuedEvents();

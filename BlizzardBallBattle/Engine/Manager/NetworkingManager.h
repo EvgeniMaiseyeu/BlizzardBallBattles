@@ -19,6 +19,7 @@ private:
     std::thread receiverThread;
     std::vector<Message> messagesToSend;
     char *IP = "127.0.0.1";
+    int port = 5050;
 
     TCPsocket socket = NULL;
     TCPsocket client = NULL;
@@ -44,5 +45,5 @@ public:
     void HandleParsingEvents(std::string packet);
     bool IsConnected();
     bool IsHost();
-    void SetIP(char *ip);
+    void SetIP(char *ip, int port = 5050);
 };
