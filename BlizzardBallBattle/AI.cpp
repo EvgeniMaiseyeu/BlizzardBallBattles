@@ -40,10 +40,10 @@ void AI::EngageTarget()
 	//Vector2 posDiff = Vector2((targetPosX - myPosX), (targetPosY - myPosY));
 	
 	float posDiffY = targetPosY - myPosY;
-	Vector2 movePosition = Vector2(GetGameObject()->GetComponent<Transform*>()->getX, myPosY);
+	Vector2 movePosition = Vector2(GetGameObject()->GetComponent<Transform*>()->getX(), myPosY);
 
 	// TODO:: Add time.DeltaTime to this
-	movePosition.setY(movePosition.getY * myBattler->moveSpeed);
+	movePosition.setY(movePosition.getY() * myBattler->moveSpeed);
 
 	myBattler->Move(movePosition);
 }

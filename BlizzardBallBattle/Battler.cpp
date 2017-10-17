@@ -23,7 +23,7 @@ void Battler::MoveTo(GameObject* gameObject)
 
 void Battler::Move(Vector2 position)
 {
-	GetComponent<Transform*>()->setPosition(position.getX, position.setY);
+	GetComponent<Transform*>()->setPosition(position.getX(), position.getY());
 }
 
 void Battler::Face(GameObject* gameObject)
