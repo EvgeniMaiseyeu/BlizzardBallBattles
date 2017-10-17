@@ -70,7 +70,7 @@ bool NetworkingManager::Join() {
     ip.host = 3232235623;
     ip.port = 5050;
     
-    if(SDLNet_ResolveHost(&ip,"192.168.0.103",9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,"192.168.0.104",9999)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         return false;
     }
@@ -97,10 +97,14 @@ bool NetworkingManager::Accept() {
 }
 
 bool NetworkingManager::Close() {
-    if (client != NULL)
+    if (client != NULL) {
         SDLNet_TCP_Close(client);
-    if (socket != NULL)
+        client = NULL;
+    }
+    if (socket != NULL) {
         SDLNet_TCP_Close(socket);
+        socket = NULL;
+    }
     return true;
 }
 
@@ -115,6 +119,8 @@ void NetworkingManager::Send(std::string *msg) {
         result=SDLNet_TCP_Send(client, msg->c_str(), len);
     else if (socket != NULL)
         result=SDLNet_TCP_Send(socket, msg->c_str(), len);
+    else
+        Close();
 
     if(result<len) {
         //printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
@@ -139,9 +145,7 @@ void NetworkingManager::PollMessagesThread() {
     else if (socket != NULL)
         result=SDLNet_TCP_Recv(socket, msg, MAXLEN);
     if(result<=0) {
-
-        // An error may have occured, but sometimes you can just ignore it
-        // It may be good to disconnect sock because it is likely invalid now.
+        Close();
         continue;
     }
     std::string newMsg = msg;
