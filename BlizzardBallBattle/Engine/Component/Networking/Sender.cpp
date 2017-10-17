@@ -20,3 +20,7 @@ void Sender::SendMessage(std::string messageKey,  std::map<std::string, std::str
     std::remove_if(messageKey.begin(), messageKey.end(), isspace);
     NetworkingManager::GetInstance()->PrepareMessageForSending(this->ID + "|" + messageKey, payload);
 }
+
+void Sender::Update(int ticks) {
+    SendUpdate();
+}

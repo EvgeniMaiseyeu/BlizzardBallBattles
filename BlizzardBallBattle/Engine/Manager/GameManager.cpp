@@ -34,6 +34,8 @@ void GameManager::BeginLoop(Scene* scene)
     scene->OnEnd();
 }
  
+bool isConnected = false;
+
 void GameManager::Update(int ticks)
 {
  
@@ -42,10 +44,12 @@ void GameManager::Update(int ticks)
 
     if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
       NetworkingManager::GetInstance()->CreateHost();
+      isConnected = true;
     }
     
     if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
       NetworkingManager::GetInstance()->CreateClient();
+      isConnected = true;
     }
 
     SDL_Event event;
@@ -54,11 +58,13 @@ void GameManager::Update(int ticks)
         breakLoop = IsQuitRequested(event);
     }
 
-    std::string tmp;
-    if (NetworkingManager::GetInstance()->GetMessage(tmp))
-        NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
-
-    NetworkingManager::GetInstance()->SendQueuedEvents();
+    if (isConnected) {
+        std::string tmp;
+        if (NetworkingManager::GetInstance()->GetMessage(tmp))
+            NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
+    
+        NetworkingManager::GetInstance()->SendQueuedEvents();
+    }
  
     SpriteRendererManager::GetInstance()->Update(ticks);
  

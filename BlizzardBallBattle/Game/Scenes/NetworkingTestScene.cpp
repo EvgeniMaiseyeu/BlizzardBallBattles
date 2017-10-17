@@ -39,6 +39,4 @@ void NetworkingTestScene::OnEnd() {
 
 void NetworkingTestScene::OnUpdate() {
 	player1->GetComponent<Transform*>()->addRotation(1);
-    player1->GetComponent<Sender*>()->SendUpdate();
-    NetworkingManager::GetInstance()->SendQueuedEvents();
 }

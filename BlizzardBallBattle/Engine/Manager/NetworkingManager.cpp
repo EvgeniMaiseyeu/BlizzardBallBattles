@@ -108,8 +108,8 @@ void NetworkingManager::Send(std::string *msg) {
         result=SDLNet_TCP_Send(socket, msg->c_str(), len);
 
     if(result<len) {
-        std::cout << "FAILED TO SEND: " << *msg << std::endl;
-        printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+        //std::cout << "FAILED TO SEND: " << result << std::endl;
+        //printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
     }
 }
 
@@ -168,9 +168,8 @@ void NetworkingManager::SendQueuedEvents() {
     //Submit it
     messagesToSend.clear();
 
-
-    std::cout << "SENDING PACKET: " << packet << std::endl;
-    Send(&packet);
+    //std::cout << "SENDING PACKET: " << packet << std::endl;
+    Send(new std::string(packet));
 }
 
 void NetworkingManager::SendEventToReceiver(std::map<std::string, void*> data) {
