@@ -1,4 +1,5 @@
 #include "SpriteRendererManager.h"
+#include <iostream>
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
@@ -171,7 +172,12 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     SDL_Surface *temp = IMG_Load(textureFileName.c_str());
-  
+	if (temp == nullptr) {
+		GLenum errors = glGetError();
+		const char* sdlErrors = SDL_GetError();
+		std::cout << "ERROR::SPRITERENDERERMANAGER::FAILED TO READ FILE IN GENERATETEXTURE\n GLError: " << errors << " \nSDLErrors: " << sdlErrors << std::endl;
+		return 0;
+	}
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
   

@@ -14,6 +14,7 @@ private:
     std::vector<int> messengingIDs;
 
 public:
+    void Subscribe(std::string event, Callback callback, void* owner);
     Receiver(GameObject* gameObject, std::string netID);
     ~Receiver(); //Could be death message later
     //void ReceiveUpdate(TransformState* equivalentTransform);

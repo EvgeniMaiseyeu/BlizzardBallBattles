@@ -2,7 +2,7 @@
 #include <iostream>
 
 Transform::operator GLfloat*() {
-  if (values == NULL) {
+  if (values == nullptr) {
     values = new GLfloat[16]{
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -57,6 +57,7 @@ void Transform::setPosition(float newX, float newY) {
 }
 
 void Transform::setPosition(float newX, float newY, float newZ) {
+
   x = newX;
   y = newY;
   z = newZ;
@@ -79,6 +80,7 @@ void Transform::setX(float newX) {
 }
 
 void Transform::setY(float newY) {
+
   y = newY;
 }
 
@@ -92,10 +94,6 @@ void Transform::addRotation(float byDegrees) {
 
 void Transform::setRotation(float newAngle) {
   rotation = newAngle;
-}
-
-void Transform::addScale(float scaleToAdd) {
-  scale += scaleToAdd;
 }
 
 void Transform::setScale(float newScale) {

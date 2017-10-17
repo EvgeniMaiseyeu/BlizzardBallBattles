@@ -15,4 +15,5 @@ private:
 public:
     Sender(GameObject* gameObject, std::string ID);
     void SendUpdate();
+    void SendMessage(std::string messageKey,  std::map<std::string, std::string> payload);
 };
