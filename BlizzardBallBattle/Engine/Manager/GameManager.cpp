@@ -42,21 +42,21 @@ void GameManager::Update(int ticks)
     //Handle SDL Events
     InputManager::GetInstance()->UpdateKeys();
 
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
-      NetworkingManager::GetInstance()->CreateHost();
-      isConnected = true;
-    }
-    
-    if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
-      NetworkingManager::GetInstance()->CreateClient();
-      isConnected = true;
-    }
-
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         InputManager::GetInstance()->HandlePolledEvent(event);
         breakLoop = IsQuitRequested(event);
     }
+
+    if (InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
+        NetworkingManager::GetInstance()->CreateHost();
+        isConnected = true;
+      }
+      
+      if (InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
+        NetworkingManager::GetInstance()->CreateClient();
+        isConnected = true;
+      }
 
     if (isConnected) {
         std::string tmp;
