@@ -135,6 +135,9 @@
     <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
     <ClCompile Include="Engine\External\Render\Tile.cpp" />
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp" />
+    <ClCompile Include="Engine\Manager\SceneManager.cpp" />
+    <ClCompile Include="Engine\Scene.cpp" />
+    <ClCompile Include="Engine\Updateable.cpp" />
     <ClCompile Include="Game\Components\AI.cpp" />
     <ClCompile Include="Game\Components\Player.cpp" />
     <ClCompile Include="Game\ExternalClasses\Example.cpp" />
@@ -142,6 +145,7 @@
     <ClCompile Include="Engine\Component\Render\TileRenderer.cpp" />
     <ClCompile Include="Engine\Manager\InputManager.cpp" />
     <ClCompile Include="Engine\Manager\MessageManager.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameObjects\Battler.cpp" />
     <ClCompile Include="Game\Managers\MatchManager.cpp" />
     <ClCompile Include="Game\Scenes\GameScene_Alpha_Networked.cpp" />
@@ -182,10 +186,14 @@
     <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="Engine\Manager\NetworkingManager.h" />
+    <ClInclude Include="Engine\Manager\SceneManager.h" />
+    <ClInclude Include="Engine\Scene.h" />
+    <ClInclude Include="Engine\Updateable.h" />
     <ClInclude Include="Game\Components\AI.h" />
     <ClInclude Include="Game\Components\Player.h" />
     <ClInclude Include="Game\ExternalClasses\Example.h" />
     <ClInclude Include="Game\ExternalClasses\UserDefinedRenderLayers.h" />
+    <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObjects\Battler.h" />
     <ClInclude Include="Game\Managers\MatchManager.h" />
     <ClInclude Include="Game\Scenes\GameScene_Alpha_Networked.h" />
