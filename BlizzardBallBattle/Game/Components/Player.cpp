@@ -50,7 +50,7 @@ void Player::PressedDown() {
 	}
 
 	
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0, -0.2f);
+	youBattler->Move(0, -0.2f);
 	
 
 	//Vector2* move = &Vector2(0, -0.2f);
@@ -65,14 +65,14 @@ void Player::PressedRight() {
 	}
 
 
-	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > 0.0f)
+	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
 	{
 		return;
 
 	}
 
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0.2f, 0);
-
+	youBattler->Move(0.2f, 0);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 
 	
@@ -85,7 +85,7 @@ void Player::PressedUp() {
 	}
 	
 	
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0, 0.2f);
+	youBattler->Move(0, 0.2f);
 	
 
 }
@@ -98,11 +98,12 @@ void Player::PressedLeft() {
 
 
 
-	if (youBattler->teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 0.0f)
+	if (youBattler->teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
 	{
 		return;
 	}
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(-0.2f, 0);
+	youBattler->Move(-0.2f, 0);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 }
 
