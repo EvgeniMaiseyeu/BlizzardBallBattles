@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include "shader.h"
+#include "Shader.h"
 #include <string>
 
 class ShaderFactory {

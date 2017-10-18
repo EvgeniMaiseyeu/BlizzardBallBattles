@@ -73,5 +73,5 @@ void PlayerTestScene::OnEnd() {
 	delete(snowBall2);
 }
 
-void PlayerTestScene::OnUpdate() {
+void PlayerTestScene::OnUpdate(int ticks) {
 }

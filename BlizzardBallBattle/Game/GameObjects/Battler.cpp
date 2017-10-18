@@ -3,14 +3,15 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 #include "HelperFunctions.h"
+#include "Snowball.h"
 
-Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(false)
+Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(false), _shader(shader), _textureBufferID(textureBufferID)
 {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
 	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
 	renderer->SetActiveShader(shader);
 	renderer->SetActiveSprite(new Sprite(textureBufferID));
-
+	
 	InitStats(team);
 }
 
@@ -66,10 +67,10 @@ void Battler::TurnTo(Vector2* position)
 
 bool Battler::ThrowSnowball()
 {
-	if (canFire)
-	{
-		canFire = false;
-	}
+	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+	Snowball* snowball = new Snowball(this, 10, radians, _shader, _textureBufferID);
 
-	return false;
+
+
+	return true;
 }

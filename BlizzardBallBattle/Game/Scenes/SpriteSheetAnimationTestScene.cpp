@@ -218,7 +218,7 @@ void SpriteSheetAnimationTestScene::OnEnd() {
 	delete(player2);
 }
 
-void SpriteSheetAnimationTestScene::OnUpdate() {
+void SpriteSheetAnimationTestScene::OnUpdate(int ticks) {
 	//animationCounter++;
 	//if (animationCounter % 10 == 2) {
 	//	SpriteSheet* sprite = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();
