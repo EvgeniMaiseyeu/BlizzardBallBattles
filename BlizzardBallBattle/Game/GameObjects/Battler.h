@@ -30,6 +30,9 @@ public:
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 	bool ThrowSnowball();
 
 private:

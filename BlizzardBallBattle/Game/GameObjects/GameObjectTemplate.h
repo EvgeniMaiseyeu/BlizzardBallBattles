@@ -21,4 +21,8 @@ public:
     ~GameObjectTemplate();
     //Any public methods you want other Components/GameObjects to have access too
     void ExampleMethod();
+
+    void OnStart(){};
+    void OnUpdate(int ticks){};
+    void OnEnd(){};
 };

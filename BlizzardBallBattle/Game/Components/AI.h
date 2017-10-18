@@ -27,5 +27,10 @@ public:
 	AI(GameObject* gameObject);
 	~AI();
 	void Init();
-	virtual void Update(int timeDelta);
+	GameObject* GetTarget();
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };
+
+#endif

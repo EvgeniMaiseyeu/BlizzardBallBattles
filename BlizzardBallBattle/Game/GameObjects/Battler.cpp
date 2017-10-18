@@ -3,7 +3,7 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 
-Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject()
+Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(false)
 {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
 	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
@@ -27,6 +27,7 @@ void Battler::InitStats(int team)
 
 void Battler::MoveTo(GameObject* gameObject)
 {
+	
 
 }
 
@@ -39,6 +40,7 @@ void Battler::Move(float x, float y)
 {
 	//GetComponent<Transform*>()->addTranslation(position->getX(), position->getY());
 	GetComponent<Transform*>()->addTranslation(x, y);
+	
 }
 
 void Battler::Face(GameObject* gameObject)

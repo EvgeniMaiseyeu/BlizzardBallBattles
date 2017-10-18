@@ -41,9 +41,9 @@ float Physics::getDrag() {
 	return _drag;
 }
 
-void Physics::Update(int ticks) {
-	transform->addX(_velocity->getX() * _drag * _snowDrag * ticks);
-	transform->addY(_velocity->getY() * _drag * _snowDrag * ticks);
+void Physics::OnUpdate(int ticks) {
+	transform->addX(_velocity->getX() * _drag * _snowDrag * ((float)ticks)/1000);
+	transform->addY(_velocity->getY() * _drag * _snowDrag * ((float)ticks)/1000);
 }
 
 Physics::~Physics() {

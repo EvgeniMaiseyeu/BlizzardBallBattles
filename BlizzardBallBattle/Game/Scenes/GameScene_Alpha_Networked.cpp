@@ -63,7 +63,7 @@ void GameScene_Alpha_Networked::OnEnd() {
 	delete(player2);
 }
 
-void GameScene_Alpha_Networked::OnUpdate() {
+void GameScene_Alpha_Networked::OnUpdate(int ticks) {
 	if (!isConnected && NetworkingManager::GetInstance()->IsConnected()) {
 		OnConnected();
 		if (NetworkingManager::GetInstance()->IsHost()) {
@@ -102,14 +102,14 @@ void GameScene_Alpha_Networked::OnConnected() {
 	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/CharacterSheet.png"));
 
-	player1 = new GameObject();
+	player1 = new GameObject(false);
 	player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
 	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
 	spriteRenderer->SetActiveShader(ourShader);
 	player1->GetComponent<Transform*>()->setX(-7.5f);
 
-	player2 = new GameObject();
+	player2 = new GameObject(false);
 	player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
 	spriteRenderer = player2->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
@@ -285,7 +285,7 @@ void GameScene_Alpha_Networked::GenerateBackgroundTiles() {
 				tileIndex = TileIndex::Dirt_Center;
 			}
 
-			GameObject* tile = new GameObject();
+			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
