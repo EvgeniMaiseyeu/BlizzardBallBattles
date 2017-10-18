@@ -61,7 +61,7 @@ void Player::PressedRight() {
 	}
 
 
-	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > 0.0f)
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > 0.0f)
 	{
 		return;
 	}
@@ -93,7 +93,7 @@ void Player::PressedLeft() {
 
 
 
-	if (youBattler->teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 0.0f)
+	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 0.0f)
 	{
 		return;
 	}

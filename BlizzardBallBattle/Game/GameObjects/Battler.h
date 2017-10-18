@@ -11,10 +11,17 @@ class Battler :
 	public GameObject
 {
 public:
-	int teamID;
-	float moveSpeed;
+	struct stats {
+		int teamID;
+		float moveSpeed;
+		float fireSpeedInterval;
+		int hitpoints;
+	};
+	stats stats;
+
 	Battler(int team, Shader* shader, GLuint textureBufferID);
 	~Battler();
+
 
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
@@ -23,7 +30,13 @@ public:
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
-	void ThrowSnowball();
+	bool ThrowSnowball();
+
+private:
+	void Battler::InitStats(int team);
+
+	bool canFire;
+	bool timeSinceLastShot;
 };
 
 #endif
