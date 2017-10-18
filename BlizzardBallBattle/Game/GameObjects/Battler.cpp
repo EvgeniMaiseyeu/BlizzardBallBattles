@@ -10,13 +10,19 @@ Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(
 	renderer->SetActiveShader(shader);
 	renderer->SetActiveSprite(new Sprite(textureBufferID));
 
-	teamID = team;
-	moveSpeed = 1;
+	InitStats(team);
 }
 
 Battler::~Battler()
 {
 
+}
+
+void Battler::InitStats(int team)
+{
+	stats.teamID = team;
+	stats.moveSpeed = 1;
+	stats.fireSpeedInterval = 1;
 }
 
 void Battler::MoveTo(GameObject* gameObject)
@@ -27,7 +33,7 @@ void Battler::MoveTo(GameObject* gameObject)
 
 void Battler::MoveTo(Vector2* position)
 {
-	//GetComponent<Transform*>()->setPosition(*position->getX, *position->setY);
+	GetComponent<Transform*>()->setPosition(position->getX(), position->getY());
 }
 
 void Battler::Move(float x, float y)
@@ -58,9 +64,12 @@ void Battler::TurnTo(Vector2* position)
 }
 
 
-void Battler::ThrowSnowball()
+bool Battler::ThrowSnowball()
 {
+	if (canFire)
+	{
+		canFire = false;
+	}
 
-
-
+	return false;
 }
