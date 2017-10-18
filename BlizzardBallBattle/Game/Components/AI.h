@@ -11,17 +11,37 @@ class AI :
 private:
 	Battler *myBattler;
 	Transform *myTransform;
-	GameObject *target;
-	void EngageTarget(float deltaTIme);
-	void AI::WalkToTarget(float deltaTime);
+
+	enum Target {
+		battler = 0,
+		position = 1,
+		t_MAX
+	}currentTarget;
+	GameObject *targetBattler;
+	Vector2 *targetPosition;
+	void GetTarget();
+	GameObject* GetTargetBattler();
+	Vector2* GetTargetPosition();
+
+	enum State {
+		idle = 0,
+		walk = 1,
+		shoot = 2,
+		s_MAX
+	}currentState;
+	void AI::WalkToTargetBattler(float deltaTime);
+	void AI::WalkToTargetPosition(float deltaTime);
 	void AI::Shoot();
-	GameObject* GetTarget();
+
 	bool AI::CanMakeDecision(float deltaTIme);
+	void EngageTarget(float deltaTIme);
 
 	float decisionFrequency;
 	float timeSinceLastDecision;
-	float intelligence;
 	bool lastActionWasShooting;
+
+	float intelligence;
+	float courage;
 
 public:
 	AI(GameObject* gameObject);
