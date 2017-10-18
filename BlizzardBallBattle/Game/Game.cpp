@@ -3,7 +3,8 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "Scenes.h"
-
+#include "GameScene_Alpha_Networked.h"
+#include "SceneTemplate.h"
 #include <iostream>
 
 /*

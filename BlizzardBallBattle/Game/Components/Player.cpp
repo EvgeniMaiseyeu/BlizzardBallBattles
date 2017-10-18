@@ -67,7 +67,9 @@ void Player::PressedRight() {
 	}
 	
 
-	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+
 	{
 		return;
 
@@ -75,7 +77,6 @@ void Player::PressedRight() {
 
 	youBattler->Move(0.2f, 0);
 	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
-
 	
 
 	
@@ -89,6 +90,7 @@ void Player::PressedUp() {
 	
 	youBattler->Move(0, 0.2f);
 	
+	youBattler->Move(0, 0.2f);
 	
 
 }
@@ -101,23 +103,18 @@ void Player::PressedLeft() {
 
 
 
-	if (youBattler->teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
+
+
+
+	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() <4.0f)
+
 	{
 		return;
 	}
-
 	youBattler->Move(-0.2f, 0);
-	GetGameObject()->GetComponent <Transform*>()->addRotation(-15);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 }
-
-void Player::PressedShoot() {
-
-	if (youBattler->teamID == 1 )
-	{
-		youBattler->ThrowSnowball(         );
-	}
-	else if (youBattler ->teamID ==2 )
 
 	{
 		youBattler->ThrowSnowball(             );

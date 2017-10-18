@@ -10,7 +10,9 @@ private:
 
 public:
 	void OnStart();
+	void OnResume() {};
 	void OnUpdate(int ticks);
+	void OnPause() {};
 	void OnEnd();
 	void OnResume() {}
 	void OnPause() {}

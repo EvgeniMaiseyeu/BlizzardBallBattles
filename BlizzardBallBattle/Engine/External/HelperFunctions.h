@@ -19,3 +19,4 @@ float getGameTopY();
 float getGameBottomY();
 float getUnitSize();
 float getFullBarSize();
+float randomFloatInRange(float min, float max);
