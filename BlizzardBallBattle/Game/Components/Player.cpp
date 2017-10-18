@@ -8,8 +8,8 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 	rightKey = right;
 	upKey = up;
 	downKey = down;
+	//shootKey = shoot;
 	distance = 1;
-	center = 12;
 	//upKey1 = up;
 	//downKey1 = down;
 	youBattler = (Battler*)GetGameObject();
@@ -22,20 +22,24 @@ void Player::OnUpdate(int timeDelta) {
 		PressedDown();
 	}
 
-	inputManager = InputManager::GetInstance();
+	
 	if (inputManager->onKey(rightKey)) {
 		PressedRight();
 	}
 
-	inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(upKey)) {
 		PressedUp();
 	}
 
-	inputManager = InputManager::GetInstance();
+
 	if (inputManager->onKey(leftKey)) {
 		PressedLeft();
 	}
+
+	
+	///if (inputManager->onKey(shootKey)) {
+	//	PressedShoot();
+	//}
 } 
 
 
@@ -64,6 +68,7 @@ void Player::PressedRight() {
 	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > 0.0f)
 	{
 		return;
+
 	}
 
 	GetGameObject()->GetComponent <Transform*>()->addTranslation(0.2f, 0);
@@ -98,8 +103,10 @@ void Player::PressedLeft() {
 		return;
 	}
 	GetGameObject()->GetComponent <Transform*>()->addTranslation(-0.2f, 0);
-
-
-	
 	
 }
+
+//void Player::PressedShoot() {
+
+
+//}
