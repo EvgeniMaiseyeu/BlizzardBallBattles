@@ -1,6 +1,10 @@
 #pragma once
 
 
+#include "SpriteRendererManager.h"
+#include "AudioManager.h"
+
+
 #include "GLHeaders.h"
 #include "GameObject.h"
 #define GL3_PROTOTYPES 1
@@ -8,6 +12,14 @@
 class GameManager 
 {
 public:
+
+    GameManager();
+    void Update(int ticks);
+
+
+private:
+	
+
    GameManager();
    void BeginLoop(Scene* scene);
    void EndLoop();
@@ -25,4 +37,5 @@ private:
 
    bool IsQuitRequested(SDL_Event event);
    void FPSThrottle(int ticks);
+
 };
