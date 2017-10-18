@@ -183,9 +183,6 @@
     <ClCompile Include="Game\Scenes\GameScene_Alpha_Networked.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Components\Player.cpp">
-      <Filter>Source Files\Game\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
@@ -245,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Component\Collision\Collider.cpp">
       <Filter>Source Files\Engine\Component\Collision</Filter>
+	</ClCompile>
+    <ClCompile Include="Game\Components\Player.cpp">
+      <Filter>Source Files\Game\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -439,7 +439,7 @@
     </ClInclude>
     <ClInclude Include="Engine\Component\Collision\Collider.h">
       <Filter>Source Files\Engine\Component\Collision</Filter>
-    </ClInclude>
+	 </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp">
