@@ -59,7 +59,8 @@ public:
    }
 
    void OnStart() {};
-   void OnUpdate(int ticks);
+   void OnComponentsUpdate(int ticks);
+   void OnUpdate(int ticks){};
    void OnEnd() {};
    
    ~GameObject();
