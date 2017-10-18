@@ -21,6 +21,7 @@ Battler::~Battler()
 
 void Battler::MoveTo(GameObject* gameObject)
 {
+	
 
 }
 
@@ -33,6 +34,7 @@ void Battler::Move(float x, float y)
 {
 	//GetComponent<Transform*>()->addTranslation(position->getX(), position->getY());
 	GetComponent<Transform*>()->addTranslation(x, y);
+	
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -58,5 +60,7 @@ void Battler::TurnTo(Vector2* position)
 
 void Battler::ThrowSnowball()
 {
+
+
 
 }

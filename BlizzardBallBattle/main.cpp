@@ -33,5 +33,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  GameManager::GetInstance()->BeginLoop(new GameScene_Alpha_Networked());
+  GameManager::GetInstance()->BeginLoop(new SceneTemplate());
 }
