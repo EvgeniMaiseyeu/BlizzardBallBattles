@@ -6,3 +6,4 @@
 #include "SpriteSheetAnimationTestScene.h"
 #include "SceneTemplate.h"
 #include "GameScene_Alpha_Networked.h"
+#include "MenuScene_Alpha.h"

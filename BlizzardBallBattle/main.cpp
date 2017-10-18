@@ -4,7 +4,6 @@
 #include <iostream>
 #include "GameManager.h"
 #include "SpriteRendererManager.h"
-#include "GameObject.h"
 #include "Scenes.h"
 
 void RunGame();
@@ -25,5 +24,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  GameManager::GetInstance()->BeginLoop(new PlayerTestScene());
+  GameManager::GetInstance()->BeginLoop(new MenuScene_Alpha());
 }

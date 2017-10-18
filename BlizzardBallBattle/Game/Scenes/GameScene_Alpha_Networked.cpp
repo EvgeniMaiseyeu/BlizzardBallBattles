@@ -54,7 +54,7 @@ enum class TileIndex {
 };
 
 void GameScene_Alpha_Networked::OnStart() {
-	isConnected = false();
+	isConnected = false;
 	GenerateBackgroundTiles();
 }
 
@@ -79,6 +79,7 @@ void GameScene_Alpha_Networked::OnUpdate() {
 
 	if (isConnected) {
 		GameObject* player = NetworkingManager::GetInstance()->IsHost() ? player1 : player2;
+		//TODO: Replace onKey calls with player->AddComponent<ChensPlayer*>()
 		if (InputManager::GetInstance()->onKey(SDLK_a)) {
 			player->GetComponent<Transform*>()->addX(-0.1f);
 			player->GetComponent<Transform*>()->setRotation(180);
