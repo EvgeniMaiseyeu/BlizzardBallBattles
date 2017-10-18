@@ -32,39 +32,46 @@ void Vector2::normalize() {
 
 //OPERATORS
 
-Vector2 Vector2::operator*(float value)
+Vector2* Vector2::operator*(float value)
 {
 	_x *= value;
 	_y *= value;
-	return *this;
+	return this;
 }
 
-Vector2 Vector2::operator/(float value)
+Vector2* Vector2::operator/(float value)
 {
 	_x /= value;
 	_y /= value;
-	return *this;
+	return this;
 }
 
-Vector2 Vector2::operator+(Vector2 v)
+Vector2* Vector2::operator+(Vector2 v)
 {
 	_x += v.getX();
 	_y += v.getY();
-	return *this;
+	return this;
 }
 
-Vector2 Vector2::operator-(Vector2 v)
+Vector2* Vector2::operator-(Vector2 v)
 {
 	_x -= v.getX();
 	_y -= v.getY();
-	return *this;
+	return this;
 }
 
-Vector2 Vector2::operator-()
+Vector2* Vector2::operator-()
 {
 	_x = -_x;
 	_y = -_y;
-	return *this;
+	return this;
+}
+
+void Vector2::rotateVector(float radians) {
+	float tempCos = cos(radians);
+	float tempSin = sin(radians);
+	_x = tempCos * _x - tempSin * _y;
+	_y = tempSin * _x + tempCos * _y;
 }
 
 /*ignore but dont delete

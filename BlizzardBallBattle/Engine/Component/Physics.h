@@ -27,5 +27,7 @@ public:
 
 	void setDrag(float value);
 	float getDrag();
-	void Update(int ticks);
+	void OnStart(){};
+	void OnUpdate(int ticks);
+	void OnEnd(){};
 };

@@ -5,6 +5,7 @@
 
 AI::AI(GameObject* gameObject) : Component(gameObject)
 {
+	
 }
 
 AI::~AI()
