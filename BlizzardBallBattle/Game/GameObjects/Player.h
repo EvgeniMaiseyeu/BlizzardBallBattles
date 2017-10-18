@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "GLHeaders.h"
 #include "Shader.h"
+#
 
 class Player : public Component {
 private:
@@ -17,6 +18,7 @@ private:
 	
 public:
 	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down);
+	Player(GameObject* gameObject);
 	//void setKeys(leftKey, rightKey, downKey, upKey)
 	void PressedLeft();
 	void PressedRight();
