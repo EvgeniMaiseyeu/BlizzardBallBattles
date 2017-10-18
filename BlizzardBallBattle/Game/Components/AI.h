@@ -13,10 +13,10 @@ private:
 	Transform *myTransform;
 	GameObject *target;
 	void EngageTarget(float deltaTIme);
-	void AI::WalkToTarget(float deltaTime);
-	void AI::Shoot();
+	void WalkToTarget(float deltaTime);
+	void Shoot();
 	GameObject* GetTarget();
-	bool AI::CanMakeDecision(float deltaTIme);
+	bool CanMakeDecision(float deltaTIme);
 
 	float decisionFrequency;
 	float timeSinceLastDecision;

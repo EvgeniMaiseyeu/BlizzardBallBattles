@@ -36,7 +36,7 @@ public:
 	bool ThrowSnowball();
 
 private:
-	void Battler::InitStats(int team);
+	void InitStats(int team);
 
 	bool canFire;
 	bool timeSinceLastShot;
