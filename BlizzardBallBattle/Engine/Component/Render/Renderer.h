@@ -10,4 +10,7 @@ public:
     Renderer(GameObject* gameObject);
     void SetLayer(int newLayer);
     int GetLayer();
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };

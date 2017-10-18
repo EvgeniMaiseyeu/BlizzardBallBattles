@@ -20,6 +20,10 @@ public:
   ~Transform();
   void addTranslation(float xToAdd, float yToAdd);
 
+  void OnStart() {};
+  void OnUpdate(int ticks) {};
+  void OnEnd() {};
+
   void addX(float xToAdd);
   void addY(float yToAdd);
   void addZ(float zToAdd);

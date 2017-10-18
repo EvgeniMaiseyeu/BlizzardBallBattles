@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  //TODO, not handle this in command line
   if (argc > 1) {
     NetworkingManager::GetInstance()->SetIP(argv[1]);
     if (argc > 2)
@@ -33,5 +34,5 @@ void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  GameManager::GetInstance()->BeginLoop(new GameScene_Alpha_Networked());
+  GameManager::GetInstance()->OnStart();
 }

@@ -25,5 +25,7 @@ public:
 	void PressedRight();
 	void PressedUp();
 	void PressedDown();
-	virtual void Update(int ticks);
+	void OnStart(){};
+	void OnUpdate(int ticks);
+	void OnEnd(){};
 };

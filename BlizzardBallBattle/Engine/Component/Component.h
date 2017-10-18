@@ -1,12 +1,15 @@
 #pragma once
+#include "Updateable.h"
 
 class GameObject;
 
-class Component {
+class Component : public Updateable {
 public:
    Component(GameObject* gameObject);
    GameObject* GetGameObject();
-   virtual void Update(int ticks);
+   void OnStart() {};
+   void OnUpdate(int ticks) {};
+   void OnEnd() {};
 protected:
    GameObject* gameObject;
 };

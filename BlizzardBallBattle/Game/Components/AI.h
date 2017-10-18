@@ -22,6 +22,9 @@ public:
 	~AI();
 	void Init();
 	GameObject* GetTarget();
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };
 
 #endif

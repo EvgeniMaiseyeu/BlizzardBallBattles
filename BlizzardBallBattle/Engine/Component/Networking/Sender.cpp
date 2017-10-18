@@ -21,6 +21,6 @@ void Sender::SendNetworkMessage(std::string messageKey,  std::map<std::string, s
     NetworkingManager::GetInstance()->PrepareMessageForSending(this->ID + "|" + messageKey, payload);
 }
 
-void Sender::Update(int ticks) {
+void Sender::OnUpdate(int ticks) {
     SendUpdate();
 }

@@ -65,7 +65,7 @@ void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTe
 			textureToUse = iceTexture;
 		}
 		for (int y = 0; y < height; y++) {
-			GameObject* tile = new GameObject();
+			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));

@@ -12,7 +12,7 @@ private:
 	GameObject *player1, *player2;
 
 public:
-	virtual void OnStart();
-	virtual void OnUpdate();
-	virtual void OnEnd();
+	void OnStart();
+	void OnUpdate();
+	void OnEnd();
 };
