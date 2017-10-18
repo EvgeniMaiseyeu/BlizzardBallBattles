@@ -3,7 +3,7 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 
-Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject()
+Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(false)
 {
 	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
 	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();

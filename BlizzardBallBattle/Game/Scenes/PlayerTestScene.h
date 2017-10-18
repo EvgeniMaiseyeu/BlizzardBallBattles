@@ -10,7 +10,9 @@ private:
 	GameObject *chensPlayer1, *chensPlayer2, *snowBall1, *snowBall2;
 
 public:
-	virtual void OnStart();
-	virtual void OnUpdate();
-	virtual void OnEnd();
+	void OnStart();
+	void OnUpdate(int ticks);
+	void OnEnd();
+	void OnResume() {}
+	void OnPause() {}
 };

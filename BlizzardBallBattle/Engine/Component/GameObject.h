@@ -5,11 +5,13 @@
 #include <typeinfo>
 #include <vector>
 #include <map>
+#include "Updateable.h"
 
-class GameObject {
+class GameObject : public Updateable {
 private:
    std::map<std::string, std::vector<Component*>> components;
    int id;
+   bool isGlobal;
    
    template <typename T>
    std::string GetClassName() {
@@ -18,7 +20,7 @@ private:
 
 public:
 
-   GameObject();
+   GameObject(bool isGlobal);
 
    int getId() {
        return id;
@@ -56,7 +58,9 @@ public:
        return components.count(GetClassName<T>()) > 0;
    }
 
-   virtual void Update(int ticks);
+   void OnStart() {};
+   void OnUpdate(int ticks);
+   void OnEnd() {};
    
    ~GameObject();
 

@@ -18,10 +18,13 @@ private:
 	GameObject* target;
 	void EngageTarget();
 public:
-	AI();
+	AI(GameObject* gameObject);
 	~AI();
 	void Init();
 	GameObject* GetTarget();
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };
 
 #endif

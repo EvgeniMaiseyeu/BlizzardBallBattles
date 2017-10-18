@@ -35,5 +35,5 @@ void MessagingTestScene::OnStart() {
 void MessagingTestScene::OnEnd() {
 }
 
-void MessagingTestScene::OnUpdate() {
+void MessagingTestScene::OnUpdate(int ticks) {
 }

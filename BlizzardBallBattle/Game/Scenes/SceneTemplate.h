@@ -9,7 +9,9 @@ private:
 	Shader* ourShader;
 
 public:
-	virtual void OnStart();
-	virtual void OnUpdate();
-	virtual void OnEnd();
+	void OnStart();
+	void OnUpdate(int ticks);
+	void OnEnd();
+	void OnResume() {}
+	void OnPause() {}
 };

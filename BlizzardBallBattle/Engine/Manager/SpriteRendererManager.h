@@ -39,7 +39,7 @@ public:
 
     //void Subscribe(int id, SpriteRenderer* spriteRenderer);
     //void UnSubscribe(int id);
-    void Update(int ticks);
+    void OnUpdate(int ticks);
 
     SpriteRendererManager();
     bool Init();

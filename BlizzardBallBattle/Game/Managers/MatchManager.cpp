@@ -65,7 +65,7 @@ void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTe
 			textureToUse = iceTexture;
 		}
 		for (int y = 0; y < height; y++) {
-			GameObject* tile = new GameObject();
+			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
@@ -95,7 +95,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
 		Battler* unit = new Battler(1, ourShader, characterTexture);
-		AI* unitAI = (AI*)new Component(unit);
+		AI* unitAI = new AI(unit);
 		unit->AddComponent<AI*>(unitAI);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
@@ -112,7 +112,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
 		Battler* unit = new Battler(2, ourShader, characterTexture);
-		AI* unitAI = (AI*)new Component(unit);
+		AI* unitAI = new AI(unit);
 		unit->AddComponent<AI*>(unitAI);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
