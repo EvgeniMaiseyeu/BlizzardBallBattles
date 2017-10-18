@@ -38,6 +38,8 @@
         "utility": "cpp",
         "atomic": "cpp",
         "map": "cpp",
-        "system_error": "cpp"
+        "system_error": "cpp",
+        "__hash_table": "cpp",
+        "unordered_set": "cpp"
     }
 }

@@ -8,6 +8,14 @@ std::string BuildPath(char* fileName) {
 #endif 
 }
 
+//      5
+//-15   0   15
+//     -5
+
+//     1
+//-1   0    1
+//     -1
+
 void worldPositionToOpenGLPosition(float* x, float* y) {
   float glX = *x / GAME_WIDTH * 2.0;     //For worldX of -5/0/5, glX is -0.5/0/5. Adjust by scale.
   float glY = *y / getGameHeight() * 2.0 / ASPECT_RATIO; //For worldY of -3.5/0/5, glY is -0.5/0/5. Adjust by scale
@@ -40,4 +48,12 @@ float getGameHeight() {
 
 float getGameWidth() {
   return GAME_WIDTH;
+}
+
+float getUnitSize() {
+  return SCREEN_WIDTH / GAME_WIDTH;
+}
+
+float getFullBarSize() {
+  return SCREEN_HEIGHT - (((int)getGameHeight()) * getUnitSize());
 }

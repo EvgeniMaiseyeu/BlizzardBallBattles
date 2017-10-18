@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Transform.h"
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 
@@ -12,28 +13,24 @@
 //}
 
 
+
+#include "GameManager.h"
+ 
+
 GameObject::GameObject() {
-  AddComponent("Transform", (Component*)new Transform(this));
+  id = rand() + rand();
+  GameManager::GetInstance()->AddGameObject(id, this);
+  AddComponent<Transform*>(new Transform(this));
 }
-
-Component* GameObject::GetComponent(std::string type) {
-    return components[type].front();
-}
-
-std::vector<Component*> GameObject::GetComponents(std::string type) {
-    return components[type];
-}
-
-void GameObject::AddComponent(std::string componentKey, Component *component) {
-    //std::string type = typeid(component).name(); NOTE: This returns "class Component *" for a SpriteRenderer type, not a valid way to get the string type of a object
-    if (!HasComponent(componentKey)) {
-        std::vector<Component*> typeList;
-        typeList.push_back(component);
-        components[componentKey] = typeList;
-    } else {
-        components[componentKey].push_back(component);
+ 
+void GameObject::Update(int ticks) {
+    for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
+        for (size_t i = 0; i < it->second.size(); i++){
+            it->second[i]->Update(ticks);
+        }
     }
 }
+
 
 void GameObject::RemoveComponent(std::string type) {
     components[type].clear();
@@ -67,3 +64,8 @@ Mix_Chunk* GameObject::GetSoundEffect(std::string filename) {
 	}
 	return mSoundEffect[fullpath];
 }*/
+
+ 
+GameObject::~GameObject() {
+  GameManager::GetInstance()->RemoveGameObject(id);
+}
