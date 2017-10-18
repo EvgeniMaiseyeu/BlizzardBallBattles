@@ -10,8 +10,6 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 	downKey = down;
 	shootKey = shoot;
 	distance = 1;
-	//upKey1 = up;
-	//downKey1 = down;
 	youBattler = (Battler*)GetGameObject();
 }
 
@@ -37,9 +35,9 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	
-	//if (inputManager->onKey(shootKey)) {
-	//	PressedShoot();
-	//}
+	if (inputManager->onKey(shootKey)) {
+		youBattler->ThrowSnowball(); 
+	}
 	
 } 
 
@@ -113,13 +111,19 @@ void Player::PressedLeft() {
 	
 }
 
-///**/
-//	{
-//		youBattler->ThrowSnowball(             );
-//	}
-//	return;
-//
-//	youBattler->Move(0.2f, 0);
-//	GetGameObject()->GetComponent <Transform*>()->addRotation(30);
-//
-//}
+void Snowball::PressedShoot() {
+	/*
+	if (GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX()))
+
+	{
+		return;
+	}
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Snowball*>())
+
+	{
+
+		canfire == true;
+	}
+	youBattler->MoveTo->setPosition(position->getX(), position->getY());
+	*/
+}

@@ -6,6 +6,8 @@
 #include "GLHeaders.h"
 #include "Shader.h"
 #include "Battler.h"
+#include "Snowball.h"
+#include "Physics.h"
 
 class Player : public Component {
 private:

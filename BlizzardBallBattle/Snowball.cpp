@@ -1,8 +1,9 @@
 
 #include "Snowball.h"
 #include "Physics.h"
+#include "Sprite.h"
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians) : GameObject(false),_player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians, Shader* shader, GLuint textureBufferID) : GameObject(false),_player(player) {
 	Physics* physics = new Physics(this);
 	AddComponent<Physics*>(physics);
 	GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX());
@@ -13,5 +14,13 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians) : GameO
 	velocity = *velocity * _speed;
 	velocity->rotateVector(radians);
 	physics->setVelocity(velocity);
+
+	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
+	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
+	renderer->SetActiveShader(shader);
+	renderer->SetActiveSprite(new Sprite(textureBufferID));
 }
+
+
+	
 
