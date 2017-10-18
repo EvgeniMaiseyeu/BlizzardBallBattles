@@ -1,10 +1,11 @@
 #include "Sender.h"
+#include "NetworkingManager.h"
 
 Sender::Sender(GameObject* gameObject, std::string ID) : Component(gameObject) {
     this->ID = ID;
 }
 
-void Sender::SendUpdate() { //This may be an issue, passing pointers to things on the stack
+void Sender::SendUpdate() {
     std::map<std::string, std::string> payload;
     Transform* transform = gameObject->GetComponent<Transform*>();
     payload["x"] = std::to_string(transform->getX());
@@ -12,5 +13,14 @@ void Sender::SendUpdate() { //This may be an issue, passing pointers to things o
     payload["z"] = std::to_string(transform->getZ());
     payload["rotation"] = std::to_string(transform->getRotation());
     payload["scale"] = std::to_string(transform->getScale());
-    NetworkingManagerTemp::GetInstance()->PrepareMessageForSending(this->ID + "|UPDATE", payload);
+	SendNetworkMessage("UPDATE", payload);
+}
+
+void Sender::SendNetworkMessage(std::string messageKey,  std::map<std::string, std::string> payload) {
+    std::remove_if(messageKey.begin(), messageKey.end(), isspace);
+    NetworkingManager::GetInstance()->PrepareMessageForSending(this->ID + "|" + messageKey, payload);
+}
+
+void Sender::Update(int ticks) {
+    SendUpdate();
 }

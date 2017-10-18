@@ -8,6 +8,8 @@ class NetworkingTestScene : public Scene {
 private:
     Shader* ourShader;
     GameObject *player1, *player2;
+    bool isConnected;
+    void OnConnected();
 
 public:
     virtual void OnStart();

@@ -41,6 +41,7 @@
             "-lGLEW",
             "-lSDL2",
             "-lSDL2_image",
+            "-lSDL2_net",
             "-g"
         ],
         "group": {

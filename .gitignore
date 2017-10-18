@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 .DS_Store
+a.out
 
 # User-specific files
 *.suo
@@ -303,3 +304,5 @@ __pycache__/
 
 # OpenCover UI analysis results
 OpenCover/
+a.out
+a.out.dSYM/Contents/Resources/DWARF/a.out

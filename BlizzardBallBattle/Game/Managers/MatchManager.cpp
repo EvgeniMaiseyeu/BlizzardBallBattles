@@ -81,7 +81,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Team 1
 	// Player
 	Battler* playerOne = new Battler(1, ourShader, characterTexture);
-	Player* playerOneStats = new Player(playerOne);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s,SDLK_b);
 	playerOne->AddComponent<Player*>(playerOneStats);
 	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
 	playerOneTransform->setScale(2.0f);
@@ -103,7 +103,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 	//Team 2
 	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
-	Player* playerTwoStats = new Player(playerTwo);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5, SDLK_n);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
 	playerTwoTransform->setScale(2.0f);

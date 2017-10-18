@@ -1,40 +1,46 @@
 #include "Player.h"
 #include "HelperFunctions.h"
 #include "InputManager.h"
-#include "Battler.h"
 #include "Transform.h"
 
-Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down) : Component(gameObject) {
+Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot) : Component(gameObject) {
 	leftKey = left;
 	rightKey = right;
 	upKey = up;
 	downKey = down;
-	distance = 2;
+	shootKey = shoot;
+	distance = 1;
 	//upKey1 = up;
 	//downKey1 = down;
+	youBattler = (Battler*)GetGameObject();
 }
 
 //Will be called every frame
-void Player::Update(float timeDelta) {
+void Player::Update(int timeDelta) {
 	InputManager* inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(downKey)) {
 		PressedDown();
 	}
 
-	inputManager = InputManager::GetInstance();
+	
 	if (inputManager->onKey(rightKey)) {
 		PressedRight();
 	}
 
-	inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(upKey)) {
 		PressedUp();
 	}
 
-	inputManager = InputManager::GetInstance();
+
 	if (inputManager->onKey(leftKey)) {
 		PressedLeft();
 	}
+
+	
+	if (inputManager->onKey(shootKey)) {
+		PressedShoot();
+	}
+	
 } 
 
 
@@ -45,7 +51,9 @@ void Player::PressedDown() {
 	}
 
 	
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0, -0.2f);
+	youBattler->Move(0, -0.2f);
+	
+	
 
 	//Vector2* move = &Vector2(0, -0.2f);
 	//Battler* myBattler = (Battler*)GetGameObject();
@@ -57,17 +65,32 @@ void Player::PressedRight() {
 	{
 		return;
 	}
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0.2f, 0);
+	
+
+	if (youBattler->teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+	{
+		return;
+
+	}
+
+	youBattler->Move(0.2f, 0);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
+
+	
+
+	
 }
-
-
 
 void Player::PressedUp() {
 	if (GetGameObject()->GetComponent<Transform*>()->getY() + distance> getGameHeight() / 2)
 	{
 		return;
 	}
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(0, 0.2f);
+	
+	youBattler->Move(0, 0.2f);
+	
+	
+
 }
 
 void Player::PressedLeft() {
@@ -75,5 +98,33 @@ void Player::PressedLeft() {
 	{
 		return;
 	}
-	GetGameObject()->GetComponent <Transform*>()->addTranslation(-0.2f, 0);
+
+
+
+	if (youBattler->teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
+	{
+		return;
+	}
+
+	youBattler->Move(-0.2f, 0);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(-15);
+	
+}
+
+void Player::PressedShoot() {
+
+	if (youBattler->teamID == 1 )
+	{
+		youBattler->ThrowSnowball(         );
+	}
+	else if (youBattler ->teamID ==2 )
+
+	{
+		youBattler->ThrowSnowball(             );
+	}
+	return;
+
+	youBattler->Move(0.2f, 0);
+	GetGameObject()->GetComponent <Transform*>()->addRotation(30);
+
 }
