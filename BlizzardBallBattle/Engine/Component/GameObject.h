@@ -28,7 +28,12 @@ public:
 
    template <typename T> 
    T GetComponent() {
-       return (T)components[GetClassName<T>()].front();
+	   if (HasComponent<T>()) {
+		   return (T)components[GetClassName<T>()].front();
+	   }
+	   else {
+		   return NULL;
+	   }
    }
    
    template <typename T> 

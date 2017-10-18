@@ -10,7 +10,8 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>  <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{91828a22-7160-468f-b30b-a3eef79dd11a}</UniqueIdentifier>
@@ -65,6 +66,9 @@
     </Filter>
     <Filter Include="Source Files\Game\Projectiles">
       <UniqueIdentifier>{d200db0b-d6bd-4acb-b80c-575c3b93f56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Component\Collision">
+      <UniqueIdentifier>{64e77517-bf92-4bc6-9173-9a680fbf1390}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -158,17 +162,11 @@
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsManager.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Physics.cpp">
       <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Component.cpp">
       <Filter>Source Files\Engine\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component\Collision\Collider.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scenes\PlayerTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
@@ -190,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp">
       <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Snowball.cpp">
-      <Filter>Source Files\Game\Projectiles</Filter>
     </ClCompile>
     <ClCompile Include="Game\Game.cpp">
       <Filter>Source Files\Game</Filter>
@@ -241,6 +236,15 @@
     </ClCompile>
     <ClCompile Include="Game\Scenes\MessagingTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\PhysicsManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObjects\Projectile\Snowball.cpp">
+      <Filter>Source Files\Game\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Collision\Collider.cpp">
+      <Filter>Source Files\Engine\Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,31 +356,13 @@
     <ClInclude Include="PhysicsManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsManager.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Physics.h">
       <Filter>Source Files\Engine\Component\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Collision\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\NetworkingManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Scenes\GameScene_Alpha_Networked.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Scenes\PlayerTestScene.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Components\Player.h">
       <Filter>Source Files\Game\Components</Filter>
     </ClInclude>
     <ClInclude Include="Game\Scenes\MessagingTestScene.h">
-      <Filter>Source Files\Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteSheetAnimationTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsManager.h">
@@ -412,32 +398,47 @@
     <ClInclude Include="Game\Components\Player.h">
       <Filter>Source Files\Game\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Snowball.h">
+    <ClInclude Include="Game\Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\SceneManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Updateable.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\SceneManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Updateable.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\PlayerTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\GameScene_Alpha_Networked.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\NetworkingManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\PhysicsManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObjects\Projectile\Snowball.h">
       <Filter>Source Files\Game\Projectiles</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Game.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\SceneManager.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Updateable.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manager\SceneManager.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Updateable.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Game.h">
-      <Filter>Source Files\Game</Filter>
+    <ClInclude Include="Engine\Component\Collision\Collider.h">
+      <Filter>Source Files\Engine\Component\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
