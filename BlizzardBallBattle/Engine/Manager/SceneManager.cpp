@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include <iostream>
 
 SceneManager* SceneManager::instance;
 
@@ -21,8 +22,14 @@ void SceneManager::PushScene(Scene *scene) {
 bool SceneManager::UpdateScene(int ticks) {
     if (scenes.empty()) 
         return false;
+    scenes.top()->OnObjectsUpdate(ticks);
     scenes.top()->OnUpdate(ticks);
     return true;
+}
+
+bool SceneManager::HasScene() {
+    std::cout << "have scene: " << !scenes.empty() << std::endl;
+    return !scenes.empty();
 }
 
 bool SceneManager::PopScene() {

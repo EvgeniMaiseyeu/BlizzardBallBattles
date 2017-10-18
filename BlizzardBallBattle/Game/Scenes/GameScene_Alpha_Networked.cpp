@@ -55,7 +55,6 @@ enum class TileIndex {
 
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
-    std::cout << "Are we here?" << std::endl;
 	//GenerateBackgroundTiles();
 }
 

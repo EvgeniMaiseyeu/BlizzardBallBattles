@@ -19,8 +19,11 @@ public:
 
     //Update the current scene on the stack.
     bool UpdateScene(int ticks);
-
+    
     //Gets reference to current scene.
     Scene* GetCurrentScene();
+    
+    //Has at least one scene.
+    bool HasScene();
 
 };

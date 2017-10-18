@@ -58,9 +58,9 @@ public:
        return components.count(GetClassName<T>()) > 0;
    }
 
-   void OnStart();
+   void OnStart() {};
    void OnUpdate(int ticks);
-   void OnEnd();
+   void OnEnd() {};
    
    ~GameObject();
 

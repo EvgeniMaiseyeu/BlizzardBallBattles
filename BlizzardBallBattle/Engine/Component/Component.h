@@ -7,9 +7,9 @@ class Component : public Updateable {
 public:
    Component(GameObject* gameObject);
    GameObject* GetGameObject();
-   void OnStart() {};
-   void OnUpdate(int ticks) {};
-   void OnEnd() {};
+   virtual void OnStart() = 0;
+   virtual void OnUpdate(int ticks) = 0;
+   virtual void OnEnd() = 0;
 protected:
    GameObject* gameObject;
 };

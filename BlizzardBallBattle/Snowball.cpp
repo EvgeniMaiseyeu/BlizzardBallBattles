@@ -2,7 +2,7 @@
 #include "Snowball.h"
 #include "Physics.h"
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians): _player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians) : GameObject(false),_player(player) {
 	Physics* physics = new Physics(this);
 	AddComponent<Physics*>(physics);
 	GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX());
