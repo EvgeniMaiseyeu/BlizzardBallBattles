@@ -10,6 +10,7 @@ void Scene::RemoveGameObject(int id) {
 
 void Scene::OnObjectsUpdate(int ticks) {
     for (std::map<int, GameObject*>::iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it) {
+        it->second->OnComponentsUpdate(ticks);
         it->second->OnUpdate(ticks);
     }
 }

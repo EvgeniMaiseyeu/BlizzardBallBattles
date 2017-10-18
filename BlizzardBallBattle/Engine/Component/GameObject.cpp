@@ -13,7 +13,7 @@ GameObject::GameObject(bool g) {
     AddComponent<Transform*>(new Transform(this));
 }
 
-void GameObject::OnUpdate(int ticks) {
+void GameObject::OnComponentsUpdate(int ticks) {
     for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
         for (size_t i = 0; i < it->second.size(); i++){
             it->second[i]->OnUpdate(ticks);
