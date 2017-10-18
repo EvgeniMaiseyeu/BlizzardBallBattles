@@ -1,5 +1,16 @@
 #include "GameObject.h"
 #include "Transform.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
+
+//GameObject* GameObject::sInstance = NULL;
+
+//GameObject* GameObject::Instance() {
+//	if (sInstance == NULL)
+//		sInstance = new GameObject();
+//	return sInstance;
+//}
+
 
 GameObject::GameObject() {
   AddComponent("Transform", (Component*)new Transform(this));
@@ -31,3 +42,28 @@ void GameObject::RemoveComponent(std::string type) {
 bool GameObject::HasComponent(std::string type) {
     return components.count(type);
 }
+
+/*Mix_Music* GameObject::GetMusic(std::string filename) {
+	std::string fullpath = SDL_GetBasePath();
+	fullpath.append("Assets/" + filename);
+	
+	if (mMusic[fullpath] == nullptr) {
+		mMusic[fullpath] = Mix_LoadMUS(fullpath.c_str());
+		if (mMusic[fullpath] == NULL)
+			printf("Music Loading Error: File-%s Error-%s", filename.c_str(), Mix_GetError());
+	}
+	return mMusic[fullpath];
+
+}
+
+Mix_Chunk* GameObject::GetSoundEffect(std::string filename) {
+	std::string fullpath = SDL_GetBasePath();
+	fullpath.append("Assets/" + filename);
+
+	if (mSoundEffect[fullpath] == nullptr) {
+		mSoundEffect[fullpath] = Mix_LoadMUS(fullpath.c_str());
+		if (mSoundEffect[fullpath] == NULL)
+			printf("Music Loading Error: File-%s Error-%s", filename.c_str(), Mix_GetError());
+	}
+	return mSoundEffect[fullpath];
+}*/
