@@ -159,9 +159,6 @@
     <ClCompile Include="Engine\Component\Component.cpp">
       <Filter>Source Files\Engine\Component</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsManager.cpp">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Physics.cpp">
       <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClCompile>
@@ -210,9 +207,6 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Collision\Collider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -242,9 +236,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Component\Collision\Collider.cpp">
       <Filter>Source Files\Engine\Component\Collision</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Game\Components\Player.cpp">
       <Filter>Source Files\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Collision\Collider.cpp">
+      <Filter>Source Files\Engine\Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -353,9 +350,6 @@
     <ClInclude Include="Engine\Component\Physics.h">
       <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsManager.h">
-      <Filter>Source Files\Engine\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Physics.h">
       <Filter>Source Files\Engine\Component\Physics</Filter>
     </ClInclude>
@@ -388,9 +382,6 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Collision\Collider.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Manager\NetworkingManager.h">
       <Filter>Source Files\Engine\Manager</Filter>
@@ -439,7 +430,10 @@
     </ClInclude>
     <ClInclude Include="Engine\Component\Collision\Collider.h">
       <Filter>Source Files\Engine\Component\Collision</Filter>
-	 </ClInclude>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Collision\Collider.h">
+      <Filter>Source Files\Engine\Component\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp">

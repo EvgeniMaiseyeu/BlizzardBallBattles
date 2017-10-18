@@ -19,4 +19,8 @@ public:
 
 	GameObject* getColliderObj();
 	void setColliderObj(GameObject* collider);
+
+	void OnStart() {};
+	void OnUpdate(int ticks) {};
+	void OnEnd() {};
 };
