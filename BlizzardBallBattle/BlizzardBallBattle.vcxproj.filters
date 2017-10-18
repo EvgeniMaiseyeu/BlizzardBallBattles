@@ -189,6 +189,15 @@
     <ClCompile Include="Game\Scenes\MessagingTestScene.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="AudioTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Manager\AudioManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files\Game\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -331,6 +340,15 @@
     </ClInclude>
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h">
       <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\AudioManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Source Files\Game\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

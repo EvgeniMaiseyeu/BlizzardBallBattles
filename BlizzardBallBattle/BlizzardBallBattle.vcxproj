@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\lib\x86;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\lib\x86;$(SolutionDir)WinLibraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)WinLibraries\freeglut\lib;$(SolutionDir)WinLibraries\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\glew-2.1.0\include;$(SolutionDir)WinLibraries\SDL2_mixer-devel-2.0.1-VC\SDL2_mixer-2.0.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\lib\x86;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\lib\x86;$(SolutionDir)WinLibraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)WinLibraries\freeglut\lib;$(SolutionDir)WinLibraries\SDL2-2.0.5\lib\x86;$(SolutionDir)WinLibraries\SDL2_mixer-devel-2.0.1-VC\SDL2_mixer-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)WinLibraries\glew-2.1.0\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
@@ -84,7 +84,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\Managers;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;SDL2_net.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
@@ -128,12 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioTestScene.cpp" />
     <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
     <ClCompile Include="Engine\External\Render\Sprite.cpp" />
     <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
     <ClCompile Include="Engine\External\Render\Tile.cpp" />
+    <ClCompile Include="Engine\Manager\AudioManager.cpp" />
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp" />
     <ClCompile Include="Game\Components\AI.cpp" />
     <ClCompile Include="Game\Components\Player.cpp" />
@@ -166,8 +168,10 @@
     <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioTestScene.h" />
     <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="Engine\External\TransformState.h" />
     <ClInclude Include="Engine\Component\Render\Renderer.h" />
     <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
+    <ClInclude Include="Engine\Manager\AudioManager.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="Engine\Manager\NetworkingManager.h" />
     <ClInclude Include="Game\Components\AI.h" />
@@ -213,6 +218,7 @@
     <ClInclude Include="Game\Scenes\Scenes.h" />
     <ClInclude Include="Game\Scenes\SceneTemplate.h" />
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp" />

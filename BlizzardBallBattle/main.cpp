@@ -21,17 +21,20 @@ int main(int argc, char *argv[])
     if (argc > 2)
     NetworkingManager::GetInstance()->SetIP(argv[1], atoi(argv[2]));
   }
+ 
 
   RunGame();
   SpriteRendererManager::GetInstance()->Cleanup();
   delete(SpriteRendererManager::GetInstance());
 
   return 0;
+
 }
 
 void RunGame()
 {
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
-  GameManager::GetInstance()->BeginLoop(new SceneTemplate());
+  //GameManager::GetInstance()->BeginLoop(new SceneTemplate());
+  GameManager::GetInstance()->BeginLoop(new AudioTestScene());
 }

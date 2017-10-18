@@ -5,10 +5,16 @@
 #include <typeinfo>
 #include <vector>
 #include <map>
+#include <SDL_mixer.h>
+#include "AudioManager.h"
+#include "AudioTestScene.h"
 
 class GameObject {
 private:
    std::map<std::string, std::vector<Component*>> components;
+   //std::map<std::string, Mix_Music> mMusic;
+   //std::map<std::string, Mix_Chunk> mSEF;
+
    int id;
    
    template <typename T>
@@ -19,6 +25,9 @@ private:
 public:
 
    GameObject();
+   //static GameObject* Instance();
+  // Mix_Music* GetMusic(std::string filename);
+  // Mix_Chunk* GetSEF(std::string filename);
 
    int getId() {
        return id;
