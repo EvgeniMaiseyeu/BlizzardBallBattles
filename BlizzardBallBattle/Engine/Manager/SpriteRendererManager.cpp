@@ -18,7 +18,7 @@ void SpriteRendererManager::UnSubscribe(int id) {
     spriteRenderers.erase(id);
 }*/
 
-void SpriteRendererManager::Update(int ticks) {
+void SpriteRendererManager::OnUpdate(int ticks) {
     Render();
     //for (std::map<int,SpriteRenderer*>::iterator renderer=spriteRenderers.begin(); renderer!=spriteRenderers.end(); ++renderer)
     //    spriteRenderer.Render();

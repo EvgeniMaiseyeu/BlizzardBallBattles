@@ -1,27 +1,34 @@
 #pragma once
 
-#ifndef AI_H
-#define AI_H
-
 #include "Component.h"
-#include <exception>
 #include "GameObject.h"
 #include "Battler.h"
-#include <vector>
-#include <iostream>
+#include "Transform.h"
 
 class AI :
 	public Component
 {
 private:
-	Battler* myBattler;
-	GameObject* target;
-	void EngageTarget();
+	Battler *myBattler;
+	Transform *myTransform;
+	GameObject *target;
+	void EngageTarget(float deltaTIme);
+	void AI::WalkToTarget(float deltaTime);
+	void AI::Shoot();
+	GameObject* GetTarget();
+	bool AI::CanMakeDecision(float deltaTIme);
+
+	float decisionFrequency;
+	float timeSinceLastDecision;
+	float intelligence;
+	bool lastActionWasShooting;
+
 public:
-	AI();
+	AI(GameObject* gameObject);
 	~AI();
 	void Init();
-	GameObject* GetTarget();
+	void OnStart(){};
+	void OnUpdate(int ticks);
+	void OnEnd(){};
 };
 
-#endif

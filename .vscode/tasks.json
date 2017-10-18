@@ -22,6 +22,7 @@
             "./BlizzardBallBattle/Game/ExternalClasses/*.cpp",
             "./BlizzardBallBattle/Game/Scenes/*.cpp",
             "./BlizzardBallBattle/Game/Managers/*.cpp",
+            "./BlizzardBallBattle/Game/*.cpp",
             "-I${workspaceRoot}/BlizzardBallBattle",
             "-I${workspaceRoot}/BlizzardBallBattle/Engine",
             "-I${workspaceRoot}/BlizzardBallBattle/Engine/Component",

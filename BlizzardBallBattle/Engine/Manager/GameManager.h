@@ -1,28 +1,31 @@
 #pragma once
 
-
+#include "Updateable.h"
 #include "GLHeaders.h"
 #include "GameObject.h"
 #define GL3_PROTOTYPES 1
 #include "Scene.h"
-class GameManager 
+#include "Game.h"
+class GameManager : public Updateable 
 {
 public:
-   GameManager();
-   void BeginLoop(Scene* scene);
-   void EndLoop();
-   static GameManager* GetInstance();
+    GameManager();
+    void OnStart();
+    void OnUpdate(int ticks);
+    void OnEnd();
+    static GameManager* GetInstance();
 
-   void AddGameObject(int id, GameObject* obj);
-   void RemoveGameObject(int id);
-   void Update(int ticks);
+    void AddGameObject(int id, GameObject* obj);
+    void RemoveGameObject(int id);
 
 private:
-   std::map<int, GameObject*> gameObjects;
-   static GameManager* instance;
-   bool breakLoop = false;
-   int lastTime = 0;
+    std::map<int, GameObject*> globalGameObjects;
+    static GameManager* instance;
+    bool breakLoop = false;
+    int lastTime = 0;
+    //game instance.
+    Game* game;
 
-   bool IsQuitRequested(SDL_Event event);
-   void FPSThrottle(int ticks);
+    bool IsQuitRequested(SDL_Event event);
+    void FPSThrottle(int ticks);
 };

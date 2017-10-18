@@ -30,11 +30,11 @@ MatchManager::~MatchManager()
 
 bool MatchManager::RegisterCharacter(Battler *character)
 {
-	if (character->teamID == 1)
+	if (character->stats.teamID == 1)
 	{
 		teamOne.push_back(character);
 	}
-	else if (character->teamID == 2)
+	else if (character->stats.teamID == 2)
 	{
 		teamTwo.push_back(character);
 	}
@@ -65,7 +65,7 @@ void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTe
 			textureToUse = iceTexture;
 		}
 		for (int y = 0; y < height; y++) {
-			GameObject* tile = new GameObject();
+			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
@@ -78,42 +78,58 @@ void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTe
 
 void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture)
 {
+	float startPosXMax = getGameWidth() / 2;
+	float startPosYMax = getGameHeight() / 2;
+	float startPosXMin = getGameWidth() / 6;
+	float startPosYMin = -startPosYMax;
+
+	float playerPosX = randomFloatInRange(-startPosXMin, -startPosXMax);
+	float playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
+
 	// Team 1
 	// Player
 	Battler* playerOne = new Battler(1, ourShader, characterTexture);
-	Player* playerOneStats = new Player(playerOne);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s);
 	playerOne->AddComponent<Player*>(playerOneStats);
 	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
-	playerOneTransform->setScale(2.0f);
-	playerOneTransform->setPosition(-7, 2);
+	playerOneTransform->setPosition(playerPosX, playerPosY);
 	RegisterCharacter(playerOne);
-
-	//spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 5, 3, 1));
-	//playerOneTransform->setRotation(-90.0f); //Spritesheet is 90 degrees off
 
 	//AI
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
+		float posX = randomFloatInRange(-startPosXMin, -startPosXMax);
+		float posY = randomFloatInRange(startPosYMin, startPosYMax);
+
 		Battler* unit = new Battler(1, ourShader, characterTexture);
-		AI* unitAI = (AI*)new Component(unit);
+		AI* unitAI = new AI(unit);
 		unit->AddComponent<AI*>(unitAI);
+		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
+		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
 	}
 
 	//Team 2
+	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
+	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
-	Player* playerTwoStats = new Player(playerTwo);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
-	playerTwoTransform->setScale(2.0f);
-	playerTwoTransform->setPosition(10, 2);
+	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	RegisterCharacter(playerTwo);
+
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
+		float posX = randomFloatInRange(startPosXMin, startPosXMax);
+		float posY = randomFloatInRange(startPosYMin, startPosYMax);
+
 		Battler* unit = new Battler(2, ourShader, characterTexture);
-		AI* unitAI = (AI*)new Component(unit);
+		AI* unitAI = new AI(unit);
 		unit->AddComponent<AI*>(unitAI);
+		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
+		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
 	}

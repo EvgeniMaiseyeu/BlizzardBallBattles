@@ -18,4 +18,7 @@ public:
     Receiver(GameObject* gameObject, std::string netID);
     ~Receiver(); //Could be death message later
     //void ReceiveUpdate(TransformState* equivalentTransform);
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };

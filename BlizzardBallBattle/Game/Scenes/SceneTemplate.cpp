@@ -28,7 +28,7 @@ void SceneTemplate::OnEnd() {
 	//delete(player2);
 }
 
-void SceneTemplate::OnUpdate() {
+void SceneTemplate::OnUpdate(int ticks) {
 	//player1->GetComponent<Sender*>()->SendUpdate();
 	//NetworkingManagerTemp::GetInstance()->SendQueuedEvents();
 }

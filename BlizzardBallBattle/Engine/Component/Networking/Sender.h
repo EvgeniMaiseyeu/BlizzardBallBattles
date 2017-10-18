@@ -15,5 +15,7 @@ public:
     Sender(GameObject* gameObject, std::string ID);
     void SendUpdate();
     void SendNetworkMessage(std::string messageKey,  std::map<std::string, std::string> payload);
-    virtual void Update(int ticks);
+	void OnStart(){};
+	void OnUpdate(int ticks);
+	void OnEnd(){};
 };

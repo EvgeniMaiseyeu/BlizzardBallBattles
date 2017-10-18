@@ -195,18 +195,18 @@ void SpriteSheetAnimationTestScene::OnStart() {
 				tileIndex = TileIndex::Dirt_Center;
 			}
 
-			GameObject* tile = new GameObject();
+			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
 			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5f, bottomBounding + y + 0.5f, -1.0f);
 		}
 	}
 
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/CharacterSheet.png"));
-	player1 = new GameObject();
+	player1 = new GameObject(false);
 	player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
 	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
