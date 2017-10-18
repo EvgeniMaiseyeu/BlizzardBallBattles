@@ -13,6 +13,7 @@ private:
 	SDL_Keycode rightKey;
 	SDL_Keycode upKey;
 	SDL_Keycode downKey;
+	//SDL_Keycode shootKey;
 	float distance;
 	Battler* youBattler;
 	float center;
@@ -25,5 +26,6 @@ public:
 	void PressedRight();
 	void PressedUp();
 	void PressedDown();
+	//void PressedShoot();
 	virtual void Update(int ticks);
 };
