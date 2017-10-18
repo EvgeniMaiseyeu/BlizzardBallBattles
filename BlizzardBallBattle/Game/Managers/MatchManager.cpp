@@ -137,7 +137,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Initialize our AI
 	for (int i = 0; i < aiUnits.size(); ++i)
 	{
-		aiUnits[i]->Init();
+		float intelligence = randomFloatInRange(0.1f, 1.0f);
+		float courage = randomFloatInRange(0.0f, 1.0f);
+		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
+
+		aiUnits[i]->Init(intelligence, courage, decisionFrequency);
 	}
 }
 
