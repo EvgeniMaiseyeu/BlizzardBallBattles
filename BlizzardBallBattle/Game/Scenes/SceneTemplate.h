@@ -14,4 +14,5 @@ public:
 	void OnUpdate(int ticks);
 	void OnPause() {};
 	void OnEnd();
+	
 };

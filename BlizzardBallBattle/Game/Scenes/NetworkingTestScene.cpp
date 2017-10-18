@@ -25,7 +25,7 @@ void NetworkingTestScene::OnEnd() {
     delete(player2);
 }
 
-void NetworkingTestScene::OnUpdate() {
+void NetworkingTestScene::OnUpdate(int ticks) {
     if (!isConnected && NetworkingManager::GetInstance()->IsConnected()) {
         OnConnected();
         if (NetworkingManager::GetInstance()->IsHost()) {
