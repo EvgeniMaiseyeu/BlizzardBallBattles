@@ -27,7 +27,7 @@ void AI::Init()
 	target = GetTarget();
 }
 
-void AI::Update(int timeDelta) 
+void AI::OnUpdate(int timeDelta) 
 {
 	float deltaTime = (float)timeDelta / 1000.0f;
 

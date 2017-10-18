@@ -27,10 +27,8 @@ public:
 	AI(GameObject* gameObject);
 	~AI();
 	void Init();
-	GameObject* GetTarget();
 	void OnStart(){};
-	void OnUpdate(int ticks){};
+	void OnUpdate(int ticks);
 	void OnEnd(){};
 };
 
-#endif

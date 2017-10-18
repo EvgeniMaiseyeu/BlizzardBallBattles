@@ -3,7 +3,7 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "GameScene_Alpha_Networked.h"
-
+#include "SceneTemplate.h"
 #include <iostream>
 
 /*
@@ -20,7 +20,7 @@ Each GameObject cycles through and updates each one of their game components.
 */
 
 void Game::OnStart() {
-    SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked());
+    SceneManager::GetInstance()->PushScene(new SceneTemplate());
 }
 
 void Game::OnUpdate(int ticks) {
