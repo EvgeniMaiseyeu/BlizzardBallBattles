@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "SpriteRenderer.h"
 #include "Transform.h"
+#include "HelperFunctions.h"
 
 Battler::Battler(int team, Shader* shader, GLuint textureBufferID) : GameObject(false)
 {
@@ -40,7 +41,6 @@ void Battler::Move(float x, float y)
 {
 	//GetComponent<Transform*>()->addTranslation(position->getX(), position->getY());
 	GetComponent<Transform*>()->addTranslation(x, y);
-	
 }
 
 void Battler::Face(GameObject* gameObject)
