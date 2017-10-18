@@ -17,7 +17,7 @@ private:
 	float distance;
 	Battler* youBattler;
 	float center;
-	bool PressedShoot(Battler *character);
+	//bool PressedShoot(Battler *character);
 
 	
 public:
@@ -27,7 +27,7 @@ public:
 	void PressedRight();
 	void PressedUp();
 	void PressedDown();
-	void PressedShoot();
+	//void PressedShoot();
 	void OnStart(){};
 	void OnUpdate(int ticks);
 	void OnEnd(){};

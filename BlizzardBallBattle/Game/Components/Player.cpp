@@ -37,9 +37,9 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	
-	if (inputManager->onKey(shootKey)) {
-		PressedShoot();
-	}
+	//if (inputManager->onKey(shootKey)) {
+	//	PressedShoot();
+	//}
 	
 } 
 
@@ -103,9 +103,6 @@ void Player::PressedLeft() {
 
 
 
-
-
-
 	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() <4.0f)
 
 	{
@@ -116,12 +113,13 @@ void Player::PressedLeft() {
 	
 }
 
-	{
-		youBattler->ThrowSnowball(             );
-	}
-	return;
-
-	youBattler->Move(0.2f, 0);
-	GetGameObject()->GetComponent <Transform*>()->addRotation(30);
-
-}
+///**/
+//	{
+//		youBattler->ThrowSnowball(             );
+//	}
+//	return;
+//
+//	youBattler->Move(0.2f, 0);
+//	GetGameObject()->GetComponent <Transform*>()->addRotation(30);
+//
+//}
