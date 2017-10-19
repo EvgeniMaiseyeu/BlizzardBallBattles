@@ -105,7 +105,7 @@ void Battler::Die()
 	if (stats.isPlayer)
 	{
 		int winningTeam = 1;
-		if (stats.isPlayer == 1)
+		if (stats.teamID == 1)
 			winningTeam = 2;
 
 		std::map<std::string, void*> payload;
