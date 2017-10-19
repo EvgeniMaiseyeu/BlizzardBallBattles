@@ -1,7 +1,7 @@
-
 #include "Snowball.h"
 #include "Physics.h"
 #include "Sprite.h"
+#include "SpriteRenderer.h"
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, Shader* shader, GLuint textureBufferID) : GameObject(false),_player(player) {
 	Physics* physics = new Physics(this);
