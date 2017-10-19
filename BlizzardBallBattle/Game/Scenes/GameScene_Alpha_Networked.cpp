@@ -13,6 +13,7 @@
 #include "InputManager.h"
 #include "Sender.h"
 #include "Receiver.h"
+#include "Player.h"
 
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
@@ -30,51 +31,21 @@ void GameScene_Alpha_Networked::OnUpdate(int ticks) {
 		if (NetworkingManager::GetInstance()->IsHost()) {
 			player1->AddComponent<Sender*>(new Sender(player1, "Player1"));
 			player2->AddComponent<Receiver*>(new Receiver(player2, "Player2"));
+			player1->AddComponent<Player*>(new Player(player1, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE));
 		}
 		else {
 			player1->AddComponent<Receiver*>(new Receiver(player1, "Player1"));
 			player2->AddComponent<Sender*>(new Sender(player2, "Player2"));
+			player2->AddComponent<Player*>(new Player(player2, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE));
 		}
 		isConnected = true;
-	}
-
-	if (isConnected) {
-		GameObject* player = NetworkingManager::GetInstance()->IsHost() ? player1 : player2;
-		//TODO: Replace onKey calls with player->AddComponent<ChensPlayer*>()
-		if (InputManager::GetInstance()->onKey(SDLK_a)) {
-			player->GetTransform()->addX(-0.1f);
-			player->GetTransform()->setRotation(180);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_d)) {
-			player->GetTransform()->addX(0.1f);
-			player->GetTransform()->setRotation(0);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_s)) {
-			player->GetTransform()->addY(-0.1f);
-			player->GetTransform()->setRotation(90);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_w)) {
-			player->GetTransform()->addY(0.1f);
-			player->GetTransform()->setRotation(-90);
-		}
 	}
 }
 
 void GameScene_Alpha_Networked::OnConnected() {
-	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/CharacterSheet.png"));
-	player1 = new GameObject(false);
-	player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
-	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
-	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
-	spriteRenderer->SetActiveShader(ourShader);
+	player1 = new Battler(1, "Character.png");
 	player1->GetTransform()->setX(-7.5f);
 
-
-	player2 = new GameObject(false);
-	player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
-	spriteRenderer = player2->GetComponent<SpriteRenderer*>();
-	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
-	spriteRenderer->SetActiveShader(ourShader);
+	player2 = new Battler(2, "Character.png");
 	player2->GetTransform()->setX(7.5f);
 }

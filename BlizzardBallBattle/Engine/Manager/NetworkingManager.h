@@ -18,8 +18,8 @@ private:
     ThreadQueue<std::string> *messageQueue;
     std::thread receiverThread;
     std::vector<Message> messagesToSend;
-    char *IP = "127.0.0.1";
-    int port = 5050;
+    char *IP = "192.168.0.124";
+    int port = 9999;
 
     TCPsocket socket = NULL;
     TCPsocket client = NULL;
