@@ -13,7 +13,9 @@
 int playerWonSubscriptionReceipt;
 
 void PlayerWon(std::map<std::string, void*> payload) {
-	int teamID = std::stoi(*((std::string*)payload["teamID"]));
+	std::string* teamIDStrptr = (std::string*)payload["teamID"];
+	std::string teamIDStr = *teamIDStrptr;
+	int teamID = std::stoi(teamIDStr);
 	MessageManager::UnSubscribe("PlayerWon", playerWonSubscriptionReceipt);
 	SceneManager::GetInstance()->PushScene(new PostGameMenuScene(teamID));
 }

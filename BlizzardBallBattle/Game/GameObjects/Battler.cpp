@@ -103,7 +103,7 @@ void Battler::Die()
 	if (stats.isPlayer)
 	{
 		std::map<std::string, void*> payload;
-		payload["teamID"] = &std::to_string(stats.teamID);
+		payload["teamID"] = new std::string(std::to_string(stats.teamID));
 		MessageManager::SendEvent("PlayerWon", payload);
 	}
 	else
