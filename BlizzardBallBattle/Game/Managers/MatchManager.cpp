@@ -21,7 +21,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-
+	TEAM_SIZE = 10;
 }
 
 
@@ -86,10 +86,10 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Team 1
 	// Player
 	Battler* playerOne = new Battler(1, playerSprite);
-	Collider* collider = new Collider(playerOne, 0.5f);
-	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s,SDLK_b);
+	Collider* playerOneCollider = new Collider(playerOne, 0.5f);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x);
 	playerOne->AddComponent<Player*>(playerOneStats);
-	playerOne->AddComponent<Collider*>(collider);
+	playerOne->AddComponent<Collider*>(playerOneCollider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetTransform();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
 	playerOne->stats.hitpoints = 3;
@@ -117,10 +117,10 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	Battler* playerTwo = new Battler(2, playerSprite);
-	collider = new Collider(playerTwo, 0.5f);
-	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5,SDLK_SPACE);
+	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_l , SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
-	playerTwo->AddComponent<Collider*>(collider);
+	playerTwo->AddComponent<Collider*>(playerTwoCollider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	playerTwoTransform->addRotation(180.0f);
