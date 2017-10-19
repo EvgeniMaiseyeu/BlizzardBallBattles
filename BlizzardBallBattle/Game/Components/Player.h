@@ -19,17 +19,13 @@ private:
 	float distance;
 	Battler* youBattler;
 	float center;
-	//bool PressedShoot(Battler *character);
-
 	
 public:
 	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot);
-	//void setKeys(leftKey, rightKey, downKey, upKey)
-	void PressedLeft();
-	void PressedRight();
-	void PressedUp();
-	void PressedDown();
-	//void PressedShoot();
+	void PressedLeft(float moveSpeed);
+	void PressedRight(float moveSpeed);
+	void PressedUp(float moveSpeed);
+	void PressedDown(float moveSpeed);
 	void OnStart(){};
 	void OnUpdate(int ticks);
 	void OnEnd(){};

@@ -4,6 +4,8 @@
 #include "Snowball.h"
 #include "MessageManager.h"
 #include "AI.h"
+#include "SpriteRendererManager.h"
+#include "PhysicsManager.h"
 
 Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f)
 {
@@ -18,7 +20,7 @@ Battler::~Battler()
 void Battler::InitStats(int team)
 {
 	stats.teamID = team;
-	stats.moveSpeed = 1;
+	stats.moveSpeed = 2;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
@@ -74,7 +76,7 @@ bool Battler::ThrowSnowball()
  		return false;
 
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
-	Snowball* snowball = new Snowball(this, 5, radians, "Snowball2.png");
+	Snowball* snowball = new Snowball(this, 3, radians, "Snowball2.png");
 	canFire = false;
 	return true;
 }
@@ -102,14 +104,20 @@ void Battler::Die()
 {
 	if (stats.isPlayer)
 	{
+		int winningTeam = 1;
+		if (stats.isPlayer == 1)
+			winningTeam = 2;
+
 		std::map<std::string, void*> payload;
-		payload["teamID"] = new std::string(std::to_string(stats.teamID));
+		payload["teamID"] = new std::string(std::to_string(winningTeam));
 		MessageManager::SendEvent("PlayerWon", payload);
 	}
 	else
 	{
 		GetComponent<AI*>()->Died();
 		GetTransform()->setScale(0.0f);
+		SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
+		PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 		//delete(this);
 	}
 }
