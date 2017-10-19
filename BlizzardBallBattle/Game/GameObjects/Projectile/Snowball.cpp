@@ -7,8 +7,8 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX());
 	GetComponent<Transform*>()->setY(_player->GetComponent<Transform*>()->getY());
 
-	_collider = new Collider(this, GetComponent<Transform*>()->getScale() / 2);
-	AddComponent<Collider*>(_collider);
+	myCollider = new Collider(this, GetComponent<Transform*>()->getScale() / 2);
+	AddComponent<Collider*>(myCollider);
 
 	_speed = playerPower;
 	Vector2* velocity = new Vector2(1, 0);
@@ -24,16 +24,18 @@ void Snowball::OnUpdate(int timeDelta)
 
 	if (myCollider->collisionDetected())
 	{
-		std::vector<GameObject*> v = _collider->getColliders();
+		std::vector<GameObject*> v = myCollider->getColliders();
 		for (int i = 0; i < v.size(); i++) {
 			Battler *hitBattler = dynamic_cast<Battler*>(v[i]);
 			if (hitBattler && (v[i]->getId() != _player->getId()))
 			{
 				//yes we hit do stuff
+				if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID)
+				{
+					hitBattler->DealtDamage(1);
+				}
 			}
 		}
- 		//Battler *hitBattler = dynamic_cast<Battler*>(myCollider->getColliderObj());
- 		
 	}
 }
 
