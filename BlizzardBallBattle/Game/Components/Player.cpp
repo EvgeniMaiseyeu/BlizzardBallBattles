@@ -74,7 +74,6 @@ void Player::PressedRight() {
 	}
 
 	youBattler->Move(0.2f, 0);
-	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 
 	
@@ -107,6 +106,5 @@ void Player::PressedLeft() {
 		return;
 	}
 	youBattler->Move(-0.2f, 0);
-	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 }

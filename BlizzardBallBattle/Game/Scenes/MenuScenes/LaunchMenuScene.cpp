@@ -23,6 +23,7 @@ void LaunchMenuScene::DestroyScene() {
     DestroyBaseScene();
     menuTitle->GetComponent<Transform*>()->setScale(0.0f);
     howToText->GetComponent<Transform*>()->setScale(0.0f);
+	Purge();
 }
 
 void LaunchMenuScene::OnUpdate(int ticks) {

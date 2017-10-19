@@ -22,4 +22,5 @@ void MenuScene_Alpha::DestroyBaseScene() {
     //delete(menuBackground);
     menuForeground->GetComponent<Transform*>()->setScale(0.0f);
     //delete(menuForeground);
+	Purge();
 }

@@ -10,7 +10,8 @@ GameObject::GameObject(bool g) {
         GameManager::GetInstance()->AddGameObject(id, this);
     if (SceneManager::GetInstance()->HasScene())
         SceneManager::GetInstance()->GetCurrentScene()->AddGameObject(id, this);
-    AddComponent<Transform*>(new Transform(this));
+	transform = new Transform(this);
+    AddComponent<Transform*>(transform);
 }
 
 void GameObject::OnComponentsUpdate(int ticks) {
@@ -24,4 +25,8 @@ void GameObject::OnComponentsUpdate(int ticks) {
 GameObject::~GameObject() {
   GameManager::GetInstance()->RemoveGameObject(id);
   //std::vector<Component*>() v = GetComponents
+}
+
+Transform* GameObject::GetTransform() {
+	return transform;
 }

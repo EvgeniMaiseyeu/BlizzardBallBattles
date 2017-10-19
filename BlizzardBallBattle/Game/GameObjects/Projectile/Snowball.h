@@ -7,6 +7,7 @@
 
 class Snowball : public SimpleSprite {
 private:
+	bool active;
 	GameObject* _player;
 	float _speed;
 	Collider* myCollider;

@@ -20,4 +20,6 @@ public:
      
     //Remove a game object from the scene
     void RemoveGameObject(int id);
+
+	void Purge();
 };

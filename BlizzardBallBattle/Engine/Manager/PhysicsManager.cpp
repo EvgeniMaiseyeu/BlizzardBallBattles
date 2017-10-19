@@ -82,3 +82,7 @@ void PhysicsManager::OnEnd() {
 float PhysicsManager::checkCollision(Transform* obj1, Transform* obj2) {
 	return sqrt(pow(obj1->getX() - obj2->getX(), 2) + pow(obj1->getY() - obj2->getY(),2));
 }
+
+void PhysicsManager::Purge() {
+	_sceneColliders.clear();
+}
