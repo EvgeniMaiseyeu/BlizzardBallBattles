@@ -34,7 +34,6 @@ private:
 	void AI::Shoot();
 
 	bool AI::CanMakeDecision(float deltaTIme);
-	void EngageTarget(float deltaTIme);
 
 	float decisionFrequency;
 	float timeSinceLastDecision;
@@ -43,10 +42,12 @@ private:
 	float intelligence;
 	float courage;
 
+	bool CheckIfInBounds(float x = 0, float y = 0);
+
 public:
 	AI(GameObject* gameObject);
 	~AI();
-	void Init();
+	void Init(float _intelligence, float _courage, float _decisionFrequency);
 	void OnStart(){};
 	void OnUpdate(int ticks);
 	void OnEnd(){};

@@ -26,9 +26,11 @@ AI::~AI()
 
 }
 
-void AI::Init()
+void AI::Init(float _intelligence, float _courage, float _decisionFrequency)
 {
-	//GetTarget();
+	intelligence = _intelligence;
+	courage = _courage;
+	decisionFrequency = _decisionFrequency;
 }
 
 void AI::OnUpdate(int timeDelta) 
@@ -117,26 +119,6 @@ Vector2* AI::GetTargetPosition()
 	return battlefieldLocation;
 }
 
-void AI::EngageTarget(float deltaTime)
-{
-	if (lastActionWasShooting && !CanMakeDecision(deltaTime))
-		return;
-
-	float targetPosY = targetBattler->GetComponent<Transform*>()->getY();
-	float myPosY = myTransform->getY();
-
-	float posDiffY = targetPosY - myPosY;
-
-	if (posDiffY >= -1 && posDiffY <= 1)
-	{
-		currentState = shoot;
-	}
-	else
-	{
-		WalkToTargetBattler(deltaTime);
-	}
-}
-
 void AI::WalkToTargetBattler(float deltaTime)
 {
 	float targetPosY = targetBattler->GetComponent<Transform*>()->getY();
@@ -145,8 +127,7 @@ void AI::WalkToTargetBattler(float deltaTime)
 	float posDiffY = targetPosY - myPosY;
 
 	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
-	int direction = (posDiffY > 0) ? 1 : -1;
-	moveSpeed = moveSpeed * direction;
+	int directionY = (posDiffY > 0) ? 1 : -1;
 
 	if (posDiffY >= -1 && posDiffY <= 1)
 	{
@@ -154,11 +135,29 @@ void AI::WalkToTargetBattler(float deltaTime)
 		return;
 	}
 
-	//if (GetGameObject()->GetComponent<Transform*>()->getY() + -distance < -getGameHeight() / 2.0f)
-	//{
-	//	return;
-	//}
-	myBattler->Move(0, moveSpeed);
+	// Adds a little x movement which brings him closer to the target if his courage is high, and further away
+	// if his courage is low.
+	float chanceOfMovingX = randomFloatInRange(0.0f, 1.0f);
+	int directionX = 0;
+	if (chanceOfMovingX < courage)
+	{
+		directionX = (myBattler->stats.teamID == 1) ? 1 : -1;
+	}
+	else
+	{
+		directionX = (myBattler->stats.teamID == 1) ? -1 : 1;
+	}
+
+	// Check if this would take the battler out of bounds, if it does then don't move x
+	float posXToMoveTo = GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed * (float)directionX;
+	if (!CheckIfInBounds(posXToMoveTo))
+	{
+		posXToMoveTo = 0;
+	}
+	else
+		posXToMoveTo = moveSpeed * directionX;
+
+	myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 }
 
 void AI::WalkToTargetPosition(float deltaTime)
@@ -193,6 +192,8 @@ void AI::WalkToTargetPosition(float deltaTime)
 
 void AI::Shoot()
 {
+
+	// The more intelligent the AI the higher chance he has to shoot
 	float chanceOfFiring = randomFloatInRange(0.0f, 1.0f);
 
 	if (chanceOfFiring <= intelligence)
@@ -211,4 +212,29 @@ bool AI::CanMakeDecision(float deltaTIme)
 	}
 
 	return false;
+}
+
+bool AI::CheckIfInBounds(float x, float y)
+{
+	float mapXMax = getGameWidth() / 2;
+	float mapYMax = getGameHeight() / 2;
+	float mapXMin = getGameWidth() / 6;
+	float mapYMin = -mapYMax;
+
+	if (myBattler->stats.teamID == 1)
+	{
+		mapXMin = -mapXMin;
+		mapXMax = -mapXMax;
+	}
+
+	if (x < mapXMin || x > mapXMax)
+	{
+		return false;
+	}
+	else if (y < mapYMin || y > mapYMax)
+	{
+		return false;
+	}
+
+	return true;
 }
