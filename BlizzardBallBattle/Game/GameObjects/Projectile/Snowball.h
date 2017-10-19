@@ -11,4 +11,5 @@ private:
 public:
 	Snowball(GameObject* player, float playerPower, float radians, Shader* shader, GLuint textureBufferID);
 	void PressedShoot();
+	~Snowball();
 };
