@@ -21,6 +21,10 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, Shader*
 	renderer->SetActiveSprite(new Sprite(textureBufferID));
 }
 
+Snowball::~Snowball() {
+	
+}
+
 
 	
 

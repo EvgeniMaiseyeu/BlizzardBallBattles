@@ -1,9 +1,12 @@
 #include "Collider.h"
 #include "Transform.h"
 #include <math.h>
+#include "PhysicsManager.h"
 
 Collider::Collider(GameObject* gameObject, float radius) : Component(gameObject) , _radius(radius){
 	_collision = false;
+	//add to physics manager;
+	PhysicsManager::GetInstance()->addCollider(this);
 }
 
 bool Collider::collisionDetected() {
@@ -40,4 +43,8 @@ float Collider::getRadius() {
 
 void Collider::setRadius(float radius) {
 	_radius = radius;
+}
+
+Collider::~Collider() {
+	PhysicsManager::GetInstance()->removeCollider(this);
 }
