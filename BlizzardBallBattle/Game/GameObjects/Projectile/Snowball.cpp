@@ -8,12 +8,12 @@
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	Physics* physics = new Physics(this);
 	AddComponent<Physics*>(physics);
-	GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX());
-	GetComponent<Transform*>()->setY(_player->GetComponent<Transform*>()->getY());
-	GetComponent<Transform*>()->setScale(0.5f);
+	GetTransform()->setX(_player->GetTransform()->getX());
+	GetTransform()->setY(_player->GetTransform()->getY());
+	GetTransform()->setScale(0.5f);
 
 	//AddComponent<Collider*>(new Collider(this, 50.0f));
-	AddComponent<Collider*>(new Collider(this, GetComponent<Transform*>()->getScale()/4));
+	AddComponent<Collider*>(new Collider(this, GetTransform()->getScale()/4));
 	myCollider = GetComponent<Collider*>();
 
 	_speed = playerPower;
@@ -36,7 +36,7 @@ void Snowball::OnUpdate(int timeDelta)
 
 			}
 		}
-		float x = GetComponent<Transform*>()->getX();
+		float x = GetTransform()->getX();
 		if (x < -GAME_WIDTH / 2 || x > GAME_WIDTH / 2) {
 			SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 			PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());

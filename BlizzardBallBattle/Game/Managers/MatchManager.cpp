@@ -90,7 +90,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s,SDLK_b);
 	playerOne->AddComponent<Player*>(playerOneStats);
 	playerOne->AddComponent<Collider*>(collider);
-	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
+	Transform* playerOneTransform = (Transform*)playerOne->GetTransform();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
 	playerOne->stats.hitpoints = 3;
 	playerOne->stats.isPlayer = true;
@@ -107,7 +107,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		Collider* collider = new Collider(unit, 2);
 		unit->AddComponent<AI*>(unitAI);
 		unit->AddComponent<Collider*>(collider);
-		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
+		Transform* aiTransform = (Transform*)unit->GetTransform();
 		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
@@ -121,7 +121,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5,SDLK_SPACE);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	playerTwo->AddComponent<Collider*>(collider);
-	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
+	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	playerTwoTransform->addRotation(180.0f);
 	playerTwo->stats.hitpoints = 3;
@@ -138,7 +138,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		Collider* collider = new Collider(unit, 20);
 		unit->AddComponent<AI*>(unitAI);
 		unit->AddComponent<Collider*>(collider);
-		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
+		Transform* aiTransform = (Transform*)unit->GetTransform();
 		aiTransform->setPosition(posX, posY);
 		aiTransform->addRotation(180.0f);
 		RegisterCharacter(unit);

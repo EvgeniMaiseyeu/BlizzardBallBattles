@@ -43,7 +43,7 @@ void Player::OnUpdate(int timeDelta) {
 
 
 void Player::PressedDown() {
-	if (GetGameObject()->GetComponent<Transform*>()->getY() + -distance < -getGameHeight()/2)
+	if (GetGameObject()->GetTransform()->getY() + -distance < -getGameHeight()/2)
 	{
 		return;
 	}
@@ -59,14 +59,14 @@ void Player::PressedDown() {
 }
 
 void Player::PressedRight() {
-	if (GetGameObject()->GetComponent<Transform*>()->getX() + distance > GAME_WIDTH / 2)
+	if (GetGameObject()->GetTransform()->getX() + distance > GAME_WIDTH / 2)
 	{
 		return;
 	}
 	
 
 
-	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetTransform()->getX() > -4.0f)
 
 	{
 		return;
@@ -80,7 +80,7 @@ void Player::PressedRight() {
 }
 
 void Player::PressedUp() {
-	if (GetGameObject()->GetComponent<Transform*>()->getY() + distance> getGameHeight() / 2)
+	if (GetGameObject()->GetTransform()->getY() + distance> getGameHeight() / 2)
 	{
 		return;
 	}
@@ -93,14 +93,14 @@ void Player::PressedUp() {
 }
 
 void Player::PressedLeft() {
-	if (GetGameObject()->GetComponent<Transform*>()->getX() + -distance < - GAME_WIDTH / 2)
+	if (GetGameObject()->GetTransform()->getX() + -distance < - GAME_WIDTH / 2)
 	{
 		return;
 	}
 
 
 
-	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() <4.0f)
+	if (youBattler->stats.teamID == 2 && GetGameObject()->GetTransform()->getX() <4.0f)
 
 	{
 		return;

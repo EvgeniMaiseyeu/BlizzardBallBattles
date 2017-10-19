@@ -21,8 +21,8 @@ void LaunchMenuScene::CreateScene() {
 
 void LaunchMenuScene::DestroyScene() {
     DestroyBaseScene();
-    menuTitle->GetComponent<Transform*>()->setScale(0.0f);
-    howToText->GetComponent<Transform*>()->setScale(0.0f);
+    menuTitle->GetTransform()->setScale(0.0f);
+    howToText->GetTransform()->setScale(0.0f);
 	Purge();
 }
 

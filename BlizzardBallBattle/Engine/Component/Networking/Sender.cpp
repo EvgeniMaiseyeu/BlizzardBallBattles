@@ -7,7 +7,7 @@ Sender::Sender(GameObject* gameObject, std::string ID) : Component(gameObject) {
 
 void Sender::SendUpdate() {
     std::map<std::string, std::string> payload;
-    Transform* transform = gameObject->GetComponent<Transform*>();
+    Transform* transform = gameObject->GetTransform();
     payload["x"] = std::to_string(transform->getX());
     payload["y"] = std::to_string(transform->getY());
     payload["z"] = std::to_string(transform->getZ());

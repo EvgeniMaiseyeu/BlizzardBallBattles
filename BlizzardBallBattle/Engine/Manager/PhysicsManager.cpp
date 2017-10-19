@@ -24,8 +24,8 @@ void PhysicsManager::OnUpdate(int ticks) {
 	if (_sceneColliders.size() > 1) {
 		for (int i = 0; i < _sceneColliders.size() - 1; i++) {
 			for (int j = i + 1; j < _sceneColliders.size(); j++) {
-				if (checkCollision(_sceneColliders[i]->GetGameObject()->GetComponent<Transform*>(),
-					_sceneColliders[j]->GetGameObject()->GetComponent<Transform*>()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
+				if (checkCollision(_sceneColliders[i]->GetGameObject()->GetTransform(),
+					_sceneColliders[j]->GetGameObject()->GetTransform()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
 					_sceneColliders[i]->setCollision(true);
 					_sceneColliders[i]->setColliderObj(_sceneColliders[j]->GetGameObject());
 					_sceneColliders[j]->setCollision(true);
@@ -47,7 +47,7 @@ void PhysicsManager::OnUpdate(int ticks) {
 				if (j->second->GetComponent<Collider*>()) {
 					Collider* cl1 = i->second->GetComponent<Collider*>();
 					Collider* cl2 = j->second->GetComponent<Collider*>();
-					if (checkCollision(i->second->GetComponent<Transform*>(), j->second->GetComponent<Transform*>()) < (cl1->getRadius() + cl2->getRadius())) {
+					if (checkCollision(i->second->GetTransform(), j->second->GetTransform()) < (cl1->getRadius() + cl2->getRadius())) {
 						cl1->setCollision(true);
 						cl1->setColliderObj(j->second);
 						cl2->setCollision(true);

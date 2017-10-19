@@ -18,9 +18,9 @@ void MenuScene_Alpha::BuildBaseScene() {
 
 void MenuScene_Alpha::DestroyBaseScene() {
     //delete(pixelShader);
-    menuBackground->GetComponent<Transform*>()->setScale(0.0f);
+    menuBackground->GetTransform()->setScale(0.0f);
     //delete(menuBackground);
-    menuForeground->GetComponent<Transform*>()->setScale(0.0f);
+    menuForeground->GetTransform()->setScale(0.0f);
     //delete(menuForeground);
 	Purge();
 }

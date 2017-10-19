@@ -197,7 +197,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   }
 
   //bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
-  //  return lhs->GetGameObject()->GetComponent<Transform*>()->getZ() < rhs->GetGameObject()->GetComponent<Transform*>()->getZ();
+  //  return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
   //}
 
   void SpriteRendererManager::Render() {
@@ -214,7 +214,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   
         //Pass in transform
         GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-        Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+        Transform* transform = spriteRenderer->GetGameObject()->GetTransform();
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
     
         //Pass in aspect ratio

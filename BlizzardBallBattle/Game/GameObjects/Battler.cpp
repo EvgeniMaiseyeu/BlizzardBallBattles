@@ -39,13 +39,13 @@ void Battler::MoveTo(GameObject* gameObject)
 
 void Battler::MoveTo(Vector2* position)
 {
-	GetComponent<Transform*>()->setPosition(position->getX(), position->getY());
+	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
 void Battler::Move(float x, float y)
 {
-	//GetComponent<Transform*>()->addTranslation(position->getX(), position->getY());
-	GetComponent<Transform*>()->addTranslation(x, y);
+	//GetTransform()->addTranslation(position->getX(), position->getY());
+	GetTransform()->addTranslation(x, y);
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -73,7 +73,7 @@ bool Battler::ThrowSnowball()
 	if (!canFire)
  		return false;
 
-	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+	float radians = GetTransform()->getRotation() * M_PI / 180;
 	Snowball* snowball = new Snowball(this, 10, radians, "Snowball.png");
 	canFire = false;
 	return true;
@@ -109,7 +109,7 @@ void Battler::Die()
 	else
 	{
 		GetComponent<AI*>()->Died();
-		GetComponent<Transform*>()->setScale(0.0f);
+		GetTransform()->setScale(0.0f);
 		//delete(this);
 	}
 }

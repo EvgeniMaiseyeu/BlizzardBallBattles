@@ -42,20 +42,20 @@ void GameScene_Alpha_Networked::OnUpdate(int ticks) {
 		GameObject* player = NetworkingManager::GetInstance()->IsHost() ? player1 : player2;
 		//TODO: Replace onKey calls with player->AddComponent<ChensPlayer*>()
 		if (InputManager::GetInstance()->onKey(SDLK_a)) {
-			player->GetComponent<Transform*>()->addX(-0.1f);
-			player->GetComponent<Transform*>()->setRotation(180);
+			player->GetTransform()->addX(-0.1f);
+			player->GetTransform()->setRotation(180);
 		}
 		if (InputManager::GetInstance()->onKey(SDLK_d)) {
-			player->GetComponent<Transform*>()->addX(0.1f);
-			player->GetComponent<Transform*>()->setRotation(0);
+			player->GetTransform()->addX(0.1f);
+			player->GetTransform()->setRotation(0);
 		}
 		if (InputManager::GetInstance()->onKey(SDLK_s)) {
-			player->GetComponent<Transform*>()->addY(-0.1f);
-			player->GetComponent<Transform*>()->setRotation(90);
+			player->GetTransform()->addY(-0.1f);
+			player->GetTransform()->setRotation(90);
 		}
 		if (InputManager::GetInstance()->onKey(SDLK_w)) {
-			player->GetComponent<Transform*>()->addY(0.1f);
-			player->GetComponent<Transform*>()->setRotation(-90);
+			player->GetTransform()->addY(0.1f);
+			player->GetTransform()->setRotation(-90);
 		}
 	}
 }
@@ -68,7 +68,7 @@ void GameScene_Alpha_Networked::OnConnected() {
 	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
 	spriteRenderer->SetActiveShader(ourShader);
-	player1->GetComponent<Transform*>()->setX(-7.5f);
+	player1->GetTransform()->setX(-7.5f);
 
 
 	player2 = new GameObject(false);
@@ -76,5 +76,5 @@ void GameScene_Alpha_Networked::OnConnected() {
 	spriteRenderer = player2->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
 	spriteRenderer->SetActiveShader(ourShader);
-	player2->GetComponent<Transform*>()->setX(7.5f);
+	player2->GetTransform()->setX(7.5f);
 }

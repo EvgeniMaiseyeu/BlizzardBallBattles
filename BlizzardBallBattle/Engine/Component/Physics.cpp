@@ -6,7 +6,7 @@ Physics::Physics(GameObject* gameObject) : Component(gameObject) {
 	_aVelocity = new Vector2(0, 0);
 	_drag = 1;
 	_snowDrag = 1;
-	transform = gameObject->GetComponent<Transform*>();
+	transform = gameObject->GetTransform();
 }
 
 void Physics::setVelocity(Vector2* value) {

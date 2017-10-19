@@ -9,7 +9,7 @@
 AI::AI(GameObject* gameObject) : Component(gameObject)
 {
 	myBattler = (Battler*)GetGameObject();
-	myTransform = myBattler->GetComponent<Transform*>();
+	myTransform = myBattler->GetTransform();
 
 	intelligence = 0.5f;
 	courage = 0.5f;
@@ -126,7 +126,7 @@ Vector2* AI::GetTargetPosition()
 
 void AI::WalkToTargetBattler(float deltaTime)
 {
-	float targetPosY = targetBattler->GetComponent<Transform*>()->getY();
+	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 
 	float posDiffY = targetPosY - myPosY;
@@ -156,7 +156,7 @@ void AI::WalkToTargetBattler(float deltaTime)
 	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
-	float posXToMoveTo = GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed * (float)directionX;
+	float posXToMoveTo = GetGameObject()->GetTransform()->getX() + moveSpeed * (float)directionX;
 	if (!CheckIfInBounds(posXToMoveTo))
 	{
 		posXToMoveTo = 0;

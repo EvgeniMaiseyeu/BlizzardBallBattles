@@ -18,8 +18,8 @@ void Collider::setCollision(bool collision) {
 }
 
 bool Collider::DoesCollide(GameObject* other) {
-	Transform* myTrans = gameObject->GetComponent<Transform*>();
-	Transform* otherTrans = other->GetComponent<Transform*>();
+	Transform* myTrans = gameObject->GetTransform();
+	Transform* otherTrans = other->GetTransform();
 
 	float a = myTrans->getX() - otherTrans->getX();
 	float b = myTrans->getY() - otherTrans->getY();

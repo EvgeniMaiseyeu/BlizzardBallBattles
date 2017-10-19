@@ -6,7 +6,7 @@ const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 const float ASPECT_RATIO = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
 
-const int FRAME_RATE = 25; //ms per frame
+const int FRAME_RATE = 16; //ms per frame
 
 const int GAME_WIDTH = 30; //30
 
