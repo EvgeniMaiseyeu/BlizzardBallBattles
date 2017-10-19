@@ -1,14 +1,12 @@
 #pragma once
-#ifndef BATTLER_H
-#define BATTLER_H
 
 #include "Component.h"
 #include "GameObject.h"
-#include "SpriteRenderer.h"
 #include "Vector2.h"
+#include "SimpleSprite.h"
 
 class Battler :
-	public GameObject
+	public SimpleSprite
 {
 public:
 	struct stats {
@@ -16,12 +14,12 @@ public:
 		float moveSpeed;
 		float fireSpeedInterval;
 		int hitpoints;
+		bool isPlayer;
 	};
 	stats stats;
 
-	Battler(int team, Shader* shader, GLuint textureBufferID);
+	Battler(int team, std::string textureFileName);
 	~Battler();
-
 
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
@@ -31,17 +29,19 @@ public:
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
 	void OnStart(){};
-	void OnUpdate(int ticks){};
+	void OnUpdate(int ticks);
 	void OnEnd(){};
 	bool ThrowSnowball();
+	void DealtDamage(int damage);
 
 private:
 	Shader* _shader;
 	GLuint _textureBufferID;
 	void InitStats(int team);
+	void UpdateThrowTimer(float deltaTime);
+	void Die();
 
 	bool canFire;
-	bool timeSinceLastShot;
+	float timeSinceLastShot;
 };
 
-#endif
