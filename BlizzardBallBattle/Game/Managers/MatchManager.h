@@ -16,7 +16,7 @@ private:
 	std::vector<Battler*> teamOne;
 	std::vector<Battler*> teamTwo;
 	std::vector<AI*> aiUnits;
-	const int TEAM_SIZE = 10;
+	const int TEAM_SIZE = 2;
 public:
 	static MatchManager* GetInstance();
 	MatchManager();

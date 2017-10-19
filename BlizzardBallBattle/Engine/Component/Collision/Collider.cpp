@@ -10,9 +10,10 @@ bool Collider::collisionDetected() {
 	return _collision;
 }
 
-void Collider::setCollision( bool collision) {
+void Collider::setCollision(bool collision) {
 	_collision = collision;
 }
+
 bool Collider::DoesCollide(GameObject* other) {
 	Transform* myTrans = gameObject->GetComponent<Transform*>();
 	Transform* otherTrans = other->GetComponent<Transform*>();

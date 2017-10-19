@@ -29,9 +29,9 @@ private:
 		shoot = 2,
 		s_MAX
 	}currentState;
-	void AI::WalkToTargetBattler(float deltaTime);
-	void AI::WalkToTargetPosition(float deltaTime);
-	void AI::Shoot();
+	void WalkToTargetBattler(float deltaTime);
+	void WalkToTargetPosition(float deltaTime);
+	void Shoot();
 
 	bool AI::CanMakeDecision(float deltaTIme);
 

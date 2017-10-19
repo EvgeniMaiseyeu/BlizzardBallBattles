@@ -119,12 +119,13 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
-	collider = new Collider(playerTwo, 2);
+	collider = new Collider(playerTwo, 20);
 	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5,SDLK_SPACE);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	playerTwo->AddComponent<Collider*>(collider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
+	playerTwoTransform->addRotation(180.0f);
 	RegisterCharacter(playerTwo);
 
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
@@ -134,11 +135,12 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 		Battler* unit = new Battler(2, ourShader, characterTexture);
 		AI* unitAI = new AI(unit);
-		Collider* collider = new Collider(unit, 2);
+		Collider* collider = new Collider(unit, 20);
 		unit->AddComponent<AI*>(unitAI);
 		unit->AddComponent<Collider*>(collider);
 		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
 		aiTransform->setPosition(posX, posY);
+		aiTransform->addRotation(180.0f);
 		RegisterCharacter(unit);
 		aiUnits.push_back(unitAI);
 	}
@@ -146,7 +148,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Initialize our AI
 	for (int i = 0; i < aiUnits.size(); ++i)
 	{
-		float intelligence = randomFloatInRange(0.1f, 1.0f);
+		float intelligence = randomFloatInRange(0.8f, 1.0f);
 		float courage = randomFloatInRange(0.0f, 1.0f);
 		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
 

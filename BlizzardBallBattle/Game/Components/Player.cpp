@@ -110,20 +110,3 @@ void Player::PressedLeft() {
 	GetGameObject()->GetComponent <Transform*>()->addRotation(15);
 	
 }
-
-void Snowball::PressedShoot() {
-	/*
-	if (GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX()))
-
-	{
-		return;
-	}
-	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Snowball*>())
-
-	{
-
-		canfire == true;
-	}
-	youBattler->MoveTo->setPosition(position->getX(), position->getY());
-	*/
-}
