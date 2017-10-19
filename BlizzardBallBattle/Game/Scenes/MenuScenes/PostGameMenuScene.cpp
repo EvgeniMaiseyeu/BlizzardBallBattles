@@ -2,6 +2,9 @@
 #include "HelperFunctions.h"
 #include "InputManager.h"
 #include "GLHeaders.h"
+#include "Scenes.h"
+#include "SceneManager.h"
+#include "Transform.h"
 
 PostGameMenuScene::PostGameMenuScene(int winningTeamID) {
     if (winningTeamID == 1) {
@@ -19,15 +22,21 @@ void PostGameMenuScene::OnStart() {
     spaceToReturnText = new SimpleSprite("ReturnToMenu.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, pixelShader);
 }
 
+void PostGameMenuScene::OnPause() {
+	DestroyBaseScene();
+	winnerText->GetComponent<Transform*>()->setScale(0.0f);
+	spaceToReturnText->GetComponent<Transform*>()->setScale(0.0f);
+}
+
 PostGameMenuScene::~PostGameMenuScene() {
-    delete(winnerText);
-    delete(spaceToReturnText);
+    //delete(winnerText);
+    //delete(spaceToReturnText);
 }
 
 
 void PostGameMenuScene::OnUpdate(int ticks) {
     InputManager* inputManager = InputManager::GetInstance();
     if (inputManager->onKeyPressed(SDLK_SPACE)) {
-        //Return to main menu
+		SceneManager::GetInstance()->PushScene(new LaunchMenuScene());
     }
 }

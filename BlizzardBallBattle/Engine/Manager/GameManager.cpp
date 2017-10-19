@@ -24,6 +24,7 @@ GameManager::GameManager() {
  
 void GameManager::OnStart()
 {
+	
     lastTime = SDL_GetTicks();
     game = new Game();
     game->OnStart();
@@ -96,4 +97,5 @@ void GameManager::AddGameObject(int id, GameObject* obj) {
  
 void GameManager::RemoveGameObject(int id) {
     globalGameObjects.erase(id);
+	SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(id);
 }

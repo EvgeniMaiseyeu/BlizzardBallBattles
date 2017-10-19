@@ -5,6 +5,22 @@
 #include "SpriteRenderer.h"
 #include "SpriteSheet.h"
 #include "UserDefinedRenderLayers.h"
+#include "MessageManager.h"
+#include <map>
+#include "SceneManager.h"
+#include "Scenes.h"
+
+int playerWonSubscriptionReceipt;
+
+void PlayerWon(std::map<std::string, void*> payload) {
+	int teamID = std::stoi(*((std::string*)payload["teamID"]));
+	MessageManager::UnSubscribe("PlayerWon", playerWonSubscriptionReceipt);
+	SceneManager::GetInstance()->PushScene(new PostGameMenuScene(teamID));
+}
+
+GameScene::GameScene() {
+	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
+}
 
 void GameScene::BuildBaseScene() {
     ourShader = new Shader(BuildPath("Game/Assets/Shaders/tile.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());

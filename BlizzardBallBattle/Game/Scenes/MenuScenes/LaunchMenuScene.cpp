@@ -23,8 +23,6 @@ void LaunchMenuScene::DestroyScene() {
     DestroyBaseScene();
     menuTitle->GetComponent<Transform*>()->setScale(0.0f);
     howToText->GetComponent<Transform*>()->setScale(0.0f);
-    //delete(menuTitle);
-    //delete(howToText);
 }
 
 void LaunchMenuScene::OnUpdate(int ticks) {
@@ -37,7 +35,7 @@ void LaunchMenuScene::OnUpdate(int ticks) {
         NetworkingManager::GetInstance()->CreateClient();
         SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked());
     } else if (inputManager->onKeyPressed(SDLK_1)) {
-        //1 player
+		SceneManager::GetInstance()->PushScene(new PostGameMenuScene(2));
     } else if (inputManager->onKeyPressed(SDLK_2)) {
 		SceneManager::GetInstance()->PushScene(new SceneTemplate());
     }
