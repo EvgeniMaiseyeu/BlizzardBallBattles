@@ -9,7 +9,8 @@
 #include "SpriteSheet.h"
 #include <iostream>
 
-void SceneTemplate::OnStart() {
+void SceneTemplate::OnStart(){
+	BuildBaseScene();
 	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());
 	GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
 	GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));

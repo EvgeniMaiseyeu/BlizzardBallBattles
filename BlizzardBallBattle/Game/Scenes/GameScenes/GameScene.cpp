@@ -48,6 +48,7 @@ void GameScene::BuildBaseScene() {
 		bool isSnowy = x < width / 2 - iceWidth / 2 || x > width / 2 + iceWidth / 2;
 		bool isDirtSnowBorderLeft = x < width / 2 - iceWidth / 2 - 1;
 		bool isDirtSnowBorderRight = x > width / 2 + iceWidth / 2 + 1;
+		int z = -2;
 
 		for (int y = -1; y < height + 1; y++) {
 			bool isBottom = y == 0;
@@ -111,6 +112,7 @@ void GameScene::BuildBaseScene() {
 
 			////Left or Right house roofs
 			if (isHouse) {
+				z = 2.0f;
 				randSeed++;
 				std::cout << x << std::endl;
 				tileIndex = TileIndex::HouseLeft_Left;
@@ -186,7 +188,7 @@ void GameScene::BuildBaseScene() {
 			if (y == -1 || y == height) {
 				tileIndex = TileIndex::Dirt_Center;
             }
-
+			 
             //TODO: Turn into "TileSprite"
 			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
@@ -194,7 +196,7 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
 			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, z);
 		}
 	}
 }
