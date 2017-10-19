@@ -73,8 +73,8 @@ bool Battler::ThrowSnowball()
 	if (!canFire)
  		return false;
 
-	float radians = GetTransform()->getRotation() * M_PI / 180;
-	Snowball* snowball = new Snowball(this, 10, radians, "Snowball.png");
+	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+	Snowball* snowball = new Snowball(this, 5, radians, "Snowball.png");
 	canFire = false;
 	return true;
 }

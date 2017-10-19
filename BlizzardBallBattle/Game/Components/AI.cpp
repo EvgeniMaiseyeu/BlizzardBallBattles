@@ -260,6 +260,7 @@ void AI::GetBehaviour()
 
 void AI::Died()
 {
+	MatchManager::GetInstance()->UnRegisterCharacter(myBattler);
 	currentState = dead;
 }
 

@@ -13,7 +13,7 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	GetTransform()->setScale(0.5f);
 
 	//AddComponent<Collider*>(new Collider(this, 50.0f));
-	AddComponent<Collider*>(new Collider(this, GetTransform()->getScale()/4));
+	AddComponent<Collider*>(new Collider(this, GetTransform()->getScale()/2));
 	myCollider = GetComponent<Collider*>();
 
 	_speed = playerPower;
@@ -28,14 +28,22 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 void Snowball::OnUpdate(int timeDelta)
 {
 	if (active) {
+		GetTransform()->addRotation(15);
+
 		if (myCollider->collisionDetected())
 		{
-			Battler *hitBattler = dynamic_cast<Battler*>(myCollider->getColliderObj());
-			if (hitBattler)
-			{
-
+			std::vector<GameObject*> v = myCollider->getColliders();
+			for (int i = 0; i < v.size(); i++) {
+				Battler *hitBattler = dynamic_cast<Battler*>(v[i]);
+				if (hitBattler && (v[i]->getId() != _player->getId())) {
+					//yes we hit do stuff
+					if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID) {
+						hitBattler->DealtDamage(1);
+					}
+				}
 			}
 		}
+
 		float x = GetTransform()->getX();
 		if (x < -GAME_WIDTH / 2 || x > GAME_WIDTH / 2) {
 			SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());

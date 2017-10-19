@@ -13,13 +13,12 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 	youBattler = (Battler*)GetGameObject();
 }
 
-//Will be called every frame
+// Will be called every frame
 void Player::OnUpdate(int timeDelta) {
 	InputManager* inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(downKey)) {
 		PressedDown();
 	}
-
 	
 	if (inputManager->onKey(rightKey)) {
 		PressedRight();
@@ -29,82 +28,55 @@ void Player::OnUpdate(int timeDelta) {
 		PressedUp();
 	}
 
-
 	if (inputManager->onKey(leftKey)) {
 		PressedLeft();
 	}
 
-	
-	if (inputManager->onKey(shootKey)) {
+	if (inputManager->onKeyPressed(SDLK_SPACE)) {
 		youBattler->ThrowSnowball(); 
 	}
-	
 } 
-
 
 void Player::PressedDown() {
 	if (GetGameObject()->GetTransform()->getY() + -distance < -getGameHeight()/2)
 	{
 		return;
 	}
-
 	
 	youBattler->Move(0, -0.2f);
-	
-	
-
-	//Vector2* move = &Vector2(0, -0.2f);
-	//Battler* myBattler = (Battler*)GetGameObject();
-	//myBattler->Move(0, -0.2f);
 }
 
 void Player::PressedRight() {
-	if (GetGameObject()->GetTransform()->getX() + distance > GAME_WIDTH / 2)
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
 	{
 		return;
 	}
-	
-
-
-	if (youBattler->stats.teamID == 1 && GetGameObject()->GetTransform()->getX() > -4.0f)
-
+	else if (GetGameObject()->GetComponent<Transform*>()->getX() + distance > GAME_WIDTH / 2)
 	{
 		return;
-
 	}
 
 	youBattler->Move(0.2f, 0);
-	
-
-	
 }
 
 void Player::PressedUp() {
-	if (GetGameObject()->GetTransform()->getY() + distance> getGameHeight() / 2)
+	if (GetGameObject()->GetComponent<Transform*>()->getY() + distance > getGameHeight() / 2)
 	{
 		return;
 	}
 	
 	youBattler->Move(0, 0.2f);
-	
-	youBattler->Move(0, 0.2f);
-	
-
 }
 
 void Player::PressedLeft() {
-	if (GetGameObject()->GetTransform()->getX() + -distance < - GAME_WIDTH / 2)
+	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
+	{
+		return;
+	}
+	else if (GetGameObject()->GetComponent<Transform*>()->getX() + -distance < -GAME_WIDTH / 2)
 	{
 		return;
 	}
 
-
-
-	if (youBattler->stats.teamID == 2 && GetGameObject()->GetTransform()->getX() <4.0f)
-
-	{
-		return;
-	}
 	youBattler->Move(-0.2f, 0);
-	
 }
