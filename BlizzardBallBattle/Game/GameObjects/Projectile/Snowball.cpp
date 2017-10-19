@@ -39,6 +39,10 @@ void Snowball::OnUpdate(int timeDelta)
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID) {
 						hitBattler->DealtDamage(1);
+						SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
+						PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+						//remove self from rendering, physics, and stop checking for collision detection
+						active = false;
 					}
 				}
 			}
