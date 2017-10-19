@@ -15,6 +15,8 @@ private:
 	static MatchManager *instance;
 	std::vector<Battler*> teamOne;
 	std::vector<Battler*> teamTwo;
+	Battler* playerOne;
+	Battler* playerTwo;
 	std::vector<AI*> aiUnits;
 	int TEAM_SIZE;
 public:

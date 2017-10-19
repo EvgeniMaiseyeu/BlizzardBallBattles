@@ -21,7 +21,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 10;
+	TEAM_SIZE = 2;
 }
 
 
@@ -63,6 +63,12 @@ bool MatchManager::UnRegisterCharacter(Battler *character)
 		return false;
 	}
 
+	if (teamTwo.size() == 1 && teamOne.size() == 1)
+	{
+		playerOne->stats.fireSpeedInterval = 0;
+		playerTwo->stats.fireSpeedInterval = 0;
+	}
+
 	return true;
 }
 
@@ -85,7 +91,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 	// Team 1
 	// Player
-	Battler* playerOne = new Battler(1, playerSprite);
+	playerOne = new Battler(1, playerSprite);
 	Collider* playerOneCollider = new Collider(playerOne, 0.5f);
 	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x);
 	playerOne->AddComponent<Player*>(playerOneStats);
@@ -116,7 +122,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	//Team 2
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
-	Battler* playerTwo = new Battler(2, playerSprite);
+	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
 	Player* playerTwoStats = new Player(playerTwo, SDLK_l , SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
