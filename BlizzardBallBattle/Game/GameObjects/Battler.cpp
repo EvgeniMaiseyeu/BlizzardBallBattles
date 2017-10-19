@@ -98,7 +98,12 @@ bool Battler::ThrowSnowball()
 	}
 
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
-	Snowball* snowball = new Snowball(this, 3, radians, "Snowball2.png");
+
+	std::string snowballColour = "Snowball2.png";
+	if (stats.teamID == 2)
+		snowballColour = "Snowball3.png";
+
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
 	canFire = false;
 	return true;
 }
