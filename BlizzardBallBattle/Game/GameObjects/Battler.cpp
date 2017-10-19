@@ -68,6 +68,6 @@ void Battler::TurnTo(Vector2* position)
 bool Battler::ThrowSnowball()
 {
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
-	Snowball* snowball = new Snowball(this, 10, radians, _shader, _textureBufferID);
+	Snowball* snowball = new Snowball(this, 1, radians, _shader, _textureBufferID);
 	return true;
 }

@@ -34,8 +34,7 @@ void Player::OnUpdate(int timeDelta) {
 		PressedLeft();
 	}
 
-	
-	if (inputManager->onKey(shootKey)) {
+	if (inputManager->onKeyPressed(SDLK_SPACE)) {
 		youBattler->ThrowSnowball(); 
 	}
 	

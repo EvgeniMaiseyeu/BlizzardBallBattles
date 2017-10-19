@@ -34,8 +34,20 @@ GameObject* Collider::getColliderObj() {
 	return _colliderObj;
 }
 
+std::vector<GameObject*> Collider::getColliders() {
+	return _colliders;
+}
+
 void Collider::setColliderObj(GameObject* collider) {
 	_colliderObj = collider;
+}
+
+void Collider::clearColliders() {
+	_colliders.clear();
+}
+
+void Collider::addCollision(GameObject* collider) {
+	_colliders.push_back(collider);
 }
 
 float Collider::getRadius() {
