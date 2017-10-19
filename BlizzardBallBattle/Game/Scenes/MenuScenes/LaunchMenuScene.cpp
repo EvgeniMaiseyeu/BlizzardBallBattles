@@ -3,7 +3,7 @@
 #include "InputManager.h"
 #include "GLHeaders.h"
 #include "SceneManager.h"
-#include "GameScene_Alpha_Networked.h"
+#include "Scenes.h"
 #include "NetworkingManager.h"
 #include "Transform.h"
 
@@ -39,7 +39,7 @@ void LaunchMenuScene::OnUpdate(int ticks) {
     } else if (inputManager->onKeyPressed(SDLK_1)) {
         //1 player
     } else if (inputManager->onKeyPressed(SDLK_2)) {
-        //2 player
+		SceneManager::GetInstance()->PushScene(new SceneTemplate());
     }
 }
 

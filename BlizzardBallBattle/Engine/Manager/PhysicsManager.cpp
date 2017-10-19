@@ -40,7 +40,6 @@ void PhysicsManager::OnUpdate(int ticks) {
 			}
 		}
 	}
-	
 	/*
 	for (std::map<int, GameObject*>::iterator i = _sceneObjects.begin(); i != _sceneObjects.end(); i++) {
 		if (i->second->GetComponent<Collider*>()) {

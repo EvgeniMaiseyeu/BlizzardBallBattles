@@ -59,7 +59,7 @@ float getFullBarSize() {
 }
 
 float randomFloatInRange(float min, float max) {
-	float random = max - 1.0f;//((float)rand()) / (float)RAND_MAX;
+	float random = ((float)rand()) / (float)RAND_MAX;
 	float diff = max - min;
 	float r = random * diff;
 	return min + r;
