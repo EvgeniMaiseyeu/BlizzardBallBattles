@@ -5,6 +5,8 @@
 #include <array>
 #include <iostream>
 
+
+
 class Sprite : public ISprite {
 private:
     GLuint textureBufferID;

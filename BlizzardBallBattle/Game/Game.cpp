@@ -3,8 +3,6 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "Scenes.h"
-#include "GameScene_Alpha_Networked.h"
-#include "SceneTemplate.h"
 #include <iostream>
 
 /*
@@ -21,18 +19,10 @@ Each GameObject cycles through and updates each one of their game components.
 */
 
 void Game::OnStart() {
-    SceneManager::GetInstance()->PushScene(new SceneTemplate());
+    SceneManager::GetInstance()->PushScene(new LaunchMenuScene());
 }
 
 void Game::OnUpdate(int ticks) {
-
-    if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
-        NetworkingManager::GetInstance()->CreateHost();
-      }
-      
-      if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
-        NetworkingManager::GetInstance()->CreateClient();
-      }
 }
 
 void Game::OnEnd() {
