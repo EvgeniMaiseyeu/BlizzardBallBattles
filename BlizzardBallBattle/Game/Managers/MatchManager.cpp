@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Sender.h"
 #include "Collision\Collider.h"
+#include <algorithm>
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;
@@ -47,34 +48,27 @@ bool MatchManager::RegisterCharacter(Battler *character)
 	return true;
 }
 
+bool MatchManager::UnRegisterCharacter(Battler *character)
+{
+	if (character->stats.teamID == 1)
+	{
+		teamOne.erase(std::remove(teamOne.begin(), teamOne.end(), character), teamOne.end());
+	}
+	else if (character->stats.teamID == 2)
+	{
+		teamTwo.erase(std::remove(teamTwo.begin(), teamTwo.end(), character), teamTwo.end());
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void MatchManager::StartGame()
 {
 
-}
-
-void MatchManager::CreateMap(Shader *ourShader, GLuint snowTexture, GLuint iceTexture)
-{
-	float width = getGameWidth();
-	float height = getGameHeight();
-	float leftBounding = getGameLeftX();
-	float bottomBounding = getGameBottomY();
-
-	//Setup Tiles
-	for (int x = 0; x < width; x++) {
-		GLuint textureToUse = snowTexture;
-		if (x >= width * 0.4f && x <= width * 0.6f) {
-			textureToUse = iceTexture;
-		}
-		for (int y = 0; y < height; y++) {
-			GameObject* tile = new GameObject(false);
-			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
-			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
-			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
-			spriteRenderer->SetActiveShader(ourShader);
-			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
-		}
-	}
 }
 
 void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture)
@@ -87,15 +81,19 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	float playerPosX = randomFloatInRange(-startPosXMin, -startPosXMax);
 	float playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 
+	std::string playerSprite = "Character.png";
+
 	// Team 1
 	// Player
-	Battler* playerOne = new Battler(1, ourShader, characterTexture);
+	Battler* playerOne = new Battler(1, playerSprite);
 	Collider* collider = new Collider(playerOne, 2);
 	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s,SDLK_b);
 	playerOne->AddComponent<Player*>(playerOneStats);
 	playerOne->AddComponent<Collider*>(collider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
+	playerOne->stats.hitpoints = 3;
+	playerOne->stats.isPlayer = true;
 	RegisterCharacter(playerOne);
 
 	//AI
@@ -104,7 +102,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float posX = randomFloatInRange(-startPosXMin, -startPosXMax);
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
-		Battler* unit = new Battler(1, ourShader, characterTexture);
+		Battler* unit = new Battler(1, playerSprite);
 		AI* unitAI = new AI(unit);
 		Collider* collider = new Collider(unit, 2);
 		unit->AddComponent<AI*>(unitAI);
@@ -118,7 +116,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	//Team 2
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
-	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
+	Battler* playerTwo = new Battler(2, playerSprite);
 	collider = new Collider(playerTwo, 20);
 	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5,SDLK_SPACE);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
@@ -126,6 +124,8 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	playerTwoTransform->addRotation(180.0f);
+	playerTwo->stats.hitpoints = 3;
+	playerTwo->stats.isPlayer = true;
 	RegisterCharacter(playerTwo);
 
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
@@ -133,7 +133,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float posX = randomFloatInRange(startPosXMin, startPosXMax);
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
-		Battler* unit = new Battler(2, ourShader, characterTexture);
+		Battler* unit = new Battler(2, playerSprite);
 		AI* unitAI = new AI(unit);
 		Collider* collider = new Collider(unit, 20);
 		unit->AddComponent<AI*>(unitAI);

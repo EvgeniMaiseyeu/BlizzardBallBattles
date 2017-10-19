@@ -16,9 +16,6 @@ void SceneTemplate::OnStart() {
 	GLuint characterTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
 
-	// Create Map
-	MatchManager::GetInstance()->CreateMap(ourShader, snowTexture, iceTexture);
-
 	// Create Players
 	MatchManager::GetInstance()->CreateBattlers(ourShader, characterTexture, spriteSheetTexture);
 }
