@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0D909B57-AFD6-44B4-B192-3F9AD4D73850}</ProjectGuid>
     <RootNamespace>BlizzardBallBattle</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -81,7 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\Managers;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game\GameObjects\Projectile;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\Managers;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Scenes\MenuScenes;$(SolutionDir)BlizzardBallBattle\Game\Scenes\GameScenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game\GameObjects\Projectile;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Physics;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\GameObjects;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -134,6 +134,7 @@
     <ClCompile Include="Engine\External\Render\Sprite.cpp" />
     <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
     <ClCompile Include="Engine\External\Render\Tile.cpp" />
+    <ClCompile Include="Engine\GameObjects\SimpleSprite.cpp" />
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp" />
     <ClCompile Include="Engine\Manager\PhysicsManager.cpp" />
     <ClCompile Include="Engine\Manager\SceneManager.cpp" />
@@ -150,7 +151,11 @@
     <ClCompile Include="Game\GameObjects\Battler.cpp" />
     <ClCompile Include="Game\GameObjects\Projectile\Snowball.cpp" />
     <ClCompile Include="Game\Managers\MatchManager.cpp" />
+    <ClCompile Include="Game\Scenes\GameScenes\GameScene.cpp" />
     <ClCompile Include="Game\Scenes\GameScene_Alpha_Networked.cpp" />
+    <ClCompile Include="Game\Scenes\MenuScenes\LaunchMenuScene.cpp" />
+    <ClCompile Include="Game\Scenes\MenuScenes\MenuScene_Alpha.cpp" />
+    <ClCompile Include="Game\Scenes\MenuScenes\PostGameMenuScene.cpp" />
     <ClCompile Include="Game\Scenes\MessagingTestScene.cpp" />
     <ClCompile Include="Game\Scenes\NetworkingTestScene.cpp" />
     <ClCompile Include="Engine\Component\Component.cpp" />
@@ -162,7 +167,6 @@
     <ClCompile Include="Engine\External\HelperFunctions.cpp" />
     <ClCompile Include="Engine\External\Math\Vector2.cpp" />
     <ClCompile Include="Engine\External\Render\Shader.cpp" />
-    <ClCompile Include="Engine\External\Render\ShaderFactory.cpp" />
     <ClCompile Include="Engine\Manager\GameManager.cpp" />
     <ClCompile Include="Engine\Manager\SpriteRendererManager.cpp" />
     <ClCompile Include="Game\Components\ComponentTemplate.cpp" />
@@ -184,6 +188,7 @@
     <ClInclude Include="Engine\External\TransformState.h" />
     <ClInclude Include="Engine\Component\Render\Renderer.h" />
     <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
+    <ClInclude Include="Engine\GameObjects\SimpleSprite.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="Engine\Manager\NetworkingManager.h" />
     <ClInclude Include="Engine\Manager\PhysicsManager.h" />
@@ -198,7 +203,11 @@
     <ClInclude Include="Game\GameObjects\Battler.h" />
     <ClInclude Include="Game\GameObjects\Projectile\Snowball.h" />
     <ClInclude Include="Game\Managers\MatchManager.h" />
+    <ClInclude Include="Game\Scenes\GameScenes\GameScene.h" />
     <ClInclude Include="Game\Scenes\GameScene_Alpha_Networked.h" />
+    <ClInclude Include="Game\Scenes\MenuScenes\LaunchMenuScene.h" />
+    <ClInclude Include="Game\Scenes\MenuScenes\MenuScene_Alpha.h" />
+    <ClInclude Include="Game\Scenes\MenuScenes\PostGameMenuScene.h" />
     <ClInclude Include="Game\Scenes\MessagingTestScene.h" />
     <ClInclude Include="Game\Scenes\NetworkingTestScene.h" />
     <ClInclude Include="Engine\Component\Component.h" />

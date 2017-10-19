@@ -21,24 +21,26 @@ void PhysicsManager::OnStart() {
 void PhysicsManager::OnUpdate(int ticks) {
 
 	//TODO: change to iterators by beta or release
-	
-	for (int i = 0; i < _sceneColliders.size() - 1; i++) {
-		for (int j = i + 1; j < _sceneColliders.size(); j++) {
-			if (checkCollision(_sceneColliders[i]->GetGameObject()->GetComponent<Transform*>(),
-				_sceneColliders[j]->GetGameObject()->GetComponent<Transform*>()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
-				_sceneColliders[i]->setCollision(true);
-				_sceneColliders[i]->setColliderObj(_sceneColliders[j]->GetGameObject());
-				_sceneColliders[j]->setCollision(true);
-				_sceneColliders[j]->setColliderObj(_sceneColliders[i]->GetGameObject());
-			}
-			else {
-				_sceneColliders[i]->setCollision(false);
-				_sceneColliders[i]->setColliderObj(NULL);
-				_sceneColliders[j]->setCollision(false);
-				_sceneColliders[j]->setColliderObj(NULL);
+	if (_sceneColliders.size() > 1) {
+		for (int i = 0; i < _sceneColliders.size() - 1; i++) {
+			for (int j = i + 1; j < _sceneColliders.size(); j++) {
+				if (checkCollision(_sceneColliders[i]->GetGameObject()->GetComponent<Transform*>(),
+					_sceneColliders[j]->GetGameObject()->GetComponent<Transform*>()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
+					_sceneColliders[i]->setCollision(true);
+					_sceneColliders[i]->setColliderObj(_sceneColliders[j]->GetGameObject());
+					_sceneColliders[j]->setCollision(true);
+					_sceneColliders[j]->setColliderObj(_sceneColliders[i]->GetGameObject());
+				}
+				else {
+					_sceneColliders[i]->setCollision(false);
+					_sceneColliders[i]->setColliderObj(NULL);
+					_sceneColliders[j]->setCollision(false);
+					_sceneColliders[j]->setColliderObj(NULL);
+				}
 			}
 		}
 	}
+	
 	/*
 	for (std::map<int, GameObject*>::iterator i = _sceneObjects.begin(); i != _sceneObjects.end(); i++) {
 		if (i->second->GetComponent<Collider*>()) {
