@@ -28,7 +28,7 @@ void Battler::OnUpdate(int ticks)
 {
 	float deltaTime = (float)ticks / 1000.0f;
 
-
+  	UpdateThrowTimer(deltaTime);
 }
 
 void Battler::MoveTo(GameObject* gameObject)
@@ -71,10 +71,11 @@ void Battler::TurnTo(Vector2* position)
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
-		return false;
+ 		return false;
 
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
-	Snowball* snowball = new Snowball(this, 10, radians, _shader, _textureBufferID);
+	Snowball* snowball = new Snowball(this, 10, radians, "Character.png");
+	canFire = false;
 	return true;
 }
 
