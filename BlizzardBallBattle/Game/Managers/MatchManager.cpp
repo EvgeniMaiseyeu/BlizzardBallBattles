@@ -6,7 +6,7 @@
 #include "Transform.h"
 #include "Player.h"
 #include "Sender.h"
-#include "Collision\Collider.h"
+#include "Collider.h"
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;

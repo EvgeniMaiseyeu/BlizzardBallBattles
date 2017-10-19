@@ -3,7 +3,7 @@
 #include <vector>
 #include "GameObject.h"
 #include "Transform.h"
-#include "Collision\Collider.h"
+#include "Collider.h"
 
 class PhysicsManager : public Updateable {
 private:

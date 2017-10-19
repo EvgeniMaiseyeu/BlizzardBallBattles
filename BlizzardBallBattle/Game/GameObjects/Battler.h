@@ -38,7 +38,7 @@ public:
 private:
 	Shader* _shader;
 	GLuint _textureBufferID;
-	void Battler::InitStats(int team);
+	void InitStats(int team);
 
 	bool canFire;
 	bool timeSinceLastShot;
