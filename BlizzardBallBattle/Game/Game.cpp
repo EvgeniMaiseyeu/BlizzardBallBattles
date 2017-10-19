@@ -23,14 +23,6 @@ void Game::OnStart() {
 }
 
 void Game::OnUpdate(int ticks) {
-
-    if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_h)) {
-        NetworkingManager::GetInstance()->CreateHost();
-      }
-      
-      if (!NetworkingManager::GetInstance()->IsConnected() && InputManager::GetInstance()->onKeyPressed(SDLK_j)) {
-        NetworkingManager::GetInstance()->CreateClient();
-      }
 }
 
 void Game::OnEnd() {

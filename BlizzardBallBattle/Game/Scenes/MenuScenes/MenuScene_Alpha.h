@@ -15,4 +15,5 @@ public:
     virtual void OnEnd();
 
     void BuildBaseScene();
+    void DestroyBaseScene();
 };

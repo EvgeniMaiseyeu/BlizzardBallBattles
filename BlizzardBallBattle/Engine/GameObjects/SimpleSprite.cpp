@@ -24,6 +24,12 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
     transform->setScale(scale);
 }
 SimpleSprite::~SimpleSprite() {
-    delete(sprite);
-    delete(shader);
+    GetComponent<Transform*>()->setScale(0.0f);
+    //TODO: Memory leak fix
+    //if (sprite != nullptr) {
+    //    delete(sprite);
+    //}
+    //if (shader != nullptr) {
+    //    delete(shader);
+    //}
 }

@@ -1,18 +1,15 @@
 #pragma once
 
-#include "Scene.h"
+#include "GameScene.h"
 #include "GameObject.h"
 #include "Shader.h"
 
-
-
-class GameScene_Alpha_Networked : public Scene {
+class GameScene_Alpha_Networked : public GameScene {
 private:
 	Shader* ourShader;
 	GameObject *player1, *player2;
 	bool isConnected;
 	void OnConnected();
-	void GenerateBackgroundTiles();
 
 public:
 	void OnStart();

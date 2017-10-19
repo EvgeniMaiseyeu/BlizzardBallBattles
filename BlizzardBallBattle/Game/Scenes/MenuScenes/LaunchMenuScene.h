@@ -9,8 +9,11 @@ private:
 public:
     virtual void OnStart();
     virtual void OnUpdate(int ticks);
-    virtual void OnEnd() {}
-    virtual void OnPause() {}
-    virtual void OnResume() {}
+    virtual void OnEnd();
+    virtual void OnPause();
+    virtual void OnResume();
     ~LaunchMenuScene();
+
+    void CreateScene();
+    void DestroyScene();
 };
