@@ -1,16 +1,14 @@
 #include "Snowball.h"
 #include "Physics.h"
-#include "Sprite.h"
-#include "SpriteRenderer.h"
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians, Shader* shader, GLuint textureBufferID) : GameObject(false),_player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	Physics* physics = new Physics(this);
 	AddComponent<Physics*>(physics);
 	GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX());
 	GetComponent<Transform*>()->setY(_player->GetComponent<Transform*>()->getY());
 
-	AddComponent<Collider*>(new Collider(this, 50.0f));
-	//AddComponent<Collider*>(new Collider(this, GetComponent<Transform*>()->getScale()/2));
+	//AddComponent<Collider*>(new Collider(this, 50.0f));
+	AddComponent<Collider*>(new Collider(this, GetComponent<Transform*>()->getScale()/2));
 	myCollider = GetComponent<Collider*>();
 
 	_speed = playerPower;
@@ -19,12 +17,6 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, Shader*
 	velocity = *velocity * _speed;
 	velocity->rotateVector(radians);
 	physics->setVelocity(velocity);
-
-	AddComponent<SpriteRenderer*>(new SpriteRenderer(this));
-
-	SpriteRenderer* renderer = (SpriteRenderer*)GetComponent<SpriteRenderer*>();
-	renderer->SetActiveShader(shader);
-	renderer->SetActiveSprite(new Sprite(textureBufferID));
 }
 
 void Snowball::OnUpdate(int timeDelta)
