@@ -136,14 +136,25 @@ void Battler::Die()
 		if (stats.teamID == 1)
 			winningTeam = 2;
 
+		if (NetworkingManager::GetInstance()->IsConnected() && isSender) {
+			std::map<std::string, std::string> payloadNet;
+			payloadNet["teamID"] = std::to_string(winningTeam);
+			NetworkingManager::GetInstance()->PrepareMessageForSending("PlayerWon", payloadNet);
+		}
+
 		std::map<std::string, void*> payload;
 		payload["teamID"] = new std::string(std::to_string(winningTeam));
 		MessageManager::SendEvent("PlayerWon", payload);
+		
 	}
 	else if (HasComponent<AI*>()) {
 		GetComponent<AI*>()->Died();
 	}
 	else {
+		if (networkingID.find("Player") == string::npos) {
+			stats.hitpoints = 1;
+			return;
+		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
 
