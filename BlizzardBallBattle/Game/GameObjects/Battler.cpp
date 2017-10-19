@@ -139,12 +139,11 @@ void Battler::Die()
 		payload["teamID"] = new std::string(std::to_string(winningTeam));
 		MessageManager::SendEvent("PlayerWon", payload);
 	}
-	else
-	{
+	else if (HasComponent<AI*>()) {
 		GetComponent<AI*>()->Died();
-		GetTransform()->setScale(0.0f);
-		SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-		PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
-		//delete(this);
 	}
+
+	GetTransform()->setScale(0.0f);
+	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
+	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 }
