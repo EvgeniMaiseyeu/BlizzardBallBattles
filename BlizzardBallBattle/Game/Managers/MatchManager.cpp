@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "Player.h"
 #include "Sender.h"
+#include "Collision\Collider.h"
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;
@@ -89,8 +90,10 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Team 1
 	// Player
 	Battler* playerOne = new Battler(1, ourShader, characterTexture);
-	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s);
+	Collider* collider = new Collider(playerOne, 2);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d,SDLK_w,SDLK_s,SDLK_b);
 	playerOne->AddComponent<Player*>(playerOneStats);
+	playerOne->AddComponent<Collider*>(collider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetComponent<Transform*>();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
 	RegisterCharacter(playerOne);
@@ -103,7 +106,9 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 		Battler* unit = new Battler(1, ourShader, characterTexture);
 		AI* unitAI = new AI(unit);
+		Collider* collider = new Collider(unit, 2);
 		unit->AddComponent<AI*>(unitAI);
+		unit->AddComponent<Collider*>(collider);
 		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
 		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
@@ -114,8 +119,10 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	Battler* playerTwo = new Battler(2, ourShader, characterTexture);
-	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5);
+	collider = new Collider(playerTwo, 2);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_4, SDLK_6, SDLK_8, SDLK_5,SDLK_SPACE);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
+	playerTwo->AddComponent<Collider*>(collider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetComponent<Transform*>();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	RegisterCharacter(playerTwo);
@@ -127,7 +134,9 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 		Battler* unit = new Battler(2, ourShader, characterTexture);
 		AI* unitAI = new AI(unit);
+		Collider* collider = new Collider(unit, 2);
 		unit->AddComponent<AI*>(unitAI);
+		unit->AddComponent<Collider*>(collider);
 		Transform* aiTransform = (Transform*)unit->GetComponent<Transform*>();
 		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
@@ -137,7 +146,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Initialize our AI
 	for (int i = 0; i < aiUnits.size(); ++i)
 	{
-		aiUnits[i]->Init();
+		float intelligence = randomFloatInRange(0.1f, 1.0f);
+		float courage = randomFloatInRange(0.0f, 1.0f);
+		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
+
+		aiUnits[i]->Init(intelligence, courage, decisionFrequency);
 	}
 }
 

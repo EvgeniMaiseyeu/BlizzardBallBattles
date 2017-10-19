@@ -3,15 +3,13 @@
 #include "InputManager.h"
 #include "Transform.h"
 
-Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down) : Component(gameObject) {
+Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot) : Component(gameObject) {
 	leftKey = left;
 	rightKey = right;
 	upKey = up;
 	downKey = down;
-	//shootKey = shoot;
+	shootKey = shoot;
 	distance = 1;
-	//upKey1 = up;
-	//downKey1 = down;
 	youBattler = (Battler*)GetGameObject();
 }
 
@@ -37,9 +35,10 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	
-	///if (inputManager->onKey(shootKey)) {
-	//	PressedShoot();
-	//}
+	if (inputManager->onKey(shootKey)) {
+		youBattler->ThrowSnowball(); 
+	}
+	
 } 
 
 
@@ -52,6 +51,7 @@ void Player::PressedDown() {
 	
 	youBattler->Move(0, -0.2f);
 	
+	
 
 	//Vector2* move = &Vector2(0, -0.2f);
 	//Battler* myBattler = (Battler*)GetGameObject();
@@ -63,7 +63,7 @@ void Player::PressedRight() {
 	{
 		return;
 	}
-
+	
 
 
 	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
@@ -86,6 +86,7 @@ void Player::PressedUp() {
 		return;
 	}
 	
+	youBattler->Move(0, 0.2f);
 	
 	youBattler->Move(0, 0.2f);
 	
@@ -100,9 +101,6 @@ void Player::PressedLeft() {
 
 
 
-
-
-
 	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() <4.0f)
 
 	{
@@ -113,7 +111,19 @@ void Player::PressedLeft() {
 	
 }
 
-//void Player::PressedShoot() {
+void Snowball::PressedShoot() {
+	/*
+	if (GetComponent<Transform*>()->setX(_player->GetComponent<Transform*>()->getX()))
 
+	{
+		return;
+	}
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Snowball*>())
 
-//}
+	{
+
+		canfire == true;
+	}
+	youBattler->MoveTo->setPosition(position->getX(), position->getY());
+	*/
+}

@@ -36,7 +36,9 @@ public:
 	bool ThrowSnowball();
 
 private:
-	void InitStats(int team);
+	Shader* _shader;
+	GLuint _textureBufferID;
+	void Battler::InitStats(int team);
 
 	bool canFire;
 	bool timeSinceLastShot;
