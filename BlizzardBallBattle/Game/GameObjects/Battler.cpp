@@ -7,6 +7,7 @@
 #include "NetworkingManager.h"
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
+#include "MatchManager.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -141,6 +142,9 @@ void Battler::Die()
 	}
 	else if (HasComponent<AI*>()) {
 		GetComponent<AI*>()->Died();
+	}
+	else {
+		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
 
 	GetTransform()->setScale(0.0f);
