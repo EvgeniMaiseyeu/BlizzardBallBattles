@@ -109,6 +109,7 @@ void Battler::Die()
 	else
 	{
 		GetComponent<AI*>()->Died();
-		delete(this);
+		GetComponent<Transform*>()->setScale(0.0f);
+		//delete(this);
 	}
 }
