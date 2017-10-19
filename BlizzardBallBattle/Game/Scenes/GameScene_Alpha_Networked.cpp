@@ -48,4 +48,5 @@ void GameScene_Alpha_Networked::OnConnected() {
 
 	player2 = new Battler(2, "Character.png");
 	player2->GetTransform()->setX(7.5f);
+	player2->GetTransform()->setRotation(180.0f);
 }

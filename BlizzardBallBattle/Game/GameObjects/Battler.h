@@ -18,6 +18,7 @@ public:
 	};
 	stats stats;
 
+	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
 	~Battler();
 
@@ -43,5 +44,9 @@ private:
 
 	bool canFire;
 	float timeSinceLastShot;
+
+	//Networking
+	std::string networkingID;
+	bool isSender;
 };
 

@@ -4,6 +4,22 @@
 #include "Snowball.h"
 #include "MessageManager.h"
 #include "AI.h"
+#include "NetworkingManager.h"
+
+void ReceivedFireSnowball(std::map<std::string, void*> payload) {
+	Battler* self = (Battler*)payload["this"];
+	self->ThrowSnowball();
+}
+
+Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f)
+{
+	InitStats(team);
+	this->networkingID = networkingID;
+	this->isSender = isSender;
+	if (!isSender) {
+		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
+	}
+}
 
 Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f)
 {
@@ -72,8 +88,11 @@ bool Battler::ThrowSnowball()
 {
 	if (!canFire)
  		return false;
-
-	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+	if (isSender) {
+		std::map<std::string, std::string> payload;
+		NetworkingManager::GetInstance()->PrepareMessageForSending(networkingID + "|FIRE", payload);
+	}
+	float radians = GetTransform()->getRotation() * M_PI / 180;
 	Snowball* snowball = new Snowball(this, 5, radians, "Snowball.png");
 	canFire = false;
 	return true;
