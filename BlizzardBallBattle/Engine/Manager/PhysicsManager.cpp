@@ -23,19 +23,16 @@ void PhysicsManager::OnUpdate(int ticks) {
 	//TODO: change to iterators by beta or release
 	if (_sceneColliders.size() > 1) {
 		for (int i = 0; i < _sceneColliders.size() - 1; i++) {
+			_sceneColliders[i]->clearColliders();
+			_sceneColliders[i]->setCollision(false);
 			for (int j = i + 1; j < _sceneColliders.size(); j++) {
 				if (checkCollision(_sceneColliders[i]->GetGameObject()->GetComponent<Transform*>(),
 					_sceneColliders[j]->GetGameObject()->GetComponent<Transform*>()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
+			
+					_sceneColliders[i]->addCollision(_sceneColliders[j]->GetGameObject());
 					_sceneColliders[i]->setCollision(true);
-					_sceneColliders[i]->setColliderObj(_sceneColliders[j]->GetGameObject());
 					_sceneColliders[j]->setCollision(true);
-					_sceneColliders[j]->setColliderObj(_sceneColliders[i]->GetGameObject());
-				}
-				else {
-					_sceneColliders[i]->setCollision(false);
-					_sceneColliders[i]->setColliderObj(NULL);
-					_sceneColliders[j]->setCollision(false);
-					_sceneColliders[j]->setColliderObj(NULL);
+					_sceneColliders[j]->addCollision(_sceneColliders[i]->GetGameObject());
 				}
 			}
 		}
