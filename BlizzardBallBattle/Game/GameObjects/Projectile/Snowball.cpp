@@ -21,6 +21,8 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	GetComponent <Transform*>()->addRotation(15);
+
 	if (myCollider->collisionDetected())
 	{
 		Battler *hitBattler = dynamic_cast<Battler*>(myCollider->getColliderObj());
