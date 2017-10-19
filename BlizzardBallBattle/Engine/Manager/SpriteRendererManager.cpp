@@ -196,15 +196,15 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     return texture;
   }
 
-  //bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
-  //  return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
-  //}
+  bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
+    return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
+  }
 
   void SpriteRendererManager::Render() {
     //Refresh Screen
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    //std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
+    std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
     for (size_t i = 0; i < activeSprites.size(); i++) {
       SpriteRenderer* spriteRenderer = activeSprites[i];
 
