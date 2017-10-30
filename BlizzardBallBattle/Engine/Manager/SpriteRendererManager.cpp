@@ -43,7 +43,12 @@ SpriteRendererManager::SpriteRendererManager() {
       0, 1, 3, // First Triangle
       1, 2, 3  // Second Triangle
     };
+
+    renderingThreadIsAlive = true;
+    renderingThread = std::thread(&SpriteRendererManager::PrepareRenderingThread, this);
+    renderingThread.detach();
   }
+
 
 bool SpriteRendererManager::SetOpenGLAttributes() {
     //All SDL_Gl_SetAttribute returns negative on fail, 0 on success. If result is zero, all succeeded
@@ -200,44 +205,95 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
     return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
   }
 
-  void SpriteRendererManager::Render() {
-    //Refresh Screen
-    glClearColor(1.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
-    for (size_t i = 0; i < activeSprites.size(); i++) {
-      SpriteRenderer* spriteRenderer = activeSprites[i];
+  void SpriteRendererManager::PrepareRenderingThread() {
+    GLuint lastShaderUnset = 1000000;
+    while(renderingThreadIsAlive) { //We don't wanna pin
+      renderingGroups.clear();
+      GLuint lastShader = lastShaderUnset;
+      std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
+      RenderingGroup rg;
 
-      if (IsRenderingLayerEnabled(spriteRenderer->GetLayer())) {
-        spriteRenderer->GetShader()->Use();
-        spriteRenderer->GetSprite()->BindTextCoordinates(CBO);
+      if (activeSprites.size() == 0) {
+        std::cout << "EMPTY LIST" << std::endl;
+      }
+
+      for (size_t i = 0; i < activeSprites.size(); i++) {
+        SpriteRenderer* spriteRenderer = activeSprites[i];
   
-        //Pass in transform
-        GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-        Transform* transform = spriteRenderer->GetGameObject()->GetTransform();
-        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
+        if (IsRenderingLayerEnabled(spriteRenderer->GetLayer())) {
+          RenderingObject ro;
+          GLuint roShader = spriteRenderer->GetShader()->Program;
+          ro.sprite = spriteRenderer->GetSprite();
+
+          if (lastShader == lastShaderUnset) {
+            lastShader = roShader;
+            rg.shaderProgram = roShader;
+          }
+
+          if (rg.shaderProgram != lastShader) {
+            renderingGroups.push_back(rg);
+            lastShader = roShader;
+            rg = RenderingGroup();
+            rg.shaderProgram = roShader;
+          }
     
-        //Pass in aspect ratio
-        GLint aspectRatioLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "aspectRatio");
+          //Pass in transform
+          ro.transform = spriteRenderer->GetGameObject()->GetTransform();
+
+          ro.spriteRenderer = spriteRenderer;
+  
+          rg.children.push_back(ro);
+        }
+      }
+      renderingGroups.push_back(rg);
+      renderTalkingStick.lock();
+    }
+  }
+
+  void SpriteRendererManager::Render() {
+    glClearColor(1.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    std::cout << "RG Size: " << renderingGroups.size() << std::endl;
+    for (size_t i = 0; i < renderingGroups.size(); i++) {
+      RenderingGroup rg = renderingGroups[i];
+      glUseProgram(rg.shaderProgram);
+
+      //Pass in Transform
+      GLint transformLocation = glGetUniformLocation(rg.shaderProgram, "transform");
+      //Pass in aspect ratio
+      GLint aspectRatioLocation = glGetUniformLocation(rg.shaderProgram, "aspectRatio");
+      //Pass in texture
+      glActiveTexture(GL_TEXTURE0);
+      GLint ourTextureLocation = glGetUniformLocation(rg.shaderProgram, "ourTexture");
+      glUniform1i(ourTextureLocation, 0);
+      std::cout << "  -RB Size: " << rg.children.size() << std::endl;
+
+      for (size_t j = 0; j < rg.children.size(); j++) {
+        RenderingObject ro = rg.children[j];
+
+        ro.sprite->BindTextCoordinates(CBO);
+      
+        glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
+      
         glUniform1f(aspectRatioLocation, ASPECT_RATIO);
-    
-        //Pass in texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, spriteRenderer->GetSprite()->GetTextureBufferID());
-        GLint ourTextureLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "ourTexture");
-        glUniform1i(ourTextureLocation, 0);
-  
+      
+        glBindTexture(GL_TEXTURE_2D, ro.sprite->GetTextureBufferID());
+      
         //Bind vertex array
         glBindVertexArray(VAO);
+      
         //Draw
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-  
-        //spriteRenderer->Render();
+        
+        ro.spriteRenderer->Render();
       }
+
+      rg.children.clear();
     }
     SDL_GL_SwapWindow(mainWindow);
+    renderTalkingStick.unlock();
   }
 
   void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {

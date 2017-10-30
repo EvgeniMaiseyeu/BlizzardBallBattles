@@ -12,7 +12,19 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 #include <unordered_set>
+#include <thread>
+#include <mutex>
 
+struct RenderingObject {
+    ISprite* sprite;
+    Transform* transform;
+    SpriteRenderer* spriteRenderer;
+};
+
+struct RenderingGroup {
+    GLuint shaderProgram;
+    std::vector<RenderingObject> children;
+};
 
 class SpriteRendererManager {
 private:
@@ -20,6 +32,11 @@ private:
     static SpriteRendererManager *instance;
     std::vector<SpriteRenderer*> activeSprites;
     std::unordered_set<int> disabledLayers;
+    std::thread renderingThread;
+    std::mutex renderTalkingStick;
+    std::mutex renderReadingStick;
+    std::vector<RenderingGroup> renderingGroups;
+    bool renderingThreadIsAlive;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
@@ -33,6 +50,7 @@ private:
     bool SetOpenGLAttributes();
     void PrintSDL_GL_Attributes();
     void CheckSDLError(int line);
+    void PrepareRenderingThread();
 
 public:
     static SpriteRendererManager* GetInstance();
