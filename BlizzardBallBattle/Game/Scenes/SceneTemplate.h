@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Scene.h"
+#include "GameScene.h"
 #include "GameObject.h"
 #include "Shader.h"
 
-class SceneTemplate : public Scene {
+class SceneTemplate : public GameScene {
 private:
 	Shader* ourShader;
 

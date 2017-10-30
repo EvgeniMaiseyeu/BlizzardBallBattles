@@ -41,20 +41,20 @@ void NetworkingTestScene::OnUpdate(int ticks) {
     if (isConnected) {
         GameObject* player = NetworkingManager::GetInstance()->IsHost() ? player1 : player2;
         if (InputManager::GetInstance()->onKey(SDLK_a)) {
-            player->GetComponent<Transform*>()->addX(-0.1f);
-            player->GetComponent<Transform*>()->setRotation(180);
+            player->GetTransform()->addX(-0.1f);
+            player->GetTransform()->setRotation(180);
         }
         if (InputManager::GetInstance()->onKey(SDLK_d)) {
-            player->GetComponent<Transform*>()->addX(0.1f);
-            player->GetComponent<Transform*>()->setRotation(0);
+            player->GetTransform()->addX(0.1f);
+            player->GetTransform()->setRotation(0);
         }
         if (InputManager::GetInstance()->onKey(SDLK_s)) {
-            player->GetComponent<Transform*>()->addY(-0.1f);
-            player->GetComponent<Transform*>()->setRotation(90);
+            player->GetTransform()->addY(-0.1f);
+            player->GetTransform()->setRotation(90);
         }
         if (InputManager::GetInstance()->onKey(SDLK_w)) {
-            player->GetComponent<Transform*>()->addY(0.1f);
-            player->GetComponent<Transform*>()->setRotation(-90);
+            player->GetTransform()->addY(0.1f);
+            player->GetTransform()->setRotation(-90);
         }
     }
 }

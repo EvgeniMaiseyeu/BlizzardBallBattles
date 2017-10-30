@@ -13,12 +13,13 @@ bool Collider::collisionDetected() {
 	return _collision;
 }
 
-void Collider::setCollision( bool collision) {
+void Collider::setCollision(bool collision) {
 	_collision = collision;
 }
+
 bool Collider::DoesCollide(GameObject* other) {
-	Transform* myTrans = gameObject->GetComponent<Transform*>();
-	Transform* otherTrans = other->GetComponent<Transform*>();
+	Transform* myTrans = gameObject->GetTransform();
+	Transform* otherTrans = other->GetTransform();
 
 	float a = myTrans->getX() - otherTrans->getX();
 	float b = myTrans->getY() - otherTrans->getY();
@@ -33,8 +34,20 @@ GameObject* Collider::getColliderObj() {
 	return _colliderObj;
 }
 
+std::vector<GameObject*> Collider::getColliders() {
+	return _colliders;
+}
+
 void Collider::setColliderObj(GameObject* collider) {
 	_colliderObj = collider;
+}
+
+void Collider::clearColliders() {
+	_colliders.clear();
+}
+
+void Collider::addCollision(GameObject* collider) {
+	_colliders.push_back(collider);
 }
 
 float Collider::getRadius() {

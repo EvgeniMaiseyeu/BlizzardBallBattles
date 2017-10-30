@@ -15,15 +15,17 @@ private:
 	static MatchManager *instance;
 	std::vector<Battler*> teamOne;
 	std::vector<Battler*> teamTwo;
+	Battler* playerOne;
+	Battler* playerTwo;
 	std::vector<AI*> aiUnits;
-	const int TEAM_SIZE = 10;
+	int TEAM_SIZE;
 public:
 	static MatchManager* GetInstance();
 	MatchManager();
 	~MatchManager();
 	void StartGame();
 	bool RegisterCharacter(Battler *character);
-	void CreateMap(Shader *shader, GLuint snowTexture, GLuint iceTexture);
+	bool UnRegisterCharacter(Battler *character);
 	void CreateBattlers(Shader *shader, GLuint characterTexture, GLuint spriteSheetTexture);
 	std::vector<Battler*> GetTeam(int teamID);
 };

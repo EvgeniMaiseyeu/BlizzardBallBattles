@@ -5,6 +5,24 @@
 #include "SpriteRenderer.h"
 #include "SpriteSheet.h"
 #include "UserDefinedRenderLayers.h"
+#include "MessageManager.h"
+#include <map>
+#include "SceneManager.h"
+#include "Scenes.h"
+
+int playerWonSubscriptionReceipt;
+
+void PlayerWon(std::map<std::string, void*> payload) {
+	std::string* teamIDStrptr = (std::string*)payload["teamID"];
+	std::string teamIDStr = *teamIDStrptr;
+	int teamID = std::stoi(teamIDStr);
+	MessageManager::UnSubscribe("PlayerWon", playerWonSubscriptionReceipt);
+	SceneManager::GetInstance()->PushScene(new PostGameMenuScene(teamID));
+}
+
+GameScene::GameScene() {
+	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
+}
 
 void GameScene::BuildBaseScene() {
     ourShader = new Shader(BuildPath("Game/Assets/Shaders/tile.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
@@ -32,6 +50,7 @@ void GameScene::BuildBaseScene() {
 		bool isSnowy = x < width / 2 - iceWidth / 2 || x > width / 2 + iceWidth / 2;
 		bool isDirtSnowBorderLeft = x < width / 2 - iceWidth / 2 - 1;
 		bool isDirtSnowBorderRight = x > width / 2 + iceWidth / 2 + 1;
+		int z = -2;
 
 		for (int y = -1; y < height + 1; y++) {
 			bool isBottom = y == 0;
@@ -95,6 +114,7 @@ void GameScene::BuildBaseScene() {
 
 			////Left or Right house roofs
 			if (isHouse) {
+				z = 2.0f;
 				randSeed++;
 				std::cout << x << std::endl;
 				tileIndex = TileIndex::HouseLeft_Left;
@@ -170,7 +190,7 @@ void GameScene::BuildBaseScene() {
 			if (y == -1 || y == height) {
 				tileIndex = TileIndex::Dirt_Center;
             }
-
+			 
             //TODO: Turn into "TileSprite"
 			GameObject* tile = new GameObject(false);
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
@@ -178,7 +198,7 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
 			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, z);
 		}
 	}
 }

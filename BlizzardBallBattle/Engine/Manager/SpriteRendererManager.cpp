@@ -1,5 +1,6 @@
 #include "SpriteRendererManager.h"
 #include <iostream>
+#include <algorithm>
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
@@ -196,7 +197,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   }
 
   bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
-    return lhs->GetGameObject()->GetComponent<Transform*>()->getZ() < rhs->GetGameObject()->GetComponent<Transform*>()->getZ();
+    return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
   }
 
   void SpriteRendererManager::Render() {
@@ -213,7 +214,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
   
         //Pass in transform
         GLint transformLocation = glGetUniformLocation(spriteRenderer->GetShader()->Program, "transform");
-        Transform* transform = spriteRenderer->GetGameObject()->GetComponent<Transform*>();
+        Transform* transform = spriteRenderer->GetGameObject()->GetTransform();
         glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *transform);
     
         //Pass in aspect ratio
@@ -257,4 +258,12 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
 
   bool SpriteRendererManager::IsRenderingLayerEnabled(int layer) {
     return disabledLayers.find(layer) == disabledLayers.end();
+  }
+
+  void SpriteRendererManager::RemoveSpriteFromRendering(SpriteRenderer* sprite) {
+	  activeSprites.erase(std::remove(activeSprites.begin(), activeSprites.end(), sprite), activeSprites.end());
+  }
+
+  void SpriteRendererManager::Purge() {
+	  activeSprites.clear();
   }

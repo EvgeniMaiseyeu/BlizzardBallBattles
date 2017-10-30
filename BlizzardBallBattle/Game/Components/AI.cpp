@@ -9,7 +9,7 @@
 AI::AI(GameObject* gameObject) : Component(gameObject)
 {
 	myBattler = (Battler*)GetGameObject();
-	myTransform = myBattler->GetComponent<Transform*>();
+	myTransform = myBattler->GetTransform();
 
 	intelligence = 0.5f;
 	courage = 0.5f;
@@ -19,6 +19,7 @@ AI::AI(GameObject* gameObject) : Component(gameObject)
 
 	currentState = idle;
 	currentTarget = position;
+	currentBehaviour = none;
 }
 
 AI::~AI()
@@ -59,6 +60,8 @@ void AI::OnUpdate(int timeDelta)
 			Shoot();
 			currentState = idle;
 			break;
+		case dead:
+			return;
 		case s_MAX:
 			break;
 	}
@@ -66,6 +69,8 @@ void AI::OnUpdate(int timeDelta)
 
 void AI::GetTarget()
 {
+	currentBehaviour = none;
+
 	float chanceToRunAway = randomFloatInRange(0.0f, 1.0f);
 	if (chanceToRunAway > courage)
 	{
@@ -121,7 +126,7 @@ Vector2* AI::GetTargetPosition()
 
 void AI::WalkToTargetBattler(float deltaTime)
 {
-	float targetPosY = targetBattler->GetComponent<Transform*>()->getY();
+	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 
 	float posDiffY = targetPosY - myPosY;
@@ -129,7 +134,7 @@ void AI::WalkToTargetBattler(float deltaTime)
 	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
 	int directionY = (posDiffY > 0) ? 1 : -1;
 
-	if (posDiffY >= -1 && posDiffY <= 1)
+	if (posDiffY >= (-1 + intelligence) && posDiffY <= (1 - intelligence))
 	{
 		currentState = shoot;
 		return;
@@ -137,19 +142,21 @@ void AI::WalkToTargetBattler(float deltaTime)
 
 	// Adds a little x movement which brings him closer to the target if his courage is high, and further away
 	// if his courage is low.
-	float chanceOfMovingX = randomFloatInRange(0.0f, 1.0f);
+	if (currentBehaviour == none)
+		GetBehaviour();
+
 	int directionX = 0;
-	if (chanceOfMovingX < courage)
-	{
-		directionX = (myBattler->stats.teamID == 1) ? 1 : -1;
-	}
-	else
+	if (currentBehaviour == cower)
 	{
 		directionX = (myBattler->stats.teamID == 1) ? -1 : 1;
 	}
+	else if (currentBehaviour == engage)
+	{
+		directionX = (myBattler->stats.teamID == 1) ? 1 : -1;
+	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
-	float posXToMoveTo = GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed * (float)directionX;
+	float posXToMoveTo = GetGameObject()->GetTransform()->getX() + moveSpeed * (float)directionX;
 	if (!CheckIfInBounds(posXToMoveTo))
 	{
 		posXToMoveTo = 0;
@@ -192,7 +199,6 @@ void AI::WalkToTargetPosition(float deltaTime)
 
 void AI::Shoot()
 {
-
 	// The more intelligent the AI the higher chance he has to shoot
 	float chanceOfFiring = randomFloatInRange(0.0f, 1.0f);
 
@@ -238,3 +244,23 @@ bool AI::CheckIfInBounds(float x, float y)
 
 	return true;
 }
+
+void AI::GetBehaviour()
+{
+	float randomFloat = randomFloatInRange(0.0f, 1.0f);
+	if (randomFloat < courage)
+	{
+		currentBehaviour = engage;
+	}
+	else
+	{
+		currentBehaviour = cower;
+	}
+}
+
+void AI::Died()
+{
+	MatchManager::GetInstance()->UnRegisterCharacter(myBattler);
+	currentState = dead;
+}
+

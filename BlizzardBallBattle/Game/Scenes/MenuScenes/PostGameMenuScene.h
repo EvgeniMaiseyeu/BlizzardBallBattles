@@ -13,7 +13,7 @@ public:
     virtual void OnStart();
     virtual void OnUpdate(int ticks);
     virtual void OnEnd() {}
-    virtual void OnPause() {}
+	virtual void OnPause();
     virtual void OnResume() {}
     ~PostGameMenuScene();
 };

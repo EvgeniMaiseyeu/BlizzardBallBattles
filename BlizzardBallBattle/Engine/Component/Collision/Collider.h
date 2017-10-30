@@ -8,6 +8,7 @@ private:
 	GameObject* _colliderObj;
 	float _radius;
 	bool _collision;
+	std::vector<GameObject*> _colliders;
 public:
 	Collider(GameObject* gameObject, float radius);
 	bool DoesCollide(GameObject* other);
@@ -19,6 +20,9 @@ public:
 
 	GameObject* getColliderObj();
 	void setColliderObj(GameObject* collider);
+	void addCollision(GameObject* collider);
+	void clearColliders();
+	std::vector<GameObject*> getColliders();
 
 	void OnStart() {};
 	void OnUpdate(int ticks) {};

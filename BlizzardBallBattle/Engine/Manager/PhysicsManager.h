@@ -18,4 +18,5 @@ public:
 	void OnEnd();
 	void addCollider(Collider* c);
 	void removeCollider(Collider* c);
+	void Purge();
 };

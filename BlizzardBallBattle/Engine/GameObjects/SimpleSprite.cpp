@@ -10,7 +10,7 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
     GLuint titleTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath((char*)totalPath.c_str()));
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
     sprite = new Sprite(titleTexture);
-    Transform* transform = GetComponent<Transform*>();
+    Transform* transform = GetTransform();
     spriteRenderer->SetActiveSprite(sprite);
     if (nonDefaultShader == nullptr) {
         shader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
@@ -23,8 +23,10 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
     transform->setPosition(x, y, z);
     transform->setScale(scale);
 }
+
 SimpleSprite::~SimpleSprite() {
-    GetComponent<Transform*>()->setScale(0.0f);
+    GetTransform()->setScale(0.0f);
+	GetTransform()->setPosition(100000, 1000000, -1000000);
     //TODO: Memory leak fix
     //if (sprite != nullptr) {
     //    delete(sprite);

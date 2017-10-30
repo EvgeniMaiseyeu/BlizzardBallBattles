@@ -24,6 +24,7 @@ GameManager::GameManager() {
  
 void GameManager::OnStart()
 {
+	
     lastTime = SDL_GetTicks();
     game = new Game();
     game->OnStart();
@@ -54,7 +55,7 @@ void GameManager::OnUpdate(int ticks)
 
     if (NetworkingManager::GetInstance()->IsConnected()) {
         std::string tmp;
-        if (NetworkingManager::GetInstance()->GetMessage(tmp)) {
+        while (NetworkingManager::GetInstance()->GetMessage(tmp)) {
             NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
         }
     
@@ -96,4 +97,5 @@ void GameManager::AddGameObject(int id, GameObject* obj) {
  
 void GameManager::RemoveGameObject(int id) {
     globalGameObjects.erase(id);
+	SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(id);
 }
