@@ -214,7 +214,7 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
       RenderingGroup rg;
 
       if (activeSprites.size() == 0) {
-        std::cout << "EMPTY LIST" << std::endl;
+        std::cout << "SPRITERENDERERERMANAGER::PREPARERENDERINGTHREAD::EMPTY SPRITE LIST" << std::endl;
       }
 
       for (size_t i = 0; i < activeSprites.size(); i++) {
@@ -246,11 +246,13 @@ bool SpriteRendererManager::SetOpenGLAttributes() {
         }
       }
       renderingGroups.push_back(rg);
+      renderReadingStick.unlock();
       renderTalkingStick.lock();
     }
   }
 
   void SpriteRendererManager::Render() {
+    renderReadingStick.lock();
     glClearColor(1.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     std::cout << "RG Size: " << renderingGroups.size() << std::endl;
