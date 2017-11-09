@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GLHeaders.h"
+#include <array>
 
 class ISprite {
 public:

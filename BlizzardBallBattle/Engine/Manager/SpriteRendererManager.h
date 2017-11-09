@@ -21,7 +21,11 @@ struct RenderingObject {
     SpriteRenderer* spriteRenderer;
 };
 
-struct RenderingGroup {
+struct RenderingTextureCoordinateGroup {
+
+};
+
+struct RenderingShaderGroup {
     GLuint shaderProgram;
     std::vector<RenderingObject> children;
 };
@@ -35,8 +39,9 @@ private:
     std::thread renderingThread;
     std::mutex renderTalkingStick;
     std::mutex renderReadingStick;
-    std::vector<RenderingGroup> renderingGroups;
+    std::vector<RenderingShaderGroup> renderingGroups;
     bool renderingThreadIsAlive;
+	bool rendering;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;

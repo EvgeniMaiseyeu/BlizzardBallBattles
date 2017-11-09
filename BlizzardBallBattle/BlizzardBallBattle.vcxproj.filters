@@ -264,6 +264,9 @@
     <ClCompile Include="Engine\GameObjects\SimpleSprite.cpp">
       <Filter>Source Files\Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\External\Render\ISprite.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
