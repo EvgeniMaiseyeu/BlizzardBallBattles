@@ -14,12 +14,12 @@ Basically, easy system for switching between sprites
 class SpriteSheet : public ISprite {
 private:
     GLuint textureBufferID;
-    std::array<GLfloat, 8> textCoordinates;
     int currentIndex;
     int columnCount;
     int rowCount;
     int skipLastFrames;
     void ReloadTextCoordinates();
+	std::array<GLfloat, 8> textCoordinates;
 
 public:
     SpriteSheet(GLuint textureBufferID, int columnCount, int rowCount, int skipLastFrames = 0, int startIndex = 0);
