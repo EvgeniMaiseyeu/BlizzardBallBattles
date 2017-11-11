@@ -28,8 +28,8 @@ void PhysicsManager::OnUpdate(int ticks) {
 		}
 		for (int i = 0; i < _sceneColliders.size() - 1; i++) {
 			for (int j = i + 1; j < _sceneColliders.size(); j++) {
-				if (checkCollision(_sceneColliders[i]->GetGameObject()->GetComponent<Transform*>(),
-					_sceneColliders[j]->GetGameObject()->GetComponent<Transform*>()) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
+				if (checkCollision(_sceneColliders[i]->getTransform(),
+					_sceneColliders[j]->getTransform) < (_sceneColliders[i]->getRadius() + _sceneColliders[j]->getRadius())) {
 			
 					_sceneColliders[i]->addCollision(_sceneColliders[j]->GetGameObject());
 					_sceneColliders[i]->setCollision(true);
