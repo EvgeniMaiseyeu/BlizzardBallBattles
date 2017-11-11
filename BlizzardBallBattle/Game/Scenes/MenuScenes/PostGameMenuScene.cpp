@@ -18,8 +18,8 @@ PostGameMenuScene::PostGameMenuScene(int winningTeamID) {
 
 void PostGameMenuScene::OnStart() {
     BuildBaseScene();
-    winnerText = new SimpleSprite(winnerTextPath, 0.0f, getGameTopY() - getGameHeight()/3.0f, 0.0f, GAME_WIDTH, pixelShader);
-    spaceToReturnText = new SimpleSprite("ReturnToMenu.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, pixelShader);
+    winnerText = new SimpleSprite(winnerTextPath, 0.0f, getGameTopY() - getGameHeight()/3.0f, 0.0f, GAME_WIDTH, Shader::GetShader(SHADER_PIXEL));
+    spaceToReturnText = new SimpleSprite("ReturnToMenu.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, Shader::GetShader(SHADER_PIXEL));
 }
 
 void PostGameMenuScene::OnPause() {

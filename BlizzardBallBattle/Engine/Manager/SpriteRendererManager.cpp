@@ -2,9 +2,13 @@
 #include <iostream>
 #include <algorithm>
 #include <condition_variable>
+#include "SpriteSheet.h"
 
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
+
+std::mutex threadMutex;
+std::condition_variable condition;
 
 SpriteRendererManager* SpriteRendererManager::GetInstance() {
 	if (instance == NULL)
@@ -21,9 +25,14 @@ spriteRenderers.erase(id);
 }*/
 
 void SpriteRendererManager::OnUpdate(int ticks) {
-	Render();
-	//for (std::map<int,SpriteRenderer*>::iterator renderer=spriteRenderers.begin(); renderer!=spriteRenderers.end(); ++renderer)
-	//    spriteRenderer.Render();
+  renderReadingStick.lock();
+  //plainPassFBO.bindFrameBuffer();
+  //RenderPass();
+  //plainPassFBO.unbindCurrentFrameBuffer();
+  RenderPass();
+	SDL_GL_SwapWindow(mainWindow);
+	condition.notify_one();
+	renderReadingStick.unlock();
 }
 
 SpriteRendererManager::SpriteRendererManager() {
@@ -207,8 +216,6 @@ bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
 	return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
 }
 
-std::mutex threadMutex;
-std::condition_variable condition;
 
 void SpriteRendererManager::PrepareRenderingThread() {
 	GLuint lastShaderUnset = 1000000;
@@ -231,19 +238,22 @@ void SpriteRendererManager::PrepareRenderingThread() {
 
 				if (IsRenderingLayerEnabled(spriteRenderer->GetLayer())) {
 					RenderingObject ro;
-					GLuint roShader = spriteRenderer->GetShader()->Program;
+					Shader* shader = spriteRenderer->GetShader();
+					GLuint roShader = shader->Program;
 					ro.sprite = spriteRenderer->GetSprite();
-
+		
 					if (lastShader == lastShaderUnset) {
 						lastShader = roShader;
 						rg.shaderProgram = roShader;
+						rg.shaderID = shader->GetID();
 					}
 
-					if (rg.shaderProgram != lastShader) {
+					if (roShader != lastShader) {
 						renderingGroups.push_back(rg);
 						lastShader = roShader;
 						rg = RenderingShaderGroup();
 						rg.shaderProgram = roShader;
+						rg.shaderID = shader->GetID();
 					}
 
 					//Pass in transform
@@ -262,11 +272,9 @@ void SpriteRendererManager::PrepareRenderingThread() {
 	}
 }
 
-void SpriteRendererManager::Render() {
-	renderReadingStick.lock();
-	glClearColor(1.0, 0.0, 0.0, 0.0);
+void SpriteRendererManager::RenderPass() {
+    glClearColor(1.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	std::cout << "RG Size: " << renderingGroups.size() << std::endl;
 	for (size_t i = 0; i < renderingGroups.size(); i++) {
 		RenderingShaderGroup rg = renderingGroups[i];
 		glUseProgram(rg.shaderProgram);
@@ -277,20 +285,33 @@ void SpriteRendererManager::Render() {
 		GLint aspectRatioLocation = glGetUniformLocation(rg.shaderProgram, "aspectRatio");
 		//Pass in texture
 		glActiveTexture(GL_TEXTURE0);
-		GLint ourTextureLocation = glGetUniformLocation(rg.shaderProgram, "ourTexture");
+		GLint ourTextureLocation = glGetUniformLocation(rg.shaderProgram, "ourTexture1");
 		glUniform1i(ourTextureLocation, 0);
-		std::cout << "  -RB Size: " << rg.children.size() << std::endl;
+
+		//(Optional) For SpriteSheets only
+		GLint spriteSheetLocation;
+		if (rg.shaderID == SHADER_SPRITESHEET) {
+			spriteSheetLocation = glGetUniformLocation(rg.shaderProgram, "texData");
+		}
 
 		for (size_t j = 0; j < rg.children.size(); j++) {
 			RenderingObject ro = rg.children[j];
 
-			ro.sprite->BindTextCoordinates(CBO);
+			//ro.sprite->BindTextCoordinates(CBO);
 
 			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
 
 			glUniform1f(aspectRatioLocation, ASPECT_RATIO);
 
 			glBindTexture(GL_TEXTURE_2D, ro.sprite->GetTextureBufferID());
+
+			if (rg.shaderID == SHADER_SPRITESHEET) {
+				SpriteSheet spriteSheet = *((SpriteSheet*)ro.sprite);
+				if (spriteSheet.GetColumnCount() > 1000) {
+					int hit = 0;
+				}
+				glUniform3i(spriteSheetLocation, spriteSheet.GetColumnCount(), spriteSheet.GetRowCount(), spriteSheet.GetCurrentIndex());
+			}
 
 			//Bind vertex array
 			glBindVertexArray(VAO);
@@ -302,12 +323,7 @@ void SpriteRendererManager::Render() {
 
 			ro.spriteRenderer->Render();
 		}
-
-		rg.children.clear();
 	}
-	SDL_GL_SwapWindow(mainWindow);
-	condition.notify_one();
-	renderReadingStick.unlock();
 }
 
 void SpriteRendererManager::AddSpriteForRendering(SpriteRenderer* sprite) {

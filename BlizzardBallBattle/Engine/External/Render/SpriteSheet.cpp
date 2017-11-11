@@ -19,6 +19,10 @@ void SpriteSheet::BindTextCoordinates(GLuint glCBO) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(textCoordinates), textCoordinates.data(), GL_STATIC_DRAW);
 }
 
+std::array<GLfloat, 8> SpriteSheet::GetTextureCoordinates() {
+    return textCoordinates;
+}
+
 GLuint SpriteSheet::GetTextureBufferID() {
     return textureBufferID;
 }
@@ -62,4 +66,16 @@ void SpriteSheet::ReloadTextCoordinates() {
         startX, endY,  //Bottom Left
         startX, startY //Top Left
   };
+}
+
+int SpriteSheet::GetRowCount() {
+    return rowCount;
+}
+
+int SpriteSheet::GetColumnCount() {
+    return columnCount;
+}
+
+int SpriteSheet::GetCurrentIndex() {
+    return currentIndex;
 }

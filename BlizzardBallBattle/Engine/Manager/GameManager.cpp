@@ -35,7 +35,6 @@ void GameManager::OnStart()
         int ticks = curTime - lastTime;
         lastTime = curTime;
         //update system managers then.
-        std::cout << "Updating GM" << std::endl;
         OnUpdate(ticks);
         std::cout << ticks << std::endl;
         //update game.
@@ -65,7 +64,6 @@ void GameManager::OnUpdate(int ticks)
     }
  
     PhysicsManager::GetInstance()->OnUpdate(ticks);
-    std::cout << "Rendering SRM" << std::endl;
     SpriteRendererManager::GetInstance()->OnUpdate(ticks);    
 
     for (std::map<int, GameObject*>::iterator it=globalGameObjects.begin(); it!=globalGameObjects.end(); ++it) {

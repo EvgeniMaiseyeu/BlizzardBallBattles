@@ -41,6 +41,8 @@
         "system_error": "cpp",
         "__hash_table": "cpp",
         "unordered_set": "cpp",
-        "sdl2": "cpp"
+        "sdl2": "cpp",
+        "__mutex_base": "cpp",
+        "mutex": "cpp"
     }
 }

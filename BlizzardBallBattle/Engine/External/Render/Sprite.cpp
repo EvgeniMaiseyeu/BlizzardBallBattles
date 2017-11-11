@@ -19,6 +19,10 @@ void Sprite::BindTextCoordinates(GLuint glCBO) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(textCoordinates), textCoordinates.data(), GL_STATIC_DRAW);
 }
 
+std::array<GLfloat, 8> Sprite::GetTextureCoordinates() {
+    return textCoordinates;
+}
+
 GLuint Sprite::GetTextureBufferID() {
     return textureBufferID;
 }

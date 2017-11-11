@@ -60,18 +60,15 @@ void NetworkingTestScene::OnUpdate(int ticks) {
 }
 
 void NetworkingTestScene::OnConnected() {
-    ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
     GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
 
     player1 = new GameObject(false);
     player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
     SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
     spriteRenderer->SetActiveSprite((ISprite*)new Sprite(texture));
-    spriteRenderer->SetActiveShader(ourShader);
   
     player2 = new GameObject(false);
     player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
     spriteRenderer = player2->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new Sprite(texture));
-    spriteRenderer->SetActiveShader(ourShader);
 }

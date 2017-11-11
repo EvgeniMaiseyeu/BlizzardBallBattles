@@ -52,7 +52,6 @@ enum class TileIndex {
 };
 
 void SpriteSheetAnimationTestScene::OnStart() {
-	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
 	GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
 	GLuint textureTileSet = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/BackgroundTileSet.png"));
 
@@ -199,7 +198,6 @@ void SpriteSheetAnimationTestScene::OnStart() {
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
-			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5f, bottomBounding + y + 0.5f, -1.0f);
 		}
@@ -210,7 +208,6 @@ void SpriteSheetAnimationTestScene::OnStart() {
 	player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
 	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
 	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
-	spriteRenderer->SetActiveShader(ourShader);
 }
 
 void SpriteSheetAnimationTestScene::OnEnd() {

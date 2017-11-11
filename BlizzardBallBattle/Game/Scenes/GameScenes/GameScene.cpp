@@ -25,7 +25,6 @@ GameScene::GameScene() {
 }
 
 void GameScene::BuildBaseScene() {
-    ourShader = new Shader(BuildPath("Game/Assets/Shaders/tile.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
 	GLuint textureTileSet = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/BackgroundTileSet.png"));
 
 	int width = (int)getGameWidth();
@@ -196,7 +195,7 @@ void GameScene::BuildBaseScene() {
 			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
-			spriteRenderer->SetActiveShader(ourShader);
+			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, z);
 		}

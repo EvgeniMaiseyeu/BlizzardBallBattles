@@ -14,6 +14,11 @@
 #include <unordered_set>
 #include <thread>
 #include <mutex>
+//#include "FrameBufferObject.h"
+
+#define SHADER_TYPE_DEFAULT 0
+#define SHADER_TYPE_PIXEL 1
+#define SHADER_TYPE_SPRITESHEET 2
 
 struct RenderingObject {
     ISprite* sprite;
@@ -26,8 +31,12 @@ struct RenderingTextureCoordinateGroup {
 };
 
 struct RenderingShaderGroup {
+    int shaderID;
     GLuint shaderProgram;
     std::vector<RenderingObject> children;
+    ~RenderingShaderGroup() {
+        children.clear();
+    }
 };
 
 class SpriteRendererManager {
@@ -41,7 +50,8 @@ private:
     std::mutex renderReadingStick;
     std::vector<RenderingShaderGroup> renderingGroups;
     bool renderingThreadIsAlive;
-	bool rendering;
+    bool rendering;
+    //FrameBufferObject plainPassFBO;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
@@ -56,6 +66,7 @@ private:
     void PrintSDL_GL_Attributes();
     void CheckSDLError(int line);
     void PrepareRenderingThread();
+    void RenderPass();
 
 public:
     static SpriteRendererManager* GetInstance();

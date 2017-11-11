@@ -11,9 +11,8 @@ void MenuScene_Alpha::OnEnd() {
 }
 
 void MenuScene_Alpha::BuildBaseScene() {
-    pixelShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());
-    menuBackground = new SimpleSprite("Sky.png", 0.0f, 0.0f, -2, GAME_WIDTH, pixelShader);
-    menuForeground = new SimpleSprite("ForegroundTrees.png", 0.0f, -getGameHeight()/5.0f, -1, GAME_WIDTH, pixelShader);
+    menuBackground = new SimpleSprite("Sky.png", 0.0f, 0.0f, -2, GAME_WIDTH, Shader::GetShader(SHADER_PIXEL));
+    menuForeground = new SimpleSprite("ForegroundTrees.png", 0.0f, -getGameHeight()/5.0f, -1, GAME_WIDTH, Shader::GetShader(SHADER_PIXEL));
 }
 
 void MenuScene_Alpha::DestroyBaseScene() {

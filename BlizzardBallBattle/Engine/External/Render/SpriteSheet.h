@@ -26,6 +26,10 @@ public:
     ~SpriteSheet();
     virtual void BindTextCoordinates(GLuint glCBO);
     virtual GLuint GetTextureBufferID();
+    virtual std::array<GLfloat, 8> GetTextureCoordinates();
     void NextIndex();
     void ResetIndex();
+    int GetRowCount();
+    int GetColumnCount();
+    int GetCurrentIndex();
 };
