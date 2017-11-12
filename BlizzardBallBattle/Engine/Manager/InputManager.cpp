@@ -48,6 +48,8 @@ void InputManager::UpdateKeys() {
 
 void InputManager::HandlePolledEvent(SDL_Event event)
 {
+    if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP)
+        return;
     SDL_Keycode code = event.key.keysym.sym;
     std::map<SDL_Keycode,KeyAction>::iterator it = keys.find(code);
     if (event.type == SDL_KEYDOWN)
