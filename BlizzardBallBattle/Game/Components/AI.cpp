@@ -3,8 +3,9 @@
 #include "Vector2.h"
 #include "Transform.h"
 
-AI::AI() : Component(gameObject)
+AI::AI(GameObject* gameObject) : Component(gameObject)
 {
+	
 }
 
 AI::~AI()

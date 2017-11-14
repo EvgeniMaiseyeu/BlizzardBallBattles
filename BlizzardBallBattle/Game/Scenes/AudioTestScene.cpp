@@ -2,10 +2,15 @@
 #include "MatchManager.h"
 #include "GLHeaders.h"
 #include "SpriteRendererManager.h"
+#include "Shader.h"
+#include "SharedConstants.h"
+#include "Sender.h"
+#include "Receiver.h"
+#include "SpriteSheet.h"
 #include <iostream>
+#include "GameObject.h"
 #include "InputManager.h"
 #include "AudioManager.h"
-
 
 void AudioTestScene::OnStart() {
 	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());

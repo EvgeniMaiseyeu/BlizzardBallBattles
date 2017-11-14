@@ -24,6 +24,9 @@ public:
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
 	void ThrowSnowball();
+	void OnStart(){};
+	void OnUpdate(int ticks){};
+	void OnEnd(){};
 };
 
 #endif

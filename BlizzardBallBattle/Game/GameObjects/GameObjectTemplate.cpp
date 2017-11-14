@@ -6,7 +6,7 @@ This includes adding relevant components or any setup.
 
 By default, GameObject's base class has a Transform component
 */
-GameObjectTemplate::GameObjectTemplate() {
+GameObjectTemplate::GameObjectTemplate() : GameObject(false) {
     //Adding a base component. You create the new Component, pass it 'this', cast to a Component* then add it
     AddComponent<ComponentTemplate*>(new ComponentTemplate(this));
 

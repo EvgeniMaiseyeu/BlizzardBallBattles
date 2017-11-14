@@ -5,17 +5,16 @@
 #include <typeinfo>
 #include <vector>
 #include <map>
-#include <SDL_mixer.h>
-#include "AudioManager.h"
-#include "AudioTestScene.h"
+#include "Updateable.h"
 
-class GameObject {
+class GameObject : public Updateable {
 private:
    std::map<std::string, std::vector<Component*>> components;
    //std::map<std::string, Mix_Music> mMusic;
    //std::map<std::string, Mix_Chunk> mSEF;
 
    int id;
+   bool isGlobal;
    
    template <typename T>
    std::string GetClassName() {
@@ -23,11 +22,10 @@ private:
    }
 
 public:
-
-   GameObject();
    //static GameObject* Instance();
   // Mix_Music* GetMusic(std::string filename);
   // Mix_Chunk* GetSEF(std::string filename);
+   GameObject(bool isGlobal);
 
    int getId() {
        return id;
@@ -65,7 +63,9 @@ public:
        return components.count(GetClassName<T>()) > 0;
    }
 
-   virtual void Update(int ticks);
+   void OnStart() {};
+   void OnUpdate(int ticks);
+   void OnEnd() {};
    
    ~GameObject();
 

@@ -2,8 +2,6 @@
 
 #include "Scene.h"
 #include "Shader.h"
-#include "AudioManager.h"
-#include <string>
 
 
 class AudioTestScene : public Scene {
@@ -12,7 +10,9 @@ private:
 	//AudioManager* Audiomgr;
 
 public:
-	virtual void OnStart();
-	virtual void OnUpdate();
-	virtual void OnEnd();
+	void OnStart();
+	void OnResume() {};
+	void OnUpdate(int ticks);
+	void OnPause() {};
+	void OnEnd();
 };

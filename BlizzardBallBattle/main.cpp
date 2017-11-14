@@ -15,12 +15,12 @@ void RunGame();
 
 int main(int argc, char *argv[])
 {
-  gameManager = new GameManager();
   //AudioManager audioManager;
   //audioManager.PlaySoundEffect("mario_.mp3");
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
+
 
   /*SDL_AudioInit;
   if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
   SDL_Delay(10000);    
   return 0; */
 
+  //TODO, not handle this in command line
   if (argc > 1) {
     NetworkingManager::GetInstance()->SetIP(argv[1]);
     if (argc > 2)
@@ -96,5 +97,5 @@ void RunGame()
   GameManager::GetInstance();
   SpriteRendererManager::GetInstance();
   //GameManager::GetInstance()->BeginLoop(new SceneTemplate());
-  GameManager::GetInstance()->BeginLoop(new AudioTestScene());
+  GameManager::GetInstance()->OnStart();
 }

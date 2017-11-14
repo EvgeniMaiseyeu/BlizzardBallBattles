@@ -16,7 +16,7 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 }
 
 //Will be called every frame
-void Player::Update(int timeDelta) {
+void Player::OnUpdate(int timeDelta) {
 	InputManager* inputManager = InputManager::GetInstance();
 	if (inputManager->onKey(downKey)) {
 		PressedDown();

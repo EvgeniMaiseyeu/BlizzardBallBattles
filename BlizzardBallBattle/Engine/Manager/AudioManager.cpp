@@ -19,7 +19,8 @@ void AudioManager::Release() {
 }
 
 AudioManager::AudioManager() {
-	
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		std::cout << "ERROR: " << Mix_GetError() << std::endl;
 
 }
 
@@ -31,8 +32,7 @@ AudioManager::~AudioManager() {
 
 void AudioManager::PlayMusic(std::string filename, int loops) {
 	//Mix_PlayMusic(mGameObj->GetMusic(filename), loops);
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		std::cout << "ERROR: " << Mix_GetError() << std::endl;
+	
 	
 }
 
