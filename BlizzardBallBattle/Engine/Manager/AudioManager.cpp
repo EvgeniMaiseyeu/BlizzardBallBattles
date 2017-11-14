@@ -25,7 +25,7 @@ AudioManager::AudioManager() {
 }
 
 AudioManager::~AudioManager() {
-	mGameObj = NULL;
+	//mGameObj = NULL;
 	Mix_Quit();
 
 }

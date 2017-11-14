@@ -5,7 +5,7 @@
 class AudioManager {
 private:
 	static AudioManager* instance;
-	GameObject* mGameObj;
+	//GameObject* mGameObj;
 
 	AudioManager();
 	~AudioManager();
