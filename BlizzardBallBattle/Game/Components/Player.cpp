@@ -33,8 +33,11 @@ void Player::OnUpdate(int timeDelta) {
 	if (InputManager::GetInstance()->onKey(leftKey)) {
 		PressedLeft(moveSpeed);
 	}
-
-	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+	
+	if (InputManager::GetInstance()->onKey(shootKey)) {
+		//Big snowball creating locks etc..
+	} else if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+		//standard fast small throw
 		youBattler->ThrowSnowball(); 
 	}
 } 
@@ -78,7 +81,7 @@ void Player::PressedLeft(float moveSpeed) {
 	else if (GetGameObject()->GetComponent<Transform*>()->getX() + -moveSpeed < -GAME_WIDTH / 2)
 	{
 		return;
-	}
+	}	
 
 	youBattler->Move(-moveSpeed, 0);
 }
