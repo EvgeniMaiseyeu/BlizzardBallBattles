@@ -20,6 +20,33 @@ Shader* Shader::GetShader(int shaderID) {
       case SHADER_SPRITESHEET:
         shader = new Shader(BuildPath("Game/Assets/Shaders/sprite_sheet.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str(), SHADER_SPRITESHEET);
         break;
+      case SHADER_PP_DEFAULT:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppPassThrough.vs").c_str(), BuildPath("Game/Assets/Shaders/ppPassThrough.fs").c_str(), SHADER_PP_DEFAULT);
+        break;
+      case SHADER_PP_EXTRACTLIGHT:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppPassThrough.vs").c_str(), BuildPath("Game/Assets/Shaders/ppExtractBrightness.fs").c_str(), SHADER_PP_EXTRACTLIGHT);
+        break;
+      case SHADER_PP_BLOOMCOMBINE:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppPassThrough.vs").c_str(), BuildPath("Game/Assets/Shaders/ppBloom.fs").c_str(), SHADER_PP_BLOOMCOMBINE);
+        break;
+      case SHADER_PP_HORIZONTALBLUR:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppHorizontalGaussianBlur.vs").c_str(), BuildPath("Game/Assets/Shaders/ppGaussianBlur.fs").c_str(), SHADER_PP_HORIZONTALBLUR);
+        break;
+      case SHADER_PP_VERTICALBLUR:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppVerticalGaussianBlur.vs").c_str(), BuildPath("Game/Assets/Shaders/ppGaussianBlur.fs").c_str(), SHADER_PP_VERTICALBLUR);
+        break;
+      case SHADER_PP_EXTRACTLIGHTDIRECTIONAL:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppExtractBrightnessDirectional.vs").c_str(), BuildPath("Game/Assets/Shaders/ppExtractBrightnessDirectional.fs").c_str(), SHADER_PP_EXTRACTLIGHTDIRECTIONAL);
+        break;
+      case SHADER_PP_AMBIENTCOLOR:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/ppPassThrough.vs").c_str(), BuildPath("Game/Assets/Shaders/ppAmbientColour.fs").c_str(), SHADER_PP_AMBIENTCOLOR);
+        break;
+      case SHADER_SHADOW_DEFAULT:
+      shader = new Shader(BuildPath("Game/Assets/Shaders/shadow.vs").c_str(), BuildPath("Game/Assets/Shaders/shadow.fs").c_str(), SHADER_SHADOW_DEFAULT);
+        break;
+      case SHADER_SHADOW_SPRITESHEET:
+      shader = new Shader(BuildPath("Game/Assets/Shaders/shadow_SpriteSheet.vs").c_str(), BuildPath("Game/Assets/Shaders/shadow.fs").c_str(), SHADER_SHADOW_SPRITESHEET);
+        break;
     }
     if (shader != nullptr) {
       createdShaders[shaderID] = shader;

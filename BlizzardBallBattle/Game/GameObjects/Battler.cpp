@@ -8,6 +8,7 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "UserDefinedRenderLayers.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -28,6 +29,7 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f)
 {
 	InitStats(team);
+	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 }
 
 Battler::~Battler()

@@ -14,7 +14,8 @@
 #include <unordered_set>
 #include <thread>
 #include <mutex>
-//#include "FrameBufferObject.h"
+#include "FrameBufferObject.h"
+#include "UserDefinedRenderLayers.h"
 
 #define SHADER_TYPE_DEFAULT 0
 #define SHADER_TYPE_PIXEL 1
@@ -51,7 +52,7 @@ private:
     std::vector<RenderingShaderGroup> renderingGroups;
     bool renderingThreadIsAlive;
     bool rendering;
-    //FrameBufferObject plainPassFBO;
+    FrameBufferObject fboPlainPass, fboHorizontalGaussianBlur, fboGaussianBlur, fboBloomBrightness, fboBloomBlurBrightness, fboAmbientLighting;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
@@ -60,13 +61,23 @@ private:
     std::array<GLfloat, 8> textCoordinates;
     std::array<GLuint, 6> indices;
     GLuint VBO, VAO, EBO, CBO; //VertexBufferObject, VertexArrayObject, ElementsBufferObject, CoordinateBufferObject
+    GLuint ppVAO;
 
     //Rendering methods
     bool SetOpenGLAttributes();
     void PrintSDL_GL_Attributes();
     void CheckSDLError(int line);
     void PrepareRenderingThread();
-    void RenderPass();
+    void RenderShadowPass(float xSourceDirection, float ySourceDirection, float shadowStrength);
+    void RenderPass(int layer = RENDER_LAYER_ALL, bool clearFirst = true);
+    void RenderFBO(FrameBufferObject fboToRender, Shader* shader, FrameBufferObject* toFbo = nullptr); //Default "FBOShader" type assumes it takes a texture to draw
+
+    void RenderGaussianBlur(FrameBufferObject fboToBlur, FrameBufferObject* toFbo = nullptr); //Blurs then draws
+    void RenderBloom(FrameBufferObject fboToBloom, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
+    void RenderDirectionalBloom(FrameBufferObject fboToBloom, float xSourceDirection, float ySourceDirection, float bloomIntensity, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
+    void ApplyEndProcessing(FrameBufferObject mainTexture, FrameBufferObject postProcessingOverlay, FrameBufferObject* toFbo = nullptr);
+    void RenderAmbientColor(FrameBufferObject fboToColor, float r, float g, float b, float a, FrameBufferObject* toFbo = nullptr);
+    void RenderFullLighting(FrameBufferObject fboToEffect, FrameBufferObject bloomBlurredLight, FrameBufferObject shadow, FrameBufferObject moodLighting, FrameBufferObject* toFbo = nullptr);
 
 public:
     static SpriteRendererManager* GetInstance();
@@ -87,5 +98,5 @@ public:
     void EnableAllRenderingLayers();
     bool IsRenderingLayerEnabled(int layer);
 	void RemoveSpriteFromRendering(SpriteRenderer* sprite);
-	void Purge();
+    void Purge();
 };

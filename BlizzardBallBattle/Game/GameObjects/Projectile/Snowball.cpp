@@ -4,6 +4,7 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "Collision/Collider.h"
+#include "UserDefinedRenderLayers.h"
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	Physics* physics = new Physics(this);
@@ -23,6 +24,8 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	velocity->rotateVector(radians);
 	physics->setVelocity(velocity);
 	active = true;
+
+	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 }
 
 void Snowball::OnUpdate(int timeDelta)
