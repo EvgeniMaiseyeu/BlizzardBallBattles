@@ -12,7 +12,6 @@
 #include <iostream>
 
 void PlayerTestScene::OnStart() {
-	std::cout << "Starting NetworkingTestScene Setup" << std::endl;
 	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
 	GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
 	GLuint texture2 = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character2.png"));
@@ -37,30 +36,30 @@ void PlayerTestScene::OnStart() {
 			spriteRenderer->SetActiveSprite((ISprite*)new Sprite(textureToUse));
 			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
 		}
 	}
 
 	//chensPlayer1 = new Player(ourShader, texture);
-	//Transform* transform = (Transform*)chensPlayer1->GetComponent<Transform*>();
+	//Transform* transform = (Transform*)chensPlayer1->GetTransform();
 	//transform->setPosition(-7, 2);
 	//InputManager* inputManager = InputManager::GetInstance();
 	//transform->setScale(3.0f);
 //
 	//snowBall1 = new Player(ourShader, iceTexture);
-	//transform = (Transform*)snowBall1->GetComponent<Transform*>();
+	//transform = (Transform*)snowBall1->GetTransform();
 	//transform->setPosition(-7, 0);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(1.0f);
 //
 	//chensPlayer2 = new Player(ourShader, texture2);
-	//transform = (Transform*)chensPlayer2->GetComponent<Transform*>();
+	//transform = (Transform*)chensPlayer2->GetTransform();
 	//transform->setPosition(10, 2);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(3.0f);
 //
 	//snowBall2 = new Player(ourShader, iceTexture);
-	//transform = (Transform*)snowBall2->GetComponent<Transform*>();
+	//transform = (Transform*)snowBall2->GetTransform();
 	//transform->setPosition(10, 0);
 	//inputManager = InputManager::GetInstance();
 	//transform->setScale(1.0f);
@@ -73,5 +72,5 @@ void PlayerTestScene::OnEnd() {
 	delete(snowBall2);
 }
 
-void PlayerTestScene::OnUpdate() {
+void PlayerTestScene::OnUpdate(int ticks) {
 }

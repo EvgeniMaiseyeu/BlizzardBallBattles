@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "Updateable.h"
+#include "Transform.h"
 
 class GameObject : public Updateable {
 private:
@@ -15,6 +16,7 @@ private:
 
    int id;
    bool isGlobal;
+   Transform* transform;
    
    template <typename T>
    std::string GetClassName() {
@@ -33,7 +35,12 @@ public:
 
    template <typename T> 
    T GetComponent() {
-       return (T)components[GetClassName<T>()].front();
+	   if (HasComponent<T>()) {
+		   return (T)components[GetClassName<T>()].front();
+	   }
+	   else {
+		   return NULL;
+	   }
    }
    
    template <typename T> 
@@ -64,8 +71,10 @@ public:
    }
 
    void OnStart() {};
-   void OnUpdate(int ticks);
+   void OnComponentsUpdate(int ticks);
+   void OnUpdate(int ticks){};
    void OnEnd() {};
+   Transform* GetTransform();
    
    ~GameObject();
 

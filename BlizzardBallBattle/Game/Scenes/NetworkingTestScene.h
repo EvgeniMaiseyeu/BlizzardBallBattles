@@ -13,6 +13,8 @@ private:
 
 public:
     void OnStart();
-    void OnUpdate();
+    void OnUpdate(int ticks);
     void OnEnd();
+	void OnResume() {}
+	void OnPause() {}
 };

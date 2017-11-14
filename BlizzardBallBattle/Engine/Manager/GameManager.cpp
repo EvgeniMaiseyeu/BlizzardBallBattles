@@ -8,6 +8,7 @@
 #include "MessageManager.h"
 #include "NetworkingManager.h"
 #include "SceneManager.h"
+#include "PhysicsManager.h"
  
 GameManager* GameManager::instance;
  
@@ -23,9 +24,11 @@ GameManager::GameManager() {
  
 void GameManager::OnStart()
 {
+	
     lastTime = SDL_GetTicks();
     game = new Game();
     game->OnStart();
+	PhysicsManager::GetInstance()->OnStart();
     while (!breakLoop)
     {
         int curTime = SDL_GetTicks();
@@ -52,13 +55,14 @@ void GameManager::OnUpdate(int ticks)
 
     if (NetworkingManager::GetInstance()->IsConnected()) {
         std::string tmp;
-        if (NetworkingManager::GetInstance()->GetMessage(tmp)) {
+        while (NetworkingManager::GetInstance()->GetMessage(tmp)) {
             NetworkingManager::GetInstance()->HandleParsingEvents(tmp);
         }
     
         NetworkingManager::GetInstance()->SendQueuedEvents();
     }
  
+	PhysicsManager::GetInstance()->OnUpdate(ticks);
     SpriteRendererManager::GetInstance()->OnUpdate(ticks);    
 
     for (std::map<int, GameObject*>::iterator it=globalGameObjects.begin(); it!=globalGameObjects.end(); ++it) {
@@ -93,4 +97,5 @@ void GameManager::AddGameObject(int id, GameObject* obj) {
  
 void GameManager::RemoveGameObject(int id) {
     globalGameObjects.erase(id);
+	SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(id);
 }

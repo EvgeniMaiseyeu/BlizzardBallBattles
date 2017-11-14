@@ -201,7 +201,7 @@ void SpriteSheetAnimationTestScene::OnStart() {
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
 			spriteRenderer->SetActiveShader(ourShader);
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
+			tile->GetTransform()->setPosition(leftBounding + x + 0.5f, bottomBounding + y + 0.5f, -1.0f);
 		}
 	}
 
@@ -218,7 +218,7 @@ void SpriteSheetAnimationTestScene::OnEnd() {
 	delete(player2);
 }
 
-void SpriteSheetAnimationTestScene::OnUpdate() {
+void SpriteSheetAnimationTestScene::OnUpdate(int ticks) {
 	//animationCounter++;
 	//if (animationCounter % 10 == 2) {
 	//	SpriteSheet* sprite = (SpriteSheet*)player1->GetComponent<SpriteRenderer*>()->GetSprite();

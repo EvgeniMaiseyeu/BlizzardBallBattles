@@ -13,49 +13,15 @@
 #include "InputManager.h"
 #include "Sender.h"
 #include "Receiver.h"
-
-enum class TileIndex {
-	//1st Row
-	DirtHouseLeft_TopLeft,
-	DirtHouseLeft_Top,
-	DirtSnow_Top,
-	DirtSnowIce_TopLeft,
-	DirtSnowIce_Top,
-	DirtSnowIce_TopRight,
-	DirtHouseRight_Top,
-	DirtHouseRight_TopRight,
-	//2nd Row
-	HouseLeft_Left,
-	HouseLeft_Center,
-	Snow_Center,
-	SnowIce_Left,
-	Ice_Center,
-	SnowIce_Right,
-	HouseRight_Center,
-	HouseRight_Right,
-	//3rd Row
-	DirtHouseLeft_BottomLeft,
-	DirtHouseLeft_Bottom,
-	DirtSnow_Bottom,
-	DirtSnowIce_BottomLeft,
-	DirtSnowIce_Bottom,
-	DirtSnowIce_BottomRight,
-	DirtHouseRight_Bottom,
-	DirtHouseRight_BottomRight,
-	//4th Row
-	HouseLeft_Center_Alt,
-	Snow_Center_Alt1_Shrub,
-	Snow_Center_Alt2_Shrub,
-	Snow_Center_Alt3_Shrub,
-	Snow_Center_Alt4_Snowman,
-	Dirt_Center,
-	Snow_Center_Alt6,
-	HouseRight_Center_Alt
-};
+#include "Player.h"
+#include "AI.h"
+#include <vector>
+#include "MatchManager.h"
+#include "Collision\Collider.h"
 
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
-	//GenerateBackgroundTiles();
+	BuildBaseScene();
 }
 
 void GameScene_Alpha_Networked::OnEnd() {
@@ -66,232 +32,111 @@ void GameScene_Alpha_Networked::OnEnd() {
 void GameScene_Alpha_Networked::OnUpdate(int ticks) {
 	if (!isConnected && NetworkingManager::GetInstance()->IsConnected()) {
 		OnConnected();
-		if (NetworkingManager::GetInstance()->IsHost()) {
-			player1->AddComponent<Sender*>(new Sender(player1, "Player1"));
-			player2->AddComponent<Receiver*>(new Receiver(player2, "Player2"));
-		}
-		else {
-			player1->AddComponent<Receiver*>(new Receiver(player1, "Player1"));
-			player2->AddComponent<Sender*>(new Sender(player2, "Player2"));
-		}
-		isConnected = true;
-	}
-
-	if (isConnected) {
-		GameObject* player = NetworkingManager::GetInstance()->IsHost() ? player1 : player2;
-		if (InputManager::GetInstance()->onKey(SDLK_a)) {
-			player->GetComponent<Transform*>()->addX(-0.1f);
-			player->GetComponent<Transform*>()->setRotation(180);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_d)) {
-			player->GetComponent<Transform*>()->addX(0.1f);
-			player->GetComponent<Transform*>()->setRotation(0);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_s)) {
-			player->GetComponent<Transform*>()->addY(-0.1f);
-			player->GetComponent<Transform*>()->setRotation(90);
-		}
-		if (InputManager::GetInstance()->onKey(SDLK_w)) {
-			player->GetComponent<Transform*>()->addY(0.1f);
-			player->GetComponent<Transform*>()->setRotation(-90);
-		}
 	}
 }
 
 void GameScene_Alpha_Networked::OnConnected() {
-	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/CharacterSheet.png"));
+	float teamOneX = -7.5f;
+	float teamTwoX = 7.5f;
+	std::vector<AI*> aiUnits;
 
-	player1 = new GameObject(false);
-	player1->AddComponent<SpriteRenderer*>(new SpriteRenderer(player1));
-	SpriteRenderer* spriteRenderer = player1->GetComponent<SpriteRenderer*>();
-	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
-	spriteRenderer->SetActiveShader(ourShader);
-	player1->GetComponent<Transform*>()->setX(-7.5f);
+	if (NetworkingManager::GetInstance()->IsHost()) {
+		player1 = new Battler(1, "Character.png", "Player1", true);
+		player1->AddComponent<Collider*>(new Collider(player1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(player1);
+		player1->GetTransform()->setX(teamOneX);
+		player2 = new Battler(2, "Character.png", "Player2", false);
+		player2->AddComponent<Collider*>(new Collider(player2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(player2);
+		player2->GetTransform()->setX(teamTwoX);
+		player2->GetTransform()->setRotation(180.0f);
+		player1->AddComponent<Sender*>(new Sender(player1, "Player1"));
+		player2->AddComponent<Receiver*>(new Receiver(player2, "Player2"));
+		player1->AddComponent<Player*>(new Player(player1, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE));
 
-	player2 = new GameObject(false);
-	player2->AddComponent<SpriteRenderer*>(new SpriteRenderer(player2));
-	spriteRenderer = player2->GetComponent<SpriteRenderer*>();
-	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(spriteSheetTexture, 8, 2, 0));
-	spriteRenderer->SetActiveShader(ourShader);
-	player2->GetComponent<Transform*>()->setX(7.5f);
-}
+		AI1T1 = new Battler(1, "Character.png", "AI1T1", true);
+		AI1T1->AddComponent<Collider*>(new Collider(AI1T1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI1T1);
+		AI1T1->GetTransform()->setPosition(teamOneX, 2.5f);
+		AI1T1->AddComponent<AI*>(new AI(AI1T1));
+		aiUnits.push_back(AI1T1->GetComponent<AI*>());
+		AI2T1 = new Battler(1, "Character.png", "AI2T1", true);
+		AI2T1->AddComponent<Collider*>(new Collider(AI2T1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI2T1);
+		AI2T1->GetTransform()->setPosition(teamOneX, -2.5f);
+		AI2T1->AddComponent<AI*>(new AI(AI2T1));
+		aiUnits.push_back(AI2T1->GetComponent<AI*>());
 
+		AI1T2 = new Battler(2, "Character.png", "AI1T2", false);
+		AI1T2->AddComponent<Collider*>(new Collider(AI1T2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI1T2);
+		AI1T2->GetTransform()->setPosition(teamTwoX, 2.5f);
+		AI1T2->GetTransform()->setRotation(180.0f);
+		AI2T2 = new Battler(2, "Character.png", "AI2T2", false);
+		AI2T2->AddComponent<Collider*>(new Collider(AI2T2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI2T2);
+		AI2T2->GetTransform()->setPosition(teamTwoX, -2.5f);
+		AI2T2->GetTransform()->setRotation(180.0f);
 
-void GameScene_Alpha_Networked::GenerateBackgroundTiles() {
-	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-	GLuint texture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
-	GLuint textureTileSet = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/BackgroundTileSet.png"));
+		AI1T1->AddComponent<Sender*>(new Sender(AI1T1, "AI1T1"));
+		AI2T1->AddComponent<Sender*>(new Sender(AI2T1, "AI2T1"));
 
-	int width = (int)getGameWidth();
-	int height = (int)getGameHeight();
-	float leftBounding = getGameLeftX();
-	float bottomBounding = getGameBottomY() + (getFullBarSize() / GAME_WIDTH) / 2.0f;
-	std::cout << getFullBarSize() << std::endl;
+		AI1T2->AddComponent<Receiver*>(new Receiver(AI1T2, "AI1T2"));
+		AI2T2->AddComponent<Receiver*>(new Receiver(AI2T2, "AI2T2"));
+	}
+	else {
+		player1 = new Battler(1, "Character.png", "Player1", false);
+		player1->AddComponent<Collider*>(new Collider(player1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(player1);
+		player1->GetTransform()->setX(teamOneX);
+		player2 = new Battler(2, "Character.png", "Player2", true);
+		player2->AddComponent<Collider*>(new Collider(player2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(player2);
+		player2->GetTransform()->setX(teamTwoX);
+		player2->GetTransform()->setRotation(180.0f);
+		player1->AddComponent<Receiver*>(new Receiver(player1, "Player1"));
+		player2->AddComponent<Sender*>(new Sender(player2, "Player2"));
+		player2->AddComponent<Player*>(new Player(player2, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE));
 
-	//Game Logic Vars
-	int roofWidth = 3;
-	int iceWidth = 8; //Even for even screens, odd for odd screens [Odd Untested]
-	int altChance = 10;
-	int randSeed = SDL_GetTicks(); //Seed it properly
-	TileIndex tileIndex;
+		AI1T1 = new Battler(1, "Character.png", "AI1T1", false);
+		AI1T1->AddComponent<Collider*>(new Collider(AI1T1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI1T1);
+		AI1T1->GetTransform()->setPosition(teamOneX, 2.5f);
+		AI2T1 = new Battler(1, "Character.png", "AI2T1", false);
+		AI2T1->AddComponent<Collider*>(new Collider(AI2T1, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI2T1);
+		AI2T1->GetTransform()->setPosition(teamOneX, -2.5f);
 
-	//Generate Tiles. Refactor out
-	for (int x = 0; x < width; x++) {
-		bool isLeft = x == 0;
-		bool isRight = x == width - 1;
-		bool isHouse = x < roofWidth - 1 || x >(width - roofWidth);
-		bool isLeftDoorCenter = x == 2;
-		bool isRightDoorCenter = x == width - 3;
-		bool isSnowy = x < width / 2 - iceWidth / 2 || x > width / 2 + iceWidth / 2;
-		bool isDirtSnowBorderLeft = x < width / 2 - iceWidth / 2 - 1;
-		bool isDirtSnowBorderRight = x > width / 2 + iceWidth / 2 + 1;
+		AI1T2 = new Battler(2, "Character.png", "AI1T2", true);
+		AI1T2->AddComponent<Collider*>(new Collider(AI1T2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI1T2);
+		AI1T2->GetTransform()->setPosition(teamTwoX, 2.5f);
+		AI1T2->GetTransform()->setRotation(180.0f);
+		AI1T2->AddComponent<AI*>(new AI(AI1T2));
+		aiUnits.push_back(AI1T2->GetComponent<AI*>());
+		AI2T2 = new Battler(2, "Character.png", "AI2T2", true);
+		AI2T2->AddComponent<Collider*>(new Collider(AI2T2, 0.5f));
+		MatchManager::GetInstance()->RegisterCharacter(AI2T2);
+		AI2T2->GetTransform()->setPosition(teamTwoX, -2.5f);
+		AI2T2->GetTransform()->setRotation(180.0f);
+		AI2T2->AddComponent<AI*>(new AI(AI2T2));
+		aiUnits.push_back(AI2T2->GetComponent<AI*>());
 
-		for (int y = -1; y < height + 1; y++) {
-			bool isBottom = y == 0;
-			bool isTop = y == ((int)height - 1);
-			bool isAlt = (randSeed++ % (altChance * 2 + 1)) == 0;
+		AI1T1->AddComponent<Receiver*>(new Receiver(AI1T1, "AI1T1"));
+		AI2T1->AddComponent<Receiver*>(new Receiver(AI2T1, "AI2T1"));
 
-			std::cout << y << " == " << (height - 1) << " = " << isTop << std::endl;
-			//TODO: Change to assignting TileIndex and doing one single cast at the end
-			//Snowy-To-Ice Areas
-			if (isSnowy) {
-				randSeed++;
-				if (isTop) {
-					tileIndex = TileIndex::DirtSnow_Top;
-				}
-				else if (isBottom) {
-					tileIndex = TileIndex::DirtSnow_Bottom;
-				}
-				else {
-					randSeed++;
-					if (isAlt) {
-						if (x % 3 == 2) {
-							tileIndex = TileIndex::Snow_Center_Alt1_Shrub;
-						}
-						else if (y % 3 == 2 || x % 4 == 2) {
-							tileIndex = TileIndex::Snow_Center_Alt2_Shrub;
-						}
-						else if (x % 2 == 0) {
-							tileIndex = TileIndex::Snow_Center_Alt3_Shrub;
-						}
-						else if (y % 2 == 0 && x % 3 == 0) {
-							tileIndex = TileIndex::Snow_Center_Alt4_Snowman;
-						}
-						else {
-							tileIndex = TileIndex::Snow_Center;
-						}
-					}
-					else {
-						tileIndex = TileIndex::Snow_Center;
-						randSeed++;
-					}
-				}
-			}
-			else {
-				if (isDirtSnowBorderLeft) {
-					randSeed++;
-					tileIndex = TileIndex::SnowIce_Left;
-				}
-				else if (isDirtSnowBorderRight) {
-					tileIndex = TileIndex::SnowIce_Right;
-				}
-				else if (isTop) {
-					tileIndex = TileIndex::DirtSnowIce_Top;
-				}
-				else if (isBottom) {
-					tileIndex = TileIndex::DirtSnowIce_Bottom;
-				}
-				else {
-					tileIndex = TileIndex::Ice_Center;
-				}
-			}
+		AI1T2->AddComponent<Sender*>(new Sender(AI1T2, "AI1T2"));
+		AI2T2->AddComponent<Sender*>(new Sender(AI2T2, "AI2T2"));
+	}
+	isConnected = true;
 
-			////Left or Right house roofs
-			if (isHouse) {
-				randSeed++;
-				std::cout << x << std::endl;
-				tileIndex = TileIndex::HouseLeft_Left;
-			}
-			if (isLeftDoorCenter) {
-				randSeed++;
-				std::cout << "LeftHouse";
-				if (isAlt) {
-					tileIndex = TileIndex::HouseLeft_Center_Alt;
-				}
-				else {
-					tileIndex = TileIndex::HouseLeft_Center;
-				}
-			}
-			if (isRightDoorCenter) {
-				std::cout << "RightHouse";
-				if (isAlt) {
-					randSeed++;
-					tileIndex = TileIndex::HouseRight_Center_Alt;
-				}
-				else {
-					randSeed++;
-					tileIndex = TileIndex::HouseRight_Center;
-				}
-			}
+	// Initialize our AI
+	for (int i = 0; i < aiUnits.size(); ++i)
+	{
+		float intelligence = randomFloatInRange(0.8f, 1.0f);
+		float courage = randomFloatInRange(0.0f, 1.0f);
+		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
 
-			////Corner Cases////
-			if (isTop) {
-				if (isLeft) {
-					std::cout << "TOPLEFT";
-					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
-				}
-				else if (isRight) {
-					std::cout << "TOPRIGHT";
-					tileIndex = TileIndex::DirtHouseRight_TopRight;
-				}
-				else if (isHouse) {
-					std::cout << "isLeftDoorHouse : isRightDoorHouse";
-					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
-				}
-				else if (isLeftDoorCenter) {
-					std::cout << "isLeftDoorCenter";
-					tileIndex = TileIndex::DirtHouseLeft_Top;
-				}
-				else if (isRightDoorCenter) {
-					std::cout << "isRightDoorCenter";
-					tileIndex = TileIndex::DirtHouseRight_Top;
-				}
-			}
-			else if (isBottom) {
-				if (isLeft) {
-					std::cout << "BOTTOMLEFT";
-					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
-				}
-				else if (isRight) {
-					std::cout << "BOTTOMRIGHT";
-					tileIndex = TileIndex::DirtHouseRight_BottomRight;
-				}
-				else if (isHouse) {
-					std::cout << "isLeftDoorHouse : isRightDoorHouse";
-					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
-				}
-				else if (isLeftDoorCenter) {
-					std::cout << "isLeftDoorCenter";
-					tileIndex = TileIndex::DirtHouseLeft_Bottom;
-				}
-				else if (isRightDoorCenter) {
-					std::cout << "isRightDoorCenter";
-					tileIndex = TileIndex::DirtHouseRight_Bottom;
-				}
-			}
-
-			if (y == -1 || y == height) {
-				tileIndex = TileIndex::Dirt_Center;
-			}
-
-			GameObject* tile = new GameObject(false);
-			tile->AddComponent<SpriteRenderer*>(new SpriteRenderer(tile));
-			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
-			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
-			spriteRenderer->SetActiveShader(ourShader);
-			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetComponent<Transform*>()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -1.0f);
-		}
+		aiUnits[i]->Init(intelligence, courage, decisionFrequency);
 	}
 }

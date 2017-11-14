@@ -52,4 +52,6 @@ public:
     void EnableRenderingLayer(int layer);
     void EnableAllRenderingLayers();
     bool IsRenderingLayerEnabled(int layer);
+	void RemoveSpriteFromRendering(SpriteRenderer* sprite);
+	void Purge();
 };

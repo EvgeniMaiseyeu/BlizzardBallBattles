@@ -8,8 +8,9 @@ uniform sampler2D ourTexture1;
 
 void main( ) {
     //0.2543 == 0.25
-    float newX = floor(TexCoord.x * 50.0f) / 50.0f;
-    float newY = floor(TexCoord.y * 50.0f) / 50.0f;
+    float pixelation = 250.0f; //Lower = more pixels, higher = finer detail
+    float newX = floor(TexCoord.x * pixelation) / pixelation;
+    float newY = floor(TexCoord.y * pixelation) / pixelation;
     vec2 voxelTexCoord = vec2(newX, newY);
     color = texture(ourTexture1, voxelTexCoord);
 }
