@@ -14,14 +14,9 @@ void main() {
 	vec4 pos = transform * vec4(position, 1.0);
 	pos.y *= aspectRatio;
 
-    //NOTWORKING: GOOD
+    //WORKING: OLD VERSION
     vec4 dif = pos - vec4(lightPoint, 0.0, 0.0);
 	gl_Position = pos + dif / 20.0;
-    //
-
-    //WORKING: BAD
-    //vec4 dif = pos - vec4(lightPoint, 0.0, 0.0);
-	//gl_Position = pos + dif / 20.0;
     //
 
 	//Current row/column in the spritesheet

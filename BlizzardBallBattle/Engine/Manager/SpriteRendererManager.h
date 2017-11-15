@@ -68,16 +68,7 @@ private:
     void PrintSDL_GL_Attributes();
     void CheckSDLError(int line);
     void PrepareRenderingThread();
-    void RenderShadowPass(float xSourceDirection, float ySourceDirection, float shadowStrength);
-    void RenderPass(int layer = RENDER_LAYER_ALL, bool clearFirst = true);
-    void RenderFBO(FrameBufferObject fboToRender, Shader* shader, FrameBufferObject* toFbo = nullptr); //Default "FBOShader" type assumes it takes a texture to draw
 
-    void RenderGaussianBlur(FrameBufferObject fboToBlur, FrameBufferObject* toFbo = nullptr); //Blurs then draws
-    void RenderBloom(FrameBufferObject fboToBloom, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
-    void RenderDirectionalBloom(FrameBufferObject fboToBloom, float xSourceDirection, float ySourceDirection, float bloomIntensity, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
-    void ApplyEndProcessing(FrameBufferObject mainTexture, FrameBufferObject postProcessingOverlay, FrameBufferObject* toFbo = nullptr);
-    void RenderAmbientColor(FrameBufferObject fboToColor, float r, float g, float b, float a, FrameBufferObject* toFbo = nullptr);
-    void RenderFullLighting(FrameBufferObject fboToEffect, FrameBufferObject bloomBlurredLight, FrameBufferObject shadow, FrameBufferObject moodLighting, FrameBufferObject* toFbo = nullptr);
 
 public:
     static SpriteRendererManager* GetInstance();
@@ -99,4 +90,16 @@ public:
     bool IsRenderingLayerEnabled(int layer);
 	void RemoveSpriteFromRendering(SpriteRenderer* sprite);
     void Purge();
+
+    /////RENDERING METHODS: Maybe extract to a base "RenderContext" class to pass to the Camera
+    void RenderShadowPass(float xSourceDirection, float ySourceDirection, float shadowStrength);
+    void RenderPass(int layer = RENDER_LAYER_ALL, bool clearFirst = true);
+    void RenderFBO(FrameBufferObject fboToRender, Shader* shader, FrameBufferObject* toFbo = nullptr); //Default "FBOShader" type assumes it takes a texture to draw
+
+    void RenderGaussianBlur(FrameBufferObject fboToBlur, FrameBufferObject* toFbo = nullptr); //Blurs then draws
+    void RenderBloom(FrameBufferObject fboToBloom, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
+    void RenderDirectionalBloom(FrameBufferObject fboToBloom, float xSourceDirection, float ySourceDirection, float bloomIntensity, FrameBufferObject* toFbo = nullptr); //Takes input, extracts light, stores that, blurrs, stores that
+    void ApplyEndProcessing(FrameBufferObject mainTexture, FrameBufferObject postProcessingOverlay, FrameBufferObject* toFbo = nullptr);
+    void RenderAmbientColor(FrameBufferObject fboToColor, float r, float g, float b, float a, FrameBufferObject* toFbo = nullptr);
+    void RenderFullLighting(FrameBufferObject fboToEffect, FrameBufferObject bloomBlurredLight, FrameBufferObject shadow, FrameBufferObject moodLighting, FrameBufferObject* toFbo = nullptr);
 };

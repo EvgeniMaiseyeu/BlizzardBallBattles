@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <condition_variable>
 #include "SpriteSheet.h"
+#include "Camera.h"
 
 //Statics must be given definitions
 SpriteRendererManager *SpriteRendererManager::instance;
@@ -25,184 +26,14 @@ void SpriteRendererManager::UnSubscribe(int id) {
 spriteRenderers.erase(id);
 }*/
 
-int tempCounter = 0;
-int tick = 0;
-float sR, sG, sB, sA, sX, sY, sS, sBI;
-float curR = 0.0f, curG = 0.0f, curB = 0.0f, curA = 1.0f;
-float wantR = 0.0f, wantG = 0.0f, wantB = 0.0f, wantA = 1.0f;
-float curX = 0.0f, curY = 0.0f;
-float wantX = 0.0f, wantY = 0.0f;
-float curS = 4.0f, wantS = 4.0f;
-float wantBI = 0.135f, curBI = 0.135f;
 
-float lerp(float a, float b, float f) {
-    return a + f * (b - a);
-}
 
 void SpriteRendererManager::OnUpdate(int ticks)
 {
 	//Load fboPlainPass
 	renderReadingStick.lock();
 
-	fboPlainPass.bindFrameBuffer();
-	RenderPass(RENDER_LAYER_BACKGROUND);
-	RenderShadowPass(curX, curY, curS);
-	RenderPass(RENDER_LAYER_SHADOWABLE, false);
-	RenderPass(RENDER_LAYER_FOREGROUND, false);
-	fboPlainPass.unbindFrameBuffer();
-
-	//##Render Directional Light
-	/*Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL)->Use();
-	glBindVertexArray(VAO);
-	glEnableVertexAttribArray(0);
-	glDisable(GL_DEPTH_TEST);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	GLuint directionLocation = glGetUniformLocation(Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL)->Program, "bloomDirection");
-	glUniform2f(directionLocation, curX, curY);
-
-	glActiveTexture(GL_TEXTURE0);
-	GLint ourTextureLocation = glGetUniformLocation(Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL)->Program, "fboTexture");
-	glUniform1i(ourTextureLocation, 0);
-	glBindTexture(GL_TEXTURE_2D, fboPlainPass.getTexture());
-
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
-
-	//##Render Ambient + Direcitonal Bloom
-	RenderDirectionalBloom(fboPlainPass, curX, curY, curBI, &fboAmbientLighting);
-	RenderAmbientColor(fboAmbientLighting, curR, curG, curB, curA);
-
-	//difX = 0.4 - 0.8 = -0.4
-	float t = tick / 240.0f;
-	//printf("%f\n", t);
-	curR = lerp(sR, wantR, t);
-	curG = lerp(sG, wantG, t);
-	curB = lerp(sB, wantB, t);
-	curA = lerp(sA, wantA, t);
-	curX = lerp(sX, wantX, t);
-	curY = lerp(sY, wantY, t);
-	curS = lerp(sS, wantS, t);
-	curBI = lerp(sBI, wantBI, t);
-
-	if (tick % 240 == 0) {
-		if (++tempCounter == 4) {
-			tempCounter = 0;
-		}
-		tick = 0;
-
-		sR = wantR;
-		sG = wantG;
-		sB = wantB;
-		sA = wantA;
-		sX = wantX;
-		sY = wantY;
-		sS = wantS;
-		sBI = wantBI;
-
-		switch(tempCounter) {
-			//Morning
-			case 0:
-				wantR = 0.1f;
-				wantG = 0.1f;
-				wantB = 0.1f;
-				wantA = 0.5f;
-				wantX = -0.5f;
-				wantY = 0.5f;
-				wantS = 5.0f;
-				wantBI = 0.1f;
-				printf("Morning");
-				break;
-			//Afternoon
-			case 1:
-				wantR = 0.5f;
-				wantG = 0.3f;
-				wantB = 0.5f;
-				wantA = 0.1f;
-				wantX = 0.5f;
-				wantY = 0.5f;
-				wantS = 2.0f;
-				wantBI = 0.145f;
-				printf("Afternoon");
-				break;
-			//Evening
-			case 2:
-				wantR = 0.8f;
-				wantG = 0.3f;
-				wantB = 0.5f;
-				wantA = 0.2f;
-				wantX = 0.5f;
-				wantY = -0.5f;
-				wantS = 4.0f;
-				wantBI = 0.12f;
-				printf("Evening");
-				break;
-			//Night
-			case 3:
-				wantR = 0.0f;
-				wantG = 0.0f;
-				wantB = 0.3f;
-				wantA = 0.5f;
-				wantX = -0.5f;
-				wantY = -0.5f;
-				wantS = 8.0f;
-				wantBI = 0.08f;
-				printf("Night");
-				break;
-		}
-	}
-	tick++;
-
-	/*tempCounter++;
-	if (tempCounter % 60 == 0) {
-		tick++;
-		if (tick == 2) {
-			tick = 0;
-		}
-	}
-	if (tick == 1) {
-		fboPlainPass.bindFrameBuffer();
-		RenderPass();
-		fboPlainPass.unbindFrameBuffer();
-		RenderDirectionalBloom(fboPlainPass, 1.0f, 0.2f);
-	} else if (tick == 2) {
-		fboPlainPass.bindFrameBuffer();
-		RenderPass();
-		fboPlainPass.unbindFrameBuffer();
-		fboBloomBrightness.bindFrameBuffer();
-		RenderFBO(fboPlainPass, Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL));
-		fboBloomBrightness.unbindFrameBuffer();
-		RenderGaussianBlur(fboBloomBrightness); //Gaussian-Blur the light source
-	} else if (tick == 3) {
-		fboPlainPass.bindFrameBuffer();
-		RenderPass();
-		fboPlainPass.unbindFrameBuffer();
-		RenderFBO(fboPlainPass, Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL));
-	} else {
-		fboPlainPass.bindFrameBuffer();
-		RenderPass();
-		fboPlainPass.unbindFrameBuffer();
-		//fboBloomBrightness.bindFrameBuffer();
-		RenderFBO(fboPlainPass, Shader::GetShader(SHADER_PP_EXTRACTLIGHTDIRECTIONAL), &fboBloomBrightness);
-		//fboBloomBrightness.unbindFrameBuffer();
-		RenderGaussianBlur(fboBloomBrightness); //Gaussian-Blur the light source
-		//RenderPass();
-	}*/
-	
-
-	/*//Gaussian Blur fboPlainPass
-	fboGaussianBlur.bindFrameBuffer();
-	RenderGaussianBlur(fboPlainPass);
-	fboGaussianBlur.unbindFrameBuffer();
-
-	//Bloom fboPlainPass, which extracts the light then gaussian blurs the light
-	fboBloomBlurBrightness.bindFrameBuffer();
-	RenderBloom(fboPlainPass);
-	fboBloomBlurBrightness.unbindFrameBuffer();
-
-	//Applys the fboBloomBlurBrightness fbo to the fboGaussianBlur one and renders to the screen
-	ApplyEndProcessing(fboGaussianBlur, fboBloomBlurBrightness);*/
+	Camera::GetActiveCamera()->ApplyRenderFilters(this);
 
 	SDL_GL_SwapWindow(mainWindow);
 	

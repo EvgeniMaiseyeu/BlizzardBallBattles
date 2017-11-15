@@ -9,6 +9,7 @@
 #include <map>
 #include "SceneManager.h"
 #include "Scenes.h"
+#include "DayNightCamera.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -22,6 +23,7 @@ void PlayerWon(std::map<std::string, void*> payload) {
 
 GameScene::GameScene() {
 	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
+	Camera::SetActiveCamera(new DayNightCamera());
 }
 
 void GameScene::BuildBaseScene() {
