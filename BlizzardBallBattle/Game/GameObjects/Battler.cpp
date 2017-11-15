@@ -1,14 +1,12 @@
 #include "Battler.h"
 #include "Transform.h"
 #include "HelperFunctions.h"
-#include "Snowball.h"
 #include "MessageManager.h"
 #include "AI.h"
 #include "NetworkingManager.h"
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
-#include "Vector2.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -196,3 +194,94 @@ void Battler::Die()
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 }
+
+//------------------------------------------------------
+//BIG SNOWBALL METHODS
+//------------------------------------------------------
+
+//should be called every update for each player/ai on screen
+void Battler::handleBigThrow(float deltaTime) {
+	if (_fullLock && _timer < 12)
+		_timer += deltaTime;
+	else if (_fullLock && _timer > 12) {
+		//launch snowball
+		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+		Vector2* velocity = new Vector2(1, 0);
+		velocity = *velocity * _throwPower;
+		velocity->rotateVector(radians);
+		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
+		_haveBigSnowball = false;
+		_fullLock = false;
+		_throwPower = 0;
+	}
+}
+
+//keep calling until return true
+bool Battler::makeBigSnowball(float deltaTime) {
+	if (!_fullLock) {
+		if (_makingSnowball) {
+			if (_timer < 12) {
+				if(_bigSnowball != NULL){
+					_bigSnowball->GetTransform()->addScale(0.01f);
+				}
+				_timer += deltaTime;
+				_animate = true;
+			}
+			else {
+				//made snowball
+				//stick snowball to battler
+				_animate = false;
+				//add drag
+				_haveBigSnowball = true;
+				return true;
+			}
+		}
+		else {
+			//starting to make snowball
+			std::string snowballColour = "Snowball2.png";
+			if (stats.teamID == 2)
+				snowballColour = "Snowball3.png";
+			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			_timer = 0;
+			_makingSnowball = true;
+		}
+	}
+	return false;
+}
+
+bool Battler::fireBigSnowball() {
+	if (_haveBigSnowball) {
+		if (_fullLock) {
+			_throwPower += 0.3f; //ai wont care about this
+			return true;
+		}
+		else{
+			//reduce object drag
+			_timer = 0;
+			_fullLock = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+void Battler::animateCreation() {
+
+}
+
+void Battler::handleCancels() {
+	if (!_fullLock) {
+		if (_timer < 12 && _makingSnowball) {
+			//cancel snowball creation
+			if(_bigSnowball != NULL){
+				delete(_bigSnowball);
+			}
+			_makingSnowball = false;
+			_timer = 0;
+			_animate = false;
+		}
+	}
+}
+
+//-------------------------------------------------

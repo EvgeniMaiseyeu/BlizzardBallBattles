@@ -24,9 +24,12 @@ public:
 	
 	void setSnowDrag(float value);
 	float getSnowDrag();
+	void addSnowDrag(float value);
 
 	void setDrag(float value);
 	float getDrag();
+	void addDrag(float value);
+		
 	void OnStart(){};
 	void OnUpdate(int ticks);
 	void OnEnd(){};

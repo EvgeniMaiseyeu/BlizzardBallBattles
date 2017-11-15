@@ -5,6 +5,8 @@
 #include "Vector2.h"
 #include "SimpleSprite.h"
 #include "Physics.h"
+#include "Snowball.h"
+
 
 class Battler :
 	public SimpleSprite
@@ -31,14 +33,33 @@ public:
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
-	void OnStart(){};
+	void OnStart() {};
 	void OnUpdate(int ticks);
-	void OnEnd(){};
+	void OnEnd() {};
 	bool ThrowSnowball();
 	void DealtDamage(int damage);
 	bool IsAttached();
 
+	//Big snowball methods//
+	void handleBigThrow(float deltaTime);
+	bool makeBigSnowball(float deltaTime);
+	void animateCreation();
+	void handleCancels();
+	bool fireBigSnowball();
+	//--------------------//
+
 private:
+
+	//Big snowball trackers//
+	bool _fullLock;
+	float _timer;
+	bool _haveBigSnowball;
+	bool _makingSnowball;
+	bool _animate;
+	float _throwPower;
+	Snowball* _bigSnowball;
+	//---------------------//
+
 	Shader* _shader;
 	GLuint _textureBufferID;
 
