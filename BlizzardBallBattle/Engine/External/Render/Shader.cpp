@@ -1,6 +1,37 @@
 #include "Shader.h"
 
-Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
+std::map<int, Shader*> Shader::createdShaders;
+
+Shader* Shader::GetShader(int shaderID) {
+  map<int, Shader*>::iterator iter = createdShaders.find(shaderID);
+  if (iter == createdShaders.end()) {
+    //Shader does not exhist, make it
+    Shader* shader = nullptr;
+    switch (shaderID) {
+      case SHADER_DEFAULT:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str(), SHADER_DEFAULT);
+        break;
+      case SHADER_PIXEL:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str(), SHADER_PIXEL);
+        break;
+      case SHADER_TILE:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/tile.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str(), SHADER_TILE);
+        break;
+      case SHADER_SPRITESHEET:
+        shader = new Shader(BuildPath("Game/Assets/Shaders/sprite_sheet.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str(), SHADER_SPRITESHEET);
+        break;
+    }
+    if (shader != nullptr) {
+      createdShaders[shaderID] = shader;
+    } else {
+      std::cout << "ERROR::SHADER::GETSHADER::FAILED TO CREATE SHADER" << std::endl;
+      return nullptr;
+    }
+  }
+  return createdShaders[shaderID];
+}
+
+Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath, int id) {
   //1. Retrieve the vertex/fragment source code from filePath
   string vertexCode, fragmentCode;
   ifstream vShaderFile, fShaderFile;
@@ -8,6 +39,9 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
   //Ensure ifstream objects can throw exceptions
   vShaderFile.exceptions(ifstream::badbit);
   fShaderFile.exceptions(ifstream::badbit);
+
+  //Store the shader file names for comparisons later
+  shaderID = id;
 
   try {
     //Open files for reading
@@ -96,4 +130,9 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
 
 void Shader::Use() {
   glUseProgram(this->Program);
+}
+
+
+int Shader::GetID() {
+  return shaderID;
 }

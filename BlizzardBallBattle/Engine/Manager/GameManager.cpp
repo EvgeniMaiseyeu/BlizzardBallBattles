@@ -36,6 +36,7 @@ void GameManager::OnStart()
         lastTime = curTime;
         //update system managers then.
         OnUpdate(ticks);
+        std::cout << ticks << std::endl;
         //update game.
         SceneManager::GetInstance()->UpdateScene(ticks);
     }
@@ -49,8 +50,14 @@ void GameManager::OnUpdate(int ticks)
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        InputManager::GetInstance()->HandlePolledEvent(event);
-        breakLoop = IsQuitRequested(event);
+        switch (event.type) {
+            case SDL_QUIT:
+                breakLoop = true;
+                break;
+            default:
+                InputManager::GetInstance()->HandlePolledEvent(event);
+                break;
+        }
     }
 
     if (NetworkingManager::GetInstance()->IsConnected()) {
@@ -62,7 +69,7 @@ void GameManager::OnUpdate(int ticks)
         NetworkingManager::GetInstance()->SendQueuedEvents();
     }
  
-	PhysicsManager::GetInstance()->OnUpdate(ticks);
+    PhysicsManager::GetInstance()->OnUpdate(ticks);
     SpriteRendererManager::GetInstance()->OnUpdate(ticks);    
 
     for (std::map<int, GameObject*>::iterator it=globalGameObjects.begin(); it!=globalGameObjects.end(); ++it) {
@@ -84,11 +91,6 @@ void GameManager::FPSThrottle(int ticks) {
     int delay = FRAME_RATE - ticks;    
     if (delay > 0)
         SDL_Delay(delay);
-}
- 
-bool GameManager::IsQuitRequested(SDL_Event event)
-{
-    return (event.type == SDL_QUIT || event.type == SDL_KEYDOWN);
 }
  
 void GameManager::AddGameObject(int id, GameObject* obj) {

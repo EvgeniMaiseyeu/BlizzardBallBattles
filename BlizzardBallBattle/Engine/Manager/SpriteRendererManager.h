@@ -12,7 +12,32 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 #include <unordered_set>
+#include <thread>
+#include <mutex>
+//#include "FrameBufferObject.h"
 
+#define SHADER_TYPE_DEFAULT 0
+#define SHADER_TYPE_PIXEL 1
+#define SHADER_TYPE_SPRITESHEET 2
+
+struct RenderingObject {
+    ISprite* sprite;
+    Transform* transform;
+    SpriteRenderer* spriteRenderer;
+};
+
+struct RenderingTextureCoordinateGroup {
+
+};
+
+struct RenderingShaderGroup {
+    int shaderID;
+    GLuint shaderProgram;
+    std::vector<RenderingObject> children;
+    ~RenderingShaderGroup() {
+        children.clear();
+    }
+};
 
 class SpriteRendererManager {
 private:
@@ -20,6 +45,13 @@ private:
     static SpriteRendererManager *instance;
     std::vector<SpriteRenderer*> activeSprites;
     std::unordered_set<int> disabledLayers;
+    std::thread renderingThread;
+    std::mutex renderTalkingStick;
+    std::mutex renderReadingStick;
+    std::vector<RenderingShaderGroup> renderingGroups;
+    bool renderingThreadIsAlive;
+    bool rendering;
+    //FrameBufferObject plainPassFBO;
 
     //Rendering variables
     SDL_Window* mainWindow = NULL;
@@ -33,6 +65,8 @@ private:
     bool SetOpenGLAttributes();
     void PrintSDL_GL_Attributes();
     void CheckSDLError(int line);
+    void PrepareRenderingThread();
+    void RenderPass();
 
 public:
     static SpriteRendererManager* GetInstance();

@@ -6,7 +6,7 @@
 #include "Transform.h"
 #include "Player.h"
 #include "Sender.h"
-#include "Collision\Collider.h"
+#include "Collider.h"
 #include <algorithm>
 
 //Statics must be given definitions
@@ -21,7 +21,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 2;
+	TEAM_SIZE = 8;
 }
 
 

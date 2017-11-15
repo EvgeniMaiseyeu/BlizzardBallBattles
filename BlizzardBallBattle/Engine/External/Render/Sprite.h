@@ -6,7 +6,6 @@
 #include <iostream>
 
 
-
 class Sprite : public ISprite {
 private:
     GLuint textureBufferID;
@@ -17,4 +16,5 @@ public:
     ~Sprite();
     virtual void BindTextCoordinates(GLuint glCBO);
     virtual GLuint GetTextureBufferID();
+    virtual std::array<GLfloat, 8> GetTextureCoordinates();
 };

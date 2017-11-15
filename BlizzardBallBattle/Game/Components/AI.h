@@ -40,8 +40,8 @@ private:
 		engage = 2,
 		b_MAX
 	}currentBehaviour;
-	void AI::GetBehaviour();
-	bool AI::CanMakeDecision(float deltaTIme);
+	void GetBehaviour();
+	bool CanMakeDecision(float deltaTIme);
 
 	float decisionFrequency;
 	float timeSinceLastDecision;

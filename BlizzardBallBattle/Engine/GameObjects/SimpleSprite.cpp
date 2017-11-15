@@ -11,17 +11,14 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
     sprite = new Sprite(titleTexture);
     Transform* transform = GetTransform();
-    spriteRenderer->SetActiveSprite(sprite);
-    if (nonDefaultShader == nullptr) {
-        shader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/fragment_shader.fs").c_str());
-    } else {
+    if (nonDefaultShader != nullptr) {
         shader = nonDefaultShader;
+        spriteRenderer->SetActiveShader(shader);
     }
-    AddComponent<SpriteRenderer*>(spriteRenderer);
     spriteRenderer->SetActiveSprite(sprite);
-    spriteRenderer->SetActiveShader(shader);
     transform->setPosition(x, y, z);
     transform->setScale(scale);
+	AddComponent<SpriteRenderer*>(spriteRenderer);
 }
 
 SimpleSprite::~SimpleSprite() {

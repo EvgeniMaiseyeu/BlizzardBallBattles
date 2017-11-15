@@ -3,6 +3,7 @@
 
 SpriteRenderer::SpriteRenderer(GameObject* gameObject) : Renderer(gameObject) {
   SpriteRendererManager::GetInstance()->AddSpriteForRendering(this); //.subscribe(gameObject.id, this); NOTE: Not subscribing/unsubscribing for now
+  activeShader = Shader::GetShader();
 }
 
 void SpriteRenderer::Render() {

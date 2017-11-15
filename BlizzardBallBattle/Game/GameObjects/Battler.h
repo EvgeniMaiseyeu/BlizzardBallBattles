@@ -39,6 +39,7 @@ private:
 	Shader* _shader;
 	GLuint _textureBufferID;
 	void InitStats(int team);
+
 	void UpdateThrowTimer(float deltaTime);
 	void Die();
 

@@ -7,6 +7,7 @@ Collider::Collider(GameObject* gameObject, float radius) : Component(gameObject)
 	_collision = false;
 	//add to physics manager;
 	PhysicsManager::GetInstance()->addCollider(this);
+	transform = gameObject->GetComponent<Transform*>();
 }
 
 bool Collider::collisionDetected() {
@@ -23,7 +24,7 @@ bool Collider::DoesCollide(GameObject* other) {
 
 	float a = myTrans->getX() - otherTrans->getX();
 	float b = myTrans->getY() - otherTrans->getY();
-	float c = std::sqrtf(a * a + b * b);
+	float c = sqrtf(a * a + b * b);
 	float myRad = myTrans->getScale() / 2.0f;
 	float otherRad = otherTrans->getScale() / 2.0f;
 
@@ -56,6 +57,11 @@ float Collider::getRadius() {
 
 void Collider::setRadius(float radius) {
 	_radius = radius;
+}
+
+Transform * Collider::getTransform()
+{
+	return transform;
 }
 
 Collider::~Collider() {

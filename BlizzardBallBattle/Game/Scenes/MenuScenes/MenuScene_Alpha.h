@@ -8,8 +8,6 @@ class MenuScene_Alpha : public Scene {
 private:
     SimpleSprite* menuBackground;
     SimpleSprite* menuForeground;
-protected:
-    Shader* pixelShader;
 
 public:
     virtual void OnEnd();

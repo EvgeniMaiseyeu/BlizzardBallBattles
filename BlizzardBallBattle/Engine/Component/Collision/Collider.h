@@ -6,6 +6,7 @@
 class Collider : public Component {
 private:
 	GameObject* _colliderObj;
+	Transform* transform;
 	float _radius;
 	bool _collision;
 	std::vector<GameObject*> _colliders;
@@ -27,6 +28,8 @@ public:
 	void OnStart() {};
 	void OnUpdate(int ticks) {};
 	void OnEnd() {};
+
+	Transform* getTransform();
 
 	~Collider();
 };

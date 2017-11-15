@@ -26,7 +26,6 @@ private:
     int lastTime = 0;
     //game instance.
     Game* game;
-
-   bool IsQuitRequested(SDL_Event event);
-   void FPSThrottle(int ticks);
+    
+    void FPSThrottle(int ticks);
 };

@@ -17,7 +17,7 @@
 #include "AI.h"
 #include <vector>
 #include "MatchManager.h"
-#include "Collision\Collider.h"
+#include "Collider.h"
 
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;

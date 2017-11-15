@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Battler.h"
-#include "Collision\Collider.h"
+#include "Collider.h"
 #include "SimpleSprite.h"
 
 class Snowball : public SimpleSprite {
