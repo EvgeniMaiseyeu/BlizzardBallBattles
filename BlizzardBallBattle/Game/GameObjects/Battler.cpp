@@ -53,7 +53,6 @@ void Battler::OnUpdate(int ticks)
 
 void Battler::MoveTo(GameObject* gameObject)
 {
-	
 
 }
 

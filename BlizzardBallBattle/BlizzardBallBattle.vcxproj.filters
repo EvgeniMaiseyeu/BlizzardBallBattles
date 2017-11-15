@@ -79,6 +79,9 @@
     <Filter Include="Source Files\Engine\GameObject">
       <UniqueIdentifier>{8981a440-2c10-4e67-82fa-d7ed01128ef4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Components\AI">
+      <UniqueIdentifier>{35a34bfc-1b5c-4cb4-8531-9d0015b2f05d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -152,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="Game\GameObjects\Battler.cpp">
       <Filter>Source Files\Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\AI.cpp">
-      <Filter>Source Files\Game\Components</Filter>
     </ClCompile>
     <ClCompile Include="Game\Managers\MatchManager.cpp">
       <Filter>Source Files\Game\Managers</Filter>
@@ -267,6 +267,18 @@
     <ClCompile Include="Engine\External\Render\ISprite.cpp">
       <Filter>Source Files\Engine\External\Render</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Components\AI.cpp">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AILearning.cpp">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="NeuralNet.cpp">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Neuron.cpp">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -364,9 +376,6 @@
     </ClInclude>
     <ClInclude Include="Game\GameObjects\Battler.h">
       <Filter>Source Files\Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\AI.h">
-      <Filter>Source Files\Game\Components</Filter>
     </ClInclude>
     <ClInclude Include="Game\Managers\MatchManager.h">
       <Filter>Source Files\Game\Managers</Filter>
@@ -469,6 +478,18 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObjects\SimpleSprite.h">
       <Filter>Source Files\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\AI.h">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AILearning.h">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="NeuralNet.h">
+      <Filter>Source Files\Game\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Neuron.h">
+      <Filter>Source Files\Game\Components\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

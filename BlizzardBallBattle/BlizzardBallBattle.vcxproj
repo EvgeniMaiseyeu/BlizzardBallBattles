@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AILearning.cpp" />
     <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
@@ -176,8 +177,11 @@
     <ClCompile Include="Game\Scenes\SceneTemplate.cpp" />
     <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NeuralNet.cpp" />
+    <ClCompile Include="Neuron.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AILearning.h" />
     <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />
@@ -233,6 +237,8 @@
     <ClInclude Include="Game\Scenes\Scenes.h" />
     <ClInclude Include="Game\Scenes\SceneTemplate.h" />
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h" />
+    <ClInclude Include="NeuralNet.h" />
+    <ClInclude Include="Neuron.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp" />
