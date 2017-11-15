@@ -26,3 +26,7 @@ void SpriteRenderer::SetActiveSprite(ISprite* sprite) {
 ISprite* SpriteRenderer::GetSprite() {
   return activeSprite;
 }
+
+SpriteRenderer::~SpriteRenderer() {
+  SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(this);
+}

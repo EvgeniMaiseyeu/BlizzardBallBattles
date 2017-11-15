@@ -161,4 +161,5 @@ void Battler::Die()
 	GetTransform()->setScale(0.0f);
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+	delete this;
 }

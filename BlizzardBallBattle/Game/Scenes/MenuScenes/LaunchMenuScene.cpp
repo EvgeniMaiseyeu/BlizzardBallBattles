@@ -6,6 +6,7 @@
 #include "Scenes.h"
 #include "NetworkingManager.h"
 #include "Transform.h"
+#include "TestGO.h"
 
 void LaunchMenuScene::OnStart() { CreateScene(); }
 void LaunchMenuScene::OnResume() { CreateScene(); }
@@ -17,6 +18,10 @@ void LaunchMenuScene::CreateScene() {
     BuildBaseScene();
     menuTitle = new SimpleSprite("Title.png", 0.0f, getGameTopY() - getGameHeight()/3.0f, 0.0f, GAME_WIDTH, Shader::GetShader(SHADER_PIXEL));
     howToText = new SimpleSprite("HowTo.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, Shader::GetShader(SHADER_PIXEL));
+    TestGo *go = new TestGo();
+    delete go;
+    // SimpleSprite *sp = new SimpleSprite("Title.png", 1.0f, 1.0f);
+    // delete sp;
 }
 
 void LaunchMenuScene::DestroyScene() {
