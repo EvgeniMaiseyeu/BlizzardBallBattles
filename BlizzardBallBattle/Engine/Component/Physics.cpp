@@ -29,12 +29,20 @@ void Physics::setSnowDrag(float value) {
 	_snowDrag = value;
 }
 
+void Physics::addSnowDrag(float value){
+	_snowDrag += value;
+}
+
 float Physics::getSnowDrag() {
 	return _snowDrag;
 }
 
 void Physics::setDrag(float value) {
 	_drag = value;
+}
+
+void Physics::addDrag(float value){
+	_drag += value;
 }
 
 float Physics::getDrag() {
