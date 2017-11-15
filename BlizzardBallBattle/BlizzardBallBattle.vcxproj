@@ -179,6 +179,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="TrainingData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AILearning.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Neuron.h" />
+    <ClInclude Include="TrainingData.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp" />

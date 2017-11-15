@@ -1,7 +1,6 @@
 #pragma once
 #include "NeuralNet.h"
 
-
 class AILearning
 {
 public:
@@ -9,6 +8,7 @@ public:
 	~AILearning();
 
 private:
+	void PrintVectorValues(string initialLine, const vector<double> &vectorToPrint);
 	void Initiate();
 };
 

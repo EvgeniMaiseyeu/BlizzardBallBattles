@@ -2,6 +2,7 @@
 #include "MatchManager.h"
 #include "Vector2.h"
 #include "Transform.h"
+#include "AILearning.h"
 #include <vector>
 #include <iostream>
 #include <cstdlib>
@@ -32,6 +33,8 @@ void AI::Init(float _intelligence, float _courage, float _decisionFrequency)
 	intelligence = _intelligence;
 	courage = _courage;
 	decisionFrequency = _decisionFrequency;
+
+	//AILearning learning = AILearning();
 }
 
 void AI::OnUpdate(int timeDelta) 

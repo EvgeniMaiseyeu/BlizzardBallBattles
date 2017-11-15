@@ -14,6 +14,7 @@ public:
 	void FeedForward(const vector<double> &inputVals);
 	void BackProp(const vector<double> &targetVals);
 	void GetResults(vector<double> &resultVals) const;
+	double GetRecentAverageError(void) const { return m_recentAverageError; };
 
 private: 
 	vector<Layer> m_layers;
