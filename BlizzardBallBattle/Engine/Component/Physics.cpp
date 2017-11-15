@@ -10,6 +10,7 @@ Physics::Physics(GameObject* gameObject) : Component(gameObject) {
 }
 
 void Physics::setVelocity(Vector2* value) {
+	delete(_velocity);
 	_velocity = value;
 }
 

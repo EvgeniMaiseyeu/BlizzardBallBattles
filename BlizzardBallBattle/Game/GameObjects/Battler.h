@@ -52,6 +52,7 @@ private:
 	bool _makingSnowball;
 	bool _animate;
 	float _throwPower;
+	Snowball* _bigSnowball;
 	//---------------------//
 	Shader* _shader;
 	GLuint _textureBufferID;
