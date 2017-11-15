@@ -1,4 +1,4 @@
-#include "Battler.h"
+
 #include "Transform.h"
 #include "HelperFunctions.h"
 #include "MessageManager.h"
@@ -8,6 +8,7 @@
 #include "PhysicsManager.h"
 #include "MatchManager.h"
 #include "Physics.h"
+#include "Battler.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -169,9 +170,9 @@ void Battler::Die()
 
 //should be called every update for each player/ai on screen
 void Battler::handleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 12)
+	if (_fullLock && _timer < 4)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 12) {
+	else if (_fullLock && _timer > 4) {
 		//launch snowball
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
