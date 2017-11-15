@@ -35,7 +35,24 @@ public:
 	bool ThrowSnowball();
 	void DealtDamage(int damage);
 
+	//Big snowball methods//
+	void handleBigThrow(float deltaTime);
+	bool makeBigSnowball(float deltaTime);
+	void animateCreation();
+	void handleCancels();
+	bool fireBigSnowball();
+	//--------------------//
+
 private:
+
+	//Big snowball trackers//
+	bool _fullLock;
+	float _timer;
+	bool _haveBigSnowball;
+	bool _makingSnowball;
+	bool _animate;
+	float _throwPower;
+	//---------------------//
 	Shader* _shader;
 	GLuint _textureBufferID;
 	void InitStats(int team);

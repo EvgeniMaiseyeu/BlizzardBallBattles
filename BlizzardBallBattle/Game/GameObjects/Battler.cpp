@@ -162,3 +162,76 @@ void Battler::Die()
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 }
+
+//------------------------------------------------------
+//BIG SNOWBALL METHODS
+//------------------------------------------------------
+
+//should be called every update for each player/ai on screen
+void Battler::handleBigThrow(float deltaTime) {
+	if (_fullLock && _timer < 2)
+		_timer += deltaTime;
+	else if (_fullLock && _timer > 2) {
+		_haveBigSnowball = false;
+		_fullLock = false;
+		_throwPower = 0;
+	}
+}
+
+//keep calling until return true
+bool Battler::makeBigSnowball(float deltaTime) {
+	if (!_fullLock) {
+		if (_makingSnowball) {
+			if (_timer > 2) {
+				_timer += deltaTime;
+				_animate = true;
+			}
+			else {
+				//made snowball
+				_animate = false;
+				//add drag
+				_haveBigSnowball = true;
+				return true;
+			}
+		}
+		else {
+			_timer = 0;
+			_makingSnowball = true;
+		}
+	}
+	return false;
+}
+
+bool Battler::fireBigSnowball() {
+	if (_haveBigSnowball) {
+		if (_fullLock) {
+			_throwPower += 0.1f; //ai wont care about this
+			return true;
+		}
+		else{
+			//launch snowball
+			//reduce object drag
+			_timer = 0;
+			_fullLock = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+void Battler::animateCreation() {
+
+}
+
+void Battler::handleCancels() {
+	if (!_fullLock) {
+		if (_timer < 2 && _makingSnowball) {
+			//cancel snowball creation
+			_makingSnowball = false;
+			_timer = 0;
+			_animate = false;
+		}
+	}
+}
+
+//-------------------------------------------------
