@@ -1,4 +1,6 @@
 #pragma once
+#include "NeuralNet.h"
+
 
 class AILearning
 {

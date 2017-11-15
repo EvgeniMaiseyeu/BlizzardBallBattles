@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "Neuron.h"
 
 using namespace std;
+class Neuron;
 
 typedef vector<Neuron> Layer;
 
@@ -17,5 +17,8 @@ public:
 
 private: 
 	vector<Layer> m_layers;
+	double m_error;
+	double m_recentAverageError;
+	double m_recentAverageSmoothingFactor;
 };
 

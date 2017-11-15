@@ -1,5 +1,4 @@
 #include "AILearning.h"
-#include "NeuralNet.h"
 #include <iostream>
 
 AILearning::AILearning()
