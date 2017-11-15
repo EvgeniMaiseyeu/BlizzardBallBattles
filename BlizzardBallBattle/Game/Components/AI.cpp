@@ -131,7 +131,7 @@ void AI::WalkToTargetBattler(float deltaTime)
 
 	float posDiffY = targetPosY - myPosY;
 
-	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
+	float moveSpeed = myBattler->stats.moveSpeed;
 	int directionY = (posDiffY > 0) ? 1 : -1;
 
 	if (posDiffY >= (-1 + intelligence) && posDiffY <= (1 - intelligence))
@@ -192,7 +192,7 @@ void AI::WalkToTargetPosition(float deltaTime)
 		directionX = 0;
 	}
 
-	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
+	float moveSpeed = myBattler->stats.moveSpeed;
 
 	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
 }

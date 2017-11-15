@@ -4,7 +4,9 @@
 #include "GameObject.h"
 #include "Vector2.h"
 #include "SimpleSprite.h"
+#include "Physics.h"
 #include "Snowball.h"
+
 
 class Battler :
 	public SimpleSprite
@@ -16,6 +18,7 @@ public:
 		float fireSpeedInterval;
 		int hitpoints;
 		bool isPlayer;
+		bool isattached;
 	};
 	stats stats;
 
@@ -35,6 +38,7 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	void DealtDamage(int damage);
+	bool IsAttached();
 
 	//Big snowball methods//
 	void handleBigThrow(float deltaTime);
@@ -58,6 +62,8 @@ private:
 
 	Shader* _shader;
 	GLuint _textureBufferID;
+
+	Physics* _physics;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);
