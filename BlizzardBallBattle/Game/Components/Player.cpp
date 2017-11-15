@@ -11,12 +11,13 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 	shootKey = shoot;
 	distance = 1;
 	youBattler = (Battler*)GetGameObject();
+	
 }
 
 // Will be called every frame
 void Player::OnUpdate(int timeDelta) {
 	float deltaTime = (float)timeDelta / 1000.0f;
-	float moveSpeed = deltaTime * youBattler->stats.moveSpeed;
+	float moveSpeed = youBattler->stats.moveSpeed;
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		PressedDown(moveSpeed);
@@ -33,12 +34,30 @@ void Player::OnUpdate(int timeDelta) {
 	if (InputManager::GetInstance()->onKey(leftKey)) {
 		PressedLeft(moveSpeed);
 	}
+
+	if (InputManager::GetInstance()->onKeyReleased(downKey)) {
+		PressedDown(0);
+	}
+
+	if (InputManager::GetInstance()->onKeyReleased(rightKey)) {
+		PressedRight(0);
+	}
+
+	if (InputManager::GetInstance()->onKeyReleased(upKey)) {
+		PressedUp(0);
+	}
+
+	if (InputManager::GetInstance()->onKeyReleased(leftKey)) {
+		PressedLeft(0);
+	}
 	
 	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
-	} else if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+	} 
+	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
 		//standard fast small throw
 		youBattler->ThrowSnowball(); 
+
 	}
 } 
 
@@ -49,14 +68,15 @@ void Player::PressedDown(float moveSpeed) {
 	}
 	
 	youBattler->Move(0, -moveSpeed);
+//	youBattler->setSnowDrag(1);
 }
 
 void Player::PressedRight(float moveSpeed) {
-	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+	if (youBattler->stats.teamID == 1 && GetGameObject()->GetTransform()->getX() > -4.0f)
 	{
 		return;
 	}
-	else if (GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed > GAME_WIDTH / 2)
+	else if (GetGameObject()->GetTransform()->getX() + moveSpeed > GAME_WIDTH / 2)
 	{
 		return;
 	}
@@ -65,7 +85,7 @@ void Player::PressedRight(float moveSpeed) {
 }
 
 void Player::PressedUp(float moveSpeed) {
-	if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
+	if (GetGameObject()->GetTransform()->getY() + moveSpeed > getGameHeight() / 2)
 	{
 		return;
 	}
@@ -74,11 +94,11 @@ void Player::PressedUp(float moveSpeed) {
 }
 
 void Player::PressedLeft(float moveSpeed) {
-	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
+	if (youBattler->stats.teamID == 2 && GetGameObject()->GetTransform()->getX() < 4.0f)
 	{
 		return;
 	}
-	else if (GetGameObject()->GetComponent<Transform*>()->getX() + -moveSpeed < -GAME_WIDTH / 2)
+	else if (GetGameObject()->GetTransform()->getX() + -moveSpeed < -GAME_WIDTH / 2)
 	{
 		return;
 	}	

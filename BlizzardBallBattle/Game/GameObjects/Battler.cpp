@@ -8,6 +8,7 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "Vector2.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -21,7 +22,6 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	if (!isSender) {
 		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
 	}
-
 	InitStats(team);
 }
 
@@ -37,11 +37,14 @@ Battler::~Battler()
 
 void Battler::InitStats(int team)
 {
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
 	stats.teamID = team;
 	stats.moveSpeed = 2;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
+	stats.isattached = false;
 }
 
 void Battler::OnUpdate(int ticks)
@@ -65,7 +68,8 @@ void Battler::MoveTo(Vector2* position)
 void Battler::Move(float x, float y)
 {
 	//GetTransform()->addTranslation(position->getX(), position->getY());
-	GetTransform()->addTranslation(x, y);
+	//GetTransform()->addTranslation(x, y);
+	_physics->setVelocity(new Vector2(x, y));
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -121,12 +125,42 @@ void Battler::UpdateThrowTimer(float deltaTime)
 
 void Battler::DealtDamage(int damage)
 {
+	bool isattached = false;
 	stats.hitpoints -= damage;
+	_physics->setSnowDrag(_physics->getSnowDrag()* 0.7);
 	if (stats.hitpoints <= 0)
 	{
 		Die();
 	}
+	if (stats.isattached)
+	{
+		ThrowSnowball();
+
+	}
+	else
+	{
+	//	Snowball* snowball = new Snowball();
+		
+	//	GetGameObject()->GetTransform()->addTranslation()->Player position;
+		
+	}
+	//return true;
+
 }
+
+/*bool Battler::IsAttached()
+{
+	if (stats.isattached)
+	{
+		find.Player();
+	}
+	else
+	{
+		Snowball* snowball = new Snowball();
+		GetGameObject() -> GetTransform()->addTranslation()->Player position;
+	}
+	return true;
+}*/
 
 void Battler::Die()
 {
