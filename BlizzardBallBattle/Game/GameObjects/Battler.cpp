@@ -61,10 +61,14 @@ void Battler::MoveTo(Vector2* position)
 	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
-void Battler::Move(float x, float y)
+bool Battler::Move(float x, float y)
 {
-	//GetTransform()->addTranslation(position->getX(), position->getY());
-	GetTransform()->addTranslation(x, y);
+	if (CheckIfInBounds(x, y))
+	{
+		GetTransform()->addTranslation(x, y);
+		return true;
+	}
+	return false;
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -160,4 +164,29 @@ void Battler::Die()
 	GetTransform()->setScale(0.0f);
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+}
+
+bool Battler::CheckIfInBounds(float x, float y)
+{
+	float mapXMax = getGameWidth() / 2;
+	float mapYMax = getGameHeight() / 2;
+	float mapXMin = getGameWidth() / 6;
+	float mapYMin = -mapYMax;
+
+	if (stats.teamID == 1)
+	{
+		mapXMin = -mapXMin;
+		mapXMax = -mapXMax;
+	}
+
+	if (x < mapXMin || x > mapXMax)
+	{
+		return false;
+	}
+	else if (y < mapYMin || y > mapYMax)
+	{
+		return false;
+	}
+
+	return true;
 }

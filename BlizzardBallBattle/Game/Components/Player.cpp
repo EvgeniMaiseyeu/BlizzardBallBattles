@@ -40,45 +40,45 @@ void Player::OnUpdate(int timeDelta) {
 } 
 
 void Player::PressedDown(float moveSpeed) {
-	if (GetGameObject()->GetTransform()->getY() + -moveSpeed < -getGameHeight()/2)
-	{
-		return;
-	}
+	//if (GetGameObject()->GetTransform()->getY() + -moveSpeed < -getGameHeight()/2)
+	//{
+	//	return;
+	//}
 	
 	youBattler->Move(0, -moveSpeed);
 }
 
 void Player::PressedRight(float moveSpeed) {
-	if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
-	{
-		return;
-	}
-	else if (GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed > GAME_WIDTH / 2)
-	{
-		return;
-	}
+	//if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
+	//{
+	//	return;
+	//}
+	//else if (GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed > GAME_WIDTH / 2)
+	//{
+	//	return;
+	//}
 
 	youBattler->Move(moveSpeed, 0);
 }
 
 void Player::PressedUp(float moveSpeed) {
-	if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
-	{
-		return;
-	}
+	//if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
+	//{
+	//	return;
+	//}
 	
 	youBattler->Move(0, moveSpeed);
 }
 
 void Player::PressedLeft(float moveSpeed) {
-	if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
-	{
-		return;
-	}
-	else if (GetGameObject()->GetComponent<Transform*>()->getX() + -moveSpeed < -GAME_WIDTH / 2)
-	{
-		return;
-	}
+	//if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
+	//{
+	//	return;
+	//}
+	//else if (GetGameObject()->GetComponent<Transform*>()->getX() + -moveSpeed < -GAME_WIDTH / 2)
+	//{
+	//	return;
+	//}
 
 	youBattler->Move(-moveSpeed, 0);
 }

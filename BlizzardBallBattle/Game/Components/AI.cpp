@@ -159,15 +159,13 @@ void AI::WalkToTargetBattler(float deltaTime)
 	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
-	float posXToMoveTo = GetGameObject()->GetTransform()->getX() + moveSpeed * (float)directionX;
-	if (!CheckIfInBounds(posXToMoveTo))
+	float posXToMoveTo = moveSpeed * directionX;
+
+	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY))
 	{
 		posXToMoveTo = 0;
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 	}
-	else
-		posXToMoveTo = moveSpeed * directionX;
-
-	myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 }
 
 void AI::WalkToTargetPosition(float deltaTime)
@@ -221,31 +219,6 @@ bool AI::CanMakeDecision(float deltaTIme)
 	}
 
 	return false;
-}
-
-bool AI::CheckIfInBounds(float x, float y)
-{
-	float mapXMax = getGameWidth() / 2;
-	float mapYMax = getGameHeight() / 2;
-	float mapXMin = getGameWidth() / 6;
-	float mapYMin = -mapYMax;
-
-	if (myBattler->stats.teamID == 1)
-	{
-		mapXMin = -mapXMin;
-		mapXMax = -mapXMax;
-	}
-
-	if (x < mapXMin || x > mapXMax)
-	{
-		return false;
-	}
-	else if (y < mapYMin || y > mapYMax)
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void AI::GetBehaviour()
