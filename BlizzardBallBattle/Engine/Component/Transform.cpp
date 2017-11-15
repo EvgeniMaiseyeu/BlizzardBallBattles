@@ -100,7 +100,7 @@ void Transform::setScale(float newScale) {
   scale = newScale;
 }
 
-void addScale(float scaleToAdd){
+void Transform::addScale(float scaleToAdd){
 	scale += scaleToAdd;
 }
   
