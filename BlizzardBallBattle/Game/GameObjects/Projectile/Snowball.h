@@ -12,6 +12,9 @@ private:
 	float _speed;
 	Collider* myCollider;
 	bool heldByPlayer;
+	float _distanceTraveled;
+	float _distanceGoal;
+	Physics* _physics;
 	
 public:
 	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
@@ -20,4 +23,5 @@ public:
 	void OnEnd() {};
 	void DestructSnowball();
 	void setHeld(bool held);
+	void Snowball::setDistanceGoal(float dist);
 };
