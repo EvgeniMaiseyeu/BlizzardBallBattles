@@ -120,3 +120,7 @@ float Transform::getRotation() {
 float Transform::getScale() {
   return scale;
 }
+
+void Transform::addScale(float toAdd) {
+	scale += toAdd;
+}

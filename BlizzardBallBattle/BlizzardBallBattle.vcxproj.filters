@@ -282,6 +282,27 @@
     <ClCompile Include="TrainingData.cpp">
       <Filter>Source Files\Game\Components\AI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObjects\Camera.cpp">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObjects\ComplexSprite.cpp">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObjects\DayNightCamera.cpp">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\ContrastShader.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\FrameBufferObject.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\ImageRenderer.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\External\Render\PostProcessing.cpp">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -497,6 +518,27 @@
     <ClInclude Include="TrainingData.h">
       <Filter>Source Files\Game\Components\AI</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObjects\Camera.h">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObjects\ComplexSprite.h">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObjects\DayNightCamera.h">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\ContrastShader.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\FrameBufferObject.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\ImageRenderer.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\External\Render\PostProcessing.h">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Character.bmp">
@@ -508,5 +550,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\External\Render\contrastFragment.txt">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </Text>
+    <Text Include="Engine\External\Render\contrastVertex.txt">
+      <Filter>Source Files\Engine\External\Render</Filter>
+    </Text>
   </ItemGroup>
 </Project>
