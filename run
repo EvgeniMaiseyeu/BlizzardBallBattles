@@ -1,2 +1,2 @@
 rm out.txt
-./a.out > out.txt
+./game > out.txt
