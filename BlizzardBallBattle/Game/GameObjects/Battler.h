@@ -29,7 +29,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	void Move(float x, float y);
+	bool Move(float x, float y);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -71,6 +71,7 @@ private:
 
 	bool canFire;
 	float timeSinceLastShot;
+	bool CheckIfInBounds(float x, float y);
 
 	//Networking
 	std::string networkingID;
