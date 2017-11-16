@@ -43,6 +43,7 @@ void Battler::InitStats(int team)
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
 	stats.isattached = false;
+	
 }
 
 void Battler::OnUpdate(int ticks)
@@ -93,7 +94,7 @@ void Battler::TurnTo(Vector2* position)
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
- 		return false;
+		return false;
 
 	if (isSender) {
 		std::map<std::string, std::string> payload;
@@ -109,8 +110,13 @@ bool Battler::ThrowSnowball()
 	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
 	canFire = false;
 	return true;
-}
 
+	//parabolic     y = y0+Vyt + 1/2 gt2
+		// y=a(x–h)2+k
+		// y = ax2 + bx+ c
+
+		//
+}
 void Battler::UpdateThrowTimer(float deltaTime)
 {
 	timeSinceLastShot += deltaTime;
@@ -254,6 +260,7 @@ bool Battler::fireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
 			_throwPower += 0.3f; //ai wont care about this
+			//_distanceTraveled 
 			return true;
 		}
 		else{

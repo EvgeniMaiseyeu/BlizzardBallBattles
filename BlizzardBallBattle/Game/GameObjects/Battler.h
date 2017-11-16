@@ -19,6 +19,7 @@ public:
 		int hitpoints;
 		bool isPlayer;
 		bool isattached;
+
 	};
 	stats stats;
 

@@ -11,7 +11,8 @@ private:
 	GameObject* _player;
 	float _speed;
 	Collider* myCollider;
-	
+	float _distanceGoal;
+	float _distanceTraveled;
 public:
 	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
 	void OnStart() {};
