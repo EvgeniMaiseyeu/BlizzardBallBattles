@@ -6,6 +6,10 @@
 #include "ComplexSprite.h"
 #include "Physics.h"
 
+#define SPRITE_IDLE 0
+#define SPRITE_WALK 1
+#define SPRITE_SIMPLE_THROW 2
+
 class Snowball;
 
 class Battler :

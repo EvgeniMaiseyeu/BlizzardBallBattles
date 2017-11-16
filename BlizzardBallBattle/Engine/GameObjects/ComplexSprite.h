@@ -42,6 +42,8 @@ private:
     Shader* shader;
     std::vector<SpriteSheet*> sprites;
     int currentSpriteSheet;
+	int spriteToReturnTo;
+	int framesTilReturn;
 
 public:
     ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z = 0.0f, float scale = 1.0f, Shader* nonDefaultShader = nullptr);
@@ -49,4 +51,6 @@ public:
 
     void NextFrame();
     void ChangeSprite(int spriteIndexInComplexInfo);
+	int GetCurrentSprite();
+	void ChangeSprite(int spriteIndexInComplexInfo, int returnSprite);
 };

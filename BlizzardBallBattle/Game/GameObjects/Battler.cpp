@@ -55,6 +55,7 @@ void Battler::InitStats(int team)
 
 void Battler::OnUpdate(int ticks)
 {
+	NextFrame();
 	float deltaTime = (float)ticks / 1000.0f;
 
   	UpdateThrowTimer(deltaTime);
@@ -72,6 +73,14 @@ void Battler::MoveTo(Vector2* position)
 
 bool Battler::Move(Vector2 *v)
 {
+	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
+		if (v->getMagnitude() > 0.0f) {
+			ChangeSprite(SPRITE_WALK);
+		} else {
+			ChangeSprite(SPRITE_IDLE);
+		}
+	}
+
 	Transform *t = GetTransform();
 	if (!_fullLock && !_makingSnowball/* && 	CheckIfInBounds(t, v)*/){
 		_physics->setVelocity(v);
@@ -107,6 +116,8 @@ bool Battler::ThrowSnowball()
 {
 	if (!canFire)
  		return false;
+
+	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
 	if (isSender) {
 		std::map<std::string, std::string> payload;

@@ -29,6 +29,7 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
     transform->setPosition(x, y, z);
     transform->setScale(scale);
     AddComponent<SpriteRenderer*>(spriteRenderer);
+	framesTilReturn = -1;
 }
 
 //ComplexSprite::~ComplexSprite() {
@@ -43,10 +44,28 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
 
 void ComplexSprite::NextFrame() {
     sprites[currentSpriteSheet]->NextIndex();
+	if (framesTilReturn > -1) {
+		if (--framesTilReturn == 0) {
+			ChangeSprite(spriteToReturnTo);
+			framesTilReturn = -1;
+		}
+	}
 }
 
 void ComplexSprite::ChangeSprite(int spriteIndexInComplexInfo) {
-    sprites[currentSpriteSheet]->ResetIndex();
-    currentSpriteSheet = spriteIndexInComplexInfo;
-    GetComponent<SpriteRenderer*>()->SetActiveSprite(sprites[spriteIndexInComplexInfo]);
+	if (spriteIndexInComplexInfo != currentSpriteSheet) {
+		sprites[currentSpriteSheet]->ResetIndex();
+		currentSpriteSheet = spriteIndexInComplexInfo;
+		GetComponent<SpriteRenderer*>()->SetActiveSprite(sprites[spriteIndexInComplexInfo]);
+	}
+}
+
+int ComplexSprite::GetCurrentSprite() {
+	return currentSpriteSheet;
+}
+
+void ComplexSprite::ChangeSprite(int spriteIndexInComplexInfo, int returnSprite) {
+	ChangeSprite(spriteIndexInComplexInfo);
+	spriteToReturnTo = returnSprite;
+	framesTilReturn = sprites[returnSprite]->GetColumnCount() * sprites[returnSprite]->GetRowCount();
 }
