@@ -30,8 +30,9 @@ private:
 		dead = 3,
 		s_MAX
 	}currentState;
-	void WalkToTargetBattler(float deltaTime);
-	void WalkToTargetPosition(float deltaTime);
+	void WalkToTargetBattler();
+	void WalkToTargetPosition();
+	void SetLearnedVelocity();
 	void Shoot();
 
 	enum Behaviour {
@@ -50,10 +51,12 @@ private:
 	float intelligence;
 	float courage;
 
+	bool isLearning;
+
 public:
-	AI(GameObject* gameObject);
+	AI(GameObject* gameObject, bool _isLearning);
 	~AI();
-	void Init(float _intelligence, float _courage, float _decisionFrequency);
+	void Initialize(float _intelligence, float _courage, float _decisionFrequency);
 	void Died();
 	void OnStart(){};
 	void OnUpdate(int ticks);
