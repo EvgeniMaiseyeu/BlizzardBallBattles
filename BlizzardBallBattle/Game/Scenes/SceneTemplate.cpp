@@ -9,6 +9,11 @@
 #include "SpriteSheet.h"
 #include <iostream>
 
+SceneTemplate::SceneTemplate(int p1ai, int p2ai) : GameScene(p1ai, p2ai) {
+	this->p1ai = p1ai;
+	this->p2ai = p2ai;
+}
+
 void SceneTemplate::OnStart(){
 	BuildBaseScene();
 	GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));

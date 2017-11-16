@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AILearning.cpp" />
+    <ClCompile Include="AISelectionMenuScene.cpp" />
     <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
@@ -190,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AILearning.h" />
+    <ClInclude Include="AISelectionMenuScene.h" />
     <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />

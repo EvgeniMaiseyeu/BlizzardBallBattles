@@ -42,9 +42,9 @@ void LaunchMenuScene::OnUpdate(int ticks) {
         NetworkingManager::GetInstance()->CreateClient();
         SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked());
     } else if (inputManager->onKeyPressed(SDLK_1)) {
-		SceneManager::GetInstance()->PushScene(new PostGameMenuScene(2));
+		SceneManager::GetInstance()->PushScene(new PostGameMenuScene(1));
     } else if (inputManager->onKeyPressed(SDLK_2)) {
-		SceneManager::GetInstance()->PushScene(new SceneTemplate());
+		SceneManager::GetInstance()->PushScene(new AISelectionMenuScene());
     }
 }
 

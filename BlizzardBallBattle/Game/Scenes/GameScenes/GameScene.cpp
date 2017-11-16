@@ -21,7 +21,7 @@ void PlayerWon(std::map<std::string, void*> payload) {
 	SceneManager::GetInstance()->PushScene(new PostGameMenuScene(teamID));
 }
 
-GameScene::GameScene() {
+GameScene::GameScene(int player1Choice, int player2Choice) {
 	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
 	Camera::SetActiveCamera(new DayNightCamera());
 }

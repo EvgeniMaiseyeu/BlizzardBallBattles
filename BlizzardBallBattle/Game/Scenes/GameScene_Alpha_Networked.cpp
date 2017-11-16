@@ -19,6 +19,9 @@
 #include "MatchManager.h"
 #include "Collider.h"
 
+GameScene_Alpha_Networked::GameScene_Alpha_Networked() : GameScene(1, 1) {
+}
+
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
 	BuildBaseScene();
