@@ -21,6 +21,7 @@ public:
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
+	void DestructSnowball();
 	void setHeld(bool held);
 	void Snowball::setDistanceGoal(float dist);
 };

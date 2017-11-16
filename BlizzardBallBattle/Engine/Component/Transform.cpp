@@ -9,13 +9,13 @@ Transform::operator GLfloat*() {
       0, 0, 1, 0,
       0, 0, 0, 1
     };
+  } else if (values == NULL) {
+    return nullptr;
   }
 
 
   float scaleRotCos = scale / GAME_WIDTH * 2.0 * cos(rotation * 3.14159 / 180.0);
   float scaleRotSin = scale / GAME_WIDTH * 2.0 * sin(rotation * 3.14159 / 180.0);
-
-  
 
   float glX = x; //x = 5
   float glY = y; //y = 5
@@ -37,12 +37,13 @@ Transform::Transform(GameObject* gameObject) : Component(gameObject) {
   x = 0.0f;
   y = 0.0f;
   rotation = 0.0f;
-  values = NULL;
+  values = nullptr;
 }
 
 Transform::~Transform() {
-  if (values != NULL) {
-    delete(values);
+  if (values != nullptr && values != NULL) {
+    delete values;
+    values = NULL;
   }
 }
 
@@ -100,10 +101,6 @@ void Transform::setScale(float newScale) {
   scale = newScale;
 }
 
-void Transform::addScale(float scaleToAdd){
-	scale += scaleToAdd;
-}
-  
 float Transform::getX() {
   return x;
 }
@@ -122,4 +119,8 @@ float Transform::getRotation() {
 
 float Transform::getScale() {
   return scale;
+}
+
+void Transform::addScale(float toAdd) {
+	scale += toAdd;
 }

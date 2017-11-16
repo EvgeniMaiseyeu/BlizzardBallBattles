@@ -1,29 +1,26 @@
-// #pragma once
+#pragma once
 
-// #include <GL/glew.h>
-// #include <GLUT/glut.h>
-// #include <GLFW/glfw3.h>
+#include "GLHeaders.h"
+#include "SharedConstants.h"
 
-// class FrameBufferObject {
-// private:
-//     GLuint frameBuffer;
-//     GLuint texture;
-//     GLuint depthBuffer;
+class FrameBufferObject {
+private:
+	int width;
+	int height;
 
-// protected:
-//     const int WIDTH = 1280;
-//     const int HEIGHT = 720;
-
-// public:
-//     FrameBufferObject();
-//     void cleanUp();
-//     void bindFrameBuffer();
-//     void unbindCurrentFrameBuffer();
-//     int getTexture();
-//     int getDepthTexture();
-//     void initialiseFrameBuffer();
-//     void bindFrameBuffer(GLuint frameBuffer, int width, int height);
-//     void createFrameBuffer(GLuint* frameBuffer);
-//     int createTextureAttachment( int width, int height);
-//     int createDepthBufferAttachment(int width, int height);
-// };
+	GLuint frameBuffer;
+	GLuint texture;
+	
+public:
+	FrameBufferObject(int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
+	void cleanUp();
+	void bindFrameBuffer();
+	void unbindFrameBuffer();
+	void bindToRead();
+	GLuint getTexture();
+	void createFrameBuffer();
+	void createTextureAttachment();
+	void init();
+	//void createDepthTextureAttachment();
+	//void createDepthBufferAttachment();
+};

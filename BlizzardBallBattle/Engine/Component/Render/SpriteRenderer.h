@@ -18,4 +18,5 @@ public:
     void SetActiveSprite(ISprite* sprite);
     Shader* GetShader();
     ISprite* GetSprite();
+    ~SpriteRenderer();
 };

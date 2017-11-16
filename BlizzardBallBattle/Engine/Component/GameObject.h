@@ -7,6 +7,7 @@
 #include <map>
 #include "Updateable.h"
 #include "Transform.h"
+#include <iostream>
 
 class GameObject : public Updateable {
 private:
@@ -34,6 +35,7 @@ public:
 		   return (T)components[GetClassName<T>()].front();
 	   }
 	   else {
+           std::cout << "ERROR::FAILED TO FIND COMPONENT " << GetClassName<T>() << "  FOR OBJECT " << id << std::endl;
 		   return NULL;
 	   }
    }
@@ -56,13 +58,28 @@ public:
    }
    
    template <typename T> 
-   void RemoveComponent() {
-       components[GetClassName<T>()].clear();
+   void RemoveComponents() {
+        std::vector<Component*> componentList = components[GetClassName<T>()];
+        for (size_t i = componentList.size() - 1; i >= 0; i--){
+            delete componentList[i];
+        }
+
+        components[GetClassName<T>()].clear();
+    }
+    
+   void RemoveAllComponents() {
+    for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
+        for (size_t i = 0; i < it->second.size(); i++){
+			it->second[i]->~Component();
+            delete it->second[i];
+        }
+    }
+	components.clear();
    }
    
    template <typename T> 
    bool HasComponent() {
-       return components.count(GetClassName<T>()) > 0;
+       return components.find(GetClassName<T>()) != components.end();
    }
 
    void OnStart() {};
@@ -70,8 +87,10 @@ public:
    void OnUpdate(int ticks){};
    void OnEnd() {};
    Transform* GetTransform();
+
+   void Destroy(GameObject* gameObject);
    
-   ~GameObject();
+   virtual ~GameObject();
 
    //template <class T>
    //vector<Component*> GetComponentsByType();

@@ -3,13 +3,17 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "Vector2.h"
-#include "SimpleSprite.h"
+#include "ComplexSprite.h"
 #include "Physics.h"
+
+#define SPRITE_IDLE 0
+#define SPRITE_WALK 1
+#define SPRITE_SIMPLE_THROW 2
 
 class Snowball;
 
 class Battler :
-	public SimpleSprite
+	public ComplexSprite
 {
 public:
 	struct stats {
@@ -25,12 +29,13 @@ public:
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
-	~Battler();
+	//~Battler();
 
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(Vector2* v);
+	bool Move(Vector2* v, float deltaTime);
+	Vector2 * GetVelocity();
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -38,7 +43,6 @@ public:
 	void OnUpdate(int ticks);
 	void OnEnd() {};
 	bool ThrowSnowball();
-	void DealtDamage(int damage);
 	bool IsAttached();
 
 	//Big snowball methods//
@@ -51,6 +55,7 @@ public:
 	void lockToBattler();
 	void unlock();
 	//--------------------//
+	bool DealtDamage(int damage);
 
 private:
 
@@ -68,6 +73,7 @@ private:
 	GLuint _textureBufferID;
 
 	Physics* _physics;
+	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);
@@ -75,10 +81,16 @@ private:
 
 	bool canFire;
 	float timeSinceLastShot;
-	bool CheckIfInBounds(Transform *pos, Vector2 *move);
+	bool CheckIfInBounds(Transform *pos, Vector2 *move, float deltaTime);
+
+	bool InIceZone(Transform * t);
+
+	bool ApplyIceSliding(Vector2 * v);
 
 	//Networking
 	std::string networkingID;
 	bool isSender;
+
+	ComplexSpriteinfo* GenerateSpriteInfo();
 };
 

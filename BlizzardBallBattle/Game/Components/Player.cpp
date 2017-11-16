@@ -57,6 +57,6 @@ void Player::OnUpdate(int timeDelta) {
 
 	youBattler->handleBigThrow(deltaTime);
 
-	youBattler->Move(newVector);
+	youBattler->Move(newVector, deltaTime);
 
 } 

@@ -15,7 +15,7 @@ void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	self->ThrowSnowball();
 }
 
-Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
 {
 	this->networkingID = networkingID;
 	this->isSender = isSender;
@@ -25,15 +25,11 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	InitStats(team);
 }
 
-Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
 {
 	InitStats(team);
 }
 
-Battler::~Battler()
-{
-
-}
 
 void Battler::InitStats(int team)
 {
@@ -50,6 +46,7 @@ void Battler::InitStats(int team)
 
 void Battler::OnUpdate(int ticks)
 {
+	NextFrame();
 	float deltaTime = (float)ticks / 1000.0f;
 
   	UpdateThrowTimer(deltaTime);
@@ -65,10 +62,19 @@ void Battler::MoveTo(Vector2* position)
 	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
-bool Battler::Move(Vector2 *v)
+bool Battler::Move(Vector2 *v, float deltaTime)
 {
+	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
+		if (v->getMagnitude() > 0.0f) {
+			ChangeSprite(SPRITE_WALK);
+		}
+		else {
+			ChangeSprite(SPRITE_IDLE);
+		}
+	}
+
 	Transform *t = GetTransform();
-	if (!_fullLock && !_makingSnowball/* && 	CheckIfInBounds(t, v)*/){
+	if (!_fullLock && !_makingSnowball/* && 	CheckIfInBounds(t, v)*/) {
 		_physics->setVelocity(v);
 		return true;
 	}
@@ -76,6 +82,10 @@ bool Battler::Move(Vector2 *v)
 		_physics->setVelocity(new Vector2(0, 0));
 	}
 	return false;
+}
+
+Vector2 *Battler::GetVelocity() {
+	return _physics->getVelocity();
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -129,7 +139,7 @@ void Battler::UpdateThrowTimer(float deltaTime)
 	}
 }
 
-void Battler::DealtDamage(int damage)
+bool Battler::DealtDamage(int damage)
 {
 	bool isattached = false;
 	stats.hitpoints -= damage;
@@ -150,7 +160,7 @@ void Battler::DealtDamage(int damage)
 	//	GetGameObject()->GetTransform()->addTranslation()->Player position;
 		
 	}
-	//return true;
+	return true;
 
 }
 
@@ -201,6 +211,16 @@ void Battler::Die()
 	GetTransform()->setScale(0.0f);
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+}
+
+ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
+	ComplexSpriteinfo* info = new ComplexSpriteinfo();
+
+	info->AddInfo("Character_IdleSheet.png", 8, 1);
+	info->AddInfo("Character_MoveSheet.png", 8, 1);
+	info->AddInfo("Character_ThrowSheet.png", 8, 1);
+
+	return info;
 }
 
 void Battler::lockToBattler() { 
@@ -317,43 +337,61 @@ void Battler::handleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
+bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move, float deltaTime)
 {
-	float xMin = (-getGameWidth() / 2) - 2;//getGameWidth() / 6;
+	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;
-	float yMax = (getGameHeight() / 2) + 1;
-	float yMin = -(getGameHeight() / 2) - 1.25;
+	float yMax = (getGameHeight() / 2) + 1.25;
+	float yMin = -(getGameHeight() / 2) - 1;
 
 	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 7;
 	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 6;
 
-	bool hitBounds = false;
+	bool inBounds = true;
 
-	Vector2 *newPos = new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY());
+	unique_ptr<Vector2> newPos(new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY()));
 
 	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
 		if (move->getX() < 0)
 			move->setX(0);
-		hitBounds = true;
+		inBounds = false;
 	}
 
 	if (newPos->getX() >= (stats.teamID == 1 ? team1Bounds : xMax)) {
 		if (move->getX() > 0)
 			move->setX(0);
-		hitBounds = true;
+		inBounds = false;
 	}
 
 	if (newPos->getY() <= yMin) {
 		if (move->getY() < 0)
 			move->setY(0);
-		hitBounds = true;
+		inBounds = false;
 	}
-
+	 
 	if (newPos->getY() >= yMax) {
 		if (move->getY() > 0)
 			move->setY(0);
-		hitBounds = true;
+		inBounds = false;
 	}
-	return hitBounds;
+	return inBounds;
 }
 
+bool Battler::InIceZone(Transform *t) {
+	float xMin = (-getGameWidth() / 2) - 2;
+	float xMax = (getGameWidth() / 2) + 2;
+
+	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 7;
+	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 6;
+
+	return (t->getX() >= team2Bounds && t->getX() <= team1Bounds);
+}
+
+bool Battler::ApplyIceSliding(Vector2 *v) {
+	if (InIceZone(GetTransform())) {
+		v->setX(v->getX() * 0.99f);
+		v->setY(v->getY() * 0.99f);
+		return true;
+	}
+	return false;
+}
