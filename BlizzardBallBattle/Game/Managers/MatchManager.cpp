@@ -22,7 +22,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 20;
+	TEAM_SIZE = 15;
 }
 
 void MatchManager::Stop() {
@@ -66,21 +66,15 @@ bool MatchManager::UnRegisterCharacter(Battler *character)
 	if (character->stats.teamID == 1)
 	{
 		teamOne.erase(std::remove(teamOne.begin(), teamOne.end(), character), teamOne.end());
-		for (int i = 0; i < teamTwo.size(); i++) {
-			if (!teamTwo[i]->stats.isPlayer)
-			{
-				teamTwo[i]->GetComponent<AI*>()->Retarget();
-			}
+		for (int i = 0; i < teamTwoAIUnits.size(); i++) {
+			teamTwoAIUnits[i]->Retarget();
 		}
 	}
 	else if (character->stats.teamID == 2)
 	{
 		teamTwo.erase(std::remove(teamTwo.begin(), teamTwo.end(), character), teamTwo.end());
-		for (int i = 0; i < teamOne.size(); i++) {
-			if (!teamOne[i]->stats.isPlayer)
-			{
-				teamOne[i]->GetComponent<AI*>()->Retarget();
-			}
+		for (int i = 0; i < teamOneAIUnits.size(); i++) {
+			teamOneAIUnits[i]->Retarget();
 		}
 	}
 	else
@@ -102,7 +96,7 @@ void MatchManager::StartGame()
 
 }
 
-void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture, bool teamOneLearning, bool teamTwoLearning)
+void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture, int teamOneFormation, int teamTwoFormation)
 {
 	float startPosXMax = getGameWidth() / 2;
 	float startPosYMax = getGameHeight() / 2;
@@ -130,6 +124,12 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	//AI
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
+		bool teamOneLearning = false;
+		if (teamOneFormation == 1)
+		{
+			teamOneLearning = true;
+		}
+
 		float posX = randomFloatInRange(-startPosXMin, -startPosXMax);
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
@@ -141,7 +141,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		Transform* aiTransform = (Transform*)unit->GetTransform();
 		aiTransform->setPosition(posX, posY);
 		RegisterCharacter(unit);
-		aiUnits.push_back(unitAI);
+		teamOneAIUnits.push_back(unitAI);
 	}
 
 
@@ -162,6 +162,12 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 	for (int i = 0; i < TEAM_SIZE - 1; ++i)
 	{
+		bool teamTwoLearning = false;
+		if (teamTwoFormation == 1)
+		{
+			teamTwoLearning = true;
+		}
+
 		float posX = randomFloatInRange(startPosXMin, startPosXMax);
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
@@ -174,17 +180,39 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		aiTransform->setPosition(posX, posY);
 		aiTransform->addRotation(180.0f);
 		RegisterCharacter(unit);
-		aiUnits.push_back(unitAI);
+		teamTwoAIUnits.push_back(unitAI);
 	}
 
 	// Initialize our AI
-	for (int i = 0; i < aiUnits.size(); ++i)
+	for (int i = 0; i < teamOneAIUnits.size(); ++i)
 	{
 		float intelligence = randomFloatInRange(0.8f, 1.0f);
 		float courage = randomFloatInRange(0.0f, 1.0f);
 		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
 
-		aiUnits[i]->Initialize(intelligence, courage, decisionFrequency);
+		if (teamOneFormation == 3)
+		{
+			intelligence = 0.5f;
+			courage = 1.0f;
+			decisionFrequency = randomFloatInRange(0.2f, 0.5f);
+		}
+
+		teamOneAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);
+	}
+	for (int i = 0; i < teamTwoAIUnits.size(); ++i)
+	{
+		float intelligence = randomFloatInRange(0.8f, 1.0f);
+		float courage = randomFloatInRange(0.0f, 1.0f);
+		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
+
+		if (teamTwoFormation == 3)
+		{
+			intelligence = 0.5f;
+			courage = 1.0f;
+			decisionFrequency = randomFloatInRange(0.2f, 0.5f);
+		}
+
+		teamTwoAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);
 	}
 
 	teamOneNet = AILearning();

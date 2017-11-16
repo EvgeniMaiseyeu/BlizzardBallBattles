@@ -22,7 +22,7 @@ void SceneTemplate::OnStart(){
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
 
 	// Create Players
-	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture, true, true);
+	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture, p1ai, p2ai);
 }
 
 void SceneTemplate::OnPause() {
