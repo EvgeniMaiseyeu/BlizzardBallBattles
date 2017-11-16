@@ -12,5 +12,5 @@ private:
     Sprite* sprite;
 public:
     SimpleSprite(std::string path, float x, float y, float z = 0.0f, float scale = 1.0f, Shader* nonDefaultShader = nullptr);
-    ~SimpleSprite();
+    //~SimpleSprite();
 };

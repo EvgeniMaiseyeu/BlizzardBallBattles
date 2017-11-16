@@ -19,7 +19,7 @@ GameManager* GameManager::GetInstance() {
 }
  
 GameManager::GameManager() {
- 
+
 }
  
 void GameManager::OnStart()
@@ -76,6 +76,8 @@ void GameManager::OnUpdate(int ticks)
     }
 
     game->OnUpdate(ticks);
+
+	ClearObjectsToRemove();
  
     FPSThrottle(ticks);
 }
@@ -96,7 +98,16 @@ void GameManager::AddGameObject(int id, GameObject* obj) {
     globalGameObjects[id] = obj;
 }
  
-void GameManager::RemoveGameObject(int id) {
-    globalGameObjects.erase(id);
-	SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(id);
+void GameManager::RemoveGameObject(GameObject* objectToRemove) {
+	gameObjectsToRemove.push_back(objectToRemove);
+}
+
+void GameManager::ClearObjectsToRemove() {
+	for (int i = 0; i < gameObjectsToRemove.size(); i++) {
+		GameObject* object = gameObjectsToRemove[i];
+		globalGameObjects.erase(object->getId());
+		SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(object->getId());
+		delete(object);
+	}
+	gameObjectsToRemove.clear();
 }

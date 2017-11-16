@@ -21,14 +21,8 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
 	AddComponent<SpriteRenderer*>(spriteRenderer);
 }
 
-SimpleSprite::~SimpleSprite() {
-    GetTransform()->setScale(0.0f);
-	GetTransform()->setPosition(100000, 1000000, -1000000);
-    //TODO: Memory leak fix
-    //if (sprite != nullptr) {
-    //    delete(sprite);
-    //}
-    //if (shader != nullptr) {
-    //    delete(shader);
-    //}
-}
+/*SimpleSprite::~SimpleSprite() {
+    if (sprite != nullptr) {
+       delete(sprite);
+    }
+}*/

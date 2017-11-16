@@ -3,6 +3,9 @@
 #include "GameObject.h"
 
 class Scene : public Updateable {
+private:
+	std::vector<int> idsToRemove;
+
 public:
     std::map<int, GameObject*> sceneObjects;
 

@@ -1,5 +1,6 @@
 #include "HelperFunctions.h"
 #include <stdlib.h>
+#include <time.h>
 
 std::string BuildPath(char* fileName) {
 #ifdef __APPLE__
@@ -60,6 +61,8 @@ float getFullBarSize() {
 }
 
 float randomFloatInRange(float min, float max) {
+	srand(time(NULL));
+
 	float random = ((float)rand()) / (float)RAND_MAX;
 	float diff = max - min;
 	float r = random * diff;
