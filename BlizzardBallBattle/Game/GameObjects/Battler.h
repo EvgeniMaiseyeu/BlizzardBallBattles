@@ -7,6 +7,7 @@
 #include "Physics.h"
 #include "Snowball.h"
 
+class Snowball;
 
 class Battler :
 	public SimpleSprite
@@ -46,6 +47,7 @@ public:
 	void animateCreation();
 	void handleCancels();
 	bool fireBigSnowball();
+	bool getBigSnowball();
 	//--------------------//
 
 private:

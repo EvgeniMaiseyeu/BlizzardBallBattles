@@ -66,12 +66,12 @@ void Battler::MoveTo(Vector2* position)
 bool Battler::Move(float x, float y)
 {
 	
-	if (CheckIfInBounds(x, y))
-	{
+//	if (CheckIfInBounds(x, y))
+	//{
 		_physics->setVelocity(new Vector2(x, y));
 		return true;
-	}
-	return false;
+	//}
+//	return false;
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -205,10 +205,11 @@ void Battler::Die()
 
 //should be called every update for each player/ai on screen
 void Battler::handleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 4)
+	if (_fullLock && _timer < 2)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 4) {
+	else if (_fullLock && _timer > 2) {
 		//launch snowball
+		_makingSnowball = false;
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -224,7 +225,7 @@ void Battler::handleBigThrow(float deltaTime) {
 bool Battler::makeBigSnowball(float deltaTime) {
 	if (!_fullLock) {
 		if (_makingSnowball) {
-			if (_timer < 12) {
+			if (_timer < 2) {
 				if(_bigSnowball != NULL){
 					_bigSnowball->GetTransform()->addScale(0.01f);
 				}
@@ -235,7 +236,8 @@ bool Battler::makeBigSnowball(float deltaTime) {
 				//made snowball
 				//stick snowball to battler
 				_animate = false;
-				//add drag
+			
+				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
 				return true;
 			}
@@ -245,8 +247,12 @@ bool Battler::makeBigSnowball(float deltaTime) {
 			std::string snowballColour = "Snowball2.png";
 			if (stats.teamID == 2)
 				snowballColour = "Snowball3.png";
-			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
 			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			if(this->stats.teamID == 1)
+				_bigSnowball->GetTransform()->addX(0.7f);
+			else
+				_bigSnowball->GetTransform()->addX(-0.7f);
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -257,11 +263,11 @@ bool Battler::makeBigSnowball(float deltaTime) {
 bool Battler::fireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 0.3f; //ai wont care about this
+			_throwPower += 2.0f; //ai wont care about this
 			return true;
 		}
 		else{
-			//reduce object drag
+			_physics->setDrag(1);
 			_timer = 0;
 			_fullLock = true;
 			return true;
@@ -270,13 +276,17 @@ bool Battler::fireBigSnowball() {
 	return false;
 }
 
+bool Battler::getBigSnowball() {
+	return _haveBigSnowball;
+}
+
 void Battler::animateCreation() {
 
 }
 
 void Battler::handleCancels() {
 	if (!_fullLock) {
-		if (_timer < 12 && _makingSnowball) {
+		if (_timer < 2 && _makingSnowball) {
 			//cancel snowball creation
 			if(_bigSnowball != NULL){
 				delete(_bigSnowball);

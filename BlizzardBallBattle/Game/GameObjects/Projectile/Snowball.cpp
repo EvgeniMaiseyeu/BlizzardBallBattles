@@ -41,6 +41,7 @@ void Snowball::OnUpdate(int timeDelta)
 						hitBattler->DealtDamage(1);
 						SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 						PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+
 						//remove self from rendering, physics, and stop checking for collision detection
 						active = false;
 					}
