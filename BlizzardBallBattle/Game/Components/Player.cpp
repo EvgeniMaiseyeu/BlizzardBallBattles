@@ -38,8 +38,8 @@ void Player::OnUpdate(int timeDelta) {
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if(youBattler->getBigSnowball()){
-			youBattler->fireBigSnowball();		
+		if(youBattler->GetBigSnowball()){
+			youBattler->FireBigSnowball();		
 		}
 		else {
 		//	youBattler->ThrowSnowball();

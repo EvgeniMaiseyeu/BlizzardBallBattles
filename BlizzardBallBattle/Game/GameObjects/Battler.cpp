@@ -205,11 +205,11 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
 	return info;
 }
 
-void Battler::lockToBattler() { 
+void Battler::LockToBattler() { 
 	//
 }
 
-void Battler::unlock() {
+void Battler::Unlock() {
 	//
 }
 
@@ -219,12 +219,12 @@ void Battler::unlock() {
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
-void Battler::handleBigThrow(float deltaTime) {
+void Battler::HandleBigThrow(float deltaTime) {
 	if (_fullLock && _timer < 2)
 		_timer += deltaTime;
 	else if (_fullLock && _timer > 2) {
 		//launch snowball
-		unlock();
+		Unlock();
 
 		_bigSnowball->setHeld(false);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
@@ -239,7 +239,7 @@ void Battler::handleBigThrow(float deltaTime) {
 }
 
 //keep calling until return true
-bool Battler::makeBigSnowball(float deltaTime) {
+bool Battler::MakeBigSnowball(float deltaTime) {
 	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
 			if (_timer < 2) {
@@ -252,7 +252,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 			else {
 				//made snowball
 				_makingSnowball = false;
-				lockToBattler();
+				LockToBattler();
 				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
@@ -295,11 +295,11 @@ bool Battler::FireBigSnowball() {
 	return false;
 }
 
-bool Battler::getBigSnowball() {
+bool Battler::GetBigSnowball() {
 	return _haveBigSnowball;
 }
 
-void Battler::animateCreation() {
+void Battler::AnimateCreation() {
 
 }
 
