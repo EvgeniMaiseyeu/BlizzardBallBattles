@@ -6,8 +6,8 @@
 #include "Collision/Collider.h"
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
-	Physics* physics = new Physics(this);
-	AddComponent<Physics*>(physics);
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
 	GetTransform()->setY(_player->GetTransform()->getY());
 	GetTransform()->setScale(0.5f);
@@ -21,13 +21,16 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 	velocity = *velocity * _speed;
 	velocity->rotateVector(radians);
-	physics->setVelocity(velocity);
+	_physics->setVelocity(velocity);
 	active = true;
 	heldByPlayer = false;
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		//DESTROOOOOOOOOY
+	}
 	if (heldByPlayer) {
 		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
@@ -37,6 +40,9 @@ void Snowball::OnUpdate(int timeDelta)
 			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
 			GetTransform()->setY(_player->GetTransform()->getY());
 		}
+	}
+	else {
+		_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
 	}
 	if (active) {
 		if(!heldByPlayer)
@@ -75,4 +81,6 @@ void Snowball::setHeld(bool held) {
 	heldByPlayer = held;
 }
 	
-
+void Snowball::setDistanceGoal(float dist) {
+	_distanceGoal = dist;
+}

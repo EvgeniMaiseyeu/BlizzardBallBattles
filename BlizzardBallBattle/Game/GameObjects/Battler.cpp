@@ -80,7 +80,7 @@ bool Battler::Move(Vector2 *v)
 
 void Battler::Face(GameObject* gameObject)
 {
-
+	
 }
 
 void Battler::Face(Vector2* position)
@@ -222,8 +222,9 @@ void Battler::handleBigThrow(float deltaTime) {
 	else if (_fullLock && _timer > 2) {
 		//launch snowball
 		unlock();
-
+		_throwPower = 5;
 		_bigSnowball->setHeld(false);
+		_bigSnowball->setDistanceGoal(_throwDistance);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -231,7 +232,7 @@ void Battler::handleBigThrow(float deltaTime) {
 		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
 		_haveBigSnowball = false;
 		_fullLock = false;
-		_throwPower = 5;
+		_throwDistance = 10;
 	}
 }
 
@@ -279,7 +280,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 bool Battler::fireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 1.0f; //ai wont care about this
+			_throwDistance += 2.0f; //ai wont care about this
 			return true;
 		}
 		else{

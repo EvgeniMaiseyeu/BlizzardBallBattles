@@ -61,6 +61,7 @@ private:
 	bool _makingSnowball;
 	bool _animate;
 	float _throwPower;
+	float _throwDistance;
 	//---------------------//
 
 	Shader* _shader;
