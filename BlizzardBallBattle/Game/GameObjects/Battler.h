@@ -34,7 +34,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y, float deltaTime);
+	bool Move(float x, float y);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -43,7 +43,7 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	bool IsAttached();
-	bool CheckIfInBounds(Transform *pos, Vector2 *move, float deltaTime);
+	bool CheckIfInBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);
 	bool InIceZone(Transform *t);
 	Vector2 *GetVelocity();

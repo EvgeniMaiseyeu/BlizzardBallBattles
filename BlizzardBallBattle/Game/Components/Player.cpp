@@ -47,7 +47,7 @@ void Player::OnUpdate(int timeDelta) {
 		youBattler->HandleCancels();
 	}
 
-	youBattler->handleBigThrow(deltaTime);
+	youBattler->HandleBigThrow(deltaTime);
 } 
 
 void Player::ComputeMovement(float deltaTime) {
@@ -81,5 +81,5 @@ void Player::ComputeMovement(float deltaTime) {
 		y = max(-moveSpeed, min(moveSpeed, prevY + (y / 20)));
 	}
 
-	youBattler->Move(x, y, deltaTime);
+	youBattler->Move(x, y);
 } 

@@ -69,10 +69,10 @@ void Battler::InitStats(int team)
 }
 
 
-bool Battler::Move(float x, float y, float deltaTime)
+bool Battler::Move(float x, float y)
 {
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
-		if (v->getMagnitude() > 0.0f) {
+		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
 			ChangeSprite(SPRITE_WALK);
 		} else {
 			ChangeSprite(SPRITE_IDLE);
@@ -81,7 +81,7 @@ bool Battler::Move(float x, float y, float deltaTime)
 
 	Transform *t = GetTransform();
 	Vector2 *v = new Vector2(x, y);
-	CheckIfInBounds(t, v, deltaTime);
+	CheckIfInBounds(t, v);
 	ApplyIceSliding(v);
 	_physics->setVelocity(v);
 	return false;
@@ -247,7 +247,7 @@ void Battler::HandleBigThrow(float deltaTime) {
 		//launch snowball
 		Unlock();
 		_bigSnowball->setHeld(false);
-		_bigSnowball->setDistanceGoal(_throwDistance);
+		_bigSnowball->SetDistanceGoal(_throwDistance);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -341,7 +341,7 @@ void Battler::HandleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move, float deltaTime)
+bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
 {
 	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;

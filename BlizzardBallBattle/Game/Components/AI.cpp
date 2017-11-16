@@ -168,10 +168,10 @@ void AI::WalkToTargetBattler()
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY, deltaTime))
+	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY))
 	{
 		posXToMoveTo = 0;
-		myBattler->Move(posXToMoveTo, moveSpeed * directionY, deltaTime);
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 	}
 }
 
@@ -202,7 +202,7 @@ void AI::WalkToTargetPosition()
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, deltaTime);
+	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
 }
 
 void AI::SetLearnedVelocity()
@@ -218,9 +218,7 @@ void AI::SetLearnedVelocity()
 		learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
 	}
 
-	Vector2* moveVelocity = new Vector2(learnedDecisions[1], learnedDecisions[2]);
-
-	myBattler->Move(moveVelocity);
+	myBattler->Move(learnedDecisions[1], learnedDecisions[2]);
 	currentState = idle;
 }
 

@@ -23,5 +23,5 @@ public:
 	void OnEnd() {};
 	void DestructSnowball();
 	void setHeld(bool held);
-	void Snowball::setDistanceGoal(float dist);
+	void SetDistanceGoal(float dist);
 };

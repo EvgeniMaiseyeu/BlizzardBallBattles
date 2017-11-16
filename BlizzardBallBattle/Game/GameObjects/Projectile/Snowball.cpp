@@ -87,6 +87,6 @@ void Snowball::setHeld(bool held) {
 	heldByPlayer = held;
 }
 	
-void Snowball::setDistanceGoal(float dist) {
+void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
 }
