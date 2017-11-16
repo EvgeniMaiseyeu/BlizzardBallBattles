@@ -2,6 +2,7 @@
 #include "HelperFunctions.h"
 #include "InputManager.h"
 #include "Transform.h"
+#include "MatchManager.h"
 
 Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot) : Component(gameObject) {
 	leftKey = left;
@@ -11,7 +12,6 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 	shootKey = shoot;
 	distance = 1;
 	youBattler = (Battler*)GetGameObject();
-	
 }
 
 // Will be called every frame
@@ -38,8 +38,8 @@ void Player::OnUpdate(int timeDelta) {
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if(youBattler->getBigSnowball()){
-			youBattler->fireBigSnowball();		
+		if(youBattler->GetBigSnowball()){
+			youBattler->FireBigSnowball();		
 		}
 		else {
 		//	youBattler->ThrowSnowball();
@@ -48,15 +48,23 @@ void Player::OnUpdate(int timeDelta) {
 	}
 	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
-		youBattler->makeBigSnowball(deltaTime);
+		youBattler->MakeBigSnowball(deltaTime);
 	} 
 	
 	if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
-		youBattler->handleCancels();
+		youBattler->HandleCancels();
 	}
 
-	youBattler->handleBigThrow(deltaTime);
+	youBattler->HandleBigThrow(deltaTime);
 
 	youBattler->Move(newVector);
 
+	if (youBattler->stats.teamID == 1)
+	{
+		MatchManager::GetInstance()->teamOneNet.TrainData(youBattler, 1.0);
+	}
+	else
+	{
+		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
+	}
 } 

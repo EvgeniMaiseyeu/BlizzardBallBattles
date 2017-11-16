@@ -45,14 +45,14 @@ public:
 	bool IsAttached();
 
 	//Big snowball methods//
-	void handleBigThrow(float deltaTime);
-	bool makeBigSnowball(float deltaTime);
-	void animateCreation();
-	void handleCancels();
-	bool fireBigSnowball();
-	bool getBigSnowball();
-	void lockToBattler();
-	void unlock();
+	void HandleBigThrow(float deltaTime);
+	bool MakeBigSnowball(float deltaTime);
+	void AnimateCreation();
+	void HandleCancels();
+	bool FireBigSnowball();
+	bool GetBigSnowball();
+	void LockToBattler();
+	void Unlock();
 	//--------------------//
 	bool DealtDamage(int damage);
 
@@ -71,6 +71,7 @@ private:
 	GLuint _textureBufferID;
 
 	Physics* _physics;
+	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);

@@ -25,6 +25,7 @@ float Vector2::getMagnitude() {
 }
 
 void Vector2::normalize() {
+	getMagnitude();
 	_x /= _magnitude;
 	_y /= _magnitude;
 }

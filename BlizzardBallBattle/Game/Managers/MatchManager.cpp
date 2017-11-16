@@ -21,7 +21,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 10;
+	TEAM_SIZE = 20;
 }
 
 
@@ -98,7 +98,7 @@ void MatchManager::StartGame()
 
 }
 
-void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture)
+void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture, bool teamOneLearning, bool teamTwoLearning)
 {
 	float startPosXMax = getGameWidth() / 2;
 	float startPosYMax = getGameHeight() / 2;
@@ -130,7 +130,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
 		Battler* unit = new Battler(1, playerSprite);
-		AI* unitAI = new AI(unit);
+		AI* unitAI = new AI(unit, teamOneLearning);
 		Collider* collider = new Collider(unit, 0.5f);
 		unit->AddComponent<AI*>(unitAI);
 		unit->AddComponent<Collider*>(collider);
@@ -162,7 +162,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float posY = randomFloatInRange(startPosYMin, startPosYMax);
 
 		Battler* unit = new Battler(2, playerSprite);
-		AI* unitAI = new AI(unit);
+		AI* unitAI = new AI(unit, teamTwoLearning);
 		Collider* collider = new Collider(unit, 0.5f);
 		unit->AddComponent<AI*>(unitAI);
 		unit->AddComponent<Collider*>(collider);
@@ -180,8 +180,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float courage = randomFloatInRange(0.0f, 1.0f);
 		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
 
-		aiUnits[i]->Init(intelligence, courage, decisionFrequency);
+		aiUnits[i]->Initialize(intelligence, courage, decisionFrequency);
 	}
+
+	teamOneNet = AILearning();
+	teamTwoNet = AILearning();
 }
 
 std::vector<Battler*> MatchManager::GetTeam(int teamID)
