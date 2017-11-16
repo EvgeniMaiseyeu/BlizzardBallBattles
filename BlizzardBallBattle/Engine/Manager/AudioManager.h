@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "GameObject.h"
 
 class AudioManager {
 private:
@@ -16,6 +15,8 @@ public:
 
 	//Starts playing music
 	void PlayMusic(std::string filename, int loop = -1);
+	void PlaySEFhit(std::string filename, int loop = -1);
+	void PlaySEFshoot(std::string filename, int loop = -1);
 	//Pauses the current music
 	void PauseMusic();
 	//Resume playing the music
@@ -27,3 +28,4 @@ public:
 
 
 };
+#pragma once

@@ -2,6 +2,7 @@
 #include "MatchManager.h"
 #include "Vector2.h"
 #include "Transform.h"
+#include "AILearning.h"
 #include <vector>
 #include <iostream>
 #include <cstdlib>
@@ -32,6 +33,8 @@ void AI::Init(float _intelligence, float _courage, float _decisionFrequency)
 	intelligence = _intelligence;
 	courage = _courage;
 	decisionFrequency = _decisionFrequency;
+
+	//AILearning learning = AILearning();
 }
 
 void AI::OnUpdate(int timeDelta) 
@@ -131,7 +134,7 @@ void AI::WalkToTargetBattler(float deltaTime)
 
 	float posDiffY = targetPosY - myPosY;
 
-	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
+	float moveSpeed = myBattler->stats.moveSpeed;
 	int directionY = (posDiffY > 0) ? 1 : -1;
 
 	if (posDiffY >= (-1 + intelligence) && posDiffY <= (1 - intelligence))
@@ -156,15 +159,13 @@ void AI::WalkToTargetBattler(float deltaTime)
 	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
-	float posXToMoveTo = GetGameObject()->GetTransform()->getX() + moveSpeed * (float)directionX;
-	if (!CheckIfInBounds(posXToMoveTo))
+	float posXToMoveTo = moveSpeed * directionX;
+
+	if (!myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY)))
 	{
 		posXToMoveTo = 0;
+		myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY));
 	}
-	else
-		posXToMoveTo = moveSpeed * directionX;
-
-	myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 }
 
 void AI::WalkToTargetPosition(float deltaTime)
@@ -192,9 +193,9 @@ void AI::WalkToTargetPosition(float deltaTime)
 		directionX = 0;
 	}
 
-	float moveSpeed = myBattler->stats.moveSpeed * deltaTime;
+	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
+	myBattler->Move(new Vector2(moveSpeed * directionX, moveSpeed * directionY));
 }
 
 void AI::Shoot()
@@ -218,31 +219,6 @@ bool AI::CanMakeDecision(float deltaTIme)
 	}
 
 	return false;
-}
-
-bool AI::CheckIfInBounds(float x, float y)
-{
-	float mapXMax = getGameWidth() / 2;
-	float mapYMax = getGameHeight() / 2;
-	float mapXMin = getGameWidth() / 6;
-	float mapYMin = -mapYMax;
-
-	if (myBattler->stats.teamID == 1)
-	{
-		mapXMin = -mapXMin;
-		mapXMax = -mapXMax;
-	}
-
-	if (x < mapXMin || x > mapXMax)
-	{
-		return false;
-	}
-	else if (y < mapYMin || y > mapYMax)
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void AI::GetBehaviour()
