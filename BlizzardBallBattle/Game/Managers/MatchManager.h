@@ -29,7 +29,7 @@ public:
 	bool UnRegisterCharacter(Battler *character);
 	void CreateBattlers(Shader *shader, GLuint characterTexture, GLuint spriteSheetTexture, bool teamOneLearning, bool teamTwoLearning);
 	std::vector<Battler*> GetTeam(int teamID);
-
+	void Stop();
 	AILearning teamOneNet;
 	AILearning teamTwoNet;
 };

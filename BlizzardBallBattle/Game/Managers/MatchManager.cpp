@@ -24,7 +24,6 @@ MatchManager::MatchManager()
 	TEAM_SIZE = 20;
 }
 
-
 void MatchManager::Stop() {
 	for (int i = 0; i < teamOne.size(); i++) {
 		UnRegisterCharacter(teamOne[i]);
