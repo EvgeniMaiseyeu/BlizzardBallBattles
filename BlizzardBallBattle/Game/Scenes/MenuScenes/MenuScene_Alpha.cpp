@@ -6,6 +6,7 @@
 #include "SpriteRenderer.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "GameManager.h"
 
 void MenuScene_Alpha::OnEnd() {
     DestroyBaseScene();
@@ -18,10 +19,6 @@ void MenuScene_Alpha::BuildBaseScene() {
 }
 
 void MenuScene_Alpha::DestroyBaseScene() {
-    //delete(pixelShader);
-    menuBackground->GetTransform()->setScale(0.0f);
-    //delete(menuBackground);
-    menuForeground->GetTransform()->setScale(0.0f);
-    //delete(menuForeground);
-	Purge();
+	GameManager::GetInstance()->RemoveGameObject(menuBackground);
+	GameManager::GetInstance()->RemoveGameObject(menuForeground);
 }

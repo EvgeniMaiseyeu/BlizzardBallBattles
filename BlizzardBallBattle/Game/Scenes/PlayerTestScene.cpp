@@ -64,10 +64,10 @@ void PlayerTestScene::OnStart() {
 }
 
 void PlayerTestScene::OnEnd() {
-	delete(chensPlayer1);
-	delete(chensPlayer2);
-	delete(snowBall1);
-	delete(snowBall2);
+	///delete(chensPlayer1);
+	//delete(chensPlayer2);
+	//delete(snowBall1);
+	//delete(snowBall2);
 }
 
 void PlayerTestScene::OnUpdate(int ticks) {

@@ -28,8 +28,8 @@ void GameScene_Alpha_Networked::OnStart() {
 }
 
 void GameScene_Alpha_Networked::OnEnd() {
-	delete(player1);
-	delete(player2);
+	//delete(player1);
+	//delete(player2);
 }
 
 void GameScene_Alpha_Networked::OnUpdate(int ticks) {

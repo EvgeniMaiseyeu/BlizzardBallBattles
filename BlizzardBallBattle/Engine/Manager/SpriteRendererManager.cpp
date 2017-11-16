@@ -412,15 +412,13 @@ void SpriteRendererManager::RenderPass(int layerToRender, bool clearFirst)
 		{
 			RenderingObject ro = rg.children[j];
 
-			if (!ro.IsValid()) {
-				continue;
-			}
-
 			if (layerToRender != RENDER_LAYER_ALL && layerToRender != ro.spriteRenderer->GetLayer()) {
 				continue;
 			}
 			
-
+			if (!ro.IsValid()) {
+				continue;
+			}
 			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
 
 			glUniform1f(aspectRatioLocation, ASPECT_RATIO);

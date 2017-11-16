@@ -43,27 +43,34 @@ void AISelectionMenuScene::OnUpdate(int ticks) {
 	InputManager* inputManager = InputManager::GetInstance();
 	if (inputManager->onKeyPressed(SDLK_a) && !p1Done) {
 		p1Result = 1;
+		p1Done = true;
 		TryEnd();
 	}
 	if (inputManager->onKeyPressed(SDLK_s) && !p1Done) {
 		p1Result = 2;
+		p1Done = true;
 		TryEnd();
 	}
 	if (inputManager->onKeyPressed(SDLK_d) && !p1Done) {
 		p1Result = 3;
+		p1Done = true;
 		TryEnd();
 	}
 
 	if (inputManager->onKeyPressed(SDLK_j) && !p2Done) {
 		p2Result = 1;
+		p2Done = true;
 		TryEnd();
 	}
 	if (inputManager->onKeyPressed(SDLK_k) && !p2Done) {
 		p2Result = 2;
+		p2Done = true;
 		TryEnd();
 	}
+
 	if (inputManager->onKeyPressed(SDLK_l) && !p2Done) {
 		p2Result = 3;
+		p2Done = true;
 		TryEnd();
 	}
 }

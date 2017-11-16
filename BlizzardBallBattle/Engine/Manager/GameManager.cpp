@@ -38,6 +38,10 @@ void GameManager::OnStart()
         OnUpdate(ticks);
         //update game.
         SceneManager::GetInstance()->UpdateScene(ticks);
+
+		ClearObjectsToRemove();
+
+		FPSThrottle(ticks);
     }
 }
 
@@ -77,9 +81,7 @@ void GameManager::OnUpdate(int ticks)
 
     game->OnUpdate(ticks);
 
-	ClearObjectsToRemove();
  
-    FPSThrottle(ticks);
 }
  
 void GameManager::OnEnd()
