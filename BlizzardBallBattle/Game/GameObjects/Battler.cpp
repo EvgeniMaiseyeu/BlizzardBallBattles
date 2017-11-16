@@ -44,6 +44,7 @@ void Battler::InitStats(int team)
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
 	stats.isattached = false;
+	_throwPower = 5;
 }
 
 void Battler::OnUpdate(int ticks)
@@ -199,6 +200,14 @@ void Battler::Die()
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 }
 
+void Battler::lockToBattler() { 
+	//
+}
+
+void Battler::unlock() {
+	//
+}
+
 //------------------------------------------------------
 //BIG SNOWBALL METHODS
 //------------------------------------------------------
@@ -209,7 +218,9 @@ void Battler::handleBigThrow(float deltaTime) {
 		_timer += deltaTime;
 	else if (_fullLock && _timer > 2) {
 		//launch snowball
+		unlock();
 		_makingSnowball = false;
+		_bigSnowball->setHeld(false);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -217,7 +228,7 @@ void Battler::handleBigThrow(float deltaTime) {
 		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
 		_haveBigSnowball = false;
 		_fullLock = false;
-		_throwPower = 0;
+		_throwPower = 5;
 	}
 }
 
@@ -234,9 +245,9 @@ bool Battler::makeBigSnowball(float deltaTime) {
 			}
 			else {
 				//made snowball
-				//stick snowball to battler
+				lockToBattler();
+				_bigSnowball->setHeld(true);
 				_animate = false;
-			
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
 				return true;
@@ -253,6 +264,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 				_bigSnowball->GetTransform()->addX(0.7f);
 			else
 				_bigSnowball->GetTransform()->addX(-0.7f);
+			_bigSnowball->GetTransform()->setZ(-1);
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -263,7 +275,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 bool Battler::fireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 2.0f; //ai wont care about this
+			_throwPower += 1.0f; //ai wont care about this
 			return true;
 		}
 		else{

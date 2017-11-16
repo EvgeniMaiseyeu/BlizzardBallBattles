@@ -58,7 +58,7 @@ void Player::OnUpdate(int timeDelta) {
 		else {
 		//	youBattler->ThrowSnowball();
 		}
-		
+		 
 	}
 	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..

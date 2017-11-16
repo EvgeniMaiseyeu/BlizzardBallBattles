@@ -53,6 +53,7 @@ float Physics::getDrag() {
 void Physics::OnUpdate(int ticks) {
 	transform->addX(_velocity->getX() * _drag * _snowDrag * ((float)ticks) / 1000);
 	transform->addY(_velocity->getY() * _drag * _snowDrag * ((float)ticks)/1000);
+	//setup angular velocity
 }
 
 Physics::~Physics() {

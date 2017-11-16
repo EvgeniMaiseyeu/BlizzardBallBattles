@@ -23,12 +23,24 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	velocity->rotateVector(radians);
 	physics->setVelocity(velocity);
 	active = true;
+	heldByPlayer = false;
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
 	if (active) {
-		GetTransform()->addRotation(15);
+		if(!heldByPlayer)
+			GetTransform()->addRotation(15);
 
 		if (myCollider->collisionDetected())
 		{
@@ -57,6 +69,10 @@ void Snowball::OnUpdate(int timeDelta)
 			active = false;
 		}
 	}
+}
+
+void Snowball::setHeld(bool held) {
+	heldByPlayer = held;
 }
 	
 

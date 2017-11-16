@@ -48,6 +48,8 @@ public:
 	void handleCancels();
 	bool fireBigSnowball();
 	bool getBigSnowball();
+	void lockToBattler();
+	void unlock();
 	//--------------------//
 
 private:

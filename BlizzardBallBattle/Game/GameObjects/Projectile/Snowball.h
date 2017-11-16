@@ -11,10 +11,12 @@ private:
 	GameObject* _player;
 	float _speed;
 	Collider* myCollider;
+	bool heldByPlayer;
 	
 public:
 	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
+	void setHeld(bool held);
 };
