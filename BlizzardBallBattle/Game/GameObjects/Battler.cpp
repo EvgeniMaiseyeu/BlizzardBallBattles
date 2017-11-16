@@ -18,7 +18,7 @@ void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	self->ThrowSnowball();
 }
 
-Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
 {
 	this->networkingID = networkingID;
 	this->isSender = isSender;
@@ -28,7 +28,7 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	InitStats(team);
 }
 
-Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
 {
 	this->isSender = false;
 	this->networkingID = -1;
@@ -236,12 +236,18 @@ void Battler::Die()
 	}
 }
 
-ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
+ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 	ComplexSpriteinfo* info = new ComplexSpriteinfo();
-
-	info->AddInfo("Character_IdleSheet.png", 8, 1);
-	info->AddInfo("Character_MoveSheet.png", 8, 1);
-	info->AddInfo("Character_ThrowSheet.png", 8, 1);
+	if (team == 1) {
+		info->AddInfo("Character_IdleSheet.png", 8, 1);
+		info->AddInfo("Character_MoveSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowSheet.png", 8, 1);
+	} else {
+		info->AddInfo("Character2_IdleSheet.png", 8, 1);
+		info->AddInfo("Character2_MoveSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowSheet.png", 8, 1);
+	}
+	
 
 	return info;
 }
