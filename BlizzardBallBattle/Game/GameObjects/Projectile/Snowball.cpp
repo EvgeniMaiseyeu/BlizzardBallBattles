@@ -6,6 +6,7 @@
 #include "Collision/Collider.h"
 #include "UserDefinedRenderLayers.h"
 #include "MessageManager.h"
+#include "AudioManager.h"
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {

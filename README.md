@@ -9,6 +9,7 @@ BlizzardBallBattle
 brew install sdl2
 brew install sdl2_image
 brew install sdl2_net
+brew install sdl2_mixer
 brew install glew
 brew cask install xquartz
 brew install freeglut

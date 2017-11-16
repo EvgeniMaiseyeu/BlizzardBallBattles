@@ -7,6 +7,7 @@
 #include "NetworkingManager.h"
 #include "Transform.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 //#include "TestGO.h"
 
 void LaunchMenuScene::OnStart() { CreateScene(); }
@@ -29,6 +30,11 @@ void LaunchMenuScene::DestroyScene() {
 
 void LaunchMenuScene::OnUpdate(int ticks) {
     InputManager* inputManager = InputManager::GetInstance();
+
+    
+    if (inputManager->onKeyPressed(SDLK_q)) {
+		AudioManager::GetInstance()->PlayMusic("./BlizzardBallBattle/Game/Assets/Audio/mario_.wav", 1, 10);
+    }
 
     if (inputManager->onKeyPressed(SDLK_h)) {
         NetworkingManager::GetInstance()->CreateHost();
