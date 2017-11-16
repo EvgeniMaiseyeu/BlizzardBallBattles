@@ -19,7 +19,7 @@ GameManager* GameManager::GetInstance() {
 }
  
 GameManager::GameManager() {
- 
+
 }
  
 void GameManager::OnStart()

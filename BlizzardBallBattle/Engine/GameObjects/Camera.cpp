@@ -1,7 +1,6 @@
 #include "Camera.h"
-#include "DayNightCamera.h"
 
-Camera* Camera::activeCamera = new DayNightCamera();
+Camera* Camera::activeCamera = new Camera();
 
 Camera::Camera() : GameObject(true) {
     init = false;
@@ -23,7 +22,6 @@ Camera* Camera::GetActiveCamera() {
 void Camera::NotifyInactivity() {
     delete(this);
 }
-
 
 void Camera::EnsureInit() {
     if (!init) {

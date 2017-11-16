@@ -15,7 +15,10 @@ void main() {
 
     //NOTWORKING: GOOD VERSION
     //Distance Vector from "being rendered" point to "light"
-    //vec4 dif = normalize(pos) - vec4(normalize(lightPoint), 0.0, 0.0);
+    //vec2 posUV = normalize(position).xy;
+    //vec2 lightUV = normalize(lightPoint);
+    //float dist = length(posUV - lightUV);
+
     //Distance of vector point to light
     //float dist = length(position - vec3(lightPoint, 0.0));
 	//gl_Position = pos + dif / (dist * 50.0);

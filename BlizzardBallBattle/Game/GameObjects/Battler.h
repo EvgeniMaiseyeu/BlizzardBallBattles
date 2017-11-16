@@ -3,10 +3,10 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "Vector2.h"
-#include "SimpleSprite.h"
+#include "ComplexSprite.h"
 
 class Battler :
-	public SimpleSprite
+	public ComplexSprite
 {
 public:
 	struct stats {
@@ -49,5 +49,7 @@ private:
 	//Networking
 	std::string networkingID;
 	bool isSender;
+
+	ComplexSpriteinfo* GenerateSpriteInfo();
 };
 
