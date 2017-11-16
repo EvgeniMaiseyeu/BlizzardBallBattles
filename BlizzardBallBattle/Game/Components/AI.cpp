@@ -161,10 +161,10 @@ void AI::WalkToTargetBattler(float deltaTime)
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY)))
+	if (!myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY), deltaTime))
 	{
 		posXToMoveTo = 0;
-		myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY));
+		myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY), deltaTime);
 	}
 }
 
@@ -195,7 +195,7 @@ void AI::WalkToTargetPosition(float deltaTime)
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(new Vector2(moveSpeed * directionX, moveSpeed * directionY));
+	myBattler->Move(new Vector2(moveSpeed * directionX, moveSpeed * directionY), deltaTime);
 }
 
 void AI::Shoot()
