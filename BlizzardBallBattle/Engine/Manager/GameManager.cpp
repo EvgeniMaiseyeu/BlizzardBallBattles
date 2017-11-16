@@ -49,8 +49,14 @@ void GameManager::OnUpdate(int ticks)
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        InputManager::GetInstance()->HandlePolledEvent(event);
-        breakLoop = IsQuitRequested(event);
+        switch (event.type) {
+            case SDL_QUIT:
+                breakLoop = true;
+                break;
+            default:
+                InputManager::GetInstance()->HandlePolledEvent(event);
+                break;
+        }
     }
 
     if (NetworkingManager::GetInstance()->IsConnected()) {
@@ -84,11 +90,6 @@ void GameManager::FPSThrottle(int ticks) {
     int delay = FRAME_RATE - ticks;    
     if (delay > 0)
         SDL_Delay(delay);
-}
- 
-bool GameManager::IsQuitRequested(SDL_Event event)
-{
-    return (event.type == SDL_QUIT || event.type == SDL_KEYDOWN);
 }
  
 void GameManager::AddGameObject(int id, GameObject* obj) {

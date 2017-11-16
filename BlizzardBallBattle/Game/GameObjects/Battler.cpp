@@ -1,7 +1,6 @@
-#include "Battler.h"
+
 #include "Transform.h"
 #include "HelperFunctions.h"
-#include "Snowball.h"
 #include "MessageManager.h"
 #include "AI.h"
 #include "NetworkingManager.h"
@@ -9,6 +8,8 @@
 #include "PhysicsManager.h"
 #include "MatchManager.h"
 #include "UserDefinedRenderLayers.h"
+#include "Battler.h"
+#include "Snowball.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -22,7 +23,6 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	if (!isSender) {
 		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
 	}
-
 	InitStats(team);
 }
 
@@ -39,11 +39,14 @@ Battler::~Battler()
 
 void Battler::InitStats(int team)
 {
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
 	stats.teamID = team;
 	stats.moveSpeed = 2;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
+	stats.isattached = false;
 }
 
 void Battler::OnUpdate(int ticks)
@@ -55,7 +58,6 @@ void Battler::OnUpdate(int ticks)
 
 void Battler::MoveTo(GameObject* gameObject)
 {
-	
 
 }
 
@@ -64,10 +66,12 @@ void Battler::MoveTo(Vector2* position)
 	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
-void Battler::Move(float x, float y)
+bool Battler::Move(Vector2 *v)
 {
-	//GetTransform()->addTranslation(position->getX(), position->getY());
-	GetTransform()->addTranslation(x, y);
+	Transform *t = GetTransform();
+	CheckIfInBounds(t, v);
+	_physics->setVelocity(v);
+	return false;
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -123,12 +127,42 @@ void Battler::UpdateThrowTimer(float deltaTime)
 
 void Battler::DealtDamage(int damage)
 {
+	bool isattached = false;
 	stats.hitpoints -= damage;
+	_physics->setSnowDrag(_physics->getSnowDrag()* 0.7);
 	if (stats.hitpoints <= 0)
 	{
 		Die();
 	}
+	if (stats.isattached)
+	{
+		ThrowSnowball();
+
+	}
+	else
+	{
+	//	Snowball* snowball = new Snowball();
+		
+	//	GetGameObject()->GetTransform()->addTranslation()->Player position;
+		
+	}
+	//return true;
+
 }
+
+/*bool Battler::IsAttached()
+{
+	if (stats.isattached)
+	{
+		find.Player();
+	}
+	else
+	{
+		Snowball* snowball = new Snowball();
+		GetGameObject() -> GetTransform()->addTranslation()->Player position;
+	}
+	return true;
+}*/
 
 void Battler::Die()
 {
@@ -174,3 +208,134 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
 
 	return info;
 }
+//------------------------------------------------------
+//BIG SNOWBALL METHODS
+//------------------------------------------------------
+
+//should be called every update for each player/ai on screen
+void Battler::handleBigThrow(float deltaTime) {
+	if (_fullLock && _timer < 4)
+		_timer += deltaTime;
+	else if (_fullLock && _timer > 4) {
+		//launch snowball
+		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+		Vector2* velocity = new Vector2(1, 0);
+		velocity = *velocity * _throwPower;
+		velocity->rotateVector(radians);
+		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
+		_haveBigSnowball = false;
+		_fullLock = false;
+		_throwPower = 0;
+	}
+}
+
+//keep calling until return true
+bool Battler::makeBigSnowball(float deltaTime) {
+	if (!_fullLock) {
+		if (_makingSnowball) {
+			if (_timer < 12) {
+				if(_bigSnowball != NULL){
+					_bigSnowball->GetTransform()->addScale(0.01f);
+				}
+				_timer += deltaTime;
+				_animate = true;
+			}
+			else {
+				//made snowball
+				//stick snowball to battler
+				_animate = false;
+				//add drag
+				_haveBigSnowball = true;
+				return true;
+			}
+		}
+		else {
+			//starting to make snowball
+			std::string snowballColour = "Snowball2.png";
+			if (stats.teamID == 2)
+				snowballColour = "Snowball3.png";
+			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			_timer = 0;
+			_makingSnowball = true;
+		}
+	}
+	return false;
+}
+
+bool Battler::fireBigSnowball() {
+	if (_haveBigSnowball) {
+		if (_fullLock) {
+			_throwPower += 0.3f; //ai wont care about this
+			return true;
+		}
+		else{
+			//reduce object drag
+			_timer = 0;
+			_fullLock = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+void Battler::animateCreation() {
+
+}
+
+void Battler::handleCancels() {
+	if (!_fullLock) {
+		if (_timer < 12 && _makingSnowball) {
+			//cancel snowball creation
+			if(_bigSnowball != NULL){
+				delete(_bigSnowball);
+			}
+			_makingSnowball = false;
+			_timer = 0;
+			_animate = false;
+		}
+	}
+}
+
+//-------------------------------------------------
+
+bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
+{
+	float xMin = (-getGameWidth() / 2) - 2;//getGameWidth() / 6;
+	float xMax = (getGameWidth() / 2) + 2;
+	float yMax = (getGameHeight() / 2) + 1;
+	float yMin = -(getGameHeight() / 2) - 1.25;
+
+	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 7;
+	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 6;
+
+	bool hitBounds = false;
+
+	Vector2 *newPos = new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY());
+
+	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
+		if (move->getX() < 0)
+			move->setX(0);
+		hitBounds = true;
+	}
+
+	if (newPos->getX() >= (stats.teamID == 1 ? team1Bounds : xMax)) {
+		if (move->getX() > 0)
+			move->setX(0);
+		hitBounds = true;
+	}
+
+	if (newPos->getY() <= yMin) {
+		if (move->getY() < 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+
+	if (newPos->getY() >= yMax) {
+		if (move->getY() > 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+	return hitBounds;
+}
+

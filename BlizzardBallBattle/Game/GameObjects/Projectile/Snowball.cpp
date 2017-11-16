@@ -60,7 +60,5 @@ void Snowball::OnUpdate(int timeDelta)
 		}
 	}
 }
-
-
 	
 

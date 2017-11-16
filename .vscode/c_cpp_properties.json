@@ -12,7 +12,17 @@
                 "${workspaceRoot}",
                 "${workspaceRoot}/BlizzardBallBattle/Engine",
                 "${workspaceRoot}/BlizzardBallBattle/Engine/Component",
-                "${workspaceRoot}/BlizzardBallBattle/Engine/External"
+                "${workspaceRoot}/BlizzardBallBattle/Engine/External",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/External/Math",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/GameObjects",
+                "${workspaceRoot}/BlizzardBallBattle/Game/GameObjects/Projectile",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Collision",
+                "${workspaceRoot}/BlizzardBallBattle/Game/GameObjects",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/External/Render",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/Manager",
+                "${workspaceRoot}/BlizzardBallBattle/Game/Components",
+                "${workspaceRoot}/BlizzardBallBattle/Engine/Component/Render",
+                "${workspaceRoot}/BlizzardBallBattle/Game/Managers"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

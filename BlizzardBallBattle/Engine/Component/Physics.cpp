@@ -10,6 +10,7 @@ Physics::Physics(GameObject* gameObject) : Component(gameObject) {
 }
 
 void Physics::setVelocity(Vector2* value) {
+	delete(_velocity);
 	_velocity = value;
 }
 
@@ -29,6 +30,10 @@ void Physics::setSnowDrag(float value) {
 	_snowDrag = value;
 }
 
+void Physics::addSnowDrag(float value){
+	_snowDrag += value;
+}
+
 float Physics::getSnowDrag() {
 	return _snowDrag;
 }
@@ -37,12 +42,16 @@ void Physics::setDrag(float value) {
 	_drag = value;
 }
 
+void Physics::addDrag(float value){
+	_drag += value;
+}
+
 float Physics::getDrag() {
 	return _drag;
 }
 
 void Physics::OnUpdate(int ticks) {
-	transform->addX(_velocity->getX() * _drag * _snowDrag * ((float)ticks)/1000);
+	transform->addX(_velocity->getX() * _drag * _snowDrag * ((float)ticks) / 1000);
 	transform->addY(_velocity->getY() * _drag * _snowDrag * ((float)ticks)/1000);
 }
 
