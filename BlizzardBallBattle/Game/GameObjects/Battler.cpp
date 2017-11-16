@@ -78,12 +78,18 @@ bool Battler::Move(float x, float y)
 			ChangeSprite(SPRITE_IDLE);
 		}
 	}
+	if (!_fullLock && !_makingSnowball) {
+		Transform *t = GetTransform();
+		Vector2 *v = new Vector2(x, y);
+		CheckIfInBounds(t, v);
+		ApplyIceSliding(v);
+		_physics->setVelocity(v);
+        return true;
+    }
+    else {
+        _physics->setVelocity(new Vector2(0, 0));
+    }
 
-	Transform *t = GetTransform();
-	Vector2 *v = new Vector2(x, y);
-	CheckIfInBounds(t, v);
-	ApplyIceSliding(v);
-	_physics->setVelocity(v);
 	return false;
 }
 
