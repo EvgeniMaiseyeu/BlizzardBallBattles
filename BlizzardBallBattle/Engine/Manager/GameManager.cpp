@@ -9,6 +9,7 @@
 #include "NetworkingManager.h"
 #include "SceneManager.h"
 #include "PhysicsManager.h"
+#include "GarbageCollection.h"
  
 GameManager* GameManager::instance;
  
@@ -39,7 +40,9 @@ void GameManager::OnStart()
         //update game.
         SceneManager::GetInstance()->UpdateScene(ticks);
 
+		isBeingCollected = true;
 		ClearObjectsToRemove();
+		isBeingCollected = false;
 
 		FPSThrottle(ticks);
     }
@@ -71,9 +74,9 @@ void GameManager::OnUpdate(int ticks)
     
         NetworkingManager::GetInstance()->SendQueuedEvents();
     }
- 
+
+	SpriteRendererManager::GetInstance()->OnUpdate(ticks);
     PhysicsManager::GetInstance()->OnUpdate(ticks);
-    SpriteRendererManager::GetInstance()->OnUpdate(ticks);    
 
     for (std::map<int, GameObject*>::iterator it=globalGameObjects.begin(); it!=globalGameObjects.end(); ++it) {
         it->second->OnUpdate(ticks);

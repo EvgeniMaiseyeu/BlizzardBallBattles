@@ -28,5 +28,6 @@ public:
 	bool UnRegisterCharacter(Battler *character);
 	void CreateBattlers(Shader *shader, GLuint characterTexture, GLuint spriteSheetTexture);
 	std::vector<Battler*> GetTeam(int teamID);
+	void Stop();
 };
 #endif

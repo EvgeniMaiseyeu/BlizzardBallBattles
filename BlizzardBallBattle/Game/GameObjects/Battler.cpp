@@ -265,7 +265,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
 			if (_timer < 2) {
-				if(_bigSnowball != NULL){
+				if(_bigSnowball != NULL && _bigSnowball->GetTransform() != nullptr){
 					_bigSnowball->GetTransform()->addScale(0.01f);
 				}
 				_timer += deltaTime;

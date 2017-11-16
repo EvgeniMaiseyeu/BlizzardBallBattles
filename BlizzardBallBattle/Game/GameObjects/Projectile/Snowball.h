@@ -12,6 +12,8 @@ private:
 	float _speed;
 	Collider* myCollider;
 	bool heldByPlayer;
+	int teamID;
+	int playerID;
 	
 public:
 	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);

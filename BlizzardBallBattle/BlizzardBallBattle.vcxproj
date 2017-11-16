@@ -184,6 +184,7 @@
     <ClCompile Include="Game\Scenes\PlayerTestScene.cpp" />
     <ClCompile Include="Game\Scenes\SceneTemplate.cpp" />
     <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp" />
+    <ClCompile Include="GarbageCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Neuron.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Game\Scenes\Scenes.h" />
     <ClInclude Include="Game\Scenes\SceneTemplate.h" />
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h" />
+    <ClInclude Include="GarbageCollection.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="TrainingData.h" />

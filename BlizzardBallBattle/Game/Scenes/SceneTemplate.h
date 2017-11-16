@@ -14,7 +14,7 @@ public:
 	void OnStart();
 	void OnResume() {};
 	void OnUpdate(int ticks);
-	void OnPause() {};
+	void OnPause();
 	void OnEnd();
 	
 };

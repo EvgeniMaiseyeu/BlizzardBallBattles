@@ -25,9 +25,11 @@ void SceneTemplate::OnStart(){
 	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture);
 }
 
+void SceneTemplate::OnPause() {
+	MatchManager::GetInstance()->Stop();
+}
+
 void SceneTemplate::OnEnd() {
-	//delete(player1);
-	//delete(player2);
 }
 
 void SceneTemplate::OnUpdate(int ticks) {
