@@ -39,6 +39,10 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	//If the scene is not a GameScene, destroy self
+	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
+		Destroy(this);
+	}
 	//if (heldByPlayer) {
 	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
