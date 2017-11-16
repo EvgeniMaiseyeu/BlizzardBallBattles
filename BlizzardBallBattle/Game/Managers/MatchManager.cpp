@@ -124,7 +124,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerOne->AddComponent<Collider*>(playerOneCollider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetTransform();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
-	playerOne->stats.hitpoints = 3;
+	playerOne->stats.hitpoints = 5;
 	playerOne->stats.isPlayer = true;
 	RegisterCharacter(playerOne);
 
@@ -163,7 +163,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
 	playerTwoTransform->setPosition(playerPosX, playerPosY);
 	playerTwoTransform->addRotation(180.0f);
-	playerTwo->stats.hitpoints = 3;
+	playerTwo->stats.hitpoints = 5;
 	playerTwo->stats.isPlayer = true;
 	RegisterCharacter(playerTwo);
 
