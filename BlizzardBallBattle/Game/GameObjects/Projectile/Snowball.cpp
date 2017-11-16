@@ -9,6 +9,8 @@
 #include "AudioManager.h"
 #include "SceneManager.h"
 #include "GameScene.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
@@ -64,6 +66,9 @@ void Snowball::OnUpdate(int timeDelta)
 		if (myCollider->collisionDetected())
 		{
 			std::vector<GameObject*> v = myCollider->getColliders();
+			char path[200];
+			sprintf(path, "Game/Assets/Audio/hit%d.mp3", (rand() % 3));
+			AudioManager::GetInstance()->PlaySEFhit(BuildPath(path), 1, 10);
 			for (int i = 0; i < v.size(); i++) {
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
 					continue;
