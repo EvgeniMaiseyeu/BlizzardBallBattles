@@ -51,6 +51,8 @@ void GameScene::BuildBaseScene() {
 		bool isDirtSnowBorderLeft = x < width / 2 - iceWidth / 2 - 1;
 		bool isDirtSnowBorderRight = x > width / 2 + iceWidth / 2 + 1;
 
+		float farThrough = (float)x / (float)width;
+
 		for (int y = -1; y < height + 1; y++) {
 			bool isBottom = y == 0;
 			bool isTop = y == ((int)height - 1);
@@ -93,99 +95,69 @@ void GameScene::BuildBaseScene() {
 	}
 
 	//Generate Tiles. Refactor out
-	/*for (int x = 0; x < width; x++) {
+	for (int x = 0; x < width; x++) {
 		bool isLeft = x == 0;
 		bool isRight = x == width - 1;
 		bool isHouse = x < roofWidth - 1 || x >(width - roofWidth);
 		bool isLeftDoorCenter = x == 2;
 		bool isRightDoorCenter = x == width - 3;
-		bool isSnowy = x < width / 2 - iceWidth / 2 || x > width / 2 + iceWidth / 2;
-		bool isDirtSnowBorderLeft = x < width / 2 - iceWidth / 2 - 1;
-		bool isDirtSnowBorderRight = x > width / 2 + iceWidth / 2 + 1;
-		int z = -2;
 
 		for (int y = -1; y < height + 1; y++) {
 			bool isBottom = y == 0;
 			bool isTop = y == ((int)height - 1);
 			bool isAlt = (randSeed++ % (altChance * 2 + 1)) == 0;
 
+			tileIndex = TileIndex::Dirt_Center;
+
 			////Left or Right house roofs
 			if (isHouse) {
-				z = 2.0f;
-				randSeed++;
-				//std::cout << x << std::endl;
 				tileIndex = TileIndex::HouseLeft_Left;
 			}
 			if (isLeftDoorCenter) {
-				randSeed++;
-				//std::cout << "LeftHouse";
-				if (isAlt) {
-					tileIndex = TileIndex::HouseLeft_Center_Alt;
-				}
-				else {
-					tileIndex = TileIndex::HouseLeft_Center;
-				}
+				tileIndex = TileIndex::HouseLeft_Center;
 			}
 			if (isRightDoorCenter) {
-				//std::cout << "RightHouse";
-				if (isAlt) {
-					randSeed++;
-					tileIndex = TileIndex::HouseRight_Center_Alt;
-				}
-				else {
-					randSeed++;
-					tileIndex = TileIndex::HouseRight_Center;
-				}
+				tileIndex = TileIndex::HouseRight_Center;
 			}
 
 			////Corner Cases////
 			if (isTop) {
 				if (isLeft) {
-					//std::cout << "TOPLEFT";
 					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
 				}
 				else if (isRight) {
-					//std::cout << "TOPRIGHT";
 					tileIndex = TileIndex::DirtHouseRight_TopRight;
 				}
 				else if (isHouse) {
-					//std::cout << "isLeftDoorHouse : isRightDoorHouse";
 					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
 				}
 				else if (isLeftDoorCenter) {
-					//std::cout << "isLeftDoorCenter";
 					tileIndex = TileIndex::DirtHouseLeft_Top;
 				}
 				else if (isRightDoorCenter) {
-					//std::cout << "isRightDoorCenter";
 					tileIndex = TileIndex::DirtHouseRight_Top;
 				}
 			}
 			else if (isBottom) {
 				if (isLeft) {
-					//std::cout << "BOTTOMLEFT";
 					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
 				}
 				else if (isRight) {
-					//std::cout << "BOTTOMRIGHT";
 					tileIndex = TileIndex::DirtHouseRight_BottomRight;
 				}
 				else if (isHouse) {
-					//std::cout << "isLeftDoorHouse : isRightDoorHouse";
 					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
 				}
 				else if (isLeftDoorCenter) {
-					//std::cout << "isLeftDoorCenter";
 					tileIndex = TileIndex::DirtHouseLeft_Bottom;
 				}
 				else if (isRightDoorCenter) {
-					//std::cout << "isRightDoorCenter";
 					tileIndex = TileIndex::DirtHouseRight_Bottom;
 				}
 			}
 
-			if (y == -1 || y == height) {
-				tileIndex = TileIndex::Dirt_Center;
+			if (tileIndex == TileIndex::Dirt_Center || y == -1 || y == height) {
+				continue;
 			}
 
 			//TODO: Turn into "TileSprite"
@@ -194,8 +166,8 @@ void GameScene::BuildBaseScene() {
 			SpriteRenderer* spriteRenderer = tile->GetComponent<SpriteRenderer*>();
 			spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0, static_cast<int>(tileIndex)));
 			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
-			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
-			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, z);
+			spriteRenderer->SetLayer(RENDER_LAYER_SHADOWABLE);
+			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, 2.0);
 		}
-	}*/
+	}
 }
