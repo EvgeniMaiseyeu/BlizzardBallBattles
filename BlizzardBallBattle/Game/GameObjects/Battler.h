@@ -41,11 +41,11 @@ public:
 	bool IsAttached();
 
 	//Big snowball methods//
-	void handleBigThrow(float deltaTime);
-	bool makeBigSnowball(float deltaTime);
-	void animateCreation();
-	void handleCancels();
-	bool fireBigSnowball();
+	void HandleBigThrow(float deltaTime);
+	bool MakeBigSnowball(float deltaTime);
+	void AnimateCreation();
+	void HandleCancels();
+	bool FireBigSnowball();
 	//--------------------//
 
 private:
@@ -64,6 +64,7 @@ private:
 	GLuint _textureBufferID;
 
 	Physics* _physics;
+	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);

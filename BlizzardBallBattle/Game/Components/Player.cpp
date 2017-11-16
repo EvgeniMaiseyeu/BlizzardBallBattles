@@ -19,19 +19,19 @@ void Player::OnUpdate(int timeDelta) {
 	float deltaTime = (float)timeDelta / 1000.0f;
 	float moveSpeed = youBattler->stats.moveSpeed;
 
-	if (InputManager::GetInstance()->onKey(downKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(downKey)) {
 		PressedDown(moveSpeed);
 	}
 	
-	if (InputManager::GetInstance()->onKey(rightKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(rightKey)) {
 		PressedRight(moveSpeed);
 	}
 
-	if (InputManager::GetInstance()->onKey(upKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(upKey)) {
 		PressedUp(moveSpeed);
 	}
 
-	if (InputManager::GetInstance()->onKey(leftKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(leftKey)) {
 		PressedLeft(moveSpeed);
 	}
 
@@ -44,7 +44,7 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	if (InputManager::GetInstance()->onKeyReleased(upKey)) {
-		PressedUp(0);
+		//PressedUp(0);
 	}
 
 	if (InputManager::GetInstance()->onKeyReleased(leftKey)) {
@@ -52,20 +52,20 @@ void Player::OnUpdate(int timeDelta) {
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if(!youBattler->fireBigSnowball()){
+		if(!youBattler->FireBigSnowball()){
 			youBattler->ThrowSnowball();
 		}
 		
 	} else if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
-		youBattler->makeBigSnowball(deltaTime);
+		youBattler->MakeBigSnowball(deltaTime);
 	} 
 	
 	if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
-		youBattler->handleCancels();
+		youBattler->HandleCancels();
 	}
 
-	youBattler->handleBigThrow(deltaTime);
+	youBattler->HandleBigThrow(deltaTime);
 
 } 
 

@@ -1,4 +1,3 @@
-
 #include "Transform.h"
 #include "HelperFunctions.h"
 #include "MessageManager.h"
@@ -34,6 +33,22 @@ Battler::~Battler()
 
 }
 
+void Battler::OnUpdate(int ticks)
+{
+	if (_transform == NULL)
+	{
+		_transform = GetTransform();
+	}
+
+	float deltaTime = (float)ticks / 1000.0f;
+
+	UpdateThrowTimer(deltaTime);
+	//if (!CheckIfInBounds(_transform->getX(), _transform->getY()))
+	//{
+	//	Move(0, 0);
+	//}
+}
+
 void Battler::InitStats(int team)
 {
 	_physics = new Physics(this);
@@ -46,52 +61,14 @@ void Battler::InitStats(int team)
 	stats.isattached = false;
 }
 
-void Battler::OnUpdate(int ticks)
-{
-	float deltaTime = (float)ticks / 1000.0f;
-
-  	UpdateThrowTimer(deltaTime);
-}
-
-void Battler::MoveTo(GameObject* gameObject)
-{
-
-}
-
-void Battler::MoveTo(Vector2* position)
-{
-	GetTransform()->setPosition(position->getX(), position->getY());
-}
-
 bool Battler::Move(float x, float y)
 {
-	
-	if (CheckIfInBounds(x, y))
+	if (CheckIfInBounds(x + _transform->getX(), y + _transform->getY()))
 	{
 		_physics->setVelocity(new Vector2(x, y));
 		return true;
 	}
 	return false;
-}
-
-void Battler::Face(GameObject* gameObject)
-{
-
-}
-
-void Battler::Face(Vector2* position)
-{
-
-}
-
-void Battler::TurnTo(GameObject* gameObject)
-{
-
-}
-
-void Battler::TurnTo(Vector2* position)
-{
-
 }
 
 bool Battler::ThrowSnowball()
@@ -204,7 +181,7 @@ void Battler::Die()
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
-void Battler::handleBigThrow(float deltaTime) {
+void Battler::HandleBigThrow(float deltaTime) {
 	if (_fullLock && _timer < 4)
 		_timer += deltaTime;
 	else if (_fullLock && _timer > 4) {
@@ -221,7 +198,7 @@ void Battler::handleBigThrow(float deltaTime) {
 }
 
 //keep calling until return true
-bool Battler::makeBigSnowball(float deltaTime) {
+bool Battler::MakeBigSnowball(float deltaTime) {
 	if (!_fullLock) {
 		if (_makingSnowball) {
 			if (_timer < 12) {
@@ -254,7 +231,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 	return false;
 }
 
-bool Battler::fireBigSnowball() {
+bool Battler::FireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
 			_throwPower += 0.3f; //ai wont care about this
@@ -270,11 +247,11 @@ bool Battler::fireBigSnowball() {
 	return false;
 }
 
-void Battler::animateCreation() {
+void Battler::AnimateCreation() {
 
 }
 
-void Battler::handleCancels() {
+void Battler::HandleCancels() {
 	if (!_fullLock) {
 		if (_timer < 12 && _makingSnowball) {
 			//cancel snowball creation
@@ -296,6 +273,11 @@ bool Battler::CheckIfInBounds(float x, float y)
 	float mapYMax = getGameHeight() / 2;
 	float mapXMin = getGameWidth() / 6;
 	float mapYMin = -mapYMax;
+
+	//if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
+	//{
+	//	return;
+	//}
 
 	if (stats.teamID == 1)
 	{

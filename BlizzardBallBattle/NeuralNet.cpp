@@ -2,7 +2,16 @@
 #include "Neuron.h"
 #include <cassert>
 
-NeuralNet::NeuralNet(const vector<unsigned> &topology)
+NeuralNet::NeuralNet()
+{
+
+}
+
+NeuralNet::~NeuralNet()
+{
+}
+
+void NeuralNet::Initialize(const vector<unsigned> &topology)
 {
 	unsigned numLayers = topology.size();
 	for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum)
@@ -21,11 +30,6 @@ NeuralNet::NeuralNet(const vector<unsigned> &topology)
 		// Force the bias node's output value to 1.0. It's the last neuron created above
 		m_layers.back().back().SetOutputValue(1.0);
 	}
-
-}
-
-NeuralNet::~NeuralNet()
-{
 }
 
 void NeuralNet::FeedForward(const vector<double> &inputVals)

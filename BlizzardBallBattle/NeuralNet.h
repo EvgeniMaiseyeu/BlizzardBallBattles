@@ -1,20 +1,21 @@
 #pragma once
 #include <vector>
+#include "Neuron.h"
 
 using namespace std;
-class Neuron;
 
 typedef vector<Neuron> Layer;
 
 class NeuralNet
 {
 public:
-	NeuralNet(const vector<unsigned> &topology);
+	NeuralNet();
 	~NeuralNet();
 	void FeedForward(const vector<double> &inputVals);
 	void BackProp(const vector<double> &targetVals);
 	void GetResults(vector<double> &resultVals) const;
 	double GetRecentAverageError(void) const { return m_recentAverageError; };
+	void Initialize(const vector<unsigned> &topology);
 
 private: 
 	vector<Layer> m_layers;
