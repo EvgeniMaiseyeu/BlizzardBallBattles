@@ -5,13 +5,17 @@
 #include "PhysicsManager.h"
 #include "Collision/Collider.h"
 #include "UserDefinedRenderLayers.h"
+#include "MessageManager.h"
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f), _player(player) {
-	AddComponent<Physics*>(new Physics(this));
-	Physics* physics = GetComponent<Physics*>();
+
+Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
 	GetTransform()->setY(_player->GetTransform()->getY());
 	GetTransform()->setScale(0.5f);
+	teamID = dynamic_cast<Battler*>(_player)->stats.teamID;
+	playerID = dynamic_cast<Battler*>(_player)->getId();
 
 	//AddComponent<Collider*>(new Collider(this, 50.0f));
 	AddComponent<Collider*>(new Collider(this, GetTransform()->getScale() / 2));
@@ -22,7 +26,7 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 	velocity = *velocity * _speed;
 	velocity->rotateVector(radians);
-	physics->setVelocity(velocity);
+	_physics->setVelocity(velocity);
 	active = true;
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
@@ -30,15 +34,19 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 void Snowball::OnUpdate(int timeDelta)
 {
-	if (heldByPlayer) {
-		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
-			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-		else {
-			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
+	//if (heldByPlayer) {
+	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+	//		GetTransform()->setY(_player->GetTransform()->getY());
+	//	}
+	//	else {
+	//		GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+	//		GetTransform()->setY(_player->GetTransform()->getY());
+	//_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
+	//	}
+	//}
+	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		//DESTROOOOOOOOOY
 	}
 	if (active) {
 		if(!heldByPlayer)
@@ -52,9 +60,9 @@ void Snowball::OnUpdate(int timeDelta)
 					continue;
 				}
 				Battler *hitBattler = dynamic_cast<Battler*>(v[i]);
-				if (hitBattler && (v[i]->getId() != _player->getId())) {
+				if (hitBattler && (v[i]->getId() != playerID)) {
 					//yes we hit do stuff
-					if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID) {
+					if (hitBattler->stats.teamID != teamID) {
 						if (hitBattler->DealtDamage(1)) {
 							Destroy(v[i]);
 						}
@@ -80,4 +88,6 @@ void Snowball::setHeld(bool held) {
 	heldByPlayer = held;
 }
 	
-
+void Snowball::SetDistanceGoal(float dist) {
+	_distanceGoal = dist;
+}

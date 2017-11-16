@@ -17,24 +17,16 @@ Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_
 // Will be called every frame
 void Player::OnUpdate(int timeDelta) {
 	float deltaTime = (float)timeDelta / 1000.0f;
-	float moveSpeed = youBattler->stats.moveSpeed;
 
-	Vector2 *newVector = new Vector2(0, 0);
+	ComputeMovement(timeDelta);
 
-	if (InputManager::GetInstance()->onKey(downKey)) {
-		newVector->setY(-moveSpeed);
+	if (youBattler->stats.teamID == 1)
+	{
+		MatchManager::GetInstance()->teamOneNet.TrainData(youBattler, 1.0);
 	}
-	
-	if (InputManager::GetInstance()->onKey(rightKey)) {
-		newVector->setX(moveSpeed);
-	}
-
-	if (InputManager::GetInstance()->onKey(upKey)) {
-		newVector->setY(moveSpeed);
-	}
-
-	if (InputManager::GetInstance()->onKey(leftKey)) {
-		newVector->setX(-moveSpeed);
+	else
+	{
+		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
@@ -56,15 +48,38 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	youBattler->HandleBigThrow(deltaTime);
+} 
 
-	youBattler->Move(newVector);
+void Player::ComputeMovement(float deltaTime) {
+	float moveSpeed = youBattler->stats.moveSpeed;
 
-	if (youBattler->stats.teamID == 1)
-	{
-		MatchManager::GetInstance()->teamOneNet.TrainData(youBattler, 1.0);
+	float x = 0;
+	float y = 0;
+
+	if (InputManager::GetInstance()->onKey(downKey)) {
+		y -= moveSpeed;
 	}
-	else
-	{
-		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
+	
+	if (InputManager::GetInstance()->onKey(rightKey)) {
+		x += moveSpeed;
 	}
+
+	if (InputManager::GetInstance()->onKey(upKey)) {
+		y += moveSpeed;
+	}
+
+	if (InputManager::GetInstance()->onKey(leftKey)) {
+		x -= moveSpeed;
+	}
+	
+	if (youBattler->InIceZone(youBattler->GetTransform())) {
+		Vector2 *v = youBattler->GetVelocity();
+		float prevX = v->getX();
+		float prevY = v->getY();
+
+		x = max(-moveSpeed, min(moveSpeed, prevX + (x / 20)));
+		y = max(-moveSpeed, min(moveSpeed, prevY + (y / 20)));
+	}
+
+	youBattler->Move(x, y);
 } 

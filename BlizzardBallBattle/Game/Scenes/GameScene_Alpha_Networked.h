@@ -10,6 +10,7 @@ private:
 	void OnConnected();
 
 public:
+	GameScene_Alpha_Networked();
 	void OnStart();
 	void OnResume(){};
 	void OnUpdate(int ticks);

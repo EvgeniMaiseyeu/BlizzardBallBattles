@@ -27,7 +27,7 @@ AI::AI(GameObject* gameObject, bool _isLearning) : Component(gameObject)
 
 AI::~AI()
 {
-
+	MatchManager::GetInstance()->UnRegisterCharacter(myBattler);
 }
 
 void AI::Initialize(float _intelligence, float _courage, float _decisionFrequency)
@@ -39,6 +39,7 @@ void AI::Initialize(float _intelligence, float _courage, float _decisionFrequenc
 
 void AI::OnUpdate(int timeDelta) 
 {
+	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
 
 	switch (currentState)
@@ -168,10 +169,10 @@ void AI::WalkToTargetBattler()
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY)))
+	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY))
 	{
 		posXToMoveTo = 0;
-		myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY));
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 	}
 }
 
@@ -202,7 +203,7 @@ void AI::WalkToTargetPosition()
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(new Vector2(moveSpeed * directionX, moveSpeed * directionY));
+	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
 }
 
 void AI::SetLearnedVelocity()
@@ -218,9 +219,7 @@ void AI::SetLearnedVelocity()
 		learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
 	}
 
-	Vector2* moveVelocity = new Vector2(learnedDecisions[1], learnedDecisions[2]);
-
-	myBattler->Move(moveVelocity);
+	myBattler->Move(learnedDecisions[1], learnedDecisions[2]);
 	currentState = idle;
 }
 
@@ -283,3 +282,6 @@ void AI::Died()
 	currentState = dead;
 }
 
+void AI::Retarget() {
+	GetTarget();
+}

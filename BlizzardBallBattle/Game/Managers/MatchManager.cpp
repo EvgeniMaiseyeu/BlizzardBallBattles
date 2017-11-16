@@ -24,6 +24,14 @@ MatchManager::MatchManager()
 	TEAM_SIZE = 2;
 }
 
+void MatchManager::Stop() {
+	for (int i = 0; i < teamOne.size(); i++) {
+		UnRegisterCharacter(teamOne[i]);
+	}
+	for (int i = 0; i < teamTwo.size(); i++) {
+		UnRegisterCharacter(teamTwo[i]);
+	}
+}
 
 MatchManager::~MatchManager()
 {
@@ -53,10 +61,22 @@ bool MatchManager::UnRegisterCharacter(Battler *character)
 	if (character->stats.teamID == 1)
 	{
 		teamOne.erase(std::remove(teamOne.begin(), teamOne.end(), character), teamOne.end());
+		for (int i = 0; i < teamTwo.size(); i++) {
+			if (!teamTwo[i]->stats.isPlayer)
+			{
+				teamTwo[i]->GetComponent<AI*>()->Retarget();
+			}
+		}
 	}
 	else if (character->stats.teamID == 2)
 	{
 		teamTwo.erase(std::remove(teamTwo.begin(), teamTwo.end(), character), teamTwo.end());
+		for (int i = 0; i < teamOne.size(); i++) {
+			if (!teamOne[i]->stats.isPlayer)
+			{
+				teamOne[i]->GetComponent<AI*>()->Retarget();
+			}
+		}
 	}
 	else
 	{

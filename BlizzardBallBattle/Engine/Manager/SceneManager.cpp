@@ -28,7 +28,6 @@ bool SceneManager::UpdateScene(int ticks) {
 }
 
 bool SceneManager::HasScene() {
-    //std::cout << "have scene: " << !scenes.empty() << std::endl;
     return !scenes.empty();
 }
 

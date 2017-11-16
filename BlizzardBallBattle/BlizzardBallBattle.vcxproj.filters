@@ -303,6 +303,12 @@
     <ClCompile Include="Engine\External\Render\PostProcessing.cpp">
       <Filter>Source Files\Engine\External\Render</Filter>
     </ClCompile>
+    <ClCompile Include="AISelectionMenuScene.cpp">
+      <Filter>Source Files\Game\Scenes\MenuScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GarbageCollection.cpp">
+      <Filter>Source Files\Engine\External</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -538,6 +544,12 @@
     </ClInclude>
     <ClInclude Include="Engine\External\Render\PostProcessing.h">
       <Filter>Source Files\Engine\External\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="AISelectionMenuScene.h">
+      <Filter>Source Files\Game\Scenes\MenuScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GarbageCollection.h">
+      <Filter>Source Files\Engine\External</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

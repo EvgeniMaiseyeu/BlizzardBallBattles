@@ -34,7 +34,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(Vector2* v);
+	bool Move(float x, float y);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -43,6 +43,10 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	bool IsAttached();
+	bool CheckIfInBounds(Transform *pos, Vector2 *move);
+	bool ApplyIceSliding(Vector2 *v);
+	bool InIceZone(Transform *t);
+	Vector2 *GetVelocity();
 
 	//Big snowball methods//
 	void HandleBigThrow(float deltaTime);
@@ -65,6 +69,7 @@ private:
 	bool _makingSnowball;
 	bool _animate;
 	float _throwPower;
+	float _throwDistance;
 	//---------------------//
 
 	Shader* _shader;
@@ -79,7 +84,6 @@ private:
 
 	bool canFire;
 	float timeSinceLastShot;
-	bool CheckIfInBounds(Transform *pos, Vector2 *move);
 
 	//Networking
 	std::string networkingID;
