@@ -24,14 +24,25 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	velocity->rotateVector(radians);
 	physics->setVelocity(velocity);
 	active = true;
-
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
+	heldByPlayer = false;
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
 	if (active) {
-		GetTransform()->addRotation(15);
+		if(!heldByPlayer)
+			GetTransform()->addRotation(15);
 
 		if (myCollider->collisionDetected())
 		{
@@ -45,7 +56,7 @@ void Snowball::OnUpdate(int timeDelta)
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID) {
 						if (hitBattler->DealtDamage(1)) {
-							delete v[i];
+							Destroy(v[i]);
 						}
 						DestructSnowball();
 						return;
@@ -56,14 +67,17 @@ void Snowball::OnUpdate(int timeDelta)
 
 		float x = GetTransform()->getX();
 		if (x < -GAME_WIDTH / 2 || x > GAME_WIDTH / 2) {
-			delete this;
+			Destroy(this);
 		}
 	}
 }
 
-
 void Snowball::DestructSnowball() {
-	delete this; //TODO: Fix with Snowball Destruction
+	Destroy(this); //TODO: Fix with Snowball Destruction
 }
 
+void Snowball::setHeld(bool held) {
+	heldByPlayer = held;
+}
+	
 

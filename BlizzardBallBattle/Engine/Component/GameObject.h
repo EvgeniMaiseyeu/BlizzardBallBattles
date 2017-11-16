@@ -68,17 +68,13 @@ public:
     }
     
    void RemoveAllComponents() {
-	std::vector<std::string> toRemove;
     for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
         for (size_t i = 0; i < it->second.size(); i++){
-			toRemove.push_back(it->first);
 			it->second[i]->~Component();
             delete it->second[i];
         }
     }
-	for (int i = 0; i < toRemove.size(); i++) {
-		components.erase(toRemove[i]);
-	}
+	components.clear();
    }
    
    template <typename T> 
@@ -91,6 +87,8 @@ public:
    void OnUpdate(int ticks){};
    void OnEnd() {};
    Transform* GetTransform();
+
+   void Destroy(GameObject* gameObject);
    
    virtual ~GameObject();
 

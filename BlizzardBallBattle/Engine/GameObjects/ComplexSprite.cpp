@@ -31,7 +31,7 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
     AddComponent<SpriteRenderer*>(spriteRenderer);
 }
 
-ComplexSprite::~ComplexSprite() {
+//ComplexSprite::~ComplexSprite() {
     //TODO: Memory leak fix
     //if (sprite != nullptr) {
     //    delete(sprite);
@@ -39,7 +39,7 @@ ComplexSprite::~ComplexSprite() {
     //if (shader != nullptr) {
     //    delete(shader);
     //}
-}
+//}
 
 void ComplexSprite::NextFrame() {
     sprites[currentSpriteSheet]->NextIndex();

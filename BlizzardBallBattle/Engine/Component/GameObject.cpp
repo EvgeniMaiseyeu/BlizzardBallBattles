@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "GameManager.h"
 #include "SceneManager.h"
+#include "GameManager.h"
  
 GameObject::GameObject(bool g) {
     id = rand() + rand();
@@ -23,10 +24,14 @@ void GameObject::OnComponentsUpdate(int ticks) {
 }
 
 GameObject::~GameObject() {
-    GameManager::GetInstance()->RemoveGameObject(id);
     RemoveAllComponents();
 }
 
 Transform* GameObject::GetTransform() {
     return transform;
+}
+
+
+void GameObject::Destroy(GameObject* gameObject) {
+	GameManager::GetInstance()->RemoveGameObject(gameObject);
 }

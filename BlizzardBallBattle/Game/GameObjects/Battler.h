@@ -46,6 +46,9 @@ public:
 	void animateCreation();
 	void handleCancels();
 	bool fireBigSnowball();
+	bool getBigSnowball();
+	void lockToBattler();
+	void unlock();
 	//--------------------//
 	bool DealtDamage(int damage);
 

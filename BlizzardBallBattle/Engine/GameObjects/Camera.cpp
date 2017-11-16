@@ -20,7 +20,7 @@ Camera* Camera::GetActiveCamera() {
 }
 
 void Camera::NotifyInactivity() {
-    delete(this);
+    Destroy(this);
 }
 
 void Camera::EnsureInit() {

@@ -38,11 +38,15 @@ void Player::OnUpdate(int timeDelta) {
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if(!youBattler->fireBigSnowball()){
-			youBattler->ThrowSnowball();
+		if(youBattler->getBigSnowball()){
+			youBattler->fireBigSnowball();		
 		}
-		
-	} else if (InputManager::GetInstance()->onKey(shootKey)) {
+		else {
+		//	youBattler->ThrowSnowball();
+		}
+		 
+	}
+	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
 		youBattler->makeBigSnowball(deltaTime);
 	} 

@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "GameManager.h"
 
 Component::Component(GameObject* gameObject) {
    this->gameObject = gameObject;
@@ -9,3 +10,8 @@ GameObject* Component::GetGameObject() {
 }
 
 Component::~Component() {}
+
+
+void Component::Destroy(GameObject* gameObject) {
+	GameManager::GetInstance()->RemoveGameObject(gameObject);
+}
