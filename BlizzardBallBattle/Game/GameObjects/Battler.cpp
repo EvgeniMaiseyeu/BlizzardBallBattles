@@ -67,12 +67,14 @@ void Battler::MoveTo(Vector2* position)
 bool Battler::Move(float x, float y)
 {
 	
-//	if (CheckIfInBounds(x, y))
-	//{
+	if (!_fullLock && !_makingSnowball){
 		_physics->setVelocity(new Vector2(x, y));
 		return true;
-	//}
-//	return false;
+	}
+	else {
+		_physics->setVelocity(new Vector2(0, 0));
+	}
+	return false;
 }
 
 void Battler::Face(GameObject* gameObject)
@@ -219,7 +221,7 @@ void Battler::handleBigThrow(float deltaTime) {
 	else if (_fullLock && _timer > 2) {
 		//launch snowball
 		unlock();
-		_makingSnowball = false;
+
 		_bigSnowball->setHeld(false);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
@@ -234,7 +236,7 @@ void Battler::handleBigThrow(float deltaTime) {
 
 //keep calling until return true
 bool Battler::makeBigSnowball(float deltaTime) {
-	if (!_fullLock) {
+	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
 			if (_timer < 2) {
 				if(_bigSnowball != NULL){
@@ -245,6 +247,7 @@ bool Battler::makeBigSnowball(float deltaTime) {
 			}
 			else {
 				//made snowball
+				_makingSnowball = false;
 				lockToBattler();
 				_bigSnowball->setHeld(true);
 				_animate = false;
