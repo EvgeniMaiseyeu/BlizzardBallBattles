@@ -8,6 +8,7 @@
 #include "Sender.h"
 #include "Collider.h"
 #include <algorithm>
+#include "GameManager.h"
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;
@@ -25,11 +26,15 @@ MatchManager::MatchManager()
 }
 
 void MatchManager::Stop() {
-	for (int i = 0; i < teamOne.size(); i++) {
-		UnRegisterCharacter(teamOne[i]);
+	while (teamOne.size() > 0) {
+		Battler* toDelete = teamOne[0];
+		UnRegisterCharacter(toDelete);
+		GameManager::GetInstance()->RemoveGameObject(toDelete);
 	}
-	for (int i = 0; i < teamTwo.size(); i++) {
-		UnRegisterCharacter(teamTwo[i]);
+	while (teamTwo.size() > 0) {
+		Battler* toDelete = teamTwo[0];
+		UnRegisterCharacter(toDelete);
+		GameManager::GetInstance()->RemoveGameObject(toDelete);
 	}
 }
 
@@ -93,6 +98,13 @@ void MatchManager::StartGame()
 
 void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture, int teamOneFormation, int teamTwoFormation)
 {
+	teamOne.clear();
+	teamTwo.clear();
+	playerOne = NULL;
+	playerTwo = NULL;
+	teamOneAIUnits.clear();
+	teamTwoAIUnits.clear();
+
 	float startPosXMax = getGameWidth() / 2;
 	float startPosYMax = getGameHeight() / 2;
 	float startPosXMin = getGameWidth() / 6;
@@ -204,7 +216,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		{
 			intelligence = 0.5f;
 			courage = 1.0f;
-			decisionFrequency = randomFloatInRange(0.2f, 0.5f);
+			decisionFrequency = randomFloatInRange(0.4f, 0.8f);
 		}
 
 		teamTwoAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);

@@ -27,6 +27,7 @@ void SceneTemplate::OnStart(){
 
 void SceneTemplate::OnPause() {
 	MatchManager::GetInstance()->Stop();
+	ClearScene();
 }
 
 void SceneTemplate::OnEnd() {

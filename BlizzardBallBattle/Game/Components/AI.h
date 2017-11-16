@@ -52,6 +52,7 @@ private:
 	float courage;
 
 	bool isLearning;
+	int teamID;
 
 public:
 	AI(GameObject* gameObject, bool _isLearning);

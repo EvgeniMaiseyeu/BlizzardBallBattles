@@ -7,6 +7,8 @@
 #include "UserDefinedRenderLayers.h"
 #include "MessageManager.h"
 #include "AudioManager.h"
+#include "SceneManager.h"
+#include "GameScene.h"
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
@@ -31,6 +33,8 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	active = true;
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
+
+	//dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(this);
 }
 
 void Snowball::OnUpdate(int timeDelta)
