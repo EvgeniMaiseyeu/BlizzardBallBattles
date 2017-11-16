@@ -98,6 +98,13 @@ void MatchManager::StartGame()
 
 void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GLuint spriteSheetTexture, int teamOneFormation, int teamTwoFormation)
 {
+	teamOne.clear();
+	teamTwo.clear();
+	playerOne = NULL;
+	playerTwo = NULL;
+	teamOneAIUnits.clear();
+	teamTwoAIUnits.clear();
+
 	float startPosXMax = getGameWidth() / 2;
 	float startPosYMax = getGameHeight() / 2;
 	float startPosXMin = getGameWidth() / 6;
@@ -209,7 +216,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		{
 			intelligence = 0.5f;
 			courage = 1.0f;
-			decisionFrequency = randomFloatInRange(0.2f, 0.5f);
+			decisionFrequency = randomFloatInRange(0.4f, 0.8f);
 		}
 
 		teamTwoAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);

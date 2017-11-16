@@ -46,10 +46,10 @@ enum class TileIndex {
 
 class GameScene : public Scene {
 private:
-	std::vector<GameObject*> thingsToClear;
 	Shader* ourShader;
 public:
 	GameScene(int player1Choice, int player2Choice);
     void BuildBaseScene();
 	void ClearScene();
+	std::vector<GameObject*> thingsToClear;
 };

@@ -108,6 +108,10 @@ void GameManager::RemoveGameObject(GameObject* objectToRemove) {
 }
 
 void GameManager::ClearObjectsToRemove() {
+	//Do it by ID, don't kill the same ID twice
+	sort(gameObjectsToRemove.begin(), gameObjectsToRemove.end());
+	gameObjectsToRemove.erase(unique(gameObjectsToRemove.begin(), gameObjectsToRemove.end()), gameObjectsToRemove.end());
+
 	for (int i = 0; i < gameObjectsToRemove.size(); i++) {
 		GameObject* object = gameObjectsToRemove[i];
 		globalGameObjects.erase(object->getId());
