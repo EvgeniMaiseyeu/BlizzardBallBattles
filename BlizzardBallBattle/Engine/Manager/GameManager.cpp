@@ -36,7 +36,6 @@ void GameManager::OnStart()
         lastTime = curTime;
         //update system managers then.
         OnUpdate(ticks);
-        std::cout << ticks << std::endl;
         //update game.
         SceneManager::GetInstance()->UpdateScene(ticks);
     }
