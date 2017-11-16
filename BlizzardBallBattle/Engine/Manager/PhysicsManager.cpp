@@ -32,39 +32,17 @@ void PhysicsManager::OnUpdate(int ticks) {
 				Collider* c2 = _sceneColliders[j];
 
 				if (checkCollision(c1->getTransform(), c2->getTransform()) < (c1->getRadius() + c2->getRadius())) {
-					c1->addCollision(c2->GetGameObject());
-					c1->setCollision(true);
-					c2->setCollision(true);
-					c2->addCollision(c1->GetGameObject());
+					delete(c2->GetGameObject());
+					delete(c1->GetGameObject());
+					return;
+					//c1->addCollision(c2->GetGameObject());
+					//c1->setCollision(true);
+					//c2->setCollision(true);
+					//c2->addCollision(c1->GetGameObject());
 				}
 			}
 		}
 	}
-	/*
-	for (std::map<int, GameObject*>::iterator i = _sceneObjects.begin(); i != _sceneObjects.end(); i++) {
-		if (i->second->GetComponent<Collider*>()) {
-			for (std::map<int, GameObject*>::iterator j = i; j != _sceneObjects.end(); j++) {
-				if (j->second->GetComponent<Collider*>()) {
-					Collider* cl1 = i->second->GetComponent<Collider*>();
-					Collider* cl2 = j->second->GetComponent<Collider*>();
-					if (checkCollision(i->second->GetTransform(), j->second->GetTransform()) < (cl1->getRadius() + cl2->getRadius())) {
-						cl1->setCollision(true);
-						cl1->setColliderObj(j->second);
-						cl2->setCollision(true);
-						cl2->setColliderObj(i->second);
-					}
-					else {
-						cl1->setCollision(false);
-						cl1->setColliderObj(NULL);
-						cl2->setCollision(false);
-						cl2->setColliderObj(NULL);
-					}
-				}
-			}
-		}
-	//	std::prev(i);
-	}
-	*/
 }
 
 void PhysicsManager::addCollider(Collider* c) {

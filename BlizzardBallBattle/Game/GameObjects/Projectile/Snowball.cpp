@@ -6,8 +6,8 @@
 #include "Collision/Collider.h"
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
-	Physics* physics = new Physics(this);
-	AddComponent<Physics*>(physics);
+	AddComponent<Physics*>(new Physics(this));
+	Physics* physics = GetComponent<Physics*>();
 	GetTransform()->setX(_player->GetTransform()->getX());
 	GetTransform()->setY(_player->GetTransform()->getY());
 	GetTransform()->setScale(0.5f);
@@ -38,11 +38,11 @@ void Snowball::OnUpdate(int timeDelta)
 				if (hitBattler && (v[i]->getId() != _player->getId())) {
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != dynamic_cast<Battler*>(_player)->stats.teamID) {
-						hitBattler->DealtDamage(1);
-						SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-						PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
-						//remove self from rendering, physics, and stop checking for collision detection
-						active = false;
+						if (hitBattler->DealtDamage(1)) {
+							delete v[i];
+						}
+						DestructSnowball();
+						return;
 					}
 				}
 			}
@@ -50,12 +50,14 @@ void Snowball::OnUpdate(int timeDelta)
 
 		float x = GetTransform()->getX();
 		if (x < -GAME_WIDTH / 2 || x > GAME_WIDTH / 2) {
-			SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-			PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
-			//remove self from rendering, physics, and stop checking for collision detection
-			active = false;
+			delete this;
 		}
 	}
+}
+
+
+void Snowball::DestructSnowball() {
+	delete this; //TODO: Fix with Snowball Destruction
 }
 
 

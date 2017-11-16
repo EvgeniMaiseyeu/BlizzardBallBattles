@@ -119,6 +119,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		aiUnits.push_back(unitAI);
 	}
 
+
 	//Team 2
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);

@@ -8,3 +8,4 @@ GameObject* Component::GetGameObject() {
  return gameObject;
 }
 
+Component::~Component() {}

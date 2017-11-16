@@ -7,6 +7,7 @@
 #include <map>
 #include "Updateable.h"
 #include "Transform.h"
+#include <iostream>
 
 class GameObject : public Updateable {
 private:
@@ -34,6 +35,7 @@ public:
 		   return (T)components[GetClassName<T>()].front();
 	   }
 	   else {
+           std::cout << "ERROR::FAILED TO FIND COMPONENT " << GetClassName<T>() << "  FOR OBJECT " << id << std::endl;
 		   return NULL;
 	   }
    }
@@ -68,6 +70,7 @@ public:
    void RemoveAllComponents() {
     for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
         for (size_t i = 0; i < it->second.size(); i++){
+            it->second[i]->~Component();
             delete it->second[i];
         }
     }

@@ -20,14 +20,16 @@ void LaunchMenuScene::CreateScene() {
     howToText = new SimpleSprite("HowTo.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, Shader::GetShader(SHADER_PIXEL));
     TestGo *go = new TestGo();
     delete go;
-    // SimpleSprite *sp = new SimpleSprite("Title.png", 1.0f, 1.0f);
-    // delete sp;
+    SimpleSprite *sp = new SimpleSprite("Title.png", 1.0f, 1.0f);
+    delete sp;
+    Battler* bt = new Battler(1, "Title.png");
+    delete bt;
 }
 
 void LaunchMenuScene::DestroyScene() {
     DestroyBaseScene();
-    menuTitle->GetTransform()->setScale(0.0f);
-    howToText->GetTransform()->setScale(0.0f);
+    //menuTitle->GetTransform()->setScale(0.0f);
+    //howToText->GetTransform()->setScale(0.0f);
 	Purge();
 }
 

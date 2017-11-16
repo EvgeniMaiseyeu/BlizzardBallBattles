@@ -30,10 +30,10 @@ Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFi
 	InitStats(team);
 }
 
-Battler::~Battler()
+/*Battler::~Battler()
 {
 
-}
+}*/
 
 void Battler::InitStats(int team)
 {
@@ -119,13 +119,15 @@ void Battler::UpdateThrowTimer(float deltaTime)
 	}
 }
 
-void Battler::DealtDamage(int damage)
+bool Battler::DealtDamage(int damage)
 {
 	stats.hitpoints -= damage;
 	if (stats.hitpoints <= 0)
 	{
 		Die();
+		return true;
 	}
+	return false;
 }
 
 void Battler::Die()
@@ -157,9 +159,4 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
-
-	GetTransform()->setScale(0.0f);
-	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
-	delete this;
 }

@@ -216,7 +216,6 @@ bool SortByZ(SpriteRenderer* lhs, SpriteRenderer* rhs) {
 	return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
 }
 
-
 void SpriteRendererManager::PrepareRenderingThread() {
 	GLuint lastShaderUnset = 1000000;
 	std::unique_lock<std::mutex> lock(threadMutex);

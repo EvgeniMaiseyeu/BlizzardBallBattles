@@ -56,7 +56,7 @@ void GameScene::BuildBaseScene() {
 			bool isTop = y == ((int)height - 1);
 			bool isAlt = (randSeed++ % (altChance * 2 + 1)) == 0;
 
-			std::cout << y << " == " << (height - 1) << " = " << isTop << std::endl;
+			//std::cout << y << " == " << (height - 1) << " = " << isTop << std::endl;
 			//TODO: Change to assignting TileIndex and doing one single cast at the end
 			//Snowy-To-Ice Areas
 			if (isSnowy) {
@@ -115,12 +115,12 @@ void GameScene::BuildBaseScene() {
 			if (isHouse) {
 				z = 2.0f;
 				randSeed++;
-				std::cout << x << std::endl;
+				//std::cout << x << std::endl;
 				tileIndex = TileIndex::HouseLeft_Left;
 			}
 			if (isLeftDoorCenter) {
 				randSeed++;
-				std::cout << "LeftHouse";
+				//std::cout << "LeftHouse";
 				if (isAlt) {
 					tileIndex = TileIndex::HouseLeft_Center_Alt;
 				}
@@ -129,7 +129,7 @@ void GameScene::BuildBaseScene() {
 				}
 			}
 			if (isRightDoorCenter) {
-				std::cout << "RightHouse";
+				//std::cout << "RightHouse";
 				if (isAlt) {
 					randSeed++;
 					tileIndex = TileIndex::HouseRight_Center_Alt;
@@ -143,45 +143,45 @@ void GameScene::BuildBaseScene() {
 			////Corner Cases////
 			if (isTop) {
 				if (isLeft) {
-					std::cout << "TOPLEFT";
+					//std::cout << "TOPLEFT";
 					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
 				}
 				else if (isRight) {
-					std::cout << "TOPRIGHT";
+					//std::cout << "TOPRIGHT";
 					tileIndex = TileIndex::DirtHouseRight_TopRight;
 				}
 				else if (isHouse) {
-					std::cout << "isLeftDoorHouse : isRightDoorHouse";
+					//std::cout << "isLeftDoorHouse : isRightDoorHouse";
 					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
 				}
 				else if (isLeftDoorCenter) {
-					std::cout << "isLeftDoorCenter";
+					//std::cout << "isLeftDoorCenter";
 					tileIndex = TileIndex::DirtHouseLeft_Top;
 				}
 				else if (isRightDoorCenter) {
-					std::cout << "isRightDoorCenter";
+					//std::cout << "isRightDoorCenter";
 					tileIndex = TileIndex::DirtHouseRight_Top;
 				}
 			}
 			else if (isBottom) {
 				if (isLeft) {
-					std::cout << "BOTTOMLEFT";
+					//std::cout << "BOTTOMLEFT";
 					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
 				}
 				else if (isRight) {
-					std::cout << "BOTTOMRIGHT";
+					//std::cout << "BOTTOMRIGHT";
 					tileIndex = TileIndex::DirtHouseRight_BottomRight;
 				}
 				else if (isHouse) {
-					std::cout << "isLeftDoorHouse : isRightDoorHouse";
+					//std::cout << "isLeftDoorHouse : isRightDoorHouse";
 					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
 				}
 				else if (isLeftDoorCenter) {
-					std::cout << "isLeftDoorCenter";
+					//std::cout << "isLeftDoorCenter";
 					tileIndex = TileIndex::DirtHouseLeft_Bottom;
 				}
 				else if (isRightDoorCenter) {
-					std::cout << "isRightDoorCenter";
+					//std::cout << "isRightDoorCenter";
 					tileIndex = TileIndex::DirtHouseRight_Bottom;
 				}
 			}
