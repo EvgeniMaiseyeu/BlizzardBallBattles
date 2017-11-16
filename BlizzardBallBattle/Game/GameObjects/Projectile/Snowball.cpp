@@ -6,6 +6,13 @@
 #include "Collision/Collider.h"
 #include "UserDefinedRenderLayers.h"
 #include "MessageManager.h"
+#include "AudioManager.h"
+#include "SceneManager.h"
+#include "GameScene.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+#define _CRT_SECURE_NO_WARNINGS
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
@@ -31,10 +38,15 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
 	_bigSnowball = false;
+	//dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(this);
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	//If the scene is not a GameScene, destroy self
+	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
+		Destroy(this);
+	}
 	//if (heldByPlayer) {
 	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
@@ -59,6 +71,9 @@ void Snowball::OnUpdate(int timeDelta)
 		if (myCollider->collisionDetected())
 		{
 			std::vector<GameObject*> v = myCollider->getColliders();
+			char path[200];
+			sprintf(path, "Game/Assets/Audio/hit%d.mp3", (rand() % 3));
+			AudioManager::GetInstance()->PlaySEFhit(BuildPath(path), 1, 10);
 			for (int i = 0; i < v.size(); i++) {
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
 					continue;

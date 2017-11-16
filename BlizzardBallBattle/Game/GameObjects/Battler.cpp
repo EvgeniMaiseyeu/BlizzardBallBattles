@@ -10,13 +10,15 @@
 #include "Battler.h"
 #include "Snowball.h"
 #include "GameManager.h"
+#include "GameScene.h"
+#include "SceneManager.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
 	self->ThrowSnowball();
 }
 
-Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
 {
 	this->networkingID = networkingID;
 	this->isSender = isSender;
@@ -26,7 +28,7 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	InitStats(team);
 }
 
-Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
 {
 	this->isSender = false;
 	this->networkingID = -1;
@@ -230,6 +232,18 @@ bool Battler::DealtDamage(int damage)
 
 void Battler::Die()
 {
+	GameObject* snowman = new GameObject(false);
+	snowman->AddComponent<SpriteRenderer*>(new SpriteRenderer(snowman));
+	SpriteRenderer* spriteRenderer = snowman->GetComponent<SpriteRenderer*>();
+	GLuint textureTileSet = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/BackgroundTileSet.png"));
+	spriteRenderer->SetActiveSprite((ISprite*)new SpriteSheet(textureTileSet, 8, 4, 0,static_cast<int>(TileIndex::Snow_Center_Alt4_Snowman)));
+	spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
+	spriteRenderer->SetLayer(RENDER_LAYER_SHADOWABLE);
+	snowman->GetTransform()->setPosition(GetTransform()->getX(), GetTransform()->getY(), GetTransform()->getZ());
+	snowman->GetTransform()->setRotation(GetTransform()->getRotation());
+
+	dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(snowman);
+
 	if (stats.isPlayer)
 	{
 		int winningTeam = 1;
@@ -262,12 +276,18 @@ void Battler::Die()
 	}
 }
 
-ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
+ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 	ComplexSpriteinfo* info = new ComplexSpriteinfo();
-
-	info->AddInfo("Character_IdleSheet.png", 8, 1);
-	info->AddInfo("Character_MoveSheet.png", 8, 1);
-	info->AddInfo("Character_ThrowSheet.png", 8, 1);
+	if (team == 1) {
+		info->AddInfo("Character_IdleSheet.png", 8, 1);
+		info->AddInfo("Character_MoveSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowSheet.png", 8, 1);
+	} else {
+		info->AddInfo("Character2_IdleSheet.png", 8, 1);
+		info->AddInfo("Character2_MoveSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowSheet.png", 8, 1);
+	}
+	
 
 	return info;
 }

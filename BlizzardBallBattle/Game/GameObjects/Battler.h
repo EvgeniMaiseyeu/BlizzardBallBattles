@@ -91,6 +91,6 @@ private:
 	std::string networkingID;
 	bool isSender;
 
-	ComplexSpriteinfo* GenerateSpriteInfo();
+	ComplexSpriteinfo* GenerateSpriteInfo(int team);
 };
 

@@ -309,6 +309,9 @@
     <ClCompile Include="GarbageCollection.cpp">
       <Filter>Source Files\Engine\External</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Manager\AudioManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -550,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="GarbageCollection.h">
       <Filter>Source Files\Engine\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manager\AudioManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
