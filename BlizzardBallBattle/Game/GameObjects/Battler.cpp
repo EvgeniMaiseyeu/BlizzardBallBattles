@@ -34,10 +34,10 @@ Battler::Battler(int team, std::string textureFileName) : ComplexSprite(Generate
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 }
 
-Battler::~Battler()
+/*Battler::~Battler()
 {
 
-}
+}*/
 
 void Battler::InitStats(int team)
 {
@@ -127,7 +127,7 @@ void Battler::UpdateThrowTimer(float deltaTime)
 	}
 }
 
-void Battler::DealtDamage(int damage)
+bool Battler::DealtDamage(int damage)
 {
 	bool isattached = false;
 	stats.hitpoints -= damage;
@@ -135,6 +135,7 @@ void Battler::DealtDamage(int damage)
 	if (stats.hitpoints <= 0)
 	{
 		Die();
+		return true;
 	}
 	if (stats.isattached)
 	{
@@ -150,6 +151,7 @@ void Battler::DealtDamage(int damage)
 	}
 	//return true;
 
+	return false;
 }
 
 /*bool Battler::IsAttached()
@@ -195,11 +197,6 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
-
-	GetTransform()->setScale(0.0f);
-	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
-	delete this;
 }
 
 ComplexSpriteinfo* Battler::GenerateSpriteInfo() {

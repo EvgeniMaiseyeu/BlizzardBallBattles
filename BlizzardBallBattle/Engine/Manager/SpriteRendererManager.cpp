@@ -246,8 +246,7 @@ bool SortByZ(SpriteRenderer *lhs, SpriteRenderer *rhs)
 	return lhs->GetGameObject()->GetTransform()->getZ() < rhs->GetGameObject()->GetTransform()->getZ();
 }
 
-void SpriteRendererManager::PrepareRenderingThread()
-{
+void SpriteRendererManager::PrepareRenderingThread() {
 	GLuint lastShaderUnset = 1000000;
 	std::unique_lock<std::mutex> lock(threadMutex);
 
@@ -273,6 +272,7 @@ void SpriteRendererManager::PrepareRenderingThread()
 				if (IsRenderingLayerEnabled(spriteRenderer->GetLayer()))
 				{
 					RenderingObject ro;
+
 					Shader *shader = spriteRenderer->GetShader();
 					GLuint roShader = shader->Program;
 					ro.sprite = spriteRenderer->GetSprite();
@@ -298,7 +298,9 @@ void SpriteRendererManager::PrepareRenderingThread()
 
 					ro.spriteRenderer = spriteRenderer;
 
-					rg.children.push_back(ro);
+					if (ro.IsValid()) {
+						rg.children.push_back(ro);
+					}
 				}
 			}
 			renderingGroups.push_back(rg);
@@ -343,6 +345,10 @@ void SpriteRendererManager::RenderShadowPass(float xSourceDirection, float ySour
 		for (size_t j = 0; j < rg.children.size(); j++)
 		{
 			RenderingObject ro = rg.children[j];
+
+			if (!ro.IsValid()) {
+				continue;
+			}
 
 			if (ro.spriteRenderer->GetLayer() != RENDER_LAYER_SHADOWABLE) {
 				continue;
@@ -405,6 +411,10 @@ void SpriteRendererManager::RenderPass(int layerToRender, bool clearFirst)
 		for (size_t j = 0; j < rg.children.size(); j++)
 		{
 			RenderingObject ro = rg.children[j];
+
+			if (!ro.IsValid()) {
+				continue;
+			}
 
 			if (layerToRender != RENDER_LAYER_ALL && layerToRender != ro.spriteRenderer->GetLayer()) {
 				continue;

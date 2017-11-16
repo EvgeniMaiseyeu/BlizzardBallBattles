@@ -25,7 +25,7 @@ public:
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
-	~Battler();
+	//~Battler();
 
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
@@ -38,7 +38,6 @@ public:
 	void OnUpdate(int ticks);
 	void OnEnd() {};
 	bool ThrowSnowball();
-	void DealtDamage(int damage);
 	bool IsAttached();
 
 	//Big snowball methods//
@@ -48,6 +47,7 @@ public:
 	void handleCancels();
 	bool fireBigSnowball();
 	//--------------------//
+	bool DealtDamage(int damage);
 
 private:
 

@@ -25,6 +25,13 @@ struct RenderingObject {
     ISprite* sprite;
     Transform* transform;
     SpriteRenderer* spriteRenderer;
+
+	bool IsValid() {
+		if (spriteRenderer == NULL || spriteRenderer == nullptr || transform == NULL || transform == nullptr) {
+			return false;
+		}
+		return true;
+	}
 };
 
 struct RenderingTextureCoordinateGroup {

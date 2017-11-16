@@ -9,19 +9,28 @@ void Scene::AddGameObject(int id, GameObject* obj) {
 }
  
 void Scene::RemoveGameObject(int id) {
-    sceneObjects.erase(id);
+	idsToRemove.push_back(id);
 }
 
 void Scene::OnObjectsUpdate(int ticks) {
-    for (std::map<int, GameObject*>::iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it) {
-        it->second->OnComponentsUpdate(ticks);
-        it->second->OnUpdate(ticks);
+	for (int i = 0; i < idsToRemove.size(); i++) {
+		sceneObjects.erase(idsToRemove[i]);
+	}
+	idsToRemove.clear();
+    for (std::map<int, GameObject*>::iterator it=sceneObjects.begin(); it!=sceneObjects.end(); it++) {
+		if (it->second != nullptr && it->second != NULL) {
+			it->second->OnComponentsUpdate(ticks);
+			it->second->OnUpdate(ticks);
+		}
+		else {
+			int hit = true;
+		}
     }
 }
 
 
 void Scene::Purge() {
-	for (std::map<int, GameObject*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+	/*for (std::map<int, GameObject*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 		SpriteRenderer* renderer = it->second->GetComponent<SpriteRenderer*>();
 		Collider* collider = it->second->GetComponent<Collider*>();
 		if (renderer != NULL) {
@@ -30,5 +39,5 @@ void Scene::Purge() {
 		if (collider != NULL) {
 			PhysicsManager::GetInstance()->removeCollider(collider);
 		}
-	}
+	}*/
 }

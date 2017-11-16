@@ -6,8 +6,8 @@ class GameObject;
 class Component : public Updateable {
 public:
    Component(GameObject* gameObject);
+   virtual ~Component();
    GameObject* GetGameObject();
-   virtual ~Component() {}
    virtual void OnStart() = 0;
    virtual void OnUpdate(int ticks) = 0;
    virtual void OnEnd() = 0;

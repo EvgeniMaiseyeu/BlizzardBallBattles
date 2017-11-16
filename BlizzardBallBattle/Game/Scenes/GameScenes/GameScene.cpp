@@ -117,7 +117,7 @@ void GameScene::BuildBaseScene() {
 			if (isHouse) {
 				z = 2.0f;
 				randSeed++;
-				std::cout << x << std::endl;
+				//std::cout << x << std::endl;
 				tileIndex = TileIndex::HouseLeft_Left;
 			}
 			if (isLeftDoorCenter) {
