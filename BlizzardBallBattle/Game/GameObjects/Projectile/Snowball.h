@@ -12,6 +12,8 @@ private:
 	float _speed;
 	Collider* myCollider;
 	bool heldByPlayer;
+	int teamID;
+	int playerID;
 	float _distanceTraveled;
 	float _distanceGoal;
 	Physics* _physics;

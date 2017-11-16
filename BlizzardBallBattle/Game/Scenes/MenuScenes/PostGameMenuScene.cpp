@@ -26,7 +26,6 @@ void PostGameMenuScene::OnPause() {
 	DestroyBaseScene();
 	winnerText->GetTransform()->setScale(0.0f);
 	spaceToReturnText->GetTransform()->setScale(0.0f);
-	Purge();
 }
 
 PostGameMenuScene::~PostGameMenuScene() {

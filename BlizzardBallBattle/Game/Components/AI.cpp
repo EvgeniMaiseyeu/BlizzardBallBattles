@@ -27,7 +27,7 @@ AI::AI(GameObject* gameObject, bool _isLearning) : Component(gameObject)
 
 AI::~AI()
 {
-
+	MatchManager::GetInstance()->UnRegisterCharacter(myBattler);
 }
 
 void AI::Initialize(float _intelligence, float _courage, float _decisionFrequency)
@@ -39,6 +39,7 @@ void AI::Initialize(float _intelligence, float _courage, float _decisionFrequenc
 
 void AI::OnUpdate(int timeDelta) 
 {
+	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
 
 	switch (currentState)
@@ -281,3 +282,6 @@ void AI::Died()
 	currentState = dead;
 }
 
+void AI::Retarget() {
+	GetTarget();
+}

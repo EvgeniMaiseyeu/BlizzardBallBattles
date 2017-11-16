@@ -21,8 +21,8 @@ void NetworkingTestScene::OnStart() {
 }
 
 void NetworkingTestScene::OnEnd() {
-    delete(player1);
-    delete(player2);
+    //delete(player1);
+    //delete(player2);
 }
 
 void NetworkingTestScene::OnUpdate(int ticks) {

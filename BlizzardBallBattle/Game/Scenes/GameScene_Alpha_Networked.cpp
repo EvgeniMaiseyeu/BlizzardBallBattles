@@ -19,14 +19,17 @@
 #include "MatchManager.h"
 #include "Collider.h"
 
+GameScene_Alpha_Networked::GameScene_Alpha_Networked() : GameScene(1, 1) {
+}
+
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
 	BuildBaseScene();
 }
 
 void GameScene_Alpha_Networked::OnEnd() {
-	delete(player1);
-	delete(player2);
+	//delete(player1);
+	//delete(player2);
 }
 
 void GameScene_Alpha_Networked::OnUpdate(int ticks) {

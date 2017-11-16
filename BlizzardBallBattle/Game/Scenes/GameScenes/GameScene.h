@@ -47,6 +47,6 @@ class GameScene : public Scene {
 private:
 	Shader* ourShader;
 public:
-	GameScene();
+	GameScene(int player1Choice, int player2Choice);
     void BuildBaseScene();
 };

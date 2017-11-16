@@ -17,7 +17,7 @@ GameObjectTemplate::GameObjectTemplate() : GameObject(false) {
 //HINT: If you ever type "new", you should probably delete it.
 //The only exception is we can assume components will be deleted by the GameObject base class
 GameObjectTemplate::~GameObjectTemplate() {
-    delete(dataToDestroyForExample);
+    //delete(dataToDestroyForExample);
 }
 
 //An example method showing how you can create your own methods that ca do anything

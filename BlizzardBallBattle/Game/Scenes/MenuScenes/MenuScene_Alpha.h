@@ -10,6 +10,7 @@ private:
     SimpleSprite* menuForeground;
 
 public:
+	MenuScene_Alpha() {}
     virtual void OnEnd();
 
     void BuildBaseScene();

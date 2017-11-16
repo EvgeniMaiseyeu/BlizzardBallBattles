@@ -4,6 +4,14 @@
 #include <condition_variable>
 #include "SpriteSheet.h"
 #include "Camera.h"
+#include "GarbageCollection.h"
+
+/*
+TODO:
+* Fix the thread issue as it's now single threaded
+
+
+*/
 
 //Statics must be given definitions
 SpriteRendererManager *SpriteRendererManager::instance;
@@ -30,15 +38,16 @@ spriteRenderers.erase(id);
 
 void SpriteRendererManager::OnUpdate(int ticks)
 {
+	PrepareRenderingThread();
 	//Load fboPlainPass
-	renderReadingStick.lock();
+	//renderReadingStick.lock();
 
 	Camera::GetActiveCamera()->ApplyRenderFilters(this);
 
 	SDL_GL_SwapWindow(mainWindow);
 	
-	condition.notify_one();
-	renderReadingStick.unlock();
+	//condition.notify_one();
+	//renderReadingStick.unlock();
 }
 
 SpriteRendererManager::SpriteRendererManager()
@@ -63,8 +72,8 @@ SpriteRendererManager::SpriteRendererManager()
 
 	renderingThreadIsAlive = true;
 	rendering = false;
-	renderingThread = std::thread(&SpriteRendererManager::PrepareRenderingThread, this);
-	renderingThread.detach();
+	//renderingThread = std::thread(&SpriteRendererManager::PrepareRenderingThread, this);
+	//renderingThread.detach();
 
 	fboPlainPass = FrameBufferObject(SCREEN_WIDTH, SCREEN_HEIGHT);
 	fboBloomBrightness = FrameBufferObject(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -248,12 +257,14 @@ bool SortByZ(SpriteRenderer *lhs, SpriteRenderer *rhs)
 
 void SpriteRendererManager::PrepareRenderingThread() {
 	GLuint lastShaderUnset = 1000000;
-	std::unique_lock<std::mutex> lock(threadMutex);
 
-	while (renderingThreadIsAlive)
-	{
-		condition.wait(lock);
-		renderReadingStick.lock();
+	//while (isBeingCollected);
+	//std::unique_lock<std::mutex> lock(threadMutex);
+
+	//while (renderingThreadIsAlive)
+	//{
+		//condition.wait(lock);
+		//renderReadingStick.lock();
 		renderingGroups.clear();
 		GLuint lastShader = lastShaderUnset;
 		std::sort(activeSprites.begin(), activeSprites.end(), SortByZ);
@@ -274,6 +285,9 @@ void SpriteRendererManager::PrepareRenderingThread() {
 					RenderingObject ro;
 
 					Shader *shader = spriteRenderer->GetShader();
+					if (shader == nullptr) {
+						continue;
+					}
 					GLuint roShader = shader->Program;
 					ro.sprite = spriteRenderer->GetSprite();
 
@@ -306,9 +320,8 @@ void SpriteRendererManager::PrepareRenderingThread() {
 			renderingGroups.push_back(rg);
 		}
 
-		//renderTalkingStick.lock();
-		renderReadingStick.unlock();
-	}
+		//renderReadingStick.unlock();
+	//}
 }
 
 void SpriteRendererManager::RenderShadowPass(float xSourceDirection, float ySourceDirection, float shadowStrength) {
@@ -357,6 +370,10 @@ void SpriteRendererManager::RenderShadowPass(float xSourceDirection, float ySour
 			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
 
 			glUniform1f(aspectRatioLocation, ASPECT_RATIO);
+
+			if (ro.sprite == nullptr) {
+				continue;
+			}
 
 			glBindTexture(GL_TEXTURE_2D, ro.sprite->GetTextureBufferID());
 
@@ -412,16 +429,16 @@ void SpriteRendererManager::RenderPass(int layerToRender, bool clearFirst)
 		{
 			RenderingObject ro = rg.children[j];
 
-			if (!ro.IsValid()) {
-				continue;
-			}
-
 			if (layerToRender != RENDER_LAYER_ALL && layerToRender != ro.spriteRenderer->GetLayer()) {
 				continue;
 			}
 			
-
-			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
+			if (ro.IsValid()) {
+				glUniformMatrix4fv(transformLocation, 1, GL_FALSE, *(ro.transform));
+			}
+			else {
+				continue;
+			}
 
 			glUniform1f(aspectRatioLocation, ASPECT_RATIO);
 
