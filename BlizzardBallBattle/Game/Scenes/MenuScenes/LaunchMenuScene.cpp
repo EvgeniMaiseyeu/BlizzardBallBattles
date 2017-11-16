@@ -21,6 +21,7 @@ void LaunchMenuScene::CreateScene() {
     BuildBaseScene();
     menuTitle = new SimpleSprite("Title.png", 0.0f, getGameTopY() - getGameHeight()/3.0f, 0.0f, GAME_WIDTH, Shader::GetShader(SHADER_PIXEL));
     howToText = new SimpleSprite("HowTo.png", 0.0f, -getGameHeight() / 6.0f, 1.0f, GAME_WIDTH / 1.5f, Shader::GetShader(SHADER_PIXEL));
+	AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
 }
 
 void LaunchMenuScene::DestroyScene() {
@@ -31,11 +32,6 @@ void LaunchMenuScene::DestroyScene() {
 
 void LaunchMenuScene::OnUpdate(int ticks) {
     InputManager* inputManager = InputManager::GetInstance();
-
-    
-    if (inputManager->onKeyPressed(SDLK_q)) {
-		AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
-    }
 
     if (inputManager->onKeyPressed(SDLK_h)) {
         NetworkingManager::GetInstance()->CreateHost();

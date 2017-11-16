@@ -11,6 +11,7 @@
 #include "Scenes.h"
 #include "DayNightCamera.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -25,6 +26,7 @@ void PlayerWon(std::map<std::string, void*> payload) {
 GameScene::GameScene(int player1Choice, int player2Choice) {
 	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
 	Camera::SetActiveCamera(new DayNightCamera());
+	AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
 }
 
 void GameScene::BuildBaseScene() {
