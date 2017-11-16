@@ -5,7 +5,6 @@
 #include "Vector2.h"
 #include "SimpleSprite.h"
 #include "Physics.h"
-#include "Snowball.h"
 
 class Snowball;
 
@@ -22,6 +21,7 @@ public:
 		bool isattached;
 	};
 	stats stats;
+	Snowball* _bigSnowball;
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
@@ -30,7 +30,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y);
+	bool Move(Vector2* v);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -61,7 +61,6 @@ private:
 	bool _makingSnowball;
 	bool _animate;
 	float _throwPower;
-	Snowball* _bigSnowball;
 	//---------------------//
 
 	Shader* _shader;
@@ -75,7 +74,7 @@ private:
 
 	bool canFire;
 	float timeSinceLastShot;
-	bool CheckIfInBounds(float x, float y);
+	bool CheckIfInBounds(Transform *pos, Vector2 *move);
 
 	//Networking
 	std::string networkingID;

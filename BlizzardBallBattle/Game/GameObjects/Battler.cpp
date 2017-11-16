@@ -8,6 +8,7 @@
 #include "PhysicsManager.h"
 #include "MatchManager.h"
 #include "Battler.h"
+#include "Snowball.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -64,11 +65,11 @@ void Battler::MoveTo(Vector2* position)
 	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
-bool Battler::Move(float x, float y)
+bool Battler::Move(Vector2 *v)
 {
-	
-	if (!_fullLock && !_makingSnowball){
-		_physics->setVelocity(new Vector2(x, y));
+	Transform *t = GetTransform();
+	if (!_fullLock && !_makingSnowball/* && 	CheckIfInBounds(t, v)*/){
+		_physics->setVelocity(v);
 		return true;
 	}
 	else {
@@ -315,28 +316,43 @@ void Battler::handleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(float x, float y)
+bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
 {
-	float mapXMax = getGameWidth() / 2;
-	float mapYMax = getGameHeight() / 2;
-	float mapXMin = getGameWidth() / 6;
-	float mapYMin = -mapYMax;
+	float xMin = (-getGameWidth() / 2) - 2;//getGameWidth() / 6;
+	float xMax = (getGameWidth() / 2) + 2;
+	float yMax = (getGameHeight() / 2) + 1;
+	float yMin = -(getGameHeight() / 2) - 1.25;
 
-	if (stats.teamID == 1)
-	{
-		mapXMin = -mapXMin;
-		mapXMax = -mapXMax;
+	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 7;
+	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 6;
+
+	bool hitBounds = false;
+
+	Vector2 *newPos = new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY());
+
+	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
+		if (move->getX() < 0)
+			move->setX(0);
+		hitBounds = true;
 	}
 
-	if (x < mapXMin || x > mapXMax)
-	{
-		return false;
-	}
-	else if (y < mapYMin || y > mapYMax)
-	{
-		return false;
+	if (newPos->getX() >= (stats.teamID == 1 ? team1Bounds : xMax)) {
+		if (move->getX() > 0)
+			move->setX(0);
+		hitBounds = true;
 	}
 
-	return true;
+	if (newPos->getY() <= yMin) {
+		if (move->getY() < 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+
+	if (newPos->getY() >= yMax) {
+		if (move->getY() > 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+	return hitBounds;
 }
 

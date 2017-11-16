@@ -44,5 +44,6 @@
         "sdl2": "cpp",
         "__mutex_base": "cpp",
         "mutex": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Disabled"
 }
