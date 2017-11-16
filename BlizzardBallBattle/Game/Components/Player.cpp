@@ -57,7 +57,7 @@ void Player::OnUpdate(int timeDelta) {
 
 	youBattler->handleBigThrow(deltaTime);
 
-	youBattler->Move(newVector, deltaTime);
+	youBattler->Move(newVector);
 
 	if (youBattler->stats.teamID == 1)
 	{

@@ -62,7 +62,7 @@ void Battler::MoveTo(Vector2* position)
 	GetTransform()->setPosition(position->getX(), position->getY());
 }
 
-bool Battler::Move(Vector2 *v, float deltaTime)
+bool Battler::Move(Vector2 *v)
 {
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (v->getMagnitude() > 0.0f) {

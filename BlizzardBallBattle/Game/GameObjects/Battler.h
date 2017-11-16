@@ -34,7 +34,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(Vector2* v, float deltaTime);
+	bool Move(Vector2* v);
 	Vector2 * GetVelocity();
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
