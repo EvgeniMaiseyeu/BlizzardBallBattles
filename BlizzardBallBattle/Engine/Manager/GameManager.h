@@ -6,19 +6,23 @@
 #define GL3_PROTOTYPES 1
 #include "Scene.h"
 #include "Game.h"
+#include <vector>
+
 class GameManager : public Updateable 
 {
 public:
     GameManager();
     void OnStart();
     void OnUpdate(int ticks);
+	void ClearObjectsToRemove();
     void OnEnd();
     static GameManager* GetInstance();
 
     void AddGameObject(int id, GameObject* obj);
-    void RemoveGameObject(int id);
+    void RemoveGameObject(GameObject* objectToRemove);
 
 private:
+	std::vector<GameObject*> gameObjectsToRemove;
     std::map<int, GameObject*> globalGameObjects;
     static GameManager* instance;
     bool breakLoop = false;

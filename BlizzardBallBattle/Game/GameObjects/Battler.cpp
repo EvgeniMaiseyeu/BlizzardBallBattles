@@ -6,14 +6,17 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "UserDefinedRenderLayers.h"
 #include "Battler.h"
+#include "Snowball.h"
+#include "GameManager.h"
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
 	self->ThrowSnowball();
 }
 
-Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
 {
 	this->networkingID = networkingID;
 	this->isSender = isSender;
@@ -23,15 +26,18 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	InitStats(team);
 }
 
-Battler::Battler(int team, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f)
+Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
 {
+	this->isSender = false;
+	this->networkingID = -1;
 	InitStats(team);
+	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 }
 
-Battler::~Battler()
+/*Battler::~Battler()
 {
 
-}
+}*/
 
 void Battler::OnUpdate(int ticks)
 {
@@ -59,14 +65,27 @@ void Battler::InitStats(int team)
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
 	stats.isattached = false;
+	_throwPower = 5;
 }
 
-bool Battler::Move(float x, float y)
+
+bool Battler::Move(Vector2 *v)
 {
-	if (CheckIfInBounds(x + _transform->getX(), y + _transform->getY()))
-	{
-		_physics->setVelocity(new Vector2(x, y));
+	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
+		if (v->getMagnitude() > 0.0f) {
+			ChangeSprite(SPRITE_WALK);
+		} else {
+			ChangeSprite(SPRITE_IDLE);
+		}
+	}
+
+	Transform *t = GetTransform();
+	if (!_fullLock && !_makingSnowball/* && 	CheckIfInBounds(t, v)*/){
+		_physics->setVelocity(v);
 		return true;
+	}
+	else {
+		_physics->setVelocity(new Vector2(0, 0));
 	}
 	return false;
 }
@@ -75,6 +94,8 @@ bool Battler::ThrowSnowball()
 {
 	if (!canFire)
  		return false;
+
+	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
 	if (isSender) {
 		std::map<std::string, std::string> payload;
@@ -102,7 +123,7 @@ void Battler::UpdateThrowTimer(float deltaTime)
 	}
 }
 
-void Battler::DealtDamage(int damage)
+bool Battler::DealtDamage(int damage)
 {
 	bool isattached = false;
 	stats.hitpoints -= damage;
@@ -110,6 +131,7 @@ void Battler::DealtDamage(int damage)
 	if (stats.hitpoints <= 0)
 	{
 		Die();
+		return true;
 	}
 	if (stats.isattached)
 	{
@@ -125,6 +147,7 @@ void Battler::DealtDamage(int damage)
 	}
 	//return true;
 
+	return false;
 }
 
 /*bool Battler::IsAttached()
@@ -170,22 +193,40 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
-
-	GetTransform()->setScale(0.0f);
-	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
-	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
 }
+
+ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
+	ComplexSpriteinfo* info = new ComplexSpriteinfo();
+
+	info->AddInfo("Character_IdleSheet.png", 8, 1);
+	info->AddInfo("Character_MoveSheet.png", 8, 1);
+	info->AddInfo("Character_ThrowSheet.png", 8, 1);
+
+	return info;
+}
+
+void Battler::lockToBattler() { 
+	//
+}
+
+void Battler::unlock() {
+	//
+}
+
 
 //------------------------------------------------------
 //BIG SNOWBALL METHODS
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
-void Battler::HandleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 4)
+void Battler::handleBigThrow(float deltaTime) {
+	if (_fullLock && _timer < 2)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 4) {
+	else if (_fullLock && _timer > 2) {
 		//launch snowball
+		unlock();
+
+		_bigSnowball->setHeld(false);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -193,15 +234,15 @@ void Battler::HandleBigThrow(float deltaTime) {
 		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
 		_haveBigSnowball = false;
 		_fullLock = false;
-		_throwPower = 0;
+		_throwPower = 5;
 	}
 }
 
 //keep calling until return true
-bool Battler::MakeBigSnowball(float deltaTime) {
-	if (!_fullLock) {
+bool Battler::makeBigSnowball(float deltaTime) {
+	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
-			if (_timer < 12) {
+			if (_timer < 2) {
 				if(_bigSnowball != NULL){
 					_bigSnowball->GetTransform()->addScale(0.01f);
 				}
@@ -210,9 +251,11 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			}
 			else {
 				//made snowball
-				//stick snowball to battler
+				_makingSnowball = false;
+				lockToBattler();
+				_bigSnowball->setHeld(true);
 				_animate = false;
-				//add drag
+				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
 				return true;
 			}
@@ -222,8 +265,13 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			std::string snowballColour = "Snowball2.png";
 			if (stats.teamID == 2)
 				snowballColour = "Snowball3.png";
-			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
 			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			if(this->stats.teamID == 1)
+				_bigSnowball->GetTransform()->addX(0.7f);
+			else
+				_bigSnowball->GetTransform()->addX(-0.7f);
+			_bigSnowball->GetTransform()->setZ(-1);
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -234,11 +282,11 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 bool Battler::FireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 0.3f; //ai wont care about this
+			_throwPower += 1.0f; //ai wont care about this
 			return true;
 		}
 		else{
-			//reduce object drag
+			_physics->setDrag(1);
 			_timer = 0;
 			_fullLock = true;
 			return true;
@@ -247,16 +295,21 @@ bool Battler::FireBigSnowball() {
 	return false;
 }
 
-void Battler::AnimateCreation() {
+bool Battler::getBigSnowball() {
+	return _haveBigSnowball;
+}
+
+void Battler::animateCreation() {
 
 }
 
 void Battler::HandleCancels() {
 	if (!_fullLock) {
-		if (_timer < 12 && _makingSnowball) {
+		if (_timer < 2 && _makingSnowball) {
 			//cancel snowball creation
 			if(_bigSnowball != NULL){
-				delete(_bigSnowball);
+				Destroy(_bigSnowball);
+				_bigSnowball = NULL;
 			}
 			_makingSnowball = false;
 			_timer = 0;
@@ -267,33 +320,43 @@ void Battler::HandleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(float x, float y)
+bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
 {
-	float mapXMax = getGameWidth() / 2;
-	float mapYMax = getGameHeight() / 2;
-	float mapXMin = getGameWidth() / 6;
-	float mapYMin = -mapYMax;
+	float xMin = (-getGameWidth() / 2) - 2;//getGameWidth() / 6;
+	float xMax = (getGameWidth() / 2) + 2;
+	float yMax = (getGameHeight() / 2) + 1;
+	float yMin = -(getGameHeight() / 2) - 1.25;
 
-	//if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
-	//{
-	//	return;
-	//}
+	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 7;
+	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 6;
 
-	if (stats.teamID == 1)
-	{
-		mapXMin = -mapXMin;
-		mapXMax = -mapXMax;
+	bool hitBounds = false;
+
+	Vector2 *newPos = new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY());
+
+	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
+		if (move->getX() < 0)
+			move->setX(0);
+		hitBounds = true;
 	}
 
-	if (x < mapXMin || x > mapXMax)
-	{
-		return false;
-	}
-	else if (y < mapYMin || y > mapYMax)
-	{
-		return false;
+	if (newPos->getX() >= (stats.teamID == 1 ? team1Bounds : xMax)) {
+		if (move->getX() > 0)
+			move->setX(0);
+		hitBounds = true;
 	}
 
-	return true;
+	if (newPos->getY() <= yMin) {
+		if (move->getY() < 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+
+	if (newPos->getY() >= yMax) {
+		if (move->getY() > 0)
+			move->setY(0);
+		hitBounds = true;
+	}
+	return hitBounds;
 }
 

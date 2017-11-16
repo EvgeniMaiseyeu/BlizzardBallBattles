@@ -19,44 +19,34 @@ void Player::OnUpdate(int timeDelta) {
 	float deltaTime = (float)timeDelta / 1000.0f;
 	float moveSpeed = youBattler->stats.moveSpeed;
 
-	if (InputManager::GetInstance()->onKeyPressed(downKey)) {
-		PressedDown(moveSpeed);
+	Vector2 *newVector = new Vector2(0, 0);
+
+	if (InputManager::GetInstance()->onKey(downKey)) {
+		newVector->setY(-moveSpeed);
 	}
 	
-	if (InputManager::GetInstance()->onKeyPressed(rightKey)) {
-		PressedRight(moveSpeed);
+	if (InputManager::GetInstance()->onKey(rightKey)) {
+		newVector->setX(moveSpeed);
 	}
 
-	if (InputManager::GetInstance()->onKeyPressed(upKey)) {
-		PressedUp(moveSpeed);
+	if (InputManager::GetInstance()->onKey(upKey)) {
+		newVector->setY(moveSpeed);
 	}
 
-	if (InputManager::GetInstance()->onKeyPressed(leftKey)) {
-		PressedLeft(moveSpeed);
-	}
-
-	if (InputManager::GetInstance()->onKeyReleased(downKey)) {
-		PressedDown(0);
-	}
-
-	if (InputManager::GetInstance()->onKeyReleased(rightKey)) {
-		PressedRight(0);
-	}
-
-	if (InputManager::GetInstance()->onKeyReleased(upKey)) {
-		//PressedUp(0);
-	}
-
-	if (InputManager::GetInstance()->onKeyReleased(leftKey)) {
-		PressedLeft(0);
+	if (InputManager::GetInstance()->onKey(leftKey)) {
+		newVector->setX(-moveSpeed);
 	}
 	
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if(!youBattler->FireBigSnowball()){
-			youBattler->ThrowSnowball();
+		if(youBattler->getBigSnowball()){
+			youBattler->fireBigSnowball();		
 		}
-		
-	} else if (InputManager::GetInstance()->onKey(shootKey)) {
+		else {
+		//	youBattler->ThrowSnowball();
+		}
+		 
+	}
+	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
 		youBattler->MakeBigSnowball(deltaTime);
 	} 
@@ -67,49 +57,6 @@ void Player::OnUpdate(int timeDelta) {
 
 	youBattler->HandleBigThrow(deltaTime);
 
+	youBattler->Move(newVector);
+
 } 
-
-void Player::PressedDown(float moveSpeed) {
-	//if (GetGameObject()->GetTransform()->getY() + -moveSpeed < -getGameHeight()/2)
-	//{
-	//	return;
-	//}
-	
-	youBattler->Move(0, -moveSpeed);
-//	youBattler->setSnowDrag(1);
-}
-
-void Player::PressedRight(float moveSpeed) {
-	//if (youBattler->stats.teamID == 1 && GetGameObject()->GetComponent<Transform*>()->getX() > -4.0f)
-	//{
-	//	return;
-	//}
-	//else if (GetGameObject()->GetComponent<Transform*>()->getX() + moveSpeed > GAME_WIDTH / 2)
-	//{
-	//	return;
-	//}
-
-	youBattler->Move(moveSpeed, 0);
-}
-
-void Player::PressedUp(float moveSpeed) {
-	//if (GetGameObject()->GetComponent<Transform*>()->getY() + moveSpeed > getGameHeight() / 2)
-	//{
-	//	return;
-	//}
-	
-	youBattler->Move(0, moveSpeed);
-}
-
-void Player::PressedLeft(float moveSpeed) {
-	//if (youBattler->stats.teamID == 2 && GetGameObject()->GetComponent<Transform*>()->getX() < 4.0f)
-	//{
-	//	return;
-	//}
-	//else if (GetGameObject()->GetComponent<Transform*>()->getX() + -moveSpeed < -GAME_WIDTH / 2)
-	//{
-	//	return;
-	//}
-
-	youBattler->Move(-moveSpeed, 0);
-}

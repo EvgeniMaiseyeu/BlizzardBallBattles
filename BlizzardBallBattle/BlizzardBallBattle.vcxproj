@@ -132,10 +132,17 @@
     <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
+    <ClCompile Include="Engine\External\Render\ContrastShader.cpp" />
+    <ClCompile Include="Engine\External\Render\FrameBufferObject.cpp" />
+    <ClCompile Include="Engine\External\Render\ImageRenderer.cpp" />
     <ClCompile Include="Engine\External\Render\ISprite.cpp" />
+    <ClCompile Include="Engine\External\Render\PostProcessing.cpp" />
     <ClCompile Include="Engine\External\Render\Sprite.cpp" />
     <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
     <ClCompile Include="Engine\External\Render\Tile.cpp" />
+    <ClCompile Include="Engine\GameObjects\Camera.cpp" />
+    <ClCompile Include="Engine\GameObjects\ComplexSprite.cpp" />
+    <ClCompile Include="Engine\GameObjects\DayNightCamera.cpp" />
     <ClCompile Include="Engine\GameObjects\SimpleSprite.cpp" />
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp" />
     <ClCompile Include="Engine\Manager\PhysicsManager.cpp" />
@@ -186,7 +193,11 @@
     <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />
+    <ClInclude Include="Engine\External\Render\ContrastShader.h" />
+    <ClInclude Include="Engine\External\Render\FrameBufferObject.h" />
+    <ClInclude Include="Engine\External\Render\ImageRenderer.h" />
     <ClInclude Include="Engine\External\Render\ISprite.h" />
+    <ClInclude Include="Engine\External\Render\PostProcessing.h" />
     <ClInclude Include="Engine\External\Render\Sprite.h" />
     <ClInclude Include="Engine\External\Render\SpriteSheet.h" />
     <ClInclude Include="Engine\External\Render\Tile.h" />
@@ -194,6 +205,9 @@
     <ClInclude Include="Engine\External\TransformState.h" />
     <ClInclude Include="Engine\Component\Render\Renderer.h" />
     <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
+    <ClInclude Include="Engine\GameObjects\Camera.h" />
+    <ClInclude Include="Engine\GameObjects\ComplexSprite.h" />
+    <ClInclude Include="Engine\GameObjects\DayNightCamera.h" />
     <ClInclude Include="Engine\GameObjects\SimpleSprite.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="Engine\Manager\NetworkingManager.h" />
@@ -250,6 +264,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\External\Render\contrastFragment.txt" />
+    <Text Include="Engine\External\Render\contrastVertex.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

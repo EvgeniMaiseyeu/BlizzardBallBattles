@@ -1,5 +1,5 @@
 #include "NeuralNet.h"
-#include "Neuron.h"
+// #include "Neuron.h"
 #include <cassert>
 
 NeuralNet::NeuralNet()
