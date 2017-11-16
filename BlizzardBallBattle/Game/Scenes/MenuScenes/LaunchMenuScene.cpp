@@ -6,6 +6,7 @@
 #include "Scenes.h"
 #include "NetworkingManager.h"
 #include "Transform.h"
+#include "AudioManager.h"
 
 void LaunchMenuScene::OnStart() { CreateScene(); }
 void LaunchMenuScene::OnResume() { CreateScene(); }
@@ -40,5 +41,11 @@ void LaunchMenuScene::OnUpdate(int ticks) {
     } else if (inputManager->onKeyPressed(SDLK_2)) {
 		SceneManager::GetInstance()->PushScene(new SceneTemplate());
     }
+	else if (inputManager->onKeyPressed(SDLK_0)) {
+		AudioManager::GetInstance()->PlayMusic("./Game/Assets/mario_.wav", 1);
+	}
+	else if (inputManager->onKeyPressed(SDLK_9)) {
+		AudioManager::GetInstance()->StopMusic();
+	}
 }
 

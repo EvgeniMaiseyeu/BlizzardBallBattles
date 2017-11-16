@@ -2,6 +2,7 @@
 #include "HelperFunctions.h"
 #include "InputManager.h"
 #include "Transform.h"
+#include "AudioManager.h"
 
 Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot) : Component(gameObject) {
 	leftKey = left;
@@ -36,6 +37,7 @@ void Player::OnUpdate(int timeDelta) {
 
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
 		youBattler->ThrowSnowball(); 
+		AudioManager::GetInstance()->PlaySEFshoot("./Game/Assets/shoot.wav", 1);
 	}
 } 
 

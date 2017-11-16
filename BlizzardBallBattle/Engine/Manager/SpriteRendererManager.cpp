@@ -4,6 +4,7 @@
 #include <condition_variable>
 #include "SpriteSheet.h"
 
+
 //Statics must be given definitions
 SpriteRendererManager* SpriteRendererManager::instance;
 
@@ -102,6 +103,7 @@ bool SpriteRendererManager::Init() {
 		std::cout << "Failed to init SDL\n";
 		return false;
 	}
+
 
 	if (!SetOpenGLAttributes()) {
 		return false;

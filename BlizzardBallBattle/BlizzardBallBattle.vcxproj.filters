@@ -267,6 +267,12 @@
     <ClCompile Include="Engine\External\Render\ISprite.cpp">
       <Filter>Source Files\Engine\External\Render</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Engine.h">
@@ -472,6 +478,12 @@
     </ClInclude>
     <ClInclude Include="..\WinLibraries\SDL2_mixer-devel-2.0.1-VC\SDL2_mixer-2.0.1\include\SDL_mixer.h">
       <Filter>Source Files\Engine\External</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Source Files\Engine\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

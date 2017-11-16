@@ -5,24 +5,25 @@
 #include <iostream>
 #include "InputManager.h"
 #include "AudioManager.h"
-
+#include "Shader.h"
+#include "SharedConstants.h"
+#include "Sender.h"
+#include "Receiver.h"
+#include "SpriteSheet.h"
 
 void AudioTestScene::OnStart() {
-	ourShader = new Shader(BuildPath("Game/Assets/Shaders/vertex_shader.vs").c_str(), BuildPath("Game/Assets/Shaders/voxel.fs").c_str());
+	BuildBaseScene();
 	GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
 	GLuint iceTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/IceTile.png"));
 	GLuint characterTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/Character.png"));
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
 
-	// Create Map
-	MatchManager::GetInstance()->CreateMap(ourShader, snowTexture, iceTexture);
-
 	// Create Players
-	MatchManager::GetInstance()->CreateBattlers(ourShader, characterTexture, spriteSheetTexture);
+	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture);
 
 
-	
-	
+
+
 }
 
 void AudioTestScene::OnEnd() {

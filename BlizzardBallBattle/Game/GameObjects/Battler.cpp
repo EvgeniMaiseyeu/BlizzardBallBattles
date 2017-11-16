@@ -8,6 +8,8 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "AudioManager.h"
+
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
@@ -121,6 +123,7 @@ void Battler::UpdateThrowTimer(float deltaTime)
 
 void Battler::DealtDamage(int damage)
 {
+	AudioManager::GetInstance()->PlaySEFhit("./Game/Assets/hit.wav", 1);
 	stats.hitpoints -= damage;
 	if (stats.hitpoints <= 0)
 	{
