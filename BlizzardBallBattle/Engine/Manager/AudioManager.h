@@ -1,9 +1,13 @@
 #pragma once
 #include <string>
+#include <GLHeaders.h>
 
 class AudioManager {
 private:
 	static AudioManager* instance;
+	Mix_Chunk* bgm;
+	Mix_Chunk* SEF1;
+	Mix_Chunk* SEF2;
 	//GameObject* mGameObj;
 
 	AudioManager();
