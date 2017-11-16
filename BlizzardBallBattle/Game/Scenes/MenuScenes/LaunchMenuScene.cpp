@@ -8,6 +8,7 @@
 #include "Transform.h"
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "HelperFunctions.h"
 //#include "TestGO.h"
 
 void LaunchMenuScene::OnStart() { CreateScene(); }
@@ -33,7 +34,7 @@ void LaunchMenuScene::OnUpdate(int ticks) {
 
     
     if (inputManager->onKeyPressed(SDLK_q)) {
-		AudioManager::GetInstance()->PlayMusic("./BlizzardBallBattle/Game/Assets/Audio/mario_.wav", 1, 10);
+		AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
     }
 
     if (inputManager->onKeyPressed(SDLK_h)) {

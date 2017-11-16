@@ -19,7 +19,7 @@ Each GameObject cycles through and updates each one of their game components.
 */
 
 void Game::OnStart() {
-    SceneManager::GetInstance()->PushScene(new AISelectionMenuScene());
+    SceneManager::GetInstance()->PushScene(new LaunchMenuScene());
 }
 
 void Game::OnUpdate(int ticks) {
