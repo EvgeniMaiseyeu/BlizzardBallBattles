@@ -14,9 +14,9 @@ public:
 	static void Release();
 
 	//Starts playing music
-	void PlayMusic(std::string filename, int loop = -1);
-	void PlaySEFhit(std::string filename, int loop = -1);
-	void PlaySEFshoot(std::string filename, int loop = -1);
+	void PlayMusic(std::string filename, int loop = -1, float volumeFactor = 1.0f);
+	void PlaySEFhit(std::string filename, int loop = -1, float volumeFactor = 1.0f);
+	void PlaySEFshoot(std::string filename, int loop = -1, float volumeFactor = 1.0f);
 	//Pauses the current music
 	void PauseMusic();
 	//Resume playing the music
