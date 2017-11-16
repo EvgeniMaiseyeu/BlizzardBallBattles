@@ -30,6 +30,7 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	active = true;
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
+	_bigSnowball = false;
 }
 
 void Snowball::OnUpdate(int timeDelta)
@@ -45,10 +46,13 @@ void Snowball::OnUpdate(int timeDelta)
 	//_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
 	//	}
 	//}
-	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-		//DESTROOOOOOOOOY
-	}
+
+
 	if (active) {
+		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+			Destroy(this);
+			return;
+		}
 		if(!heldByPlayer)
 			GetTransform()->addRotation(15);
 
@@ -63,11 +67,24 @@ void Snowball::OnUpdate(int timeDelta)
 				if (hitBattler && (v[i]->getId() != playerID)) {
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != teamID) {
-						if (hitBattler->DealtDamage(1)) {
-							Destroy(v[i]);
+						int damage = 0;
+						if (_bigSnowball) {
+							damage = 10;
 						}
-						DestructSnowball();
-						return;
+						else {
+							damage = 1;
+						}
+						if (hitBattler->DealtDamage(damage)) {
+							Destroy(v[i]);
+							DestructSnowball();
+							return;
+						}
+						else {
+							hitBattler->LockToBattler(this);
+							_physics->setVelocity(new Vector2(0, 0));
+							active = false;
+						}
+
 					}
 				}
 			}
@@ -86,6 +103,10 @@ void Snowball::DestructSnowball() {
 
 void Snowball::setHeld(bool held) {
 	heldByPlayer = held;
+}
+
+void Snowball::setBigSnowBall(bool bigSB) {
+	_bigSnowball = bigSB;
 }
 	
 void Snowball::SetDistanceGoal(float dist) {
