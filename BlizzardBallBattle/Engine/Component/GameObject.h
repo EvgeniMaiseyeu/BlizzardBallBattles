@@ -56,13 +56,27 @@ public:
    }
    
    template <typename T> 
-   void RemoveComponent() {
-       components[GetClassName<T>()].clear();
+   void RemoveComponents() {
+        std::vector<Component*> componentList = components[GetClassName<T>()];
+        for (size_t i = componentList.size() - 1; i >= 0; i--){
+            delete componentList[i];
+        }
+
+        components[GetClassName<T>()].clear();
+    }
+    
+   void RemoveAllComponents() {
+    for (std::map<std::string, std::vector<Component*>>::iterator it=components.begin(); it!=components.end(); ++it) {
+        for (size_t i = 0; i < it->second.size(); i++){
+			it->second[i]->~Component();
+            delete it->second[i];
+        }
+    }
    }
    
    template <typename T> 
    bool HasComponent() {
-       return components.count(GetClassName<T>()) > 0;
+       return components.find(GetClassName<T>()) != components.end();
    }
 
    void OnStart() {};

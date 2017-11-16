@@ -22,13 +22,10 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
 }
 
 SimpleSprite::~SimpleSprite() {
-    GetTransform()->setScale(0.0f);
-	GetTransform()->setPosition(100000, 1000000, -1000000);
+    //GetTransform()->setScale(0.0f);
+	//GetTransform()->setPosition(100000, 1000000, -1000000);
     //TODO: Memory leak fix
-    //if (sprite != nullptr) {
-    //    delete(sprite);
-    //}
-    //if (shader != nullptr) {
-    //    delete(shader);
-    //}
+    if (sprite != nullptr) {
+       //delete(sprite);
+    }
 }

@@ -43,7 +43,15 @@
         "unordered_set": "cpp",
         "sdl2": "cpp",
         "__mutex_base": "cpp",
+<<<<<<< HEAD
         "mutex": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Disabled"
+=======
+        "mutex": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
+    }
+>>>>>>> 59ec2e30be2945087b2fc1dc6c7fd269a3ac3bae
 }

@@ -28,6 +28,8 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 
 Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(), 0.0f, 0.0f)
 {
+	this->isSender = false;
+	this->networkingID = -1;
 	InitStats(team);
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 }
@@ -197,6 +199,7 @@ void Battler::Die()
 	GetTransform()->setScale(0.0f);
 	SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 	PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+	delete this;
 }
 
 ComplexSpriteinfo* Battler::GenerateSpriteInfo() {
