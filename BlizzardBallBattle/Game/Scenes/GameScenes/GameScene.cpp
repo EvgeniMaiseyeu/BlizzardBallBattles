@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 #include "Scenes.h"
 #include "DayNightCamera.h"
+#include "GameManager.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -91,6 +92,7 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -2.0f);
+			thingsToClear.push_back(tile);
 		}
 	}
 
@@ -168,6 +170,13 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
 			spriteRenderer->SetLayer(RENDER_LAYER_SHADOWABLE);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, 2.0);
+			thingsToClear.push_back(tile);
 		}
+	}
+}
+
+void GameScene::ClearScene() {
+	for (int i = 0; i < thingsToClear.size(); i++) {
+		GameManager::GetInstance()->RemoveGameObject(thingsToClear[i]);
 	}
 }

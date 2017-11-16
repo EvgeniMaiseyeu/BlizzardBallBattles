@@ -105,6 +105,9 @@ GameObject* AI::GetTargetBattler()
 		enemyTeamNumber = 2;
 	}
 	std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
+	if (enemyTeam.size() == 0) {
+		return nullptr;
+	}
 	int randomBattler = std::rand() % enemyTeam.size();
 
 	return enemyTeam[randomBattler];
@@ -137,6 +140,12 @@ Vector2* AI::GetTargetPosition()
 
 void AI::WalkToTargetBattler()
 {
+	if (targetBattler == nullptr || targetBattler == NULL) {
+		GetTarget();
+		if (targetBattler == nullptr || targetBattler == NULL) {
+			return;
+		}
+	}
 	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 

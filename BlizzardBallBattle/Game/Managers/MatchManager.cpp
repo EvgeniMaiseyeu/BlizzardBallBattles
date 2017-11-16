@@ -8,6 +8,7 @@
 #include "Sender.h"
 #include "Collider.h"
 #include <algorithm>
+#include "GameManager.h"
 
 //Statics must be given definitions
 MatchManager* MatchManager::instance;
@@ -25,11 +26,15 @@ MatchManager::MatchManager()
 }
 
 void MatchManager::Stop() {
-	for (int i = 0; i < teamOne.size(); i++) {
-		UnRegisterCharacter(teamOne[i]);
+	while (teamOne.size() > 0) {
+		Battler* toDelete = teamOne[0];
+		UnRegisterCharacter(toDelete);
+		GameManager::GetInstance()->RemoveGameObject(toDelete);
 	}
-	for (int i = 0; i < teamTwo.size(); i++) {
-		UnRegisterCharacter(teamTwo[i]);
+	while (teamTwo.size() > 0) {
+		Battler* toDelete = teamTwo[0];
+		UnRegisterCharacter(toDelete);
+		GameManager::GetInstance()->RemoveGameObject(toDelete);
 	}
 }
 
