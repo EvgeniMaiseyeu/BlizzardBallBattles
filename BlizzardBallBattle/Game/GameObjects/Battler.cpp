@@ -76,6 +76,8 @@ void Battler::InitStats(int team)
 
 bool Battler::Move(float x, float y, bool isRunning)
 {
+	stats.isRunning = isRunning;
+
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
 			ChangeSprite(SPRITE_WALK);

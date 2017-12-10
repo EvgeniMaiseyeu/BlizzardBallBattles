@@ -16,7 +16,7 @@ private:
 	SDL_Keycode upKey;
 	SDL_Keycode downKey;
 	SDL_Keycode runKey;
-	SDL_Keycode shootKey, shootKey1;
+	SDL_Keycode shootKey, shootKey2;
 	float distance;
 	Battler* youBattler;
 	float center;

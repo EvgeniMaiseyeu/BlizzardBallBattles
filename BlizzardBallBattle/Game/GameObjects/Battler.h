@@ -24,6 +24,7 @@ public:
 		int hitpoints;
 		bool isPlayer;
 		bool isattached;
+		bool isRunning;
 	};
 	stats stats;
 	Snowball* _bigSnowball;

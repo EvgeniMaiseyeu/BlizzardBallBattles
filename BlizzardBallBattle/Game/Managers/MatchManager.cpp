@@ -157,7 +157,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
-	Player* playerTwoStats = new Player(playerTwo, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_LCTRL, SDLK_KP_0, SDLK_RSHIFT);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, SDLK_KP_0, SDLK_RSHIFT);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	playerTwo->AddComponent<Collider*>(playerTwoCollider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();

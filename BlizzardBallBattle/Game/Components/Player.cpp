@@ -31,7 +31,7 @@ void Player::OnUpdate(int timeDelta) {
 		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
 	}
 	
-	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
 		if(youBattler->GetBigSnowball()){
 			youBattler->FireBigSnowball();		
 		}
@@ -41,16 +41,19 @@ void Player::OnUpdate(int timeDelta) {
 		 
 	}
 
-	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
-		youBattler->ThrowSnowball();
+	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+		if (!youBattler->stats.isRunning)
+		{
+			youBattler->ThrowSnowball();
+		}
 	}
 
-	if (InputManager::GetInstance()->onKey(shootKey)) {
+	if (InputManager::GetInstance()->onKey(shootKey2)) {
 		//Big snowball creating locks etc..
 		youBattler->MakeBigSnowball(deltaTime);
 	} 
 	
-	if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
+	if (InputManager::GetInstance()->onKeyReleased(shootKey2)) {
 		youBattler->HandleCancels();
 	}
 
