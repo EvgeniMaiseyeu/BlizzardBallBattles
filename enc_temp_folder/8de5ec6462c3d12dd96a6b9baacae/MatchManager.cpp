@@ -150,8 +150,6 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		Battler* unit = new Battler (1, playerSprite);
 		Collider* collider = new Collider (unit, 0.5f);
 		unit->AddComponent<Collider*> (collider);
-		AI* unitAI = new AI (unit, teamOneLearning);
-		unit->AddComponent<AI*> (unitAI);
 		Transform* aiTransform = (Transform*)unit->GetTransform ();
 		aiTransform->setPosition (posX, posY);
 		if (teamOneFormation == 4) {
@@ -160,8 +158,12 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		else if (teamOneFormation == 5) {
 			unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
 		}
+		else {
+			AI* unitAI = new AI (unit, teamOneLearning);
+			unit->AddComponent<AI*> (unitAI);
+			teamOneAIUnits.push_back (unitAI);
+		}
 		RegisterCharacter (unit);
-		teamOneAIUnits.push_back (unitAI);
 	}
 
 
