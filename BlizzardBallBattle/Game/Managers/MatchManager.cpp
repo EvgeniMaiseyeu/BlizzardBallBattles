@@ -120,18 +120,22 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Player
 	playerOne = new Battler(1, playerSprite);
 	Collider* playerOneCollider = new Collider(playerOne, 0.5f);
-	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x, SDLK_c);
-	playerOne->AddComponent<Player*>(playerOneStats);
+
+	if (teamOneFormation != 5) {
+		Player* playerOneStats = new Player (playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x, SDLK_c);
+		playerOne->AddComponent<Player*> (playerOneStats);
+		if (teamOneFormation == 4) {
+			playerOne->AddComponent<Sender*> (new Sender (playerOne, "Player1"));
+		}
+	}
+	else {
+		playerOne->AddComponent<Receiver*> (new Receiver (playerOne, "Player1"));
+	}
 	playerOne->AddComponent<Collider*>(playerOneCollider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetTransform();
 	playerOneTransform->setPosition(playerPosX, playerPosY);
 	playerOne->stats.hitpoints = 5;
 	playerOne->stats.isPlayer = true;
-	if (teamTwoFormation == 4) {//are we networking
-		playerOne->AddComponent<Sender*> (new Sender (playerOne, "Player1"));
-	} else if (teamTwoFormation == 5) {//are we networking
-		playerOne->AddComponent<Sender*> (new Sender (playerOne, "Player2"));
-	}
 	RegisterCharacter (playerOne);
 
 	//AI
@@ -150,18 +154,20 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		Battler* unit = new Battler (1, playerSprite);
 		Collider* collider = new Collider (unit, 0.5f);
 		unit->AddComponent<Collider*> (collider);
-		AI* unitAI = new AI (unit, teamOneLearning);
-		unit->AddComponent<AI*> (unitAI);
 		Transform* aiTransform = (Transform*)unit->GetTransform ();
 		aiTransform->setPosition (posX, posY);
-		if (teamOneFormation == 4) {
-			unit->AddComponent<Sender*> (new Sender (unit, "Unit1-" + i));
+		if (teamOneFormation != 5) {
+			AI* unitAI = new AI (unit, teamOneLearning);
+			unit->AddComponent<AI*> (unitAI);
+			teamOneAIUnits.push_back (unitAI);
+			if (teamOneFormation == 4) {
+				unit->AddComponent<Sender*> (new Sender (unit, "Unit1-" + i));
+			}
 		}
-		else if (teamOneFormation == 5) {
-			unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
+		else {
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit1-" + i));
 		}
 		RegisterCharacter (unit);
-		teamOneAIUnits.push_back (unitAI);
 	}
 
 
@@ -170,14 +176,14 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
-	if (teamTwoFormation == 4) {
-		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player2"));
-	}
-	else if (teamTwoFormation == 5) {
-		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player1"));
-	} else {
+	if (teamTwoFormation != 4) {
 		Player* playerTwoStats = new Player (playerTwo, SDLK_l, SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD, SDLK_COMMA);
 		playerTwo->AddComponent<Player*> (playerTwoStats);
+		if (teamTwoFormation == 5) {
+			playerOne->AddComponent<Sender*> (new Sender (playerTwo, "Player2"));
+		}
+	} else {
+		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player2"));
 	}
 	playerTwo->AddComponent<Collider*>(playerTwoCollider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
@@ -205,15 +211,16 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		aiTransform->setPosition (posX, posY);
 		aiTransform->addRotation (180.0f);
 
-		if (teamTwoFormation == 4) {
-			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2-" + i));
-		}
-		else if (teamTwoFormation == 5) {
-			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit1-" + i));
-		} else {
+		if (teamTwoFormation != 4) {
 			AI* unitAI = new AI (unit, teamTwoLearning);
 			unit->AddComponent<AI*> (unitAI);
 			teamTwoAIUnits.push_back (unitAI);
+			if (teamTwoFormation == 5) {
+				unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
+			}
+		}
+		else {
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2-" + i));
 		}
 		RegisterCharacter (unit);
 	}
