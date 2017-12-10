@@ -90,7 +90,7 @@ void Snowball::OnUpdate(int timeDelta)
 							damage = 1;
 						}
 						if (hitBattler->DealtDamage(damage)) {
-							Destroy(v[i]);
+							//Destroy(v[i]);
 							DestructSnowball();
 							return;
 						}
