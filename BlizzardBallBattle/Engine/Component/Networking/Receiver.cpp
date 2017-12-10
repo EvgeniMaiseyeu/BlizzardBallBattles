@@ -12,11 +12,15 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
         float z = std::stof(*(std::string*)data["z"]);
         float angle = std::stof(*(std::string*)data["rotation"]);
         float scale = std::stof(*(std::string*)data["scale"]);
+
+		std::cout << "RECEIVED: " << x << ", " << y << std::endl;
+
         Receiver* self = (Receiver*)data["this"];
         Transform* transform = self->gameObject->GetTransform();
 		transform->setPosition (x, y, z);
 		transform->setRotation (angle);
 		transform->setScale (scale);
+		std::cout << "POST RECEIVED: " << x << ", " << y << std::endl;
     }, this);
 }
 

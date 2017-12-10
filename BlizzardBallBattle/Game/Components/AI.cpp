@@ -159,6 +159,8 @@ void AI::WalkToTargetBattler()
 			return;
 		}
 	}
+	if (targetBattler->GetTransform () == NULL)
+		return;
 	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 
