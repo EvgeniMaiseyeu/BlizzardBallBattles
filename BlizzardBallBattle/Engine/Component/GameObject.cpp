@@ -24,8 +24,6 @@ void GameObject::OnComponentsUpdate(int ticks) {
 }
 
 GameObject::~GameObject() {
-	GameManager::GetInstance()->RemoveGameObject(id);
-	//std::vector<Component*>() v = GetComponents
     RemoveAllComponents();
 }
 
