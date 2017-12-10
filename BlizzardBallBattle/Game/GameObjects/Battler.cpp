@@ -61,6 +61,7 @@ void Battler::InitStats(int team)
 	AddComponent<Physics*>(_physics);
 	stats.teamID = team;
 	stats.moveSpeed = 2;
+	stats.runSpeed = stats.moveSpeed * 2.5;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
@@ -69,7 +70,7 @@ void Battler::InitStats(int team)
 }
 
 
-bool Battler::Move(float x, float y)
+bool Battler::Move(float x, float y, bool isRunning)
 {
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {

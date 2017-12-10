@@ -19,6 +19,7 @@ public:
 	struct stats {
 		int teamID;
 		float moveSpeed;
+		float runSpeed;
 		float fireSpeedInterval;
 		int hitpoints;
 		bool isPlayer;
@@ -34,7 +35,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y);
+	bool Move(float x, float y, bool isRunning);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);

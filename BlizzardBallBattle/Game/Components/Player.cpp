@@ -4,12 +4,13 @@
 #include "Transform.h"
 #include "MatchManager.h"
 
-Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot) : Component(gameObject) {
+Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode run) : Component(gameObject) {
 	leftKey = left;
 	rightKey = right;
 	upKey = up;
 	downKey = down;
 	shootKey = shoot;
+	runKey = run;
 	distance = 1;
 	youBattler = (Battler*)GetGameObject();
 }
@@ -52,24 +53,30 @@ void Player::OnUpdate(int timeDelta) {
 
 void Player::ComputeMovement(float deltaTime) {
 	float moveSpeed = youBattler->stats.moveSpeed;
+	float runSpeed = youBattler->stats.runSpeed;
+
+	bool isRunning = false;
+	if (InputManager::GetInstance()->onKey(runKey)) {
+		isRunning = true;
+	}
 
 	float x = 0;
 	float y = 0;
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
-		y -= moveSpeed;
+		y -= isRunning ? runSpeed : moveSpeed;
 	}
 	
 	if (InputManager::GetInstance()->onKey(rightKey)) {
-		x += moveSpeed;
+		x += isRunning ? runSpeed : moveSpeed;
 	}
 
 	if (InputManager::GetInstance()->onKey(upKey)) {
-		y += moveSpeed;
+		y += isRunning ? runSpeed : moveSpeed;
 	}
 
 	if (InputManager::GetInstance()->onKey(leftKey)) {
-		x -= moveSpeed;
+		x -= isRunning ? runSpeed : moveSpeed;
 	}
 	
 	if (youBattler->InIceZone(youBattler->GetTransform())) {
@@ -77,9 +84,9 @@ void Player::ComputeMovement(float deltaTime) {
 		float prevX = v->getX();
 		float prevY = v->getY();
 
-		x = max(-moveSpeed, min(moveSpeed, prevX + (x / 20)));
-		y = max(-moveSpeed, min(moveSpeed, prevY + (y / 20)));
+		x = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevX + (x / 20)));
+		y = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevY + (y / 20)));
 	}
 
-	youBattler->Move(x, y);
+	youBattler->Move(x, y, isRunning);
 } 

@@ -107,7 +107,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	// Player
 	playerOne = new Battler(1, playerSprite);
 	Collider* playerOneCollider = new Collider(playerOne, 0.5f);
-	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x);
+	Player* playerOneStats = new Player(playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE, SDLK_LSHIFT);
 	playerOne->AddComponent<Player*>(playerOneStats);
 	playerOne->AddComponent<Collider*>(playerOneCollider);
 	Transform* playerOneTransform = (Transform*)playerOne->GetTransform();
@@ -145,7 +145,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
-	Player* playerTwoStats = new Player(playerTwo, SDLK_l , SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD);
+	Player* playerTwoStats = new Player(playerTwo, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_LCTRL, SDLK_LSHIFT);
 	playerTwo->AddComponent<Player*>(playerTwoStats);
 	playerTwo->AddComponent<Collider*>(playerTwoCollider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
