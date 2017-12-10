@@ -43,6 +43,7 @@ Battler::Battler(int team, std::string textureFileName) : ComplexSprite(Generate
 
 void Battler::OnUpdate(int ticks)
 {
+	stats.isRunning = false;
 	if (_transform == NULL)
 	{
 		_transform = GetTransform();
@@ -85,6 +86,41 @@ void Battler::InitStats(int team)
 bool Battler::Move(float x, float y, bool isRunning)
 {
 	stats.isRunning = isRunning;
+
+	if (isRunning && x > stats.runSpeed)
+	{
+		x = stats.runSpeed;
+	}
+	else if (isRunning && x < -stats.runSpeed)
+	{
+		x = -stats.runSpeed;
+	}
+	else if (x > stats.moveSpeed)
+	{
+		x = stats.moveSpeed;
+	}
+	else if (x < -stats.moveSpeed)
+	{
+		x = -stats.moveSpeed;
+	}
+	if (isRunning && y > stats.runSpeed)
+	{
+		y = stats.runSpeed;
+	}
+	else if (isRunning && y < -stats.runSpeed)
+	{
+		y = -stats.runSpeed;
+	}
+	else if (y > stats.moveSpeed)
+	{
+		y = stats.moveSpeed;
+	}
+	else if (y < -stats.moveSpeed)
+	{
+		y = -stats.moveSpeed;
+	}
+
+
 
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {

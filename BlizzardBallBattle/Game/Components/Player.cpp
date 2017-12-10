@@ -114,38 +114,6 @@ void Player::ComputeMovement(float deltaTime) {
 	//	y = -isRunning ? runSpeed : moveSpeed;
 	//}
 
-	if (isRunning && x > runSpeed)
-	{
-		x = runSpeed;
-	}
-	else if (isRunning && x < -runSpeed)
-	{
-		x = -runSpeed;
-	}
-	else if (x > moveSpeed)
-	{
-		x = moveSpeed;
-	}
-	else if (x < -moveSpeed)
-	{
-		x = -moveSpeed;
-	}
-	if (isRunning && y > runSpeed)
-	{
-		y = runSpeed;
-	}
-	else if (isRunning && y < -runSpeed)
-	{
-		y = -runSpeed;
-	}
-	else if (y > moveSpeed)
-	{
-		y = moveSpeed;
-	}
-	else if (y < -moveSpeed)
-	{
-		y = -moveSpeed;
-	}
 
 	youBattler->Move(x, y, isRunning);
 } 
