@@ -50,8 +50,6 @@ private:
 	float intelligence;
 	float courage;
 
-	bool CheckIfInBounds(float x = 0, float y = 0);
-
 public:
 	AI(GameObject* gameObject);
 	~AI();

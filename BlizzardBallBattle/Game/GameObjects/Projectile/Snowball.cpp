@@ -6,8 +6,8 @@
 #include "Collision/Collider.h"
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
-	Physics* physics = new Physics(this);
-	AddComponent<Physics*>(physics);
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
 	GetTransform()->setY(_player->GetTransform()->getY());
 	GetTransform()->setScale(0.5f);
@@ -21,14 +21,77 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 	velocity = *velocity * _speed;
 	velocity->rotateVector(radians);
-	physics->setVelocity(velocity);
+	_physics->setVelocity(velocity);
 	active = true;
+	heldByPlayer = false;
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		GetTransform()->setScale(0.00001f);
+	}
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
+	else {
+		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta/1000;
+
+
+		if (_distanceTraveled <= _distanceGoal / 2  && _distanceTraveled > 0)
+		{
+			GetTransform()->addScale(0.02f);
+			//_physics->getVelocity->getX()* - 0.2f;
+		}
+		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled <= _distanceGoal && _distanceTraveled > 0) {
+			GetTransform()->addScale(-0.02f);
+			//	_physics->getVelocity->getX()* + 0.2f;
+
+		}
+	}
+	// team 2
+/*	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		GetTransform()->setScale(0.1f);
+	}
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 2) {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
+	else {
+		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
+
+
+		if (_distanceTraveled <= _distanceGoal / 2)
+		{
+			GetTransform()->addScale(0.02f);
+			//_physics->getVelocity->getX()* - 0.2f;
+		}
+		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled < _distanceGoal) {
+			GetTransform()->addScale(-0.02f);
+			//	_physics->getVelocity->getX()* + 0.2f;
+
+		}
+	}
+		
+
+		*/
+	
 	if (active) {
-		GetTransform()->addRotation(15);
+		if(!heldByPlayer)
+			GetTransform()->addRotation(15);
 
 		if (myCollider->collisionDetected())
 		{
@@ -41,6 +104,7 @@ void Snowball::OnUpdate(int timeDelta)
 						hitBattler->DealtDamage(1);
 						SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(GetComponent<SpriteRenderer*>());
 						PhysicsManager::GetInstance()->removeCollider(GetComponent<Collider*>());
+
 						//remove self from rendering, physics, and stop checking for collision detection
 						active = false;
 					}
@@ -57,5 +121,11 @@ void Snowball::OnUpdate(int timeDelta)
 		}
 	}
 }
-	
 
+void Snowball::setHeld(bool held) {
+	heldByPlayer = held;
+}
+	
+void Snowball::setDistanceGoal(float dist) {
+	_distanceGoal = dist;
+}
