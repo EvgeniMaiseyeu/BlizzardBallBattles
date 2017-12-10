@@ -6,6 +6,7 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "AudioManager.h"
 #include "UserDefinedRenderLayers.h"
 #include "Battler.h"
 #include "Snowball.h"
@@ -237,6 +238,7 @@ void Battler::UpdateAttachedSnowBalls(float deltaTimer) {
 
 bool Battler::DealtDamage(int damage)
 {
+	AudioManager::GetInstance()->PlaySEFhit("./Game/Assets/hit.wav", 1);
 	bool isattached = false;
 	stats.hitpoints -= damage;
 	_physics->setSnowDrag(_physics->getSnowDrag()* 0.7);
