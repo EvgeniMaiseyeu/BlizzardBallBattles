@@ -10,6 +10,8 @@
 #include "SceneManager.h"
 #include "Scenes.h"
 #include "DayNightCamera.h"
+#include "GameManager.h"
+#include "AudioManager.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -24,6 +26,7 @@ void PlayerWon(std::map<std::string, void*> payload) {
 GameScene::GameScene(int player1Choice, int player2Choice) {
 	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
 	Camera::SetActiveCamera(new DayNightCamera());
+	AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
 }
 
 void GameScene::BuildBaseScene() {
@@ -91,6 +94,7 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
 			spriteRenderer->SetLayer(RENDER_LAYER_BACKGROUND);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, -2.0f);
+			thingsToClear.push_back(tile);
 		}
 	}
 
@@ -168,6 +172,13 @@ void GameScene::BuildBaseScene() {
 			spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
 			spriteRenderer->SetLayer(RENDER_LAYER_SHADOWABLE);
 			tile->GetTransform()->setPosition(leftBounding + x + 0.5, bottomBounding + y + 0.5, 2.0);
+			thingsToClear.push_back(tile);
 		}
+	}
+}
+
+void GameScene::ClearScene() {
+	for (int i = 0; i < thingsToClear.size(); i++) {
+		GameManager::GetInstance()->RemoveGameObject(thingsToClear[i]);
 	}
 }

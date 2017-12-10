@@ -56,7 +56,7 @@ public:
 	void HandleCancels();
 	bool FireBigSnowball();
 	bool GetBigSnowball();
-	void LockToBattler();
+	void LockToBattler(Snowball* sb);
 	void Unlock();
 	//--------------------//
 	bool DealtDamage(int damage);
@@ -71,8 +71,9 @@ private:
 	bool _animate;
 	float _throwPower;
 	float _throwDistance;
+	bool attached;
 	//---------------------//
-
+	std::vector<Snowball*> attachedSnowballs;
 	Shader* _shader;
 	GLuint _textureBufferID;
 
@@ -81,6 +82,7 @@ private:
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);
+	void UpdateAttachedSnowBalls(float deltaTime);
 	void Die();
 
 	bool canFire;
@@ -90,6 +92,6 @@ private:
 	std::string networkingID;
 	bool isSender;
 
-	ComplexSpriteinfo* GenerateSpriteInfo();
+	ComplexSpriteinfo* GenerateSpriteInfo(int team);
 };
 

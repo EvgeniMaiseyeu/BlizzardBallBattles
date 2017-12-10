@@ -32,6 +32,7 @@ AI::~AI()
 
 void AI::Initialize(float _intelligence, float _courage, float _decisionFrequency)
 {
+	teamID = myBattler->stats.teamID;
 	intelligence = _intelligence;
 	courage = _courage;
 	decisionFrequency = _decisionFrequency;
@@ -87,7 +88,15 @@ void AI::GetTarget()
 	{
 		currentTarget = position;
 		currentState = walk;
-		targetPosition = GetTargetPosition();
+		int enemyTeamNumber = 1;
+		if (teamID == 1)
+		{
+			enemyTeamNumber = 2;
+		}
+		std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
+		if (enemyTeam.size() != 0) {
+			targetPosition = GetTargetPosition();
+		}
 	}
 	else
 	{
@@ -100,11 +109,14 @@ void AI::GetTarget()
 GameObject* AI::GetTargetBattler()
 {
 	int enemyTeamNumber = 1;
-	if (myBattler->stats.teamID == 1)
+	if (teamID == 1)
 	{
 		enemyTeamNumber = 2;
 	}
 	std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
+	if (enemyTeam.size() == 0) {
+		return nullptr;
+	}
 	int randomBattler = std::rand() % enemyTeam.size();
 
 	return enemyTeam[randomBattler];
@@ -117,15 +129,19 @@ Vector2* AI::GetTargetPosition()
 	float startPosXMin = getGameWidth() / 6;
 	float startPosYMin = -startPosYMax;
 
-	float posX;
-	float posY;
+	float posX = 0;
+	float posY = 0;
 
-	if (myBattler->stats.teamID == 1)
+	if (myBattler == NULL || myBattler == nullptr) {
+		return nullptr;
+	}
+
+	if (teamID == 1)
 	{
 		posX = randomFloatInRange(-startPosXMin, -startPosXMax);
 		posY = randomFloatInRange(startPosYMin, startPosYMax);
 	}
-	else if (myBattler->stats.teamID == 2)
+	else if (teamID == 2)
 	{
 		posX = randomFloatInRange(startPosXMin, startPosXMax);
 		posY = randomFloatInRange(startPosYMin, startPosYMax);
@@ -137,6 +153,12 @@ Vector2* AI::GetTargetPosition()
 
 void AI::WalkToTargetBattler()
 {
+	if (targetBattler == nullptr || targetBattler == NULL) {
+		GetTarget();
+		if (targetBattler == nullptr || targetBattler == NULL) {
+			return;
+		}
+	}
 	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 
@@ -159,11 +181,11 @@ void AI::WalkToTargetBattler()
 	int directionX = 0;
 	if (currentBehaviour == cower)
 	{
-		directionX = (myBattler->stats.teamID == 1) ? -1 : 1;
+		directionX = (teamID == 1) ? -1 : 1;
 	}
 	else if (currentBehaviour == engage)
 	{
-		directionX = (myBattler->stats.teamID == 1) ? 1 : -1;
+		directionX = (teamID == 1) ? 1 : -1;
 	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
@@ -180,6 +202,10 @@ void AI::WalkToTargetPosition()
 {
 	float myPosY = myTransform->getY();
 	float myPosX = myTransform->getX();
+
+	if (targetPosition == nullptr) {
+		return;
+	}
 
 	float posDiffY = targetPosition->getY() - myPosY;
 	float posDiffX = targetPosition->getX() - myPosX;

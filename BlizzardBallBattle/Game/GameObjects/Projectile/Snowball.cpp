@@ -6,6 +6,13 @@
 #include "Collision/Collider.h"
 #include "UserDefinedRenderLayers.h"
 #include "MessageManager.h"
+#include "AudioManager.h"
+#include "SceneManager.h"
+#include "GameScene.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+#define _CRT_SECURE_NO_WARNINGS
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
@@ -30,10 +37,16 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	active = true;
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
+	_bigSnowball = false;
+	//dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(this);
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	//If the scene is not a GameScene, destroy self
+	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
+		Destroy(this);
+	}
 	//if (heldByPlayer) {
 	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
@@ -45,16 +58,22 @@ void Snowball::OnUpdate(int timeDelta)
 	//_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
 	//	}
 	//}
-	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-		//DESTROOOOOOOOOY
-	}
+
+
 	if (active) {
+		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+			Destroy(this);
+			return;
+		}
 		if(!heldByPlayer)
 			GetTransform()->addRotation(15);
 
 		if (myCollider->collisionDetected())
 		{
 			std::vector<GameObject*> v = myCollider->getColliders();
+			char path[200];
+			sprintf(path, "Game/Assets/Audio/hit%d.mp3", (rand() % 3));
+			AudioManager::GetInstance()->PlaySEFhit(BuildPath(path), 1, 10);
 			for (int i = 0; i < v.size(); i++) {
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
 					continue;
@@ -63,11 +82,24 @@ void Snowball::OnUpdate(int timeDelta)
 				if (hitBattler && (v[i]->getId() != playerID)) {
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != teamID) {
-						if (hitBattler->DealtDamage(1)) {
-							Destroy(v[i]);
+						int damage = 0;
+						if (_bigSnowball) {
+							damage = 10;
 						}
-						DestructSnowball();
-						return;
+						else {
+							damage = 1;
+						}
+						if (hitBattler->DealtDamage(damage)) {
+							Destroy(v[i]);
+							DestructSnowball();
+							return;
+						}
+						else {
+							hitBattler->LockToBattler(this);
+							_physics->setVelocity(new Vector2(0, 0));
+							active = false;
+						}
+
 					}
 				}
 			}
@@ -86,6 +118,10 @@ void Snowball::DestructSnowball() {
 
 void Snowball::setHeld(bool held) {
 	heldByPlayer = held;
+}
+
+void Snowball::setBigSnowBall(bool bigSB) {
+	_bigSnowball = bigSB;
 }
 	
 void Snowball::SetDistanceGoal(float dist) {

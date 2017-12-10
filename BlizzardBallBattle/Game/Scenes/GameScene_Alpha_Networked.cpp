@@ -55,7 +55,7 @@ void GameScene_Alpha_Networked::OnConnected() {
 		player2->GetTransform()->setRotation(180.0f);
 		player1->AddComponent<Sender*>(new Sender(player1, "Player1"));
 		player2->AddComponent<Receiver*>(new Receiver(player2, "Player2"));
-		player1->AddComponent<Player*>(new Player(player1, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE, SDLK_LSHIFT));
+		player1->AddComponent<Player*>(new Player(player1, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE, SDLK_x, SDLK_LSHIFT));
 
 		AI1T1 = new Battler(1, "Character.png", "AI1T1", true);
 		AI1T1->AddComponent<Collider*>(new Collider(AI1T1, 0.5f));
@@ -99,7 +99,7 @@ void GameScene_Alpha_Networked::OnConnected() {
 		player2->GetTransform()->setRotation(180.0f);
 		player1->AddComponent<Receiver*>(new Receiver(player1, "Player1"));
 		player2->AddComponent<Sender*>(new Sender(player2, "Player2"));
-		player2->AddComponent<Player*>(new Player(player2, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_LCTRL, SDLK_LSHIFT));
+		player2->AddComponent<Player*>(new Player(player2, SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN, SDLK_LCTRL, SDLK_KP_0, SDLK_RSHIFT));
 
 		AI1T1 = new Battler(1, "Character.png", "AI1T1", false);
 		AI1T1->AddComponent<Collider*>(new Collider(AI1T1, 0.5f));

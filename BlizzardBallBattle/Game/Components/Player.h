@@ -22,7 +22,7 @@ private:
 	float center;
 	
 public:
-	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode run);
+	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2, SDL_Keycode run);
 	
 	void ComputeMovement(float deltaTime);
 	void OnStart(){};

@@ -4,13 +4,14 @@
 #include "Transform.h"
 #include "MatchManager.h"
 
-Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode run) : Component(gameObject) {
+Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2, SDL_Keycode run) : Component(gameObject) {
 	leftKey = left;
 	rightKey = right;
 	upKey = up;
 	downKey = down;
 	shootKey = shoot;
 	runKey = run;
+	shootKey2 = shoot2;
 	distance = 1;
 	youBattler = (Battler*)GetGameObject();
 }
@@ -39,6 +40,11 @@ void Player::OnUpdate(int timeDelta) {
 		}
 		 
 	}
+
+	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
+		youBattler->ThrowSnowball();
+	}
+
 	if (InputManager::GetInstance()->onKey(shootKey)) {
 		//Big snowball creating locks etc..
 		youBattler->MakeBigSnowball(deltaTime);
