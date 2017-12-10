@@ -26,7 +26,6 @@ GameScene_Alpha_Networked::GameScene_Alpha_Networked(int p1ai, int p2ai) : GameS
 
 void GameScene_Alpha_Networked::OnStart() {
 	isConnected = false;
-	BuildBaseScene();
 }
 
 void GameScene_Alpha_Networked::OnEnd() {
@@ -46,6 +45,7 @@ void GameScene_Alpha_Networked::OnUpdate(int ticks) {
 }
 
 void GameScene_Alpha_Networked::OnConnected() {
+	BuildBaseScene ();
 
 	GLuint snowTexture = SpriteRendererManager::GetInstance ()->GenerateTexture (BuildPath ("Game/Assets/Sprites/SnowTile.png"));
 	GLuint iceTexture = SpriteRendererManager::GetInstance ()->GenerateTexture (BuildPath ("Game/Assets/Sprites/IceTile.png"));

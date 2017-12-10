@@ -176,11 +176,15 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
-	if (teamTwoFormation != 4) {
-		Player* playerTwoStats = new Player (playerTwo, SDLK_l, SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD, SDLK_COMMA);
-		playerTwo->AddComponent<Player*> (playerTwoStats);
-		if (teamTwoFormation == 5) {
-			playerOne->AddComponent<Sender*> (new Sender (playerTwo, "Player2"));
+	if (teamOneFormation != 4) {
+		if (teamOneFormation == 5) {
+			Player* playerTwoStats = new Player (playerTwo, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_x, SDLK_c);
+			playerTwo->AddComponent<Player*> (playerTwoStats);
+			playerTwo->AddComponent<Sender*> (new Sender (playerTwo, "Player2"));
+		}
+		else {
+			Player* playerTwoStats = new Player (playerTwo, SDLK_l, SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD, SDLK_COMMA);
+			playerTwo->AddComponent<Player*> (playerTwoStats);
 		}
 	} else {
 		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player2"));
@@ -211,11 +215,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		aiTransform->setPosition (posX, posY);
 		aiTransform->addRotation (180.0f);
 
-		if (teamTwoFormation != 4) {
+		if (teamOneFormation != 4) {
 			AI* unitAI = new AI (unit, teamTwoLearning);
 			unit->AddComponent<AI*> (unitAI);
 			teamTwoAIUnits.push_back (unitAI);
-			if (teamTwoFormation == 5) {
+			if (teamOneFormation == 5) {
 				unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
 			}
 		}
