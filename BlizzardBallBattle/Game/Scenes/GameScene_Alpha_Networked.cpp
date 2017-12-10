@@ -54,10 +54,10 @@ void GameScene_Alpha_Networked::OnConnected() {
 
 	if (NetworkingManager::GetInstance()->IsHost()) {
 		p1ai = 4;
-		p2ai = 4;
+		p2ai = 5;
 	}
 	else {
-		p1ai = 4;
+		p1ai = 5;
 		p2ai = 4;
 	}
 	MatchManager::GetInstance ()->CreateBattlers (Shader::GetShader (), characterTexture, spriteSheetTexture, p1ai, p2ai);

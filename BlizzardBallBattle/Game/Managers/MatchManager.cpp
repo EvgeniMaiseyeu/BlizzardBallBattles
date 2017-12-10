@@ -129,6 +129,8 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerOne->stats.isPlayer = true;
 	if (teamTwoFormation == 4) {//are we networking
 		playerOne->AddComponent<Sender*> (new Sender (playerOne, "Player1"));
+	} else if (teamTwoFormation == 5) {//are we networking
+		playerOne->AddComponent<Sender*> (new Sender (playerOne, "Player2"));
 	}
 	RegisterCharacter (playerOne);
 
@@ -146,17 +148,22 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 
 		Battler* unit = new Battler (1, playerSprite);
-		AI* unitAI = new AI (unit, teamOneLearning);
 		Collider* collider = new Collider (unit, 0.5f);
-		unit->AddComponent<AI*> (unitAI);
 		unit->AddComponent<Collider*> (collider);
 		Transform* aiTransform = (Transform*)unit->GetTransform ();
 		aiTransform->setPosition (posX, posY);
-		if (teamTwoFormation == 4) {
+		if (teamOneFormation == 4) {
 			unit->AddComponent<Sender*> (new Sender (unit, "Unit1-" + i));
 		}
+		else if (teamOneFormation == 5) {
+			unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
+		}
+		else {
+			AI* unitAI = new AI (unit, teamOneLearning);
+			unit->AddComponent<AI*> (unitAI);
+			teamOneAIUnits.push_back (unitAI);
+		}
 		RegisterCharacter (unit);
-		teamOneAIUnits.push_back (unitAI);
 	}
 
 
@@ -165,12 +172,14 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 	playerTwo = new Battler(2, playerSprite);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
-	if (teamTwoFormation != 4) {
+	if (teamTwoFormation == 4) {
+		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player2"));
+	}
+	else if (teamTwoFormation == 5) {
+		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player1"));
+	} else {
 		Player* playerTwoStats = new Player (playerTwo, SDLK_l, SDLK_QUOTE, SDLK_p, SDLK_SEMICOLON, SDLK_PERIOD, SDLK_COMMA);
 		playerTwo->AddComponent<Player*> (playerTwoStats);
-	}
-	else {
-		playerTwo->AddComponent<Receiver*> (new Receiver (playerTwo, "Player2"));
 	}
 	playerTwo->AddComponent<Collider*>(playerTwoCollider);
 	Transform* playerTwoTransform = (Transform*)playerTwo->GetTransform();
@@ -185,32 +194,30 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		float posX = randomFloatInRange (startPosXMin, startPosXMax);
 		float posY = randomFloatInRange (startPosYMin, startPosYMax);
 
+		bool teamTwoLearning = false;
+		if (teamTwoFormation == 1)
+		{
+			teamTwoLearning = true;
+		}
+
+		Battler* unit = new Battler (2, playerSprite);
+		Collider* collider = new Collider (unit, 0.5f);
+		unit->AddComponent<Collider*> (collider);
+		Transform* aiTransform = (Transform*)unit->GetTransform ();
+		aiTransform->setPosition (posX, posY);
+		aiTransform->addRotation (180.0f);
+
 		if (teamTwoFormation == 4) {
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2-" + i));
 		}
-		else {
-			bool teamTwoLearning = false;
-			if (teamTwoFormation == 1)
-			{
-				teamTwoLearning = true;
-			}
-
-			Battler* unit = new Battler (2, playerSprite);
-			Collider* collider = new Collider (unit, 0.5f);
-			unit->AddComponent<Collider*> (collider);
-			Transform* aiTransform = (Transform*)unit->GetTransform ();
-			aiTransform->setPosition (posX, posY);
-			aiTransform->addRotation (180.0f);
-
-			if (teamTwoFormation != 4) {
-				AI* unitAI = new AI (unit, teamTwoLearning);
-				unit->AddComponent<AI*> (unitAI);
-				teamTwoAIUnits.push_back (unitAI);
-			}
-			else {
-				unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2-" + i));
-			}
-			RegisterCharacter (unit);
+		else if (teamTwoFormation == 5) {
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit1-" + i));
+		} else {
+			AI* unitAI = new AI (unit, teamTwoLearning);
+			unit->AddComponent<AI*> (unitAI);
+			teamTwoAIUnits.push_back (unitAI);
 		}
+		RegisterCharacter (unit);
 	}
 
 	// Initialize our AI
