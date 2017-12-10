@@ -42,7 +42,7 @@ void AI::OnUpdate(int timeDelta)
 {
 	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
-	myBattler->Move(0, 0, false);
+	//myBattler->Move(0, 0, false);
 
 	switch (currentState)
 	{
