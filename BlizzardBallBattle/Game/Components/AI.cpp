@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include "AudioManager.h"
 
 AI::AI(GameObject* gameObject, bool _isLearning) : Component(gameObject)
 {
@@ -276,6 +277,7 @@ void AI::Shoot()
 	if (chanceOfFiring <= intelligence)
 	{
 		myBattler->ThrowSnowball();
+		AudioManager::GetInstance()->PlaySEFshoot("./Game/Assets/shoot.wav", 1, 0.6f);
 	}
 }
 
