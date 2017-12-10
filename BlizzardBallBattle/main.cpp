@@ -15,6 +15,12 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  //For Visual Studio std::cout outputs
+#if defined _WIN32 || defined _WIN64
+  AllocConsole();
+  freopen("CONOUT$", "w", stdout);
+  freopen("CONOUT$", "w", stderr);
+#endif
   //TODO, not handle this in command line
   if (argc > 1) {
     NetworkingManager::GetInstance()->SetIP(argv[1]);

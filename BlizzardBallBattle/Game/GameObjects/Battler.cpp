@@ -465,10 +465,10 @@ bool Battler::InIceZone(Transform *t) {
 
 bool Battler::ApplyIceSliding(Vector2 *v) {
 	if (InIceZone(GetTransform())) {
-		std::cout << "X: " << v->getX() << " Y: " << v->getY();
+		//std::cout << "X: " << v->getX() << " Y: " << v->getY();
 		v->setX(v->getX() * 0.99f);
 		v->setY(v->getY() * 0.99f);
-		std::cout << "2X: " << v->getX() << " 2Y: " << v->getY() << std::endl;
+		//std::cout << "2X: " << v->getX() << " 2Y: " << v->getY() << std::endl;
 		return true;
 	}
 	return false;
