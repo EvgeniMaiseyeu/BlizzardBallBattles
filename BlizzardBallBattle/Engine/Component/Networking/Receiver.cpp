@@ -14,7 +14,7 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
         float scale = std::stof(*(std::string*)data["scale"]);
         Receiver* self = (Receiver*)data["this"];
         Transform* transform = self->gameObject->GetTransform();
-		if (transform->getY()) {
+		if (transform->exists()) {
 			transform->setPosition (x, y, z);
 			transform->setRotation (angle);
 			transform->setScale (scale);
