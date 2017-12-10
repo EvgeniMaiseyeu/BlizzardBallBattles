@@ -124,13 +124,3 @@ float Transform::getScale() {
 void Transform::addScale(float toAdd) {
 	scale += toAdd;
 }
-
-bool Transform::exists() {
-	try {
-		float y = getY();
-	}
-	catch (int e) {
-		return false;
-	}
-	return true;
-}

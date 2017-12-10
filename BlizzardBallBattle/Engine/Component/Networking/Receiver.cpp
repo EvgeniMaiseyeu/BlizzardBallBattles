@@ -6,7 +6,7 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
     //Add to map of type "event", key "id"
     std::cout << "RECEIVER SUBSCRIBBED" << std::endl;
 
-    Subscribe("UPDATE",  [](std::map<std::string, void*> data) -> void {
+    this->OnUpdateID = Subscribe("UPDATE",  [](std::map<std::string, void*> data) -> void {
         float x = std::stof(*(std::string*)data["x"]);
         float y = std::stof(*(std::string*)data["y"]);
         float z = std::stof(*(std::string*)data["z"]);
@@ -14,18 +14,16 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
         float scale = std::stof(*(std::string*)data["scale"]);
         Receiver* self = (Receiver*)data["this"];
         Transform* transform = self->gameObject->GetTransform();
-		if (transform->exists()) {
-			transform->setPosition (x, y, z);
-			transform->setRotation (angle);
-			transform->setScale (scale);
-		}
+		transform->setPosition (x, y, z);
+		transform->setRotation (angle);
+		transform->setScale (scale);
     }, this);
 }
 
 Receiver::~Receiver() {
-    //Unsubscribe
+	MessageManager::UnSubscribe (netID + "|UPDATE", this->OnUpdateID);
 }
 
-void Receiver::Subscribe(std::string event, Callback callback, void* owner) {
-    MessageManager::Subscribe(netID + "|" + event, callback, owner);
+int Receiver::Subscribe(std::string event, Callback callback, void* owner) {
+    return MessageManager::Subscribe(netID + "|" + event, callback, owner);
 }
