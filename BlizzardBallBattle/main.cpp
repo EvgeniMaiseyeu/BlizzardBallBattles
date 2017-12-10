@@ -14,6 +14,10 @@ int main(int argc, char *argv[])
   if (!SpriteRendererManager::GetInstance()->Init()) {
     return -1;
   }
+  //For Visual Studio std::cout outputs
+  AllocConsole ();
+  freopen ("CONOUT$", "w", stdout);
+  freopen ("CONOUT$", "w", stderr);
 
   //TODO, not handle this in command line
   if (argc > 1) {
