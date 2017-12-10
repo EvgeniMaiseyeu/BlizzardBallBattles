@@ -42,6 +42,7 @@ void AI::OnUpdate(int timeDelta)
 {
 	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
+	myBattler->Move(0, 0, false);
 
 	switch (currentState)
 	{
@@ -116,6 +117,7 @@ GameObject* AI::GetTargetBattler()
 	std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
 	if (enemyTeam.size() == 0) {
 		return nullptr;
+
 	}
 	int randomBattler = std::rand() % enemyTeam.size();
 
@@ -191,11 +193,11 @@ void AI::WalkToTargetBattler()
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY, false))
-	{
-		posXToMoveTo = 0;
+	//if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY, false))
+	//{
+	//	posXToMoveTo = 0;
 		myBattler->Move(posXToMoveTo, moveSpeed * directionY, false);
-	}
+	//}
 }
 
 void AI::WalkToTargetPosition()

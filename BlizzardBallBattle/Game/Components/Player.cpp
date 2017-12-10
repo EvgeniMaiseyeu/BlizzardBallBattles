@@ -69,8 +69,8 @@ void Player::ComputeMovement(float deltaTime) {
 		isRunning = true;
 	}
 
-	float x = 0;
-	float y = 0;
+	float x = youBattler->_physics->getVelocity()->getX();
+	float y = youBattler->_physics->getVelocity()->getY();
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		y -= isRunning ? runSpeed : moveSpeed;
@@ -88,14 +88,71 @@ void Player::ComputeMovement(float deltaTime) {
 		x -= isRunning ? runSpeed : moveSpeed;
 	}
 	
-	if (youBattler->InIceZone(youBattler->GetTransform())) {
-		Vector2 *v = youBattler->GetVelocity();
-		float prevX = v->getX();
-		float prevY = v->getY();
+	//if (youBattler->InIceZone(youBattler->GetTransform())) {
+	//	Vector2 *v = youBattler->GetVelocity();
+	//	float prevX = v->getX();
+	//	float prevY = v->getY();
 
-		x = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevX + (x / 20)));
-		y = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevY + (y / 20)));
+	//	x = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevX + (x / 20)));
+	//	y = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevY + (y / 20)));
+	//}
+
+	//if (x > isRunning ? runSpeed : moveSpeed)
+	//{
+	//	x = isRunning ? runSpeed : moveSpeed;
+	//}
+	//else if (x < -isRunning ? runSpeed : moveSpeed)
+	//{
+	//	x = -isRunning ? runSpeed : moveSpeed;
+	//}
+	//if (y > isRunning ? runSpeed : moveSpeed)
+	//{
+	//	y = isRunning ? runSpeed : moveSpeed;
+	//}
+	//else if (y < -isRunning ? runSpeed : moveSpeed)
+	//{
+	//	y = -isRunning ? runSpeed : moveSpeed;
+	//}
+
+	if (isRunning && x > runSpeed)
+	{
+		x = runSpeed;
+	}
+	else if (isRunning && x < -runSpeed)
+	{
+		x = -runSpeed;
+	}
+	else if (x > moveSpeed)
+	{
+		x = moveSpeed;
+	}
+	else if (x < -moveSpeed)
+	{
+		x = -moveSpeed;
+	}
+	if (isRunning && y > runSpeed)
+	{
+		y = runSpeed;
+	}
+	else if (isRunning && y < -runSpeed)
+	{
+		y = -runSpeed;
+	}
+	else if (y > moveSpeed)
+	{
+		y = moveSpeed;
+	}
+	else if (y < -moveSpeed)
+	{
+		y = -moveSpeed;
 	}
 
 	youBattler->Move(x, y, isRunning);
 } 
+
+void Player::UnfreezeSnowman() {
+	float y = youBattler->GetTransform()->getY();
+	float x = youBattler->GetTransform()->getX();
+
+	// TODO: Check collision with snowmen on your team.
+}

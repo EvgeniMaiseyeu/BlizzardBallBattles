@@ -50,12 +50,20 @@ void Battler::OnUpdate(int ticks)
 
 	float deltaTime = (float)ticks / 1000.0f;
 
+	if (InIceZone(_transform))
+	{
+		_physics->setDrag(1);
+		_physics->setSnowDrag(1);
+	}
+	else
+	{
+		_physics->setDrag(0.8);
+		_physics->setSnowDrag(0.8);
+	}
+	CheckAndSetBounds(_transform, _physics->getVelocity());
+
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
-	//if (!CheckIfInBounds(_transform->getX(), _transform->getY()))
-	//{
-	//	Move(0, 0);
-	//}
 }
 
 void Battler::InitStats(int team)
@@ -88,11 +96,10 @@ bool Battler::Move(float x, float y, bool isRunning)
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
-		CheckIfInBounds(t, v);
-		ApplyIceSliding(v);
+		//CheckAndSetBounds(t, v);
 		_physics->setVelocity(v);
-		float snowdrag = _physics->getSnowDrag();
-		float drag = _physics->getDrag();
+		//float snowdrag = _physics->getSnowDrag();
+		//float drag = _physics->getDrag();
 		if (attachedSnowballs.size() > 3) {
 			//Die();
 		}
@@ -100,15 +107,15 @@ bool Battler::Move(float x, float y, bool isRunning)
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
+				//physics->setDrag(drag);
+				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 			for (int i = 0; i < attachedSnowballs.size(); i++) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
+				//physics->setDrag(drag);
+				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 		}
@@ -277,6 +284,8 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
+
+	Destroy(this);
 }
 
 ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
@@ -414,7 +423,7 @@ void Battler::HandleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
+bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 {
 	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;
@@ -466,13 +475,11 @@ bool Battler::InIceZone(Transform *t) {
 	return (t->getX() >= team2Bounds && t->getX() <= team1Bounds && t->getY() >= yMin && t->getY() <= yMax);
 }
 
-bool Battler::ApplyIceSliding(Vector2 *v) {
-	if (InIceZone(GetTransform())) {
-		std::cout << "X: " << v->getX() << " Y: " << v->getY();
-		v->setX(v->getX() * 0.99f);
-		v->setY(v->getY() * 0.99f);
-		std::cout << "2X: " << v->getX() << " 2Y: " << v->getY() << std::endl;
-		return true;
-	}
-	return false;
-}
+//bool Battler::ApplyIceSliding(Vector2 *v) {
+//	if (InIceZone(GetTransform())) {
+//		v->setX(v->getX() * 0.99f);
+//		v->setY(v->getY() * 0.99f);
+//		return true;
+//	}
+//	return false;
+//}

@@ -45,7 +45,7 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	bool IsAttached();
-	bool CheckIfInBounds(Transform *pos, Vector2 *move);
+	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);
 	bool InIceZone(Transform *t);
 	Vector2 *GetVelocity();
@@ -61,6 +61,8 @@ public:
 	void Unlock();
 	//--------------------//
 	bool DealtDamage(int damage);
+	Transform* _transform;
+	Physics* _physics;
 
 private:
 
@@ -78,8 +80,6 @@ private:
 	Shader* _shader;
 	GLuint _textureBufferID;
 
-	Physics* _physics;
-	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);
