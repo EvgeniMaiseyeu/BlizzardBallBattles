@@ -165,7 +165,7 @@ void Battler::TurnTo(Vector2* position)
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
- 		return false;
+		return false;
 
 	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
@@ -183,8 +183,13 @@ bool Battler::ThrowSnowball()
 	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
 	canFire = false;
 	return true;
-}
 
+	//parabolic     y = y0+Vyt + 1/2 gt2
+		// y=a(x–h)2+k
+		// y = ax2 + bx+ c
+
+		//
+}
 void Battler::UpdateThrowTimer(float deltaTime)
 {
 	timeSinceLastShot += deltaTime;
@@ -319,10 +324,11 @@ void Battler::Unlock() {
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
+
 void Battler::HandleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 2)
+	if (_fullLock && _timer < 1.5)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 2) {
+	else if (_fullLock && _timer > 1.5) {
 		//launch snowball
 		//Unlock();
 		attached = false;
@@ -359,6 +365,8 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				_animate = false;
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
+		
+
 				return true;
 			}
 		}
@@ -375,6 +383,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			else
 				_bigSnowball->GetTransform()->addX(-0.7f);
 			_bigSnowball->GetTransform()->setZ(-1);
+		
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -385,7 +394,9 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 bool Battler::FireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 2.0f; //ai wont care about this
+			_throwDistance += 1.0f; //ai wont care about this
+			_throwPower += 1.0f; //ai wont care about this
+
 			return true;
 		}
 		else{

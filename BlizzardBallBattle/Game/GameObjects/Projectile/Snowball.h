@@ -18,7 +18,7 @@ private:
 	float _distanceGoal;
 	Physics* _physics;
 	bool _bigSnowball;
-	
+
 public:
 	void Snowball::setBigSnowBall(bool bigSB);
 	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
