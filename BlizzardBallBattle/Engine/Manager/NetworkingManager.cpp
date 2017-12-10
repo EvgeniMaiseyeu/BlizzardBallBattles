@@ -127,7 +127,7 @@ void NetworkingManager::PollMessages() {
 }
 
 void NetworkingManager::PollMessagesThread() {
-    #define MAXLEN 1024
+    #define MAXLEN 16384
     int result;
     char msg[MAXLEN];
 

@@ -22,5 +22,5 @@ void Sender::SendNetworkMessage(std::string messageKey,  std::map<std::string, s
 }
 
 void Sender::OnUpdate(int ticks) {
-    SendUpdate();
+	SendUpdate ();
 }
