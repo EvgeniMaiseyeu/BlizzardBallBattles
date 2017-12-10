@@ -161,11 +161,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 			unit->AddComponent<AI*> (unitAI);
 			teamOneAIUnits.push_back (unitAI);
 			if (teamOneFormation == 4) {
-				unit->AddComponent<Sender*> (new Sender (unit, "Unit1-" + i));
+				unit->AddComponent<Sender*> (new Sender (unit, "Unit1" + std::to_string(i)));
 			}
 		}
 		else {
-			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit1-" + i));
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit1" + std::to_string (i)));
 		}
 		RegisterCharacter (unit);
 	}
@@ -220,11 +220,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 			unit->AddComponent<AI*> (unitAI);
 			teamTwoAIUnits.push_back (unitAI);
 			if (teamOneFormation == 5) {
-				unit->AddComponent<Sender*> (new Sender (unit, "Unit2-" + i));
+				unit->AddComponent<Sender*> (new Sender (unit, "Unit2" + std::to_string (i)));
 			}
 		}
 		else {
-			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2-" + i));
+			unit->AddComponent<Receiver*> (new Receiver (unit, "Unit2" + std::to_string (i)));
 		}
 		RegisterCharacter (unit);
 	}

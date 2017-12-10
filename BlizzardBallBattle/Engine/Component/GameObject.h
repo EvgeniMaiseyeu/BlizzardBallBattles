@@ -72,6 +72,7 @@ public:
         for (size_t i = 0; i < it->second.size(); i++){
 			it->second[i]->~Component();
             delete it->second[i];
+			it->second[i] = NULL;
         }
     }
 	components.clear();
