@@ -9,6 +9,7 @@
 #include "NetworkingManager.h"
 #include "SceneManager.h"
 #include "PhysicsManager.h"
+#include "GarbageCollection.h"
  
 GameManager* GameManager::instance;
  
@@ -19,7 +20,7 @@ GameManager* GameManager::GetInstance() {
 }
  
 GameManager::GameManager() {
- 
+
 }
  
 void GameManager::OnStart()
@@ -36,9 +37,14 @@ void GameManager::OnStart()
         lastTime = curTime;
         //update system managers then.
         OnUpdate(ticks);
-        std::cout << ticks << std::endl;
         //update game.
         SceneManager::GetInstance()->UpdateScene(ticks);
+
+		isBeingCollected = true;
+		ClearObjectsToRemove();
+		isBeingCollected = false;
+
+		FPSThrottle(ticks);
     }
 }
 
@@ -68,17 +74,17 @@ void GameManager::OnUpdate(int ticks)
     
         NetworkingManager::GetInstance()->SendQueuedEvents();
     }
- 
+
+	SpriteRendererManager::GetInstance()->OnUpdate(ticks);
     PhysicsManager::GetInstance()->OnUpdate(ticks);
-    SpriteRendererManager::GetInstance()->OnUpdate(ticks);    
 
     for (std::map<int, GameObject*>::iterator it=globalGameObjects.begin(); it!=globalGameObjects.end(); ++it) {
         it->second->OnUpdate(ticks);
     }
 
     game->OnUpdate(ticks);
+
  
-    FPSThrottle(ticks);
 }
  
 void GameManager::OnEnd()
@@ -97,7 +103,20 @@ void GameManager::AddGameObject(int id, GameObject* obj) {
     globalGameObjects[id] = obj;
 }
  
-void GameManager::RemoveGameObject(int id) {
-    globalGameObjects.erase(id);
-	SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(id);
+void GameManager::RemoveGameObject(GameObject* objectToRemove) {
+	gameObjectsToRemove.push_back(objectToRemove);
+}
+
+void GameManager::ClearObjectsToRemove() {
+	//Do it by ID, don't kill the same ID twice
+	sort(gameObjectsToRemove.begin(), gameObjectsToRemove.end());
+	gameObjectsToRemove.erase(unique(gameObjectsToRemove.begin(), gameObjectsToRemove.end()), gameObjectsToRemove.end());
+
+	for (int i = 0; i < gameObjectsToRemove.size(); i++) {
+		GameObject* object = gameObjectsToRemove[i];
+		globalGameObjects.erase(object->getId());
+		SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(object->getId());
+		delete(object);
+	}
+	gameObjectsToRemove.clear();
 }

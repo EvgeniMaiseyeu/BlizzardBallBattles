@@ -9,6 +9,11 @@
 #include "SpriteSheet.h"
 #include <iostream>
 
+SceneTemplate::SceneTemplate(int p1ai, int p2ai) : GameScene(p1ai, p2ai) {
+	this->p1ai = p1ai;
+	this->p2ai = p2ai;
+}
+
 void SceneTemplate::OnStart(){
 	BuildBaseScene();
 	GLuint snowTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/SnowTile.png"));
@@ -17,12 +22,15 @@ void SceneTemplate::OnStart(){
 	GLuint spriteSheetTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath("Game/Assets/Sprites/WalkingSpriteSheet.png"));
 
 	// Create Players
-	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture);
+	MatchManager::GetInstance()->CreateBattlers(Shader::GetShader(), characterTexture, spriteSheetTexture, p1ai, p2ai);
+}
+
+void SceneTemplate::OnPause() {
+	MatchManager::GetInstance()->Stop();
+	ClearScene();
 }
 
 void SceneTemplate::OnEnd() {
-	//delete(player1);
-	//delete(player2);
 }
 
 void SceneTemplate::OnUpdate(int ticks) {

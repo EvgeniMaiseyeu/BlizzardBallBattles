@@ -1,5 +1,6 @@
 #include "HelperFunctions.h"
 #include <stdlib.h>
+#include <time.h>
 
 std::string BuildPath(char* fileName) {
 #ifdef __APPLE__

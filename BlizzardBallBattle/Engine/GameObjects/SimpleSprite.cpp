@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "HelperFunctions.h"
 
-SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float scale, Shader* nonDefaultShader) : GameObject(false) {
+SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float scale, Shader* nonDefaultShader) : GameObject(true) { //TODO: DONT BE TRUE. Beta use only for snowball memory leak hack
     std::string totalPath("Game/Assets/Sprites/" + path);
     GLuint titleTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath((char*)totalPath.c_str()));
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
@@ -21,14 +21,8 @@ SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float sc
 	AddComponent<SpriteRenderer*>(spriteRenderer);
 }
 
-SimpleSprite::~SimpleSprite() {
-    GetTransform()->setScale(0.0f);
-	GetTransform()->setPosition(100000, 1000000, -1000000);
-    //TODO: Memory leak fix
-    //if (sprite != nullptr) {
-    //    delete(sprite);
-    //}
-    //if (shader != nullptr) {
-    //    delete(shader);
-    //}
-}
+/*SimpleSprite::~SimpleSprite() {
+    if (sprite != nullptr) {
+       delete(sprite);
+    }
+}*/

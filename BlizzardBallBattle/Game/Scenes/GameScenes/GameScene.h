@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "SimpleSprite.h"
 #include "Shader.h"
+#include <vector>
 
 enum class TileIndex {
 	//1st Row
@@ -47,6 +48,8 @@ class GameScene : public Scene {
 private:
 	Shader* ourShader;
 public:
-	GameScene();
+	GameScene(int player1Choice, int player2Choice);
     void BuildBaseScene();
+	void ClearScene();
+	std::vector<GameObject*> thingsToClear;
 };

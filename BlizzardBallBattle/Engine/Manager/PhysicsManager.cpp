@@ -31,7 +31,8 @@ void PhysicsManager::OnUpdate(int ticks) {
 				Collider* c1 = _sceneColliders[i];
 				Collider* c2 = _sceneColliders[j];
 
-				if (checkCollision(c1->getTransform(), c2->getTransform()) < (c1->getRadius() + c2->getRadius())) {
+				if (checkCollision(c1->getTransform(), c2->getTransform()) < (c1->getRadius()-0.2f + c2->getRadius())) {
+					c1->getTransform()->getY();
 					c1->addCollision(c2->GetGameObject());
 					c1->setCollision(true);
 					c2->setCollision(true);

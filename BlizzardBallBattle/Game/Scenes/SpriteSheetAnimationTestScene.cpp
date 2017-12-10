@@ -211,8 +211,8 @@ void SpriteSheetAnimationTestScene::OnStart() {
 }
 
 void SpriteSheetAnimationTestScene::OnEnd() {
-	delete(player1);
-	delete(player2);
+	//delete(player1);
+	//delete(player2);
 }
 
 void SpriteSheetAnimationTestScene::OnUpdate(int ticks) {

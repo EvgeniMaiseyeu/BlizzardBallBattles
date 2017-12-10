@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)WinLibraries\SDL2_net-2.0.1\lib\x86;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\lib\x86;$(SolutionDir)WinLibraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)WinLibraries\freeglut\lib;$(SolutionDir)WinLibraries\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)WinLibraries\SDL2_mixer-devel-2.0.1-VC\SDL2_mixer-2.0.1\include;$(SolutionDir)WinLibraries\SDL2_net-2.0.1\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)WinLibraries\SDL2_mixer-devel-2.0.1-VC\SDL2_mixer-2.0.1\lib\x86;$(SolutionDir)WinLibraries\SDL2_net-2.0.1\lib\x86;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\lib\x86;$(SolutionDir)WinLibraries\glew-2.1.0\lib\Release\Win32;$(SolutionDir)WinLibraries\freeglut\lib;$(SolutionDir)WinLibraries\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)WinLibraries\glew-2.1.0\include;$(SolutionDir)WinLibraries\freeglut\include;$(SolutionDir)WinLibraries\SDL2-2.0.5\include;$(SolutionDir)WinLibraries\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
@@ -82,9 +82,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)BlizzardBallBattle;$(SolutionDir)BlizzardBallBattle\Game\Managers;$(SolutionDir)BlizzardBallBattle\Game\GameObjects;$(SolutionDir)BlizzardBallBattle\Game\ExternalClasses;$(SolutionDir)BlizzardBallBattle\Game\Scenes;$(SolutionDir)BlizzardBallBattle\Game\Scenes\MenuScenes;$(SolutionDir)BlizzardBallBattle\Game\Scenes\GameScenes;$(SolutionDir)BlizzardBallBattle\Game\Components;$(SolutionDir)BlizzardBallBattle\Game\GameObjects\Projectile;$(SolutionDir)BlizzardBallBattle\Game;$(SolutionDir)BlizzardBallBattle\Engine\Component\Collision;$(SolutionDir)BlizzardBallBattle\Engine\Component\Networking;$(SolutionDir)BlizzardBallBattle\Engine\Component\Transform;$(SolutionDir)BlizzardBallBattle\Engine\Component\Physics;$(SolutionDir)BlizzardBallBattle\Engine\Component\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Render;$(SolutionDir)BlizzardBallBattle\Engine\External\Math;$(SolutionDir)BlizzardBallBattle\Engine\External;$(SolutionDir)BlizzardBallBattle\Engine\Component;$(SolutionDir)BlizzardBallBattle\Engine\GameObjects;$(SolutionDir)BlizzardBallBattle\Engine\Manager;$(SolutionDir)BlizzardBallBattle\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freeglut.lib;SDL2_image.lib;SDL2_net.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
@@ -129,14 +130,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AILearning.cpp" />
+    <ClCompile Include="AISelectionMenuScene.cpp" />
     <ClCompile Include="Engine\Component\Collision\Collider.cpp" />
     <ClCompile Include="Engine\Component\Networking\Receiver.cpp" />
     <ClCompile Include="Engine\Component\Networking\Sender.cpp" />
+    <ClCompile Include="Engine\External\Render\ContrastShader.cpp" />
+    <ClCompile Include="Engine\External\Render\FrameBufferObject.cpp" />
+    <ClCompile Include="Engine\External\Render\ImageRenderer.cpp" />
     <ClCompile Include="Engine\External\Render\ISprite.cpp" />
+    <ClCompile Include="Engine\External\Render\PostProcessing.cpp" />
     <ClCompile Include="Engine\External\Render\Sprite.cpp" />
     <ClCompile Include="Engine\External\Render\SpriteSheet.cpp" />
     <ClCompile Include="Engine\External\Render\Tile.cpp" />
+    <ClCompile Include="Engine\GameObjects\Camera.cpp" />
+    <ClCompile Include="Engine\GameObjects\ComplexSprite.cpp" />
+    <ClCompile Include="Engine\GameObjects\DayNightCamera.cpp" />
     <ClCompile Include="Engine\GameObjects\SimpleSprite.cpp" />
+    <ClCompile Include="Engine\Manager\AudioManager.cpp" />
     <ClCompile Include="Engine\Manager\NetworkingManager.cpp" />
     <ClCompile Include="Engine\Manager\PhysicsManager.cpp" />
     <ClCompile Include="Engine\Manager\SceneManager.cpp" />
@@ -176,6 +186,7 @@
     <ClCompile Include="Game\Scenes\PlayerTestScene.cpp" />
     <ClCompile Include="Game\Scenes\SceneTemplate.cpp" />
     <ClCompile Include="Game\Scenes\SpriteSheetAnimationTestScene.cpp" />
+    <ClCompile Include="GarbageCollection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNet.cpp" />
     <ClCompile Include="Neuron.cpp" />
@@ -183,10 +194,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AILearning.h" />
+    <ClInclude Include="AISelectionMenuScene.h" />
     <ClInclude Include="Engine\Component\Collision\Collider.h" />
     <ClInclude Include="Engine\Component\Networking\Receiver.h" />
     <ClInclude Include="Engine\Component\Networking\Sender.h" />
+    <ClInclude Include="Engine\External\Render\ContrastShader.h" />
+    <ClInclude Include="Engine\External\Render\FrameBufferObject.h" />
+    <ClInclude Include="Engine\External\Render\ImageRenderer.h" />
     <ClInclude Include="Engine\External\Render\ISprite.h" />
+    <ClInclude Include="Engine\External\Render\PostProcessing.h" />
     <ClInclude Include="Engine\External\Render\Sprite.h" />
     <ClInclude Include="Engine\External\Render\SpriteSheet.h" />
     <ClInclude Include="Engine\External\Render\Tile.h" />
@@ -194,7 +210,11 @@
     <ClInclude Include="Engine\External\TransformState.h" />
     <ClInclude Include="Engine\Component\Render\Renderer.h" />
     <ClInclude Include="Engine\Component\Render\TileRenderer.h" />
+    <ClInclude Include="Engine\GameObjects\Camera.h" />
+    <ClInclude Include="Engine\GameObjects\ComplexSprite.h" />
+    <ClInclude Include="Engine\GameObjects\DayNightCamera.h" />
     <ClInclude Include="Engine\GameObjects\SimpleSprite.h" />
+    <ClInclude Include="Engine\Manager\AudioManager.h" />
     <ClInclude Include="Engine\Manager\MessageManager.h" />
     <ClInclude Include="Engine\Manager\NetworkingManager.h" />
     <ClInclude Include="Engine\Manager\PhysicsManager.h" />
@@ -238,6 +258,7 @@
     <ClInclude Include="Game\Scenes\Scenes.h" />
     <ClInclude Include="Game\Scenes\SceneTemplate.h" />
     <ClInclude Include="Game\Scenes\SpriteSheetAnimationTestScene.h" />
+    <ClInclude Include="GarbageCollection.h" />
     <ClInclude Include="NeuralNet.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="TrainingData.h" />
@@ -250,6 +271,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\External\Render\contrastFragment.txt" />
+    <Text Include="Engine\External\Render\contrastVertex.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

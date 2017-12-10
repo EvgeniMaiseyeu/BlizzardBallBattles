@@ -7,7 +7,7 @@
 #include <iostream>
 #include <cstdlib>
 
-AI::AI(GameObject* gameObject) : Component(gameObject)
+AI::AI(GameObject* gameObject, bool _isLearning) : Component(gameObject)
 {
 	myBattler = (Battler*)GetGameObject();
 	myTransform = myBattler->GetTransform();
@@ -21,24 +21,26 @@ AI::AI(GameObject* gameObject) : Component(gameObject)
 	currentState = idle;
 	currentTarget = position;
 	currentBehaviour = none;
+
+	isLearning = _isLearning;
 }
 
 AI::~AI()
 {
-
+	MatchManager::GetInstance()->UnRegisterCharacter(myBattler);
 }
 
-void AI::Init(float _intelligence, float _courage, float _decisionFrequency)
+void AI::Initialize(float _intelligence, float _courage, float _decisionFrequency)
 {
+	teamID = myBattler->stats.teamID;
 	intelligence = _intelligence;
 	courage = _courage;
 	decisionFrequency = _decisionFrequency;
-
-	//AILearning learning = AILearning();
 }
 
 void AI::OnUpdate(int timeDelta) 
 {
+	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
 
 	switch (currentState)
@@ -52,11 +54,18 @@ void AI::OnUpdate(int timeDelta)
 		case walk:
 			if (currentTarget == battler)
 			{
-				WalkToTargetBattler(deltaTime);
+				WalkToTargetBattler();
 			}
 			else if (currentTarget == position)
 			{
-				WalkToTargetPosition(deltaTime);
+				if (isLearning)
+				{
+					SetLearnedVelocity();
+				}
+				else
+				{
+					WalkToTargetPosition();
+				}
 			}
 			break;
 		case shoot:
@@ -79,7 +88,15 @@ void AI::GetTarget()
 	{
 		currentTarget = position;
 		currentState = walk;
-		targetPosition = GetTargetPosition();
+		int enemyTeamNumber = 1;
+		if (teamID == 1)
+		{
+			enemyTeamNumber = 2;
+		}
+		std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
+		if (enemyTeam.size() != 0) {
+			targetPosition = GetTargetPosition();
+		}
 	}
 	else
 	{
@@ -92,11 +109,14 @@ void AI::GetTarget()
 GameObject* AI::GetTargetBattler()
 {
 	int enemyTeamNumber = 1;
-	if (myBattler->stats.teamID == 1)
+	if (teamID == 1)
 	{
 		enemyTeamNumber = 2;
 	}
 	std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
+	if (enemyTeam.size() == 0) {
+		return nullptr;
+	}
 	int randomBattler = std::rand() % enemyTeam.size();
 
 	return enemyTeam[randomBattler];
@@ -109,15 +129,19 @@ Vector2* AI::GetTargetPosition()
 	float startPosXMin = getGameWidth() / 6;
 	float startPosYMin = -startPosYMax;
 
-	float posX;
-	float posY;
+	float posX = 0;
+	float posY = 0;
 
-	if (myBattler->stats.teamID == 1)
+	if (myBattler == NULL || myBattler == nullptr) {
+		return nullptr;
+	}
+
+	if (teamID == 1)
 	{
 		posX = randomFloatInRange(-startPosXMin, -startPosXMax);
 		posY = randomFloatInRange(startPosYMin, startPosYMax);
 	}
-	else if (myBattler->stats.teamID == 2)
+	else if (teamID == 2)
 	{
 		posX = randomFloatInRange(startPosXMin, startPosXMax);
 		posY = randomFloatInRange(startPosYMin, startPosYMax);
@@ -127,8 +151,14 @@ Vector2* AI::GetTargetPosition()
 	return battlefieldLocation;
 }
 
-void AI::WalkToTargetBattler(float deltaTime)
+void AI::WalkToTargetBattler()
 {
+	if (targetBattler == nullptr || targetBattler == NULL) {
+		GetTarget();
+		if (targetBattler == nullptr || targetBattler == NULL) {
+			return;
+		}
+	}
 	float targetPosY = targetBattler->GetTransform()->getY();
 	float myPosY = myTransform->getY();
 
@@ -151,27 +181,31 @@ void AI::WalkToTargetBattler(float deltaTime)
 	int directionX = 0;
 	if (currentBehaviour == cower)
 	{
-		directionX = (myBattler->stats.teamID == 1) ? -1 : 1;
+		directionX = (teamID == 1) ? -1 : 1;
 	}
 	else if (currentBehaviour == engage)
 	{
-		directionX = (myBattler->stats.teamID == 1) ? 1 : -1;
+		directionX = (teamID == 1) ? 1 : -1;
 	}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY)))
+	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY))
 	{
 		posXToMoveTo = 0;
-		myBattler->Move(new Vector2(posXToMoveTo, moveSpeed * directionY));
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY);
 	}
 }
 
-void AI::WalkToTargetPosition(float deltaTime)
+void AI::WalkToTargetPosition()
 {
 	float myPosY = myTransform->getY();
 	float myPosX = myTransform->getX();
+
+	if (targetPosition == nullptr) {
+		return;
+	}
 
 	float posDiffY = targetPosition->getY() - myPosY;
 	float posDiffX = targetPosition->getX() - myPosX;
@@ -195,13 +229,47 @@ void AI::WalkToTargetPosition(float deltaTime)
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(new Vector2(moveSpeed * directionX, moveSpeed * directionY));
+	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
 }
+
+void AI::SetLearnedVelocity()
+{
+	vector<double> learnedDecisions;
+
+	if (myBattler->stats.teamID == 1)
+	{
+		learnedDecisions = MatchManager::GetInstance()->teamOneNet.MakeDecision(myBattler);
+	}
+	else
+	{
+		learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
+	}
+
+	myBattler->Move(learnedDecisions[1], learnedDecisions[2]);
+	currentState = idle;
+}
+
 
 void AI::Shoot()
 {
 	// The more intelligent the AI the higher chance he has to shoot
 	float chanceOfFiring = randomFloatInRange(0.0f, 1.0f);
+
+	if (isLearning)
+	{
+		vector<double> learnedDecisions;
+
+		if (myBattler->stats.teamID == 1)
+		{
+			learnedDecisions = MatchManager::GetInstance()->teamOneNet.MakeDecision(myBattler);
+		}
+		else
+		{
+			learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
+		}
+
+		chanceOfFiring = learnedDecisions[0];
+	}
 
 	if (chanceOfFiring <= intelligence)
 	{
@@ -240,3 +308,6 @@ void AI::Died()
 	currentState = dead;
 }
 
+void AI::Retarget() {
+	GetTarget();
+}
