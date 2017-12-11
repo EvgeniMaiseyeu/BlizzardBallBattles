@@ -54,6 +54,31 @@ void Battler::InitStats(int team)
 	_throwDistance = 25;
 }
 
+void Battler::UpdateSprite(int ticks) {
+	int currentSprite = GetCurrentSprite();
+	bool isThrowing = currentSprite == SPRITE_THROW_BIG || currentSprite == SPRITE_THROW_SMALL;
+	
+	if (_fullLock) {
+		ChangeSprite(SPRITE_SPIN_BIG);
+		SetFPS(_throwPower);
+	} else if (!isThrowing) {
+		if (_makingSnowball) {
+			ChangeSprite(SPRITE_BUILD_BIG);
+			SetFPS(16);
+		}else if (_physics->getVelocity()->getMagnitude() > 0.5f) {
+			ChangeSprite(SPRITE_WALK);
+			SetFPS(_physics->getVelocity()->getMagnitude() * 10);
+		}
+		else {
+			ChangeSprite(SPRITE_IDLE);
+			SetFPS(8);
+		}
+	}
+
+	
+	UpdateFrames(ticks);
+}
+
 
 void Battler::OnUpdate(int ticks)
 {
@@ -71,19 +96,7 @@ void Battler::OnUpdate(int ticks)
 
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
-	UpdateFrames(ticks);
-
-	//Update Sprite Logic
-	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
-		if (_physics->getVelocity()->getMagnitude() > 0.5f) {
-			ChangeSprite(SPRITE_WALK);
-			SetFPS(_physics->getVelocity()->getMagnitude() * 10);
-		}
-		else {
-			ChangeSprite(SPRITE_IDLE);
-			SetFPS(8);
-		}
-	}
+	UpdateSprite(ticks);
 }
 
 bool Battler::Move(float x, float y, bool isRunning, bool forces)
@@ -131,8 +144,8 @@ bool Battler::ThrowSnowball()
 	if (!canFire)
 		return false;
 
-	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
-	SetFPS(8);
+	ChangeSprite(SPRITE_THROW_SMALL, SPRITE_IDLE);
+	SetFPS(20);
 
 	if (isSender) {
 		std::map<std::string, std::string> payload;
@@ -267,14 +280,21 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 	if (team == 1) {
 		info->AddInfo("Character_IdleSheet.png", 8, 1);
 		info->AddInfo("Character_MoveSheet.png", 8, 1);
-		info->AddInfo("Character_ThrowSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowSmallSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowBigSheet.png", 8, 1);
+		info->AddInfo("Character_BuildBigSheet.png", 8, 1);
+		info->AddInfo("Character_SpinBigSheet.png", 8, 1);
+		info->AddInfo("Character_PickupSmallSheet.png", 8, 1);
 	} else {
 		info->AddInfo("Character2_IdleSheet.png", 8, 1);
 		info->AddInfo("Character2_MoveSheet.png", 8, 1);
-		info->AddInfo("Character2_ThrowSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowSmallSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowBigSheet.png", 8, 1);
+		info->AddInfo("Character_BuildBigSheet.png", 8, 1);
+		info->AddInfo("Character_SpinBigSheet.png", 8, 1);
+		info->AddInfo("Character_PickupSmallSheet.png", 8, 1);
 	}
 	
-
 	return info;
 }
 
@@ -301,9 +321,13 @@ void Battler::HandleBigThrow(float deltaTime) {
 	else if (_fullLock && _timer > 1.5) {
 		//launch snowball
 		//Unlock();
+		ChangeSprite(SPRITE_THROW_BIG, SPRITE_IDLE);
+		SetFPS(30);
+
 		attached = false;
 		_bigSnowball->setHeld(false);
 		_bigSnowball->SetDistanceGoal(_throwDistance);
+
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -312,6 +336,7 @@ void Battler::HandleBigThrow(float deltaTime) {
 		_haveBigSnowball = false;
 		_fullLock = false;
 		_throwDistance = 25;
+		_throwPower = 5;
 	}
 }
 
@@ -366,7 +391,6 @@ bool Battler::FireBigSnowball() {
 		if (_fullLock) {
 			_throwDistance += 1.0f; //ai wont care about this
 			_throwPower += 1.0f; //ai wont care about this
-
 			return true;
 		}
 		else{

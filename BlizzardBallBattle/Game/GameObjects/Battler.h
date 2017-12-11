@@ -8,7 +8,11 @@
 
 #define SPRITE_IDLE 0
 #define SPRITE_WALK 1
-#define SPRITE_SIMPLE_THROW 2
+#define SPRITE_THROW_SMALL 2
+#define SPRITE_THROW_BIG 3
+#define SPRITE_BUILD_BIG 4
+#define SPRITE_SPIN_BIG 5
+#define SPRITE_PICKUP_SMALL 6
 
 class Snowball;
 
@@ -94,5 +98,6 @@ private:
 	bool isSender;
 
 	ComplexSpriteinfo* GenerateSpriteInfo(int team);
+	void UpdateSprite(int ticks);
 };
 
