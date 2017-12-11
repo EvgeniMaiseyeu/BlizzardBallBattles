@@ -97,6 +97,23 @@ void Battler::OnUpdate(int ticks)
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
 	UpdateSprite(ticks);
+
+	Transform *t = GetTransform();
+	if (t != nullptr && t != NULL) {
+		if (!_haveBigSnowball && !_fullLock && !_makingSnowball) {
+			float maxAngle = stats.teamID == 1 ? 30.0f : -30.0f;
+			float power = _physics->getVelocity()->getMagnitude();
+			Vector2 vec(*_physics->getVelocity());
+			vec.normalize();
+			float powerMult = 1.0f;
+			if (power < 1.0f) {
+				powerMult = power;
+			}
+			float angle = maxAngle * vec.getY() * powerMult;
+			angle += stats.teamID == 2 ? 180 : 0;
+			t->setRotation(angle);
+		}
+	}
 }
 
 bool Battler::Move(float x, float y, bool isRunning, bool forces)
