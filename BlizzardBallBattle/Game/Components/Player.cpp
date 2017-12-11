@@ -72,8 +72,8 @@ void Player::ComputeMovement(float deltaTime) {
 		isRunning = true;
 	}
 
-	float x = youBattler->_physics->getVelocity()->getX();
-	float y = youBattler->_physics->getVelocity()->getY();
+	float x = 0;
+	float y = 0;
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		y -= isRunning ? runSpeed : moveSpeed;
