@@ -19,14 +19,17 @@ public:
 	struct stats {
 		int teamID;
 		float moveSpeed;
+		float runSpeed;
 		float fireSpeedInterval;
 		int hitpoints;
 		bool isPlayer;
 		bool isattached;
-
+		bool isRunning;	
 	};
 	stats stats;
 	Snowball* _bigSnowball;
+	Snowball* _smallSnowball;
+
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
@@ -35,7 +38,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y);
+	bool Move(float x, float y, bool isRunning);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -44,7 +47,7 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	bool IsAttached();
-	bool CheckIfInBounds(Transform *pos, Vector2 *move);
+	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);
 	bool InIceZone(Transform *t);
 	Vector2 *GetVelocity();
@@ -59,10 +62,26 @@ public:
 	void LockToBattler(Snowball* sb);
 	void Unlock();
 	//--------------------//
+	// small ball//
+	void setCanFire();
+	void HandleSmallThrow(float deltaTime);
+	bool MakeSmallSnowball();
+	bool FireSmallSnowball();
+	bool GetSmallSnowball();
+
+	// ----------------//
 	bool DealtDamage(int damage);
+	Transform* _transform;
+	Physics* _physics;
 
 private:
 
+	//small snowball trackers//
+	float _maxDestination;
+	float _smallThrowPower;
+	bool _haveSmallSnowball;
+	float _destination;
+	bool _canFire;
 	//Big snowball trackers//
 	bool _fullLock;
 	float _timer;
@@ -77,8 +96,6 @@ private:
 	Shader* _shader;
 	GLuint _textureBufferID;
 
-	Physics* _physics;
-	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);

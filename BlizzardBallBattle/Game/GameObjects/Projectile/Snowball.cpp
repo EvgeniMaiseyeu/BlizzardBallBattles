@@ -43,35 +43,48 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 void Snowball::OnUpdate(int timeDelta)
 {
-	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+	if (_destination != 0 && _distanceTraveled >= _destination) {
 		//GetTransform()->setScale(0.00001f);
 		Destroy(this);
 	}
-	if (heldByPlayer) {
-		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
-			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
+	if (_bigSnowball == false)
+	{
+		if (heldByPlayer) {
+			if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+				GetTransform()->setX(_player->GetTransform()->getX());
+				GetTransform()->setY(_player->GetTransform()->getY() - 0.5f);
+			}
+			else {
+				GetTransform()->setX(_player->GetTransform()->getX());
+				GetTransform()->setY(_player->GetTransform()->getY() + 0.5f);
+			}
+			
+
+		} else {
+			_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
+			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0) {
+				GetTransform()->addScale(0.001f * _speed);
+				//_physics->getVelocity->getX()* - 0.2f;
+			} else if (_distanceTraveled >= _destination / 2 && _distanceTraveled <= _destination && _distanceTraveled > 0) {
+				GetTransform()->addScale(-0.001f * _speed);
+				//	_physics->getVelocity->getX()* + 0.2f;
+			}
 		}
-		else {
-			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
+
+	} else {
+		if (heldByPlayer) {
+			if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+				GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+				GetTransform()->setY(_player->GetTransform()->getY());
+			}
+			else {
+				GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+				GetTransform()->setY(_player->GetTransform()->getY());
+			}
 		}
 	}
-	else {
-		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta/1000;
 
 
-		if (_distanceTraveled <= _distanceGoal / 2  && _distanceTraveled > 0)
-		{
-			GetTransform()->addScale(0.1f);
-			//_physics->getVelocity->getX()* - 0.2f;
-		}
-		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled <= _distanceGoal && _distanceTraveled > 0) {
-			GetTransform()->addScale(-0.1f);
-			//	_physics->getVelocity->getX()* + 0.2f;
-
-		}
-	}
 	// team 2
 /*	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
 		GetTransform()->setScale(0.1f);
@@ -122,7 +135,7 @@ void Snowball::OnUpdate(int timeDelta)
 	//}
 
 	if (active) {
-		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		if (_destination != 0 && _distanceTraveled >= _destination) {
 			Destroy(this);
 			return;
 		}
@@ -151,7 +164,7 @@ void Snowball::OnUpdate(int timeDelta)
 							damage = 1;
 						}
 						if (hitBattler->DealtDamage(damage)) {
-							Destroy(v[i]);
+							//Destroy(v[i]);
 							DestructSnowball();
 							return;
 						}
@@ -187,4 +200,13 @@ void Snowball::setBigSnowBall(bool bigSB) {
 	
 void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
+}
+
+void Snowball::SetDestination(float desti) {
+	_destination = desti;
+}
+
+void Snowball::setPower(float value)
+{
+	_speed = value;
 }

@@ -50,12 +50,20 @@ void Battler::OnUpdate(int ticks)
 
 	float deltaTime = (float)ticks / 1000.0f;
 
+	if (InIceZone(_transform))
+	{
+		_physics->setDrag(1);
+		_physics->setSnowDrag(1);
+	}
+	else
+	{
+		_physics->setDrag(0.8);
+		_physics->setSnowDrag(0.8);
+	}
+	CheckAndSetBounds(_transform, _physics->getVelocity());
+
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
-	//if (!CheckIfInBounds(_transform->getX(), _transform->getY()))
-	//{
-	//	Move(0, 0);
-	//}
 }
 
 void Battler::InitStats(int team)
@@ -64,17 +72,24 @@ void Battler::InitStats(int team)
 	AddComponent<Physics*>(_physics);
 	stats.teamID = team;
 	stats.moveSpeed = 2;
+	stats.runSpeed = stats.moveSpeed * 2.5;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
 	stats.isattached = false;
 	_throwPower = 5;
 	_throwDistance = 25;
+	_destination = 4;
+	_maxDestination = 35;
+	_smallThrowPower = 5;
+	_canFire = false;
 }
 
 
-bool Battler::Move(float x, float y)
+bool Battler::Move(float x, float y, bool isRunning)
 {
+	stats.isRunning = isRunning;
+
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
 			ChangeSprite(SPRITE_WALK);
@@ -85,11 +100,10 @@ bool Battler::Move(float x, float y)
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
-		CheckIfInBounds(t, v);
-		ApplyIceSliding(v);
+		//CheckAndSetBounds(t, v);
 		_physics->setVelocity(v);
-		float snowdrag = _physics->getSnowDrag();
-		float drag = _physics->getDrag();
+		//float snowdrag = _physics->getSnowDrag();
+		//float drag = _physics->getDrag();
 		if (attachedSnowballs.size() > 3) {
 			//Die();
 		}
@@ -97,15 +111,15 @@ bool Battler::Move(float x, float y)
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
+				//physics->setDrag(drag);
+				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 			for (int i = 0; i < attachedSnowballs.size(); i++) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
+				//physics->setDrag(drag);
+				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 		}
@@ -279,6 +293,8 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
+
+	Destroy(this);
 }
 
 ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
@@ -333,7 +349,6 @@ void Battler::HandleBigThrow(float deltaTime) {
 	}
 }
 
-//keep calling until return true
 bool Battler::MakeBigSnowball(float deltaTime) {
 	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
@@ -401,15 +416,11 @@ bool Battler::GetBigSnowball() {
 	return _haveBigSnowball;
 }
 
-void Battler::AnimateCreation() {
-
-}
-
 void Battler::HandleCancels() {
 	if (!_fullLock) {
 		if (_timer < 2 && _makingSnowball) {
 			//cancel snowball creation
-			if(_bigSnowball != NULL){
+			if (_bigSnowball != NULL) {
 				Destroy(_bigSnowball);
 				_bigSnowball = NULL;
 			}
@@ -419,10 +430,79 @@ void Battler::HandleCancels() {
 		}
 	}
 }
+void Battler::AnimateCreation() {
+
+}
+
+
+//------------------------------------------------------
+//SMALL SNOWBALL METHODS
+//------------------------------------------------------
+
+//should be called every update for each player/ai on screen
+
+void Battler::HandleSmallThrow(float deltaTime)
+{
+	if (_canFire) {
+		_smallSnowball->setHeld(false);
+		_smallSnowball->SetDestination(_destination);
+		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+		Vector2* velocity = new Vector2(1, 0);
+		velocity = *velocity * _smallThrowPower;
+		velocity->rotateVector(radians);
+		_smallSnowball->GetComponent<Physics*>()->setVelocity(velocity);
+		_haveSmallSnowball = false;
+		_smallSnowball->setPower(_smallThrowPower);
+		_canFire = false;
+		_destination = 4;
+	}
+}
+
+bool Battler::MakeSmallSnowball() {
+
+	//starting to make snowball
+	std::string snowballColour = "Snowball2.png";
+	if (stats.teamID == 2)
+		snowballColour = "Snowball3.png";
+	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
+	_smallSnowball = new Snowball(this, 0, radians, snowballColour);
+
+	if (this->stats.teamID == 1)
+		_smallSnowball->GetTransform()->addY(-0.5f);
+	else
+		_smallSnowball->GetTransform()->addY(0.5f);
+	_smallSnowball->GetTransform()->setZ(-1);
+
+	_haveSmallSnowball = true;
+	_smallSnowball->setHeld(true);
+	return false;
+}
+
+bool Battler::FireSmallSnowball() {
+	if (_haveSmallSnowball) {
+
+		_destination += 0.3f; //ai wont care about this
+		if (_destination > _maxDestination) {
+			_destination = _maxDestination;
+		}
+	}
+
+	return false;
+}
+
+void Battler::setCanFire() {
+	if(_haveSmallSnowball)
+		_canFire = true;
+}
+
+bool Battler::GetSmallSnowball() {
+	return _haveSmallSnowball;
+
+}
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
+bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 {
 	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;
@@ -474,13 +554,11 @@ bool Battler::InIceZone(Transform *t) {
 	return (t->getX() >= team2Bounds && t->getX() <= team1Bounds && t->getY() >= yMin && t->getY() <= yMax);
 }
 
-bool Battler::ApplyIceSliding(Vector2 *v) {
-	if (InIceZone(GetTransform())) {
-		std::cout << "X: " << v->getX() << " Y: " << v->getY();
-		v->setX(v->getX() * 0.99f);
-		v->setY(v->getY() * 0.99f);
-		std::cout << "2X: " << v->getX() << " 2Y: " << v->getY() << std::endl;
-		return true;
-	}
-	return false;
-}
+//bool Battler::ApplyIceSliding(Vector2 *v) {
+//	if (InIceZone(GetTransform())) {
+//		v->setX(v->getX() * 0.99f);
+//		v->setY(v->getY() * 0.99f);
+//		return true;
+//	}
+//	return false;
+//}

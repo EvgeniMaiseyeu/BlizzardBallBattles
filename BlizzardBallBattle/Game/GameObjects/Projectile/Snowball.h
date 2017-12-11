@@ -16,6 +16,7 @@ private:
 	int playerID;
 	float _distanceTraveled;
 	float _distanceGoal;
+	float _destination;
 	Physics* _physics;
 	bool _bigSnowball;
 
@@ -28,4 +29,6 @@ public:
 	void DestructSnowball();
 	void setHeld(bool held);
 	void SetDistanceGoal(float dist);
+	void SetDestination(float desti);
+	void setPower(float value);
 };
