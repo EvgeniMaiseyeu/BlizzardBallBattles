@@ -187,8 +187,9 @@ void GameScene::ClearScene() {
 
 
 bool GameScene::isInIceZone(float x, float y) {
-	int realX = x - getGameLeftX();
-	return !(realX < getGameWidth() / 2 - ICE_WIDTH / 2 || realX > getGameWidth() / 2 + ICE_WIDTH / 2);
+	float leftBounds = -ICE_WIDTH / 2;
+	float rightBounds = ICE_WIDTH / 2;
+	return (x >= leftBounds && x <= rightBounds);
 }
 
 bool GameScene::isInScreenBounds(float x, float y) {

@@ -2,7 +2,6 @@
 #include "HelperFunctions.h"
 #include "InputManager.h"
 #include "Transform.h"
-#include "AudioManager.h"
 #include "MatchManager.h"
 
 Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2, SDL_Keycode run) : Component(gameObject) {
@@ -70,8 +69,8 @@ void Player::ComputeMovement(float deltaTime) {
 		isRunning = true;
 	}
 
-	float x = youBattler->_physics->getVelocity()->getX();
-	float y = youBattler->_physics->getVelocity()->getY();
+	float x = 0;
+	float y = 0;
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		y -= isRunning ? runSpeed : moveSpeed;
@@ -89,79 +88,6 @@ void Player::ComputeMovement(float deltaTime) {
 		x -= isRunning ? runSpeed : moveSpeed;
 	}
 	
-	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		AudioManager::GetInstance()->PlaySEFshoot("./Game/Assets/shoot.wav", 1);
-		if(!youBattler->FireBigSnowball()){
-			youBattler->ThrowSnowball();
-		}
-		
-	} else if (InputManager::GetInstance()->onKey(shootKey)) {
-		//Big snowball creating locks etc..
-		youBattler->MakeBigSnowball(deltaTime);
-	} 
-	
-	if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
-		youBattler->HandleCancels();
-	}
-	//if (youBattler->InIceZone(youBattler->GetTransform())) {
-	//	Vector2 *v = youBattler->GetVelocity();
-	//	float prevX = v->getX();
-	//	float prevY = v->getY();
-
-	//	x = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevX + (x / 20)));
-	//	y = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevY + (y / 20)));
-	//}
-
-	//if (x > isRunning ? runSpeed : moveSpeed)
-	//{
-	//	x = isRunning ? runSpeed : moveSpeed;
-	//}
-	//else if (x < -isRunning ? runSpeed : moveSpeed)
-	//{
-	//	x = -isRunning ? runSpeed : moveSpeed;
-	//}
-	//if (y > isRunning ? runSpeed : moveSpeed)
-	//{
-	//	y = isRunning ? runSpeed : moveSpeed;
-	//}
-	//else if (y < -isRunning ? runSpeed : moveSpeed)
-	//{
-	//	y = -isRunning ? runSpeed : moveSpeed;
-	//}
-
-	if (isRunning && x > runSpeed)
-	{
-		x = runSpeed;
-	}
-	else if (isRunning && x < -runSpeed)
-	{
-		x = -runSpeed;
-	}
-	else if (x > moveSpeed)
-	{
-		x = moveSpeed;
-	}
-	else if (x < -moveSpeed)
-	{
-		x = -moveSpeed;
-	}
-	if (isRunning && y > runSpeed)
-	{
-		y = runSpeed;
-	}
-	else if (isRunning && y < -runSpeed)
-	{
-		y = -runSpeed;
-	}
-	else if (y > moveSpeed)
-	{
-		y = moveSpeed;
-	}
-	else if (y < -moveSpeed)
-	{
-		y = -moveSpeed;
-	}
-
 	youBattler->Move(x, y, isRunning);
 } 
 

@@ -42,6 +42,22 @@ Battler::Battler(int team, std::string textureFileName) : ComplexSprite(Generate
 
 }*/
 
+void Battler::InitStats(int team)
+{
+	_physics = new Physics(this);
+	AddComponent<Physics*>(_physics);
+	stats.teamID = team;
+	stats.moveSpeed = 2;
+	stats.runSpeed = stats.moveSpeed * 2.5;
+	stats.fireSpeedInterval = 1;
+	stats.isPlayer = false;
+	stats.hitpoints = 1;
+	stats.isattached = false;
+	_throwPower = 5;
+	_throwDistance = 25;
+}
+
+
 void Battler::OnUpdate(int ticks)
 {
 	if (_transform == NULL)
@@ -67,22 +83,6 @@ void Battler::OnUpdate(int ticks)
 	UpdateAttachedSnowBalls(deltaTime);
 }
 
-void Battler::InitStats(int team)
-{
-	_physics = new Physics(this);
-	AddComponent<Physics*>(_physics);
-	stats.teamID = team;
-	stats.moveSpeed = 2;
-	stats.runSpeed = stats.moveSpeed * 2.5;
-	stats.fireSpeedInterval = 1;
-	stats.isPlayer = false;
-	stats.hitpoints = 1;
-	stats.isattached = false;
-	_throwPower = 5;
-	_throwDistance = 25;
-}
-
-
 bool Battler::Move(float x, float y, bool isRunning)
 {
 	stats.isRunning = isRunning;
@@ -97,10 +97,7 @@ bool Battler::Move(float x, float y, bool isRunning)
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
-		//CheckAndSetBounds(t, v);
 		_physics->setVelocity(v);
-		//float snowdrag = _physics->getSnowDrag();
-		//float drag = _physics->getDrag();
 		if (attachedSnowballs.size() > 3) {
 			//Die();
 		}
@@ -108,15 +105,11 @@ bool Battler::Move(float x, float y, bool isRunning)
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				//physics->setDrag(drag);
-				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 			for (int i = 0; i < attachedSnowballs.size(); i++) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-				//physics->setDrag(drag);
-				//physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 		}
@@ -427,6 +420,8 @@ void Battler::HandleCancels() {
 
 bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 {
+	float multiplier = stats.isRunning ? 2.5: 1.0;
+
 	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;
 	float yMax = (getGameHeight() / 2) + 1.25;
@@ -437,7 +432,13 @@ bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 
 	bool inBounds = true;
 
-	unique_ptr<Vector2> newPos(new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY()));
+	float xVelocity = move->getX();
+	float yVelocity = move->getY();
+
+	xVelocity /= multiplier;
+	yVelocity /= multiplier;
+
+	unique_ptr<Vector2> newPos(new Vector2(pos->getX() + xVelocity, pos->getY() + yVelocity));
 
 	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
 		if (move->getX() < 0)
