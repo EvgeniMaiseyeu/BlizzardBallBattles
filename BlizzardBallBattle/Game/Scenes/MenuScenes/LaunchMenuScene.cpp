@@ -44,5 +44,11 @@ void LaunchMenuScene::OnUpdate(int ticks) {
     } else if (inputManager->onKeyPressed(SDLK_2)) {
 		SceneManager::GetInstance()->PushScene(new AISelectionMenuScene());
     }
+	else if (inputManager->onKeyPressed(SDLK_0)) {
+		AudioManager::GetInstance()->PlayMusic("./Game/Assets/mario_.wav", 1);
+	}
+	else if (inputManager->onKeyPressed(SDLK_9)) {
+		AudioManager::GetInstance()->StopMusic();
+	}
 }
 
