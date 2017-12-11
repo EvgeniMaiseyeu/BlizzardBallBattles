@@ -102,17 +102,12 @@ bool Battler::Move(float x, float y, bool isRunning, bool forces)
 		_physics->setVelocity(v);
 		float snowdrag = _physics->getSnowDrag();
 		float drag = _physics->getDrag();
-		if (attachedSnowballs.size() > 3/*this should be life count*/) {
-			//Die();
-		}
-		else {
-			if (_bigSnowball != nullptr && attached) {
-				Vector2 *v = new Vector2(x, y);
-				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
-				physics->setVelocity(v);
-			}
+		if (_bigSnowball != nullptr && attached) {
+			Vector2 *v = new Vector2(x, y);
+			Physics* physics = _bigSnowball->GetComponent<Physics*>();
+			physics->setDrag(drag);
+			physics->setSnowDrag(snowdrag);
+			physics->setVelocity(v);
 		}
         return true;
     }

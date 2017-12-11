@@ -22,7 +22,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 15;
+	TEAM_SIZE = 25;
 }
 
 void MatchManager::Stop() {
