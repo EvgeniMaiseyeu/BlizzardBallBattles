@@ -117,52 +117,24 @@ void GameScene::BuildBaseScene() {
 
 			////Left or Right house roofs
 			if (isHouse) {
-				tileIndex = TileIndex::HouseLeft_Left;
+				tileIndex = TileIndex::HouseRight_Right;
 			}
 			if (isLeftDoorCenter) {
-				tileIndex = TileIndex::HouseLeft_Center;
+				tileIndex = TileIndex::HouseLeft_Left;
 			}
 			if (isRightDoorCenter) {
 				tileIndex = TileIndex::HouseRight_Center;
 			}
 
 			////Corner Cases////
-			if (isTop) {
-				if (isLeft) {
-					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
-				}
-				else if (isRight) {
-					tileIndex = TileIndex::DirtHouseRight_TopRight;
-				}
-				else if (isHouse) {
-					tileIndex = TileIndex::DirtHouseLeft_TopLeft;
-				}
-				else if (isLeftDoorCenter) {
-					tileIndex = TileIndex::DirtHouseLeft_Top;
-				}
-				else if (isRightDoorCenter) {
-					tileIndex = TileIndex::DirtHouseRight_Top;
-				}
-			}
-			else if (isBottom) {
-				if (isLeft) {
-					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
-				}
-				else if (isRight) {
-					tileIndex = TileIndex::DirtHouseRight_BottomRight;
-				}
-				else if (isHouse) {
-					tileIndex = TileIndex::DirtHouseLeft_BottomLeft;
-				}
-				else if (isLeftDoorCenter) {
-					tileIndex = TileIndex::DirtHouseLeft_Bottom;
-				}
-				else if (isRightDoorCenter) {
-					tileIndex = TileIndex::DirtHouseRight_Bottom;
-				}
+			if (isTop || isBottom) {
+				tileIndex = TileIndex::NA;
 			}
 
 			if (tileIndex == TileIndex::Dirt_Center || y == -1 || y == height) {
+				continue;
+			}
+			if (tileIndex == TileIndex::NA) {
 				continue;
 			}
 
