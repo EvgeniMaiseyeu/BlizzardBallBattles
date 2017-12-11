@@ -108,10 +108,6 @@ bool Battler::Move(float x, float y, bool isRunning, bool forces)
 				physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
-			for (int i = 0; i < attachedSnowballs.size(); i++) {
-				attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
-				attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
-			}
 		}
         return true;
     }
@@ -120,10 +116,6 @@ bool Battler::Move(float x, float y, bool isRunning, bool forces)
 			Vector2 *v = new Vector2(0,0);
 			Physics* physics = _bigSnowball->GetComponent<Physics*>();
 			physics->setVelocity(v);
-		}
-		for (int i = 0; i < attachedSnowballs.size(); i++) {
-			attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
-			attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
 		}
     }
 
@@ -173,7 +165,10 @@ void Battler::UpdateThrowTimer(float deltaTime)
 }
 
 void Battler::UpdateAttachedSnowBalls(float deltaTimer) {
-	
+	for (int i = 0; i < attachedSnowballs.size(); i++) {
+		attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+		attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
+	}
 }
 
 bool Battler::DealtDamage(int damage)
