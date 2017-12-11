@@ -18,6 +18,8 @@ private:
 	float _distanceGoal;
 	Physics* _physics;
 	bool _bigSnowball;
+	float _lockOffsetX;
+	float _lockOffsetY;
 
 public:
 	void Snowball::setBigSnowBall(bool bigSB);
@@ -28,4 +30,10 @@ public:
 	void DestructSnowball();
 	void setHeld(bool held);
 	void SetDistanceGoal(float dist);
+
+	void setLockedOffsetX(float value);
+	float getLockedOffsetX();
+
+	void setLockedOffsetY(float value);
+	float getLockedOffsetY();
 };

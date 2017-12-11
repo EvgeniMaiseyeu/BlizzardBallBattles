@@ -196,7 +196,7 @@ void AI::WalkToTargetBattler()
 	//if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY, false))
 	//{
 	//	posXToMoveTo = 0;
-		myBattler->Move(posXToMoveTo, moveSpeed * directionY, false);
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY, false, false);
 	//}
 }
 
@@ -231,7 +231,7 @@ void AI::WalkToTargetPosition()
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, false);
+	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, false, false);
 }
 
 void AI::SetLearnedVelocity()
@@ -247,7 +247,7 @@ void AI::SetLearnedVelocity()
 		learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
 	}
 
-	myBattler->Move(learnedDecisions[1], learnedDecisions[2], false);
+	myBattler->Move(learnedDecisions[1], learnedDecisions[2], false, false);
 	currentState = idle;
 }
 

@@ -50,7 +50,10 @@ void Player::OnUpdate(int timeDelta) {
 
 	if (InputManager::GetInstance()->onKey(shootKey2)) {
 		//Big snowball creating locks etc..
-		youBattler->MakeBigSnowball(deltaTime);
+		if (!youBattler->stats.isRunning && youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
+		{
+			youBattler->MakeBigSnowball(deltaTime);
+		}
 	} 
 	
 	if (InputManager::GetInstance()->onKeyReleased(shootKey2)) {
@@ -63,7 +66,7 @@ void Player::OnUpdate(int timeDelta) {
 void Player::ComputeMovement(float deltaTime) {
 	float moveSpeed = youBattler->stats.moveSpeed;
 	float runSpeed = youBattler->stats.runSpeed;
-
+	bool applyingForces = false;
 	bool isRunning = false;
 	if (InputManager::GetInstance()->onKey(runKey)) {
 		isRunning = true;
@@ -74,18 +77,22 @@ void Player::ComputeMovement(float deltaTime) {
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		y -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
 	if (InputManager::GetInstance()->onKey(rightKey)) {
 		x += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(upKey)) {
 		y += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(leftKey)) {
 		x -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
 	//if (youBattler->InIceZone(youBattler->GetTransform())) {
@@ -147,7 +154,7 @@ void Player::ComputeMovement(float deltaTime) {
 		y = -moveSpeed;
 	}
 
-	youBattler->Move(x, y, isRunning);
+	youBattler->Move(x, y, isRunning, applyingForces);
 } 
 
 void Player::UnfreezeSnowman() {

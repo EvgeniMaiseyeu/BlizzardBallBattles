@@ -188,3 +188,23 @@ void Snowball::setBigSnowBall(bool bigSB) {
 void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
 }
+
+void Snowball::setLockedOffsetX(float value)
+{
+	_lockOffsetX = value;
+}
+
+float Snowball::getLockedOffsetX()
+{
+	return _lockOffsetX;
+}
+
+void Snowball::setLockedOffsetY(float value)
+{
+	_lockOffsetY = value;
+}
+
+float Snowball::getLockedOffsetY()
+{
+	return _lockOffsetY;
+}

@@ -52,13 +52,11 @@ void Battler::OnUpdate(int ticks)
 
 	if (InIceZone(_transform))
 	{
-		_physics->setDrag(1);
-		_physics->setSnowDrag(1);
+		_physics->setVelDrag(0.98);
 	}
 	else
 	{
-		_physics->setDrag(0.8);
-		_physics->setSnowDrag(0.8);
+		_physics->setVelDrag(0.9);
 	}
 	CheckAndSetBounds(_transform, _physics->getVelocity());
 
@@ -82,7 +80,7 @@ void Battler::InitStats(int team)
 }
 
 
-bool Battler::Move(float x, float y, bool isRunning)
+bool Battler::Move(float x, float y, bool isRunning, bool forces)
 {
 	stats.isRunning = isRunning;
 
@@ -93,30 +91,36 @@ bool Battler::Move(float x, float y, bool isRunning)
 			ChangeSprite(SPRITE_IDLE);
 		}
 	}
+
+	_physics->setApplyingForce(forces);
+
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
 		//CheckAndSetBounds(t, v);
 		_physics->setVelocity(v);
-		//float snowdrag = _physics->getSnowDrag();
-		//float drag = _physics->getDrag();
-		if (attachedSnowballs.size() > 3) {
+		float snowdrag = _physics->getSnowDrag();
+		float drag = _physics->getDrag();
+		if (attachedSnowballs.size() > 3/*this should be life count*/) {
 			//Die();
 		}
 		else {
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				//physics->setDrag(drag);
-				//physics->setSnowDrag(snowdrag);
+				physics->setDrag(drag);
+				physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 			for (int i = 0; i < attachedSnowballs.size(); i++) {
-				Vector2 *v = new Vector2(x, y);
-				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
+				//update transforms
+				//Vector2 *v = new Vector2(x, y);
+				//Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
 				//physics->setDrag(drag);
 				//physics->setSnowDrag(snowdrag);
-				physics->setVelocity(v);
+				//physics->setVelocity(v);
+				attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+				attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
 			}
 		}
         return true;
@@ -127,11 +131,14 @@ bool Battler::Move(float x, float y, bool isRunning)
 			Physics* physics = _bigSnowball->GetComponent<Physics*>();
 			physics->setVelocity(v);
 		}
-        _physics->setVelocity(new Vector2(0, 0));
+       // _physics->setVelocity(new Vector2(0, 0));
 		for (int i = 0; i < attachedSnowballs.size(); i++) {
-			Vector2 *v = new Vector2(0, 0);
-			Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-			physics->setVelocity(v);
+			//Vector2 *v = new Vector2(0, 0);
+			//Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
+			//physics->setVelocity(v);
+
+			attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+			attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
 		}
     }
 
@@ -311,7 +318,8 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 
 void Battler::LockToBattler(Snowball* sb) { 
 	attachedSnowballs.push_back(sb);
-
+	sb->setLockedOffsetX(sb->GetTransform()->getX() - this->GetTransform()->getX());
+	sb->setLockedOffsetY(sb->GetTransform()->getY() - this->GetTransform()->getY());
 }
 
 void Battler::Unlock() {
@@ -360,7 +368,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				//made snowball
 				_makingSnowball = false;
 				attached = true;
-				//LockToBattler();
+				//LockToBattler(_bigSnowball);
 				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
