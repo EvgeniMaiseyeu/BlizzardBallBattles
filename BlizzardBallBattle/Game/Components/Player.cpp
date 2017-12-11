@@ -88,6 +88,11 @@ void Player::ComputeMovement(float deltaTime) {
 		x -= isRunning ? runSpeed : moveSpeed;
 	}
 	
+	if (x == 0 && y == 0)
+	{
+		return;
+	}
+
 	youBattler->Move(x, y, isRunning);
 } 
 
