@@ -12,6 +12,8 @@
 #include "DayNightCamera.h"
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "HelperFunctions.h"
+#include "SharedConstants.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -38,8 +40,8 @@ void GameScene::BuildBaseScene() {
 	float bottomBounding = getGameBottomY() + (getFullBarSize() / GAME_WIDTH) / 2.0f;
 
 	//Game Logic Vars
-	int roofWidth = 3;
-	int iceWidth = 8; //Even for even screens, odd for odd screens [Odd Untested]
+	int roofWidth = ROOF_WIDTH;
+	int iceWidth = ICE_WIDTH; //Even for even screens, odd for odd screens [Odd Untested]
 	int altChance = 10;
 	int randSeed = SDL_GetTicks(); //Seed it properly
 	TileIndex tileIndex;
@@ -181,4 +183,14 @@ void GameScene::ClearScene() {
 	for (int i = 0; i < thingsToClear.size(); i++) {
 		GameManager::GetInstance()->RemoveGameObject(thingsToClear[i]);
 	}
+}
+
+
+bool GameScene::isInIceZone(float x, float y) {
+	int realX = x - getGameLeftX();
+	return !(realX < getGameWidth() / 2 - ICE_WIDTH / 2 || realX > getGameWidth() / 2 + ICE_WIDTH / 2);
+}
+
+bool GameScene::isInScreenBounds(float x, float y) {
+	return isInScreenBounds(x, y);
 }
