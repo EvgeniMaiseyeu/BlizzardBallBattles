@@ -16,8 +16,8 @@ enum class TileIndex {
 	DirtHouseRight_Top,
 	DirtHouseRight_TopRight,
 	//2nd Row
-	HouseLeft_Left,
-	HouseLeft_Center,
+	HouseLeft_Left, //Left
+	HouseLeft_Center, //Empty
 	Snow_Center,
 	SnowIce_Left,
 	Ice_Center,
@@ -41,7 +41,10 @@ enum class TileIndex {
 	Snow_Center_Alt4_Snowman,
 	Dirt_Center,
 	Snow_Center_Alt6,
-	HouseRight_Center_Alt
+	HouseRight_Center_Alt,
+
+	//Misc
+	NA
 };
 
 class GameScene : public Scene {
