@@ -78,10 +78,10 @@ float Physics::getDrag() {
 }
 
 void Physics::OnUpdate(int ticks) {
-	if (!_applyingForce) {
+	//if (!_applyingForce) {
 		_velocity->setX(_velocity->getX() * _velDrag);
 		_velocity->setY(_velocity->getY() * _velDrag);
-	}
+	//}
 	transform->addX(_velocity->getX() * _drag * _snowDrag * ((float)ticks) / 1000);
 	transform->addY(_velocity->getY() * _drag * _snowDrag * ((float)ticks) / 1000);
 	//setup angular velocity

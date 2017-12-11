@@ -27,6 +27,7 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
 	}
 	InitStats(team);
+	_transform = GetTransform();
 }
 
 Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
@@ -35,12 +36,8 @@ Battler::Battler(int team, std::string textureFileName) : ComplexSprite(Generate
 	this->networkingID = -1;
 	InitStats(team);
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
+	_transform = GetTransform();
 }
-
-/*Battler::~Battler()
-{
-
-}*/
 
 void Battler::InitStats(int team)
 {
@@ -60,11 +57,6 @@ void Battler::InitStats(int team)
 
 void Battler::OnUpdate(int ticks)
 {
-	if (_transform == NULL)
-	{
-		_transform = GetTransform();
-	}
-
 	float deltaTime = (float)ticks / 1000.0f;
 
 	if (InIceZone(_transform))
@@ -84,6 +76,10 @@ void Battler::OnUpdate(int ticks)
 bool Battler::Move(float x, float y, bool isRunning, bool forces)
 {
 	stats.isRunning = isRunning;
+	if (!CheckAndSetBounds(_transform, new Vector2(x, y)))
+	{
+		return false;
+	}
 
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
@@ -136,26 +132,6 @@ bool Battler::Move(float x, float y, bool isRunning, bool forces)
 
 Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
-}
-
-void Battler::Face(GameObject* gameObject)
-{
-	
-}
-
-void Battler::Face(Vector2* position)
-{
-
-}
-
-void Battler::TurnTo(GameObject* gameObject)
-{
-
-}
-
-void Battler::TurnTo(Vector2* position)
-{
-
 }
 
 bool Battler::ThrowSnowball()
