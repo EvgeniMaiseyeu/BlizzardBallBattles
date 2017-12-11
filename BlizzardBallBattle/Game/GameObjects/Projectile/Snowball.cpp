@@ -43,6 +43,68 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 
 void Snowball::OnUpdate(int timeDelta)
 {
+	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		//GetTransform()->setScale(0.00001f);
+		Destroy(this);
+	}
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
+	else {
+		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta/1000;
+
+
+		if (_distanceTraveled <= _distanceGoal / 2  && _distanceTraveled > 0)
+		{
+			GetTransform()->addScale(0.1f);
+			//_physics->getVelocity->getX()* - 0.2f;
+		}
+		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled <= _distanceGoal && _distanceTraveled > 0) {
+			GetTransform()->addScale(-0.1f);
+			//	_physics->getVelocity->getX()* + 0.2f;
+
+		}
+	}
+	// team 2
+/*	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+		GetTransform()->setScale(0.1f);
+	}
+	if (heldByPlayer) {
+		if (dynamic_cast<Battler*>(_player)->stats.teamID == 2) {
+			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+		else {
+			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+			GetTransform()->setY(_player->GetTransform()->getY());
+		}
+	}
+	else {
+		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
+
+
+		if (_distanceTraveled <= _distanceGoal / 2)
+		{
+			GetTransform()->addScale(0.02f);
+			//_physics->getVelocity->getX()* - 0.2f;
+		}
+		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled < _distanceGoal) {
+			GetTransform()->addScale(-0.02f);
+			//	_physics->getVelocity->getX()* + 0.2f;
+
+		}
+	}
+		
+
+		*/
+	
 	//If the scene is not a GameScene, destroy self
 	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
 		Destroy(this);
@@ -58,7 +120,6 @@ void Snowball::OnUpdate(int timeDelta)
 	//_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
 	//	}
 	//}
-
 
 	if (active) {
 		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
@@ -126,4 +187,24 @@ void Snowball::setBigSnowBall(bool bigSB) {
 	
 void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
+}
+
+void Snowball::setLockedOffsetX(float value)
+{
+	_lockOffsetX = value;
+}
+
+float Snowball::getLockedOffsetX()
+{
+	return _lockOffsetX;
+}
+
+void Snowball::setLockedOffsetY(float value)
+{
+	_lockOffsetY = value;
+}
+
+float Snowball::getLockedOffsetY()
+{
+	return _lockOffsetY;
 }

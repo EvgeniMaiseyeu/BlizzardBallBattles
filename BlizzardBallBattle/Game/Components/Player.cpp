@@ -50,7 +50,10 @@ void Player::OnUpdate(int timeDelta) {
 
 	if (InputManager::GetInstance()->onKey(shootKey2)) {
 		//Big snowball creating locks etc..
-		youBattler->MakeBigSnowball(deltaTime);
+		if (!youBattler->stats.isRunning && youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
+		{
+			youBattler->MakeBigSnowball(deltaTime);
+		}
 	} 
 	
 	if (InputManager::GetInstance()->onKeyReleased(shootKey2)) {
@@ -63,7 +66,7 @@ void Player::OnUpdate(int timeDelta) {
 void Player::ComputeMovement(float deltaTime) {
 	float moveSpeed = youBattler->stats.moveSpeed;
 	float runSpeed = youBattler->stats.runSpeed;
-
+	bool applyingForces = false;
 	bool isRunning = false;
 	if (InputManager::GetInstance()->onKey(runKey)) {
 		isRunning = true;
@@ -74,21 +77,84 @@ void Player::ComputeMovement(float deltaTime) {
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
 		y -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
 	if (InputManager::GetInstance()->onKey(rightKey)) {
 		x += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(upKey)) {
 		y += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(leftKey)) {
 		x -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
-	youBattler->Move(x, y, isRunning);
+	//if (youBattler->InIceZone(youBattler->GetTransform())) {
+	//	Vector2 *v = youBattler->GetVelocity();
+	//	float prevX = v->getX();
+	//	float prevY = v->getY();
+
+	//	x = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevX + (x / 20)));
+	//	y = max(-isRunning ? runSpeed : moveSpeed, min(isRunning ? runSpeed : moveSpeed, prevY + (y / 20)));
+	//}
+
+	//if (x > isRunning ? runSpeed : moveSpeed)
+	//{
+	//	x = isRunning ? runSpeed : moveSpeed;
+	//}
+	//else if (x < -isRunning ? runSpeed : moveSpeed)
+	//{
+	//	x = -isRunning ? runSpeed : moveSpeed;
+	//}
+	//if (y > isRunning ? runSpeed : moveSpeed)
+	//{
+	//	y = isRunning ? runSpeed : moveSpeed;
+	//}
+	//else if (y < -isRunning ? runSpeed : moveSpeed)
+	//{
+	//	y = -isRunning ? runSpeed : moveSpeed;
+	//}
+
+	if (isRunning && x > runSpeed)
+	{
+		x = runSpeed;
+	}
+	else if (isRunning && x < -runSpeed)
+	{
+		x = -runSpeed;
+	}
+	else if (x > moveSpeed)
+	{
+		x = moveSpeed;
+	}
+	else if (x < -moveSpeed)
+	{
+		x = -moveSpeed;
+	}
+	if (isRunning && y > runSpeed)
+	{
+		y = runSpeed;
+	}
+	else if (isRunning && y < -runSpeed)
+	{
+		y = -runSpeed;
+	}
+	else if (y > moveSpeed)
+	{
+		y = moveSpeed;
+	}
+	else if (y < -moveSpeed)
+	{
+		y = -moveSpeed;
+	}
+
+	youBattler->Move(x, y, isRunning, applyingForces);
 } 
 
 void Player::UnfreezeSnowman() {

@@ -69,13 +69,11 @@ void Battler::OnUpdate(int ticks)
 
 	if (InIceZone(_transform))
 	{
-		_physics->setDrag(1);
-		_physics->setSnowDrag(1);
+		_physics->setVelDrag(0.98);
 	}
 	else
 	{
-		_physics->setDrag(0.8);
-		_physics->setSnowDrag(0.8);
+		_physics->setVelDrag(0.9);
 	}
 	CheckAndSetBounds(_transform, _physics->getVelocity());
 
@@ -83,7 +81,7 @@ void Battler::OnUpdate(int ticks)
 	UpdateAttachedSnowBalls(deltaTime);
 }
 
-bool Battler::Move(float x, float y, bool isRunning)
+bool Battler::Move(float x, float y, bool isRunning, bool forces)
 {
 	stats.isRunning = isRunning;
 
@@ -94,23 +92,29 @@ bool Battler::Move(float x, float y, bool isRunning)
 			ChangeSprite(SPRITE_IDLE);
 		}
 	}
+
+	_physics->setApplyingForce(forces);
+
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
 		_physics->setVelocity(v);
-		if (attachedSnowballs.size() > 3) {
+		float snowdrag = _physics->getSnowDrag();
+		float drag = _physics->getDrag();
+		if (attachedSnowballs.size() > 3/*this should be life count*/) {
 			//Die();
 		}
 		else {
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
+				physics->setDrag(drag);
+				physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
 			}
 			for (int i = 0; i < attachedSnowballs.size(); i++) {
-				Vector2 *v = new Vector2(x, y);
-				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-				physics->setVelocity(v);
+				attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+				attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
 			}
 		}
         return true;
@@ -121,11 +125,9 @@ bool Battler::Move(float x, float y, bool isRunning)
 			Physics* physics = _bigSnowball->GetComponent<Physics*>();
 			physics->setVelocity(v);
 		}
-        _physics->setVelocity(new Vector2(0, 0));
 		for (int i = 0; i < attachedSnowballs.size(); i++) {
-			Vector2 *v = new Vector2(0, 0);
-			Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-			physics->setVelocity(v);
+			attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+			attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
 		}
     }
 
@@ -159,7 +161,7 @@ void Battler::TurnTo(Vector2* position)
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
- 		return false;
+		return false;
 
 	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
@@ -177,8 +179,13 @@ bool Battler::ThrowSnowball()
 	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
 	canFire = false;
 	return true;
-}
 
+	//parabolic     y = y0+Vyt + 1/2 gt2
+		// y=a(x–h)2+k
+		// y = ax2 + bx+ c
+
+		//
+}
 void Battler::UpdateThrowTimer(float deltaTime)
 {
 	timeSinceLastShot += deltaTime;
@@ -301,7 +308,8 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 
 void Battler::LockToBattler(Snowball* sb) { 
 	attachedSnowballs.push_back(sb);
-
+	sb->setLockedOffsetX(sb->GetTransform()->getX() - this->GetTransform()->getX());
+	sb->setLockedOffsetY(sb->GetTransform()->getY() - this->GetTransform()->getY());
 }
 
 void Battler::Unlock() {
@@ -314,10 +322,11 @@ void Battler::Unlock() {
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
+
 void Battler::HandleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 2)
+	if (_fullLock && _timer < 1.5)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 2) {
+	else if (_fullLock && _timer > 1.5) {
 		//launch snowball
 		//Unlock();
 		attached = false;
@@ -349,11 +358,13 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				//made snowball
 				_makingSnowball = false;
 				attached = true;
-				//LockToBattler();
+				//LockToBattler(_bigSnowball);
 				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
+		
+
 				return true;
 			}
 		}
@@ -370,6 +381,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			else
 				_bigSnowball->GetTransform()->addX(-0.7f);
 			_bigSnowball->GetTransform()->setZ(-1);
+		
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -380,7 +392,9 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 bool Battler::FireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 2.0f; //ai wont care about this
+			_throwDistance += 1.0f; //ai wont care about this
+			_throwPower += 1.0f; //ai wont care about this
+
 			return true;
 		}
 		else{
