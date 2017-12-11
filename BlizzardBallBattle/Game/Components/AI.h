@@ -9,15 +9,12 @@ class AI :
 	public Component
 {
 private:
+	float MIN_DISTANCE_TO_TARGET_X = 20.0f;
+	float COURAGE_DISTANCE_X_MULTIPLIER = 5.0f;
+
 	Battler *myBattler;
 	Transform *myTransform;
 
-	enum Target {
-		battler = 0,
-		position = 1,
-		t_MAX
-	}currentTarget;
-	GameObject *targetBattler;
 	Vector2 *targetPosition;
 	void GetTarget();
 	GameObject* GetTargetBattler();
@@ -30,8 +27,8 @@ private:
 		dead = 3,
 		s_MAX
 	}currentState;
-	void WalkToTargetBattler();
-	void WalkToTargetPosition();
+	void MoveToTargetBattler(bool isRunning);
+	void MoveToTargetPosition(bool isRunning);
 	void SetLearnedVelocity();
 	void Shoot();
 
@@ -63,5 +60,12 @@ public:
 	void OnUpdate(int ticks);
 	void OnEnd(){};
 	void Retarget();
+
+	enum Target {
+		battler = 0,
+		position = 1,
+		t_MAX
+	}currentTarget;
+	GameObject *targetBattler;
 };
 
