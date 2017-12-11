@@ -9,6 +9,7 @@
 #include "NetworkingManager.h"
 #include "SceneManager.h"
 #include "PhysicsManager.h"
+#include "AudioManager.h"
 #include "GarbageCollection.h"
  
 GameManager* GameManager::instance;

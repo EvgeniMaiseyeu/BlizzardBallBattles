@@ -5,6 +5,9 @@
 #include "Shader.h"
 #include <vector>
 
+#define ICE_WIDTH 8
+#define ROOF_WIDTH 3
+
 enum class TileIndex {
 	//1st Row
 	DirtHouseLeft_TopLeft,
@@ -16,8 +19,8 @@ enum class TileIndex {
 	DirtHouseRight_Top,
 	DirtHouseRight_TopRight,
 	//2nd Row
-	HouseLeft_Left,
-	HouseLeft_Center,
+	HouseLeft_Left, //Left
+	HouseLeft_Center, //Empty
 	Snow_Center,
 	SnowIce_Left,
 	Ice_Center,
@@ -41,7 +44,10 @@ enum class TileIndex {
 	Snow_Center_Alt4_Snowman,
 	Dirt_Center,
 	Snow_Center_Alt6,
-	HouseRight_Center_Alt
+	HouseRight_Center_Alt,
+
+	//Misc
+	NA
 };
 
 class GameScene : public Scene {
@@ -52,4 +58,11 @@ public:
     void BuildBaseScene();
 	void ClearScene();
 	std::vector<GameObject*> thingsToClear;
+	bool isInIceZone(float x, float y);
+	bool isInScreenBounds(float x, float y);
+	bool isInLeftZone(float x, float y);
+	bool isInRightZone(float x, float y);
+	void snapToScreenBounds(float *x, float *y);
+
+	static GameScene* GetCurrent();
 };

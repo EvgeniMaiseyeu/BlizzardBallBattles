@@ -11,6 +11,7 @@ void worldPositionToOpenGLPosition(float* x, float* y);
 //Pass in the reference to x/y floats that contain the current GL position, it will update the variables to their World positions
 void openGLPositionToWorldPosition(float* x, float* y);
 
+bool isInScreenBounds(float x, float y);
 float getGameHeight();
 float getGameWidth();
 float getGameLeftX();

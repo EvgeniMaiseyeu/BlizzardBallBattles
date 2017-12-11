@@ -24,7 +24,7 @@ public:
 		int hitpoints;
 		bool isPlayer;
 		bool isattached;
-		bool isRunning;	
+		bool isRunning;
 	};
 	stats stats;
 	Snowball* _bigSnowball;
@@ -38,7 +38,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y, bool isRunning);
+	bool Move(float x, float y, bool isRunning, bool forces);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);

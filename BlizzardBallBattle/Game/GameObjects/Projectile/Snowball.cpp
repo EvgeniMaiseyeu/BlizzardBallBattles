@@ -63,10 +63,10 @@ void Snowball::OnUpdate(int timeDelta)
 		} else {
 			_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
 			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0) {
-				GetTransform()->addScale(0.001f * _speed);
+				GetTransform()->addScale(0.015f );
 				//_physics->getVelocity->getX()* - 0.2f;
 			} else if (_distanceTraveled >= _destination / 2 && _distanceTraveled <= _destination && _distanceTraveled > 0) {
-				GetTransform()->addScale(-0.001f * _speed);
+				GetTransform()->addScale(-0.015f);
 				//	_physics->getVelocity->getX()* + 0.2f;
 			}
 		}
@@ -146,7 +146,6 @@ void Snowball::OnUpdate(int timeDelta)
 		{
 			std::vector<GameObject*> v = myCollider->getColliders();
 			char path[200];
-			sprintf(path, "Game/Assets/Audio/hit%d.mp3", (rand() % 3));
 			AudioManager::GetInstance()->PlaySEFhit(BuildPath(path), 1, 10);
 			for (int i = 0; i < v.size(); i++) {
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
@@ -202,6 +201,7 @@ void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
 }
 
+
 void Snowball::SetDestination(float desti) {
 	_destination = desti;
 }
@@ -209,4 +209,25 @@ void Snowball::SetDestination(float desti) {
 void Snowball::setPower(float value)
 {
 	_speed = value;
+}
+
+void Snowball::setLockedOffsetX(float value)
+{
+	_lockOffsetX = value;
+}
+
+float Snowball::getLockedOffsetX()
+{
+	return _lockOffsetX;
+}
+
+void Snowball::setLockedOffsetY(float value)
+{
+	_lockOffsetY = value;
+}
+
+float Snowball::getLockedOffsetY()
+{
+	return _lockOffsetY;
+
 }
