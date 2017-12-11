@@ -129,32 +129,13 @@ void Player::ComputeMovement(float deltaTime) {
 	{
 		x = -runSpeed;
 	}
-	else if (x > moveSpeed)
+	
+	if (x == 0 && y == 0)
 	{
-		x = moveSpeed;
-	}
-	else if (x < -moveSpeed)
-	{
-		x = -moveSpeed;
-	}
-	if (isRunning && y > runSpeed)
-	{
-		y = runSpeed;
-	}
-	else if (isRunning && y < -runSpeed)
-	{
-		y = -runSpeed;
-	}
-	else if (y > moveSpeed)
-	{
-		y = moveSpeed;
-	}
-	else if (y < -moveSpeed)
-	{
-		y = -moveSpeed;
+		return;
 	}
 
-	youBattler->Move(x, y, isRunning, applyingForces);
+	youBattler->Move(x, y, isRunning);
 } 
 
 void Player::UnfreezeSnowman() {
