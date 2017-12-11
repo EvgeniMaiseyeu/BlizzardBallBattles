@@ -6,6 +6,7 @@
 #include "SpriteRendererManager.h"
 #include "PhysicsManager.h"
 #include "MatchManager.h"
+#include "AudioManager.h"
 #include "UserDefinedRenderLayers.h"
 #include "Battler.h"
 #include "Snowball.h"
@@ -26,6 +27,7 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
 	}
 	InitStats(team);
+	_transform = GetTransform();
 }
 
 Battler::Battler(int team, std::string textureFileName) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
@@ -34,28 +36,7 @@ Battler::Battler(int team, std::string textureFileName) : ComplexSprite(Generate
 	this->networkingID = -1;
 	InitStats(team);
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
-}
-
-/*Battler::~Battler()
-{
-
-}*/
-
-void Battler::OnUpdate(int ticks)
-{
-	if (_transform == NULL)
-	{
-		_transform = GetTransform();
-	}
-
-	float deltaTime = (float)ticks / 1000.0f;
-
-	UpdateThrowTimer(deltaTime);
-	UpdateAttachedSnowBalls(deltaTime);
-	//if (!CheckIfInBounds(_transform->getX(), _transform->getY()))
-	//{
-	//	Move(0, 0);
-	//}
+	_transform = GetTransform();
 }
 
 void Battler::InitStats(int team)
@@ -64,6 +45,7 @@ void Battler::InitStats(int team)
 	AddComponent<Physics*>(_physics);
 	stats.teamID = team;
 	stats.moveSpeed = 2;
+	stats.runSpeed = stats.moveSpeed * 2.5;
 	stats.fireSpeedInterval = 1;
 	stats.isPlayer = false;
 	stats.hitpoints = 1;
@@ -73,8 +55,32 @@ void Battler::InitStats(int team)
 }
 
 
-bool Battler::Move(float x, float y)
+void Battler::OnUpdate(int ticks)
 {
+	float deltaTime = (float)ticks / 1000.0f;
+
+	if (InIceZone(_transform))
+	{
+		_physics->setVelDrag(0.98);
+	}
+	else
+	{
+		_physics->setVelDrag(0.9);
+	}
+	CheckAndSetBounds(_transform, _physics->getVelocity());
+
+	UpdateThrowTimer(deltaTime);
+	UpdateAttachedSnowBalls(deltaTime);
+}
+
+bool Battler::Move(float x, float y, bool isRunning, bool forces)
+{
+	stats.isRunning = isRunning;
+	if (!CheckAndSetBounds(_transform, new Vector2(x, y)))
+	{
+		return false;
+	}
+
 	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
 		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
 			ChangeSprite(SPRITE_WALK);
@@ -82,28 +88,22 @@ bool Battler::Move(float x, float y)
 			ChangeSprite(SPRITE_IDLE);
 		}
 	}
+
+	_physics->setApplyingForce(forces);
+
 	if (!_fullLock && !_makingSnowball) {
 		Transform *t = GetTransform();
 		Vector2 *v = new Vector2(x, y);
-		CheckIfInBounds(t, v);
-		ApplyIceSliding(v);
 		_physics->setVelocity(v);
 		float snowdrag = _physics->getSnowDrag();
 		float drag = _physics->getDrag();
-		if (attachedSnowballs.size() > 3) {
+		if (attachedSnowballs.size() > 3/*this should be life count*/) {
 			//Die();
 		}
 		else {
 			if (_bigSnowball != nullptr && attached) {
 				Vector2 *v = new Vector2(x, y);
 				Physics* physics = _bigSnowball->GetComponent<Physics*>();
-				physics->setDrag(drag);
-				physics->setSnowDrag(snowdrag);
-				physics->setVelocity(v);
-			}
-			for (int i = 0; i < attachedSnowballs.size(); i++) {
-				Vector2 *v = new Vector2(x, y);
-				Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
 				physics->setDrag(drag);
 				physics->setSnowDrag(snowdrag);
 				physics->setVelocity(v);
@@ -117,12 +117,6 @@ bool Battler::Move(float x, float y)
 			Physics* physics = _bigSnowball->GetComponent<Physics*>();
 			physics->setVelocity(v);
 		}
-        _physics->setVelocity(new Vector2(0, 0));
-		for (int i = 0; i < attachedSnowballs.size(); i++) {
-			Vector2 *v = new Vector2(0, 0);
-			Physics* physics = attachedSnowballs[i]->GetComponent<Physics*>();
-			physics->setVelocity(v);
-		}
     }
 
 	return false;
@@ -132,30 +126,10 @@ Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
 }
 
-void Battler::Face(GameObject* gameObject)
-{
-	
-}
-
-void Battler::Face(Vector2* position)
-{
-
-}
-
-void Battler::TurnTo(GameObject* gameObject)
-{
-
-}
-
-void Battler::TurnTo(Vector2* position)
-{
-
-}
-
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
- 		return false;
+		return false;
 
 	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
@@ -173,8 +147,13 @@ bool Battler::ThrowSnowball()
 	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
 	canFire = false;
 	return true;
-}
 
+	//parabolic     y = y0+Vyt + 1/2 gt2
+		// y=a(x–h)2+k
+		// y = ax2 + bx+ c
+
+		//
+}
 void Battler::UpdateThrowTimer(float deltaTime)
 {
 	timeSinceLastShot += deltaTime;
@@ -186,11 +165,15 @@ void Battler::UpdateThrowTimer(float deltaTime)
 }
 
 void Battler::UpdateAttachedSnowBalls(float deltaTimer) {
-	
+	for (int i = 0; i < attachedSnowballs.size(); i++) {
+		attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
+		attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
+	}
 }
 
 bool Battler::DealtDamage(int damage)
 {
+	AudioManager::GetInstance()->PlaySEFhit("./Game/Assets/hit.wav", 1);
 	bool isattached = false;
 	stats.hitpoints -= damage;
 	_physics->setSnowDrag(_physics->getSnowDrag()* 0.7);
@@ -274,6 +257,8 @@ void Battler::Die()
 		}
 		MatchManager::GetInstance()->UnRegisterCharacter(this);
 	}
+
+	Destroy(this);
 }
 
 ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
@@ -294,7 +279,8 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 
 void Battler::LockToBattler(Snowball* sb) { 
 	attachedSnowballs.push_back(sb);
-
+	sb->setLockedOffsetX(sb->GetTransform()->getX() - this->GetTransform()->getX());
+	sb->setLockedOffsetY(sb->GetTransform()->getY() - this->GetTransform()->getY());
 }
 
 void Battler::Unlock() {
@@ -307,10 +293,11 @@ void Battler::Unlock() {
 //------------------------------------------------------
 
 //should be called every update for each player/ai on screen
+
 void Battler::HandleBigThrow(float deltaTime) {
-	if (_fullLock && _timer < 2)
+	if (_fullLock && _timer < 1.5)
 		_timer += deltaTime;
-	else if (_fullLock && _timer > 2) {
+	else if (_fullLock && _timer > 1.5) {
 		//launch snowball
 		//Unlock();
 		attached = false;
@@ -342,11 +329,13 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				//made snowball
 				_makingSnowball = false;
 				attached = true;
-				//LockToBattler();
+				//LockToBattler(_bigSnowball);
 				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
+		
+
 				return true;
 			}
 		}
@@ -363,6 +352,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			else
 				_bigSnowball->GetTransform()->addX(-0.7f);
 			_bigSnowball->GetTransform()->setZ(-1);
+		
 			_timer = 0;
 			_makingSnowball = true;
 		}
@@ -373,7 +363,9 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 bool Battler::FireBigSnowball() {
 	if (_haveBigSnowball) {
 		if (_fullLock) {
-			_throwPower += 2.0f; //ai wont care about this
+			_throwDistance += 1.0f; //ai wont care about this
+			_throwPower += 1.0f; //ai wont care about this
+
 			return true;
 		}
 		else{
@@ -411,8 +403,10 @@ void Battler::HandleCancels() {
 
 //-------------------------------------------------
 
-bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
+bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 {
+	float multiplier = stats.isRunning ? 2.5: 1.0;
+
 	float xMin = (-getGameWidth() / 2) - 2;
 	float xMax = (getGameWidth() / 2) + 2;
 	float yMax = (getGameHeight() / 2) + 1.25;
@@ -423,7 +417,13 @@ bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
 
 	bool inBounds = true;
 
-	unique_ptr<Vector2> newPos(new Vector2(pos->getX() + move->getX(), pos->getY() + move->getY()));
+	float xVelocity = move->getX();
+	float yVelocity = move->getY();
+
+	xVelocity /= multiplier;
+	yVelocity /= multiplier;
+
+	unique_ptr<Vector2> newPos(new Vector2(pos->getX() + xVelocity, pos->getY() + yVelocity));
 
 	if (newPos->getX() <= (stats.teamID == 2 ? team2Bounds : xMin)) {
 		if (move->getX() < 0)
@@ -452,24 +452,19 @@ bool Battler::CheckIfInBounds(Transform *pos, Vector2 *move)
 }
 
 bool Battler::InIceZone(Transform *t) {
-	float xMin = (-getGameWidth() / 2) - 2;
-	float xMax = (getGameWidth() / 2) + 2;
-	float yMax = (getGameHeight() / 2) - .75;
-	float yMin = -(getGameHeight() / 2) + 1;
-
-	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 5;
-	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 4;
-
-	return (t->getX() >= team2Bounds && t->getX() <= team1Bounds && t->getY() >= yMin && t->getY() <= yMax);
-}
-
-bool Battler::ApplyIceSliding(Vector2 *v) {
-	if (InIceZone(GetTransform())) {
-		//std::cout << "X: " << v->getX() << " Y: " << v->getY();
-		v->setX(v->getX() * 0.99f);
-		v->setY(v->getY() * 0.99f);
-		//std::cout << "2X: " << v->getX() << " 2Y: " << v->getY() << std::endl;
-		return true;
+	if (t != NULL && t != nullptr) {
+		if (GameScene* scene = GameScene::GetCurrent()) {
+			return scene->isInIceZone(t->getX(), t->getY());
+		}
 	}
 	return false;
 }
+
+//bool Battler::ApplyIceSliding(Vector2 *v) {
+//	if (InIceZone(GetTransform())) {
+//		v->setX(v->getX() * 0.99f);
+//		v->setY(v->getY() * 0.99f);
+//		return true;
+//	}
+//	return false;
+//}

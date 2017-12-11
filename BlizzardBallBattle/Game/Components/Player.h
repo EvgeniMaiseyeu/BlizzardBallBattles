@@ -15,13 +15,15 @@ private:
 	SDL_Keycode rightKey;
 	SDL_Keycode upKey;
 	SDL_Keycode downKey;
+	SDL_Keycode runKey;
 	SDL_Keycode shootKey, shootKey2;
 	float distance;
 	Battler* youBattler;
 	float center;
+	void UnfreezeSnowman();
 	
 public:
-	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2);
+	Player(GameObject* gameObject, SDL_Keycode left,  SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2, SDL_Keycode run);
 	
 	void ComputeMovement(float deltaTime);
 	void OnStart(){};

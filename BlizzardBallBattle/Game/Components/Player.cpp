@@ -4,12 +4,13 @@
 #include "Transform.h"
 #include "MatchManager.h"
 
-Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2) : Component(gameObject) {
+Player::Player(GameObject* gameObject, SDL_Keycode left, SDL_Keycode right, SDL_Keycode up, SDL_Keycode down, SDL_Keycode shoot, SDL_Keycode shoot2, SDL_Keycode run) : Component(gameObject) {
 	leftKey = left;
 	rightKey = right;
 	upKey = up;
 	downKey = down;
 	shootKey = shoot;
+	runKey = run;
 	shootKey2 = shoot2;
 	distance = 1;
 	youBattler = (Battler*)GetGameObject();
@@ -30,7 +31,7 @@ void Player::OnUpdate(int timeDelta) {
 		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
 	}
 	
-	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
 		if(youBattler->GetBigSnowball()){
 			youBattler->FireBigSnowball();		
 		}
@@ -40,16 +41,22 @@ void Player::OnUpdate(int timeDelta) {
 		 
 	}
 
-	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
-		youBattler->ThrowSnowball();
+	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+		if (!youBattler->stats.isRunning)
+		{
+			youBattler->ThrowSnowball();
+		}
 	}
 
-	if (InputManager::GetInstance()->onKey(shootKey)) {
+	if (InputManager::GetInstance()->onKey(shootKey2)) {
 		//Big snowball creating locks etc..
-		youBattler->MakeBigSnowball(deltaTime);
+		if (!youBattler->stats.isRunning && youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
+		{
+			youBattler->MakeBigSnowball(deltaTime);
+		}
 	} 
 	
-	if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
+	if (InputManager::GetInstance()->onKeyReleased(shootKey2)) {
 		youBattler->HandleCancels();
 	}
 
@@ -58,34 +65,47 @@ void Player::OnUpdate(int timeDelta) {
 
 void Player::ComputeMovement(float deltaTime) {
 	float moveSpeed = youBattler->stats.moveSpeed;
+	float runSpeed = youBattler->stats.runSpeed;
+	bool applyingForces = false;
+	bool isRunning = false;
+	if (InputManager::GetInstance()->onKey(runKey)) {
+		isRunning = true;
+	}
 
 	float x = 0;
 	float y = 0;
 
 	if (InputManager::GetInstance()->onKey(downKey)) {
-		y -= moveSpeed;
+		y -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
 	if (InputManager::GetInstance()->onKey(rightKey)) {
-		x += moveSpeed;
+		x += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(upKey)) {
-		y += moveSpeed;
+		y += isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 
 	if (InputManager::GetInstance()->onKey(leftKey)) {
-		x -= moveSpeed;
+		x -= isRunning ? runSpeed : moveSpeed;
+		applyingForces = true;
 	}
 	
-	if (youBattler->InIceZone(youBattler->GetTransform())) {
-		Vector2 *v = youBattler->GetVelocity();
-		float prevX = v->getX();
-		float prevY = v->getY();
-
-		x = max(-moveSpeed, min(moveSpeed, prevX + (x / 20)));
-		y = max(-moveSpeed, min(moveSpeed, prevY + (y / 20)));
+	if (x == 0 && y == 0)
+	{
+		return;
 	}
 
-	youBattler->Move(x, y);
+	youBattler->Move(x, y, isRunning, applyingForces);
 } 
+
+void Player::UnfreezeSnowman() {
+	float y = youBattler->GetTransform()->getY();
+	float x = youBattler->GetTransform()->getX();
+
+	// TODO: Check collision with snowmen on your team.
+}

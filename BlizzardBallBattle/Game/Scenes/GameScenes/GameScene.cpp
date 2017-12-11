@@ -12,6 +12,8 @@
 #include "DayNightCamera.h"
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "HelperFunctions.h"
+#include "SharedConstants.h"
 
 int playerWonSubscriptionReceipt;
 
@@ -38,8 +40,8 @@ void GameScene::BuildBaseScene() {
 	float bottomBounding = getGameBottomY() + (getFullBarSize() / GAME_WIDTH) / 2.0f;
 
 	//Game Logic Vars
-	int roofWidth = 3;
-	int iceWidth = 8; //Even for even screens, odd for odd screens [Odd Untested]
+	int roofWidth = ROOF_WIDTH;
+	int iceWidth = ICE_WIDTH; //Even for even screens, odd for odd screens [Odd Untested]
 	int altChance = 10;
 	int randSeed = SDL_GetTicks(); //Seed it properly
 	TileIndex tileIndex;
@@ -153,4 +155,44 @@ void GameScene::ClearScene() {
 	for (int i = 0; i < thingsToClear.size(); i++) {
 		GameManager::GetInstance()->RemoveGameObject(thingsToClear[i]);
 	}
+}
+
+bool GameScene::isInIceZone(float x, float y) {
+	float leftBounds = -ICE_WIDTH / 2;
+	float rightBounds = ICE_WIDTH / 2;
+	return (x >= leftBounds && x <= rightBounds);
+}
+
+bool GameScene::isInLeftZone(float x, float y) {
+	float leftBounds = -ICE_WIDTH / 2;
+	return x < leftBounds;
+}
+
+bool GameScene::isInRightZone(float x, float y) {
+	float rightBounds = ICE_WIDTH / 2;
+	return x > rightBounds;
+}
+
+bool GameScene::isInScreenBounds(float x, float y) {
+	return isInScreenBounds(x, y);
+}
+
+void GameScene::snapToScreenBounds(float *x, float *y) {
+	if (*x < getGameLeftX()) {
+		*x = getGameLeftX();
+	}
+	if (*x > getGameRightX()) {
+		*x = getGameRightX();
+	}
+	if (*y > getGameTopY()) {
+		*y = getGameTopY();
+	}
+	if (*y < getGameBottomY()) {
+		*y = getGameBottomY();
+	}
+}
+
+//Returns NULL on failed cast, which if(NULL) is false, and a valid returned type would if(true)
+GameScene* GameScene::GetCurrent() {
+	return dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene());
 }

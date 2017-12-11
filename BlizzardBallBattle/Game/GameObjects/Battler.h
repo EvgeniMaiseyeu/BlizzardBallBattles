@@ -19,10 +19,12 @@ public:
 	struct stats {
 		int teamID;
 		float moveSpeed;
+		float runSpeed;
 		float fireSpeedInterval;
 		int hitpoints;
 		bool isPlayer;
 		bool isattached;
+		bool isRunning;
 	};
 	stats stats;
 	Snowball* _bigSnowball;
@@ -34,7 +36,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y);
+	bool Move(float x, float y, bool isRunning, bool forces);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -43,7 +45,7 @@ public:
 	void OnEnd() {};
 	bool ThrowSnowball();
 	bool IsAttached();
-	bool CheckIfInBounds(Transform *pos, Vector2 *move);
+	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);
 	bool InIceZone(Transform *t);
 	Vector2 *GetVelocity();
@@ -59,6 +61,8 @@ public:
 	void Unlock();
 	//--------------------//
 	bool DealtDamage(int damage);
+	Transform* _transform;
+	Physics* _physics;
 
 private:
 
@@ -76,8 +80,6 @@ private:
 	Shader* _shader;
 	GLuint _textureBufferID;
 
-	Physics* _physics;
-	Transform* _transform;
 	void InitStats(int team);
 
 	void UpdateThrowTimer(float deltaTime);

@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include "AudioManager.h"
 
 AI::AI(GameObject* gameObject, bool _isLearning) : Component(gameObject)
 {
@@ -42,6 +43,7 @@ void AI::OnUpdate(int timeDelta)
 {
 	targetBattler = GetTargetBattler();
 	float deltaTime = (float)timeDelta / 1000.0f;
+	//myBattler->Move(0, 0, false);
 
 	switch (currentState)
 	{
@@ -116,6 +118,7 @@ GameObject* AI::GetTargetBattler()
 	std::vector<Battler*> enemyTeam = MatchManager::GetInstance()->GetTeam(enemyTeamNumber);
 	if (enemyTeam.size() == 0) {
 		return nullptr;
+
 	}
 	int randomBattler = std::rand() % enemyTeam.size();
 
@@ -191,11 +194,11 @@ void AI::WalkToTargetBattler()
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
 
-	if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY))
-	{
-		posXToMoveTo = 0;
-		myBattler->Move(posXToMoveTo, moveSpeed * directionY);
-	}
+	//if (!myBattler->Move(posXToMoveTo, moveSpeed * directionY, false))
+	//{
+	//	posXToMoveTo = 0;
+		myBattler->Move(posXToMoveTo, moveSpeed * directionY, false, false);
+	//}
 }
 
 void AI::WalkToTargetPosition()
@@ -229,7 +232,7 @@ void AI::WalkToTargetPosition()
 
 	float moveSpeed = myBattler->stats.moveSpeed;
 
-	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY);
+	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, false, false);
 }
 
 void AI::SetLearnedVelocity()
@@ -245,7 +248,7 @@ void AI::SetLearnedVelocity()
 		learnedDecisions = MatchManager::GetInstance()->teamTwoNet.MakeDecision(myBattler);
 	}
 
-	myBattler->Move(learnedDecisions[1], learnedDecisions[2]);
+	myBattler->Move(learnedDecisions[1], learnedDecisions[2], false, false);
 	currentState = idle;
 }
 
@@ -274,6 +277,7 @@ void AI::Shoot()
 	if (chanceOfFiring <= intelligence)
 	{
 		myBattler->ThrowSnowball();
+		AudioManager::GetInstance()->PlaySEFshoot("./Game/Assets/shoot.wav", 1, 0.6f);
 	}
 }
 
