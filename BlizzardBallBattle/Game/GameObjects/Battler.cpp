@@ -482,7 +482,7 @@ bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 
 bool Battler::InIceZone(Transform *t) {
 	if (t != NULL && t != nullptr) {
-		if (GameScene* scene = dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
+		if (GameScene* scene = GameScene::GetCurrent()) { 
 			return scene->isInIceZone(t->getX(), t->getY());
 		}
 	}

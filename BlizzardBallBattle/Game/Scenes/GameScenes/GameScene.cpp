@@ -185,13 +185,27 @@ void GameScene::ClearScene() {
 	}
 }
 
-
 bool GameScene::isInIceZone(float x, float y) {
 	float leftBounds = -ICE_WIDTH / 2;
 	float rightBounds = ICE_WIDTH / 2;
 	return (x >= leftBounds && x <= rightBounds);
 }
 
+bool GameScene::isInLeftZone(float x, float y) {
+	float leftBounds = -ICE_WIDTH / 2;
+	return x < leftBounds;
+}
+
+bool GameScene::isInRightZone(float x, float y) {
+	float rightBounds = ICE_WIDTH / 2;
+	return x > rightBounds;
+}
+
 bool GameScene::isInScreenBounds(float x, float y) {
 	return isInScreenBounds(x, y);
+}
+
+GameScene* GameScene::GetCurrent() {
+	//Returns NULL on failed cast, which if(NULL) is false, and a valid returned type would if(true)
+	return dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene());
 }
