@@ -5,6 +5,8 @@
 #include <thread>
 #include <map>
 #include <string>
+#define DEFAULT_IP "127.0.0.1"
+#define DEFAULT_PORT 9999
 
 
 struct Message {
@@ -18,8 +20,8 @@ private:
     ThreadQueue<std::string> *messageQueue;
     std::thread receiverThread;
     std::vector<Message> messagesToSend;
-    char *IP = "192.168.0.105";
-    int port = 9999;
+    char *IP = DEFAULT_IP;
+    int port = DEFAULT_PORT;
 
     TCPsocket socket = NULL;
     TCPsocket client = NULL;
@@ -45,5 +47,5 @@ public:
     void HandleParsingEvents(std::string packet);
     bool IsConnected();
     bool IsHost();
-    void SetIP(char *ip, int port = 5050);
+    void SetIP(char *ip, int port = DEFAULT_PORT);
 };

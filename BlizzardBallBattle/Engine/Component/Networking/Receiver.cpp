@@ -20,7 +20,6 @@ Receiver::Receiver(GameObject* gameObject, std::string netID) : Component(gameOb
 		transform->setPosition (x, y, z);
 		transform->setRotation (angle);
 		transform->setScale (scale);
-		std::cout << "POST RECEIVED: " << x << ", " << y << std::endl;
     }, this);
 }
 

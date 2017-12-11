@@ -23,7 +23,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 15;
+	TEAM_SIZE = 5;
 }
 
 void MatchManager::Stop() {
@@ -115,6 +115,8 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	float playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
 
 	std::string playerSprite = "Character.png";
+
+	std::cout << "I AM THIS TEAM MEMBER: " << teamOneFormation << std::endl;
 
 	// Team 1
 	// Player

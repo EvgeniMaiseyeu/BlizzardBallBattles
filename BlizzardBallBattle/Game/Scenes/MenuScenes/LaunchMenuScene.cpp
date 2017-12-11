@@ -35,10 +35,10 @@ void LaunchMenuScene::OnUpdate(int ticks) {
 
     if (inputManager->onKeyPressed(SDLK_h)) {
         NetworkingManager::GetInstance()->CreateHost();
-        SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked(4, 4));
+        SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked(4, 5));
     } else if (inputManager->onKeyPressed(SDLK_j)) {
         NetworkingManager::GetInstance()->CreateClient();
-        SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked(4, 4));
+        SceneManager::GetInstance()->PushScene(new GameScene_Alpha_Networked(5, 4));
     } else if (inputManager->onKeyPressed(SDLK_1)) {
 		SceneManager::GetInstance()->PushScene(new PostGameMenuScene(1));
     } else if (inputManager->onKeyPressed(SDLK_2)) {

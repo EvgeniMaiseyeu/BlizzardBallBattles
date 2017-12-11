@@ -186,7 +186,6 @@ void NetworkingManager::SendEventToReceiver(std::map<std::string, void*> data) {
 
 std::string NetworkingManager::SerializeMessage(Message message) {
     std::string result = "{";
-	//std::cout << "MYSAGE: " << message.key.c_str () << std::endl;
     message.data["key"] = message.key.c_str();
 
     for (const auto tuple : message.data) {
