@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "HelperFunctions.h"
 
-ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z, float scale, Shader* nonDefaultShader) : GameObject(false) {
+ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z, float scale, Shader* nonDefaultShader, int framesPerSecond) : GameObject(false) {
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
     spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
     
@@ -30,17 +30,25 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
     transform->setScale(scale);
     AddComponent<SpriteRenderer*>(spriteRenderer);
 	framesTilReturn = -1;
+	this->framesPerSecond = framesPerSecond;
+
 }
 
-//ComplexSprite::~ComplexSprite() {
-    //TODO: Memory leak fix
-    //if (sprite != nullptr) {
-    //    delete(sprite);
-    //}
-    //if (shader != nullptr) {
-    //    delete(shader);
-    //}
-//}
+
+void ComplexSprite::SetFPS(int fps) {
+	framesPerSecond = fps;
+}
+
+void ComplexSprite::UpdateFrames(float delta) {
+	int timeSince = timeAlive - lastFrame;
+	float secondsPerFrame = 1.0f / (float)framesPerSecond * 1000;
+	if (timeSince > secondsPerFrame) {
+		lastFrame = timeAlive;
+		NextFrame();
+	}
+
+	timeAlive += delta;
+}
 
 void ComplexSprite::NextFrame() {
     sprites[currentSpriteSheet]->NextIndex();

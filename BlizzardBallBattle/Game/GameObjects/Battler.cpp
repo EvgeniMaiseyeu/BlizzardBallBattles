@@ -71,6 +71,19 @@ void Battler::OnUpdate(int ticks)
 
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
+	UpdateFrames(ticks);
+
+	//Update Sprite Logic
+	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
+		if (_physics->getVelocity()->getMagnitude() > 0.5f) {
+			ChangeSprite(SPRITE_WALK);
+			SetFPS(_physics->getVelocity()->getMagnitude() * 10);
+		}
+		else {
+			ChangeSprite(SPRITE_IDLE);
+			SetFPS(8);
+		}
+	}
 }
 
 bool Battler::Move(float x, float y, bool isRunning, bool forces)
@@ -79,14 +92,6 @@ bool Battler::Move(float x, float y, bool isRunning, bool forces)
 	if (!CheckAndSetBounds(_transform, new Vector2(x, y)))
 	{
 		return false;
-	}
-
-	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
-		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
-			ChangeSprite(SPRITE_WALK);
-		} else {
-			ChangeSprite(SPRITE_IDLE);
-		}
 	}
 
 	_physics->setApplyingForce(forces);
@@ -132,6 +137,7 @@ bool Battler::ThrowSnowball()
 		return false;
 
 	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
+	SetFPS(8);
 
 	if (isSender) {
 		std::map<std::string, std::string> payload;
