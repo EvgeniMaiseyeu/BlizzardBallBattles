@@ -42,7 +42,7 @@ void Player::OnUpdate(int timeDelta) {
 	}
 
 	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if (!youBattler->stats.isRunning)
+		if (youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
 		{
 			youBattler->ThrowSnowball();
 		}
@@ -50,7 +50,7 @@ void Player::OnUpdate(int timeDelta) {
 
 	if (InputManager::GetInstance()->onKey(shootKey2)) {
 		//Big snowball creating locks etc..
-		if (!youBattler->stats.isRunning && youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
+		if (youBattler->_physics->getVelocity()->getMagnitude() < 0.1f)
 		{
 			youBattler->MakeBigSnowball(deltaTime);
 		}
