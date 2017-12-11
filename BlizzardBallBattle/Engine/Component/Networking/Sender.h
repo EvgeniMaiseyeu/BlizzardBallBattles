@@ -18,4 +18,5 @@ public:
 	void OnStart(){};
 	void OnUpdate(int ticks);
 	void OnEnd(){};
+	~Sender ();
 };

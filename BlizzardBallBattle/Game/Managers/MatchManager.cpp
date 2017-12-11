@@ -120,7 +120,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 
 	// Team 1
 	// Player
-	playerOne = new Battler(1, playerSprite);
+	playerOne = new Battler(1, playerSprite, "Player1", teamOneFormation == 4);
 	Collider* playerOneCollider = new Collider(playerOne, 0.5f);
 
 	if (teamOneFormation != 5) {
@@ -153,7 +153,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 		}
 
 
-		Battler* unit = new Battler (1, playerSprite);
+		Battler* unit = new Battler (1, playerSprite, "Unit1" + std::to_string (i), teamOneFormation == 4);
 		Collider* collider = new Collider (unit, 0.5f);
 		unit->AddComponent<Collider*> (collider);
 		Transform* aiTransform = (Transform*)unit->GetTransform ();
@@ -176,11 +176,11 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	//Team 2
 	playerPosX = randomFloatInRange(startPosXMin, startPosXMax);
 	playerPosY = randomFloatInRange(startPosYMin, startPosYMax);
-	playerTwo = new Battler(2, playerSprite);
+	playerTwo = new Battler(2, playerSprite, "Player2", teamOneFormation == 5);
 	Collider* playerTwoCollider = new Collider(playerTwo, 0.5f);
 	if (teamOneFormation != 4) {
 		if (teamOneFormation == 5) {
-			Player* playerOneStats = new Player (playerOne, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE, SDLK_x, SDLK_LSHIFT);
+			Player* playerTwoStats = new Player (playerTwo, SDLK_a, SDLK_d, SDLK_w, SDLK_s, SDLK_SPACE, SDLK_x, SDLK_LSHIFT);
 			playerTwo->AddComponent<Player*> (playerTwoStats);
 			playerTwo->AddComponent<Sender*> (new Sender (playerTwo, "Player2"));
 		}
@@ -211,7 +211,7 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 			teamTwoLearning = true;
 		}
 
-		Battler* unit = new Battler (2, playerSprite);
+		Battler* unit = new Battler (2, playerSprite, "Unit2" + std::to_string (i), teamOneFormation == 5);
 		Collider* collider = new Collider (unit, 0.5f);
 		unit->AddComponent<Collider*> (collider);
 		Transform* aiTransform = (Transform*)unit->GetTransform ();

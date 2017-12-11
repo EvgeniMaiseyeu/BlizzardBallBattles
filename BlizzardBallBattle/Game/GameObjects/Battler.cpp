@@ -16,7 +16,9 @@
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
-	self->ThrowSnowball();
+	std::string snowballID = (*(std::string*)payload["fireNetworkID"]);
+	
+	self->ThrowSnowball(snowballID);
 }
 
 Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
@@ -24,9 +26,10 @@ Battler::Battler(int team, std::string textureFileName, std::string networkingID
 	this->networkingID = networkingID;
 	this->isSender = isSender;
 	if (!isSender) {
-		MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
+		fireEventID = MessageManager::Subscribe(networkingID + "|FIRE", ReceivedFireSnowball, this);
 	}
 	InitStats(team);
+	GetComponent<SpriteRenderer*> ()->SetLayer (RENDER_LAYER_SHADOWABLE);
 	_transform = GetTransform();
 }
 
@@ -121,15 +124,18 @@ Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
 }
 
-bool Battler::ThrowSnowball()
+bool Battler::ThrowSnowball(std::string networkID)
 {
 	if (!canFire)
 		return false;
 
 	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
 
+	std::string netID = (isSender ? std::to_string(rand ()) : networkID);
+	std::cout << "ANOTHER ID: " << netID << std::endl;
 	if (isSender) {
 		std::map<std::string, std::string> payload;
+		payload["fireNetworkID"] = netID;
 		NetworkingManager::GetInstance()->PrepareMessageForSending(networkingID + "|FIRE", payload);
 	}
 
@@ -139,7 +145,7 @@ bool Battler::ThrowSnowball()
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
 
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, netID, isSender);
 	canFire = false;
 	return true;
 
@@ -222,6 +228,15 @@ void Battler::Die()
 
 	dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(snowman);
 
+	dying = true;
+
+	if (isSender) {
+		std::map<std::string, std::string> payload;
+		NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|DESTROYBATTLER", payload);
+	} else {
+		MessageManager::UnSubscribe (networkingID + "|FIRE", fireEventID);
+	}
+
 	if (stats.isPlayer)
 	{
 		int winningTeam = 1;
@@ -243,10 +258,6 @@ void Battler::Die()
 		GetComponent<AI*>()->Died();
 	}
 	else {
-		if (networkingID.find("Player") == string::npos) {
-			stats.hitpoints = 1;
-			return;
-		}
 		for (int i = 0; i < attachedSnowballs.size(); i++) {
 			Destroy(attachedSnowballs[i]);
 		}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "GameManager.h"
 #include "TransformState.h"
 #include "GameObject.h"
 #include <vector>
@@ -10,8 +11,7 @@
 
 class Receiver : public Component {
 private:
-    std::string netID;
-	int OnUpdateID;
+	int OnUpdateID, DestroySnowballID, DestroyBattlerID;
     std::vector<int> messengingIDs;
 
 public:
@@ -22,4 +22,5 @@ public:
 	void OnStart(){};
 	void OnUpdate(int ticks){};
 	void OnEnd(){};
+	std::string netID;
 };

@@ -43,7 +43,7 @@ public:
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
-	bool ThrowSnowball();
+	bool ThrowSnowball(std::string networkID = "-1");
 	bool IsAttached();
 	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);
@@ -63,6 +63,8 @@ public:
 	bool DealtDamage(int damage);
 	Transform* _transform;
 	Physics* _physics;
+	bool isSender;
+	void Die ();
 
 private:
 
@@ -76,6 +78,9 @@ private:
 	float _throwDistance;
 	bool attached;
 	//---------------------//
+	bool dying;
+	int fireEventID;
+	//
 	std::vector<Snowball*> attachedSnowballs;
 	Shader* _shader;
 	GLuint _textureBufferID;
@@ -84,14 +89,12 @@ private:
 
 	void UpdateThrowTimer(float deltaTime);
 	void UpdateAttachedSnowBalls(float deltaTime);
-	void Die();
 
 	bool canFire;
 	float timeSinceLastShot;
 
 	//Networking
 	std::string networkingID;
-	bool isSender;
 
 	ComplexSpriteinfo* GenerateSpriteInfo(int team);
 };

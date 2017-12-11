@@ -20,10 +20,12 @@ private:
 	bool _bigSnowball;
 	float _lockOffsetX;
 	float _lockOffsetY;
+	std::string networkingID;
+	bool isSender;
 
 public:
 	void Snowball::setBigSnowBall(bool bigSB);
-	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
+	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, std::string networkID = "-1", bool isSender = false);
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};

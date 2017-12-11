@@ -11,11 +11,14 @@
 #include "GameScene.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "NetworkingManager.h"
+#include "Receiver.h"
+#include "Sender.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, std::string networkID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	_physics = new Physics(this);
 	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
@@ -27,6 +30,18 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	//AddComponent<Collider*>(new Collider(this, 50.0f));
 	AddComponent<Collider*>(new Collider(this, GetTransform()->getScale() / 2));
 	myCollider = GetComponent<Collider*>();
+
+	//add network data
+	this->networkingID = networkID;
+	this->isSender = isSender;
+	if (NetworkingManager::GetInstance ()->IsConnected ()) {
+		if (isSender) {
+  			AddComponent<Sender*> (new Sender (this, networkID));
+		}
+		else {
+			AddComponent<Receiver*> (new Receiver (this, networkID));
+		}
+	}
 
 	_speed = playerPower;
 	Vector2* velocity = new Vector2(1, 0);
@@ -45,7 +60,7 @@ void Snowball::OnUpdate(int timeDelta)
 {
 	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
 		//GetTransform()->setScale(0.00001f);
-		Destroy(this);
+		DestructSnowball();
 	}
 	if (heldByPlayer) {
 		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
@@ -106,9 +121,6 @@ void Snowball::OnUpdate(int timeDelta)
 		*/
 	
 	//If the scene is not a GameScene, destroy self
-	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
-		Destroy(this);
-	}
 	//if (heldByPlayer) {
 	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
@@ -123,7 +135,7 @@ void Snowball::OnUpdate(int timeDelta)
 
 	if (active) {
 		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-			Destroy(this);
+			DestructSnowball();
 			return;
 		}
 		if(!heldByPlayer)
@@ -138,7 +150,12 @@ void Snowball::OnUpdate(int timeDelta)
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
 					continue;
 				}
+
 				Battler *hitBattler = dynamic_cast<Battler*>(v[i]);
+
+				if (hitBattler == nullptr) // || NetworkingManager::GetInstance ()->IsConnected () && !hitBattler->isSender
+					continue;
+
 				if (hitBattler && (v[i]->getId() != playerID)) {
 					//yes we hit do stuff
 					if (hitBattler->stats.teamID != teamID) {
@@ -167,12 +184,16 @@ void Snowball::OnUpdate(int timeDelta)
 
 		float x = GetTransform()->getX();
 		if (x < -GAME_WIDTH / 2 || x > GAME_WIDTH / 2) {
-			Destroy(this);
+			DestructSnowball ();
 		}
 	}
 }
 
 void Snowball::DestructSnowball() {
+	if (isSender) {
+		std::map<std::string, std::string> payload;
+		NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|DESTROYSNOWBALL", payload);
+	}
 	Destroy(this); //TODO: Fix with Snowball Destruction
 }
 

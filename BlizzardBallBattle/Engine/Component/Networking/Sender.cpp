@@ -18,8 +18,11 @@ void Sender::SendUpdate() {
 
 void Sender::SendNetworkMessage(std::string messageKey,  std::map<std::string, std::string> payload) {
     std::remove_if(messageKey.begin(), messageKey.end(), isspace);
-	std::cout << "My Message:: " << this->ID + "|" + messageKey << std::endl;
     NetworkingManager::GetInstance()->PrepareMessageForSending(this->ID + "|" + messageKey, payload);
+}
+
+Sender::~Sender () {
+	std::map<std::string, std::string> payload;
 }
 
 void Sender::OnUpdate(int ticks) {
