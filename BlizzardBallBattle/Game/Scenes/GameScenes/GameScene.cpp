@@ -205,7 +205,22 @@ bool GameScene::isInScreenBounds(float x, float y) {
 	return isInScreenBounds(x, y);
 }
 
+void GameScene::snapToScreenBounds(float *x, float *y) {
+	if (*x < getGameLeftX()) {
+		*x = getGameLeftX();
+	}
+	if (*x > getGameRightX()) {
+		*x = getGameRightX();
+	}
+	if (*y > getGameTopY()) {
+		*y = getGameTopY();
+	}
+	if (*y < getGameBottomY()) {
+		*y = getGameBottomY();
+	}
+}
+
+//Returns NULL on failed cast, which if(NULL) is false, and a valid returned type would if(true)
 GameScene* GameScene::GetCurrent() {
-	//Returns NULL on failed cast, which if(NULL) is false, and a valid returned type would if(true)
 	return dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene());
 }

@@ -59,6 +59,7 @@ public:
 	bool isInScreenBounds(float x, float y);
 	bool isInLeftZone(float x, float y);
 	bool isInRightZone(float x, float y);
+	void snapToScreenBounds(float *x, float *y);
 
 	static GameScene* GetCurrent();
 };
