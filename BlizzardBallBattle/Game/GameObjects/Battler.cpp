@@ -452,13 +452,19 @@ bool Battler::CheckAndSetBounds(Transform *pos, Vector2 *move)
 }
 
 bool Battler::InIceZone(Transform *t) {
-	float xMin = (-getGameWidth() / 2) - 2;
-	float xMax = (getGameWidth() / 2) + 2;
-	float yMax = (getGameHeight() / 2) - .75;
-	float yMin = -(getGameHeight() / 2) + 1;
-
-	float team1Bounds = (xMin + ((xMax - xMin) / 2)) + 5;
-	float team2Bounds = (xMin + ((xMax - xMin) / 2)) - 4;
-
-	return (t->getX() >= team2Bounds && t->getX() <= team1Bounds && t->getY() >= yMin && t->getY() <= yMax);
+	if (t != NULL && t != nullptr) {
+		if (GameScene* scene = GameScene::GetCurrent()) {
+			return scene->isInIceZone(t->getX(), t->getY());
+		}
+	}
+	return false;
 }
+
+//bool Battler::ApplyIceSliding(Vector2 *v) {
+//	if (InIceZone(GetTransform())) {
+//		v->setX(v->getX() * 0.99f);
+//		v->setY(v->getY() * 0.99f);
+//		return true;
+//	}
+//	return false;
+//}
