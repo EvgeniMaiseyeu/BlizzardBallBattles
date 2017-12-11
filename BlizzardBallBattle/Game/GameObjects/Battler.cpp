@@ -134,26 +134,6 @@ Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
 }
 
-void Battler::Face(GameObject* gameObject)
-{
-	
-}
-
-void Battler::Face(Vector2* position)
-{
-
-}
-
-void Battler::TurnTo(GameObject* gameObject)
-{
-
-}
-
-void Battler::TurnTo(Vector2* position)
-{
-
-}
-
 bool Battler::ThrowSnowball()
 {
 	if (!canFire)
