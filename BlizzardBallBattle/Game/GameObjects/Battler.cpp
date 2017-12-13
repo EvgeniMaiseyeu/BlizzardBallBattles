@@ -151,7 +151,10 @@ bool Battler::ThrowSnowball()
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
 
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour);
+	//LAST PARAMETER HERE IS THROW DISTANCE FOR ALL AI SO FOR THIS FUNCTION ADD PARAMETER THAT YOU CAN SEND WHICH WILL BE THE THROW DISTANCE
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, 30); 
+
+
 	canFire = false;
 	return true;
 
@@ -351,7 +354,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			if (stats.teamID == 2)
 				snowballColour = "Snowball3.png";
 			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
-			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			_bigSnowball = new Snowball(this, 0, radians, snowballColour, 0);
 			_bigSnowball->setBigSnowBall(true);
 			if(this->stats.teamID == 1)
 				_bigSnowball->GetTransform()->addX(0.7f);
@@ -437,7 +440,7 @@ bool Battler::MakeSmallSnowball() {
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
-	_smallSnowball = new Snowball(this, 0, radians, snowballColour);
+	_smallSnowball = new Snowball(this, 0, radians, snowballColour, 0);
 
 	if (this->stats.teamID == 1)
 		_smallSnowball->GetTransform()->addY(-0.5f);

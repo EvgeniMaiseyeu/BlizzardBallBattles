@@ -24,7 +24,7 @@ private:
 
 public:
 	void Snowball::setBigSnowBall(bool bigSB);
-	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName);
+	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, float destination);
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};

@@ -15,7 +15,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, float destination) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	_physics = new Physics(this);
 	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
@@ -38,6 +38,7 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
 	_bigSnowball = false;
+	_destination = destination;
 	//dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(this);
 }
 
@@ -61,7 +62,7 @@ void Snowball::OnUpdate(int timeDelta)
 			
 
 		} else {
-			_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
+			_distanceTraveled += abs(_physics->getVelocity()->getX()) * (float)timeDelta / 1000;
 			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0) {
 				GetTransform()->addScale(0.015f );
 				//_physics->getVelocity->getX()* - 0.2f;
