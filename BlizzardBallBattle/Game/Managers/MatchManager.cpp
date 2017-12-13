@@ -1,3 +1,4 @@
+
 #include "MatchManager.h"
 #include "Sprite.h"
 #include "SpriteRenderer.h"
@@ -22,7 +23,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 15;
+	TEAM_SIZE = 20;
 }
 
 void MatchManager::Stop() {
@@ -61,20 +62,27 @@ bool MatchManager::RegisterCharacter(Battler *character)
 	return true;
 }
 
+// TODO: Don't call every AI to change targets
 bool MatchManager::UnRegisterCharacter(Battler *character)
 {
 	if (character->stats.teamID == 1)
 	{
 		teamOne.erase(std::remove(teamOne.begin(), teamOne.end(), character), teamOne.end());
 		for (int i = 0; i < teamTwoAIUnits.size(); i++) {
-			teamTwoAIUnits[i]->Retarget();
+			if (teamTwoAIUnits[i]->currentTarget == teamTwoAIUnits[i]->battler && teamTwoAIUnits[i]->targetBattler == character)
+			{
+				teamTwoAIUnits[i]->Retarget();
+			}
 		}
 	}
 	else if (character->stats.teamID == 2)
 	{
 		teamTwo.erase(std::remove(teamTwo.begin(), teamTwo.end(), character), teamTwo.end());
 		for (int i = 0; i < teamOneAIUnits.size(); i++) {
-			teamOneAIUnits[i]->Retarget();
+			if (teamOneAIUnits[i]->currentTarget == teamOneAIUnits[i]->battler && teamOneAIUnits[i]->targetBattler == character)
+			{
+				teamOneAIUnits[i]->Retarget();
+			}
 		}
 	}
 	else
@@ -195,13 +203,13 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	{
 		float intelligence = randomFloatInRange(0.8f, 1.0f);
 		float courage = randomFloatInRange(0.0f, 1.0f);
-		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
+		float decisionFrequency = randomFloatInRange(0.7f, 4.0f);
 
 		if (teamOneFormation == 3)
 		{
-			intelligence = 0.5f;
-			courage = 1.0f;
-			decisionFrequency = randomFloatInRange(0.2f, 0.5f);
+			intelligence = randomFloatInRange(0.1f, 0.5f);
+			courage = randomFloatInRange(0.5f, 1.0f);
+			decisionFrequency = randomFloatInRange(0.5f, 1.5f);
 		}
 
 		teamOneAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);
@@ -210,13 +218,13 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	{
 		float intelligence = randomFloatInRange(0.8f, 1.0f);
 		float courage = randomFloatInRange(0.0f, 1.0f);
-		float decisionFrequency = randomFloatInRange(0.2f, 2.0f);
+		float decisionFrequency = randomFloatInRange(0.7f, 4.0f);
 
 		if (teamTwoFormation == 3)
 		{
-			intelligence = 0.5f;
-			courage = 1.0f;
-			decisionFrequency = randomFloatInRange(0.4f, 0.8f);
+			intelligence = randomFloatInRange(0.1f, 0.5f);
+			courage = randomFloatInRange(0.5f, 1.0f);
+			decisionFrequency = randomFloatInRange(0.5f, 3.0f);
 		}
 
 		teamTwoAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);

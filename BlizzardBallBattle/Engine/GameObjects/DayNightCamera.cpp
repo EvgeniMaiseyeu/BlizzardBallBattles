@@ -8,7 +8,8 @@ float wantR = 0.1f, wantG = 0.1f, wantB = 0.1f, wantA = 0.5f;
 float curX = -0.5f, curY = 0.5f;
 float wantX = -0.5f, wantY = 0.5f;
 float curS = 4.0f, wantS = 4.0f;
-float wantBI = 0.135f, curBI = 0.135f;
+float bmFactor = 0.75f;
+float wantBI = 0.135f * bmFactor, curBI = 0.135f * bmFactor;
 
 float lerp(float a, float b, float f) {
     return a + f * (b - a);
@@ -34,7 +35,7 @@ void DayNightCamera::ApplyRenderFilters(SpriteRendererManager* rendererManager) 
 	rendererManager->RenderDirectionalBloom(regularPass, curX, curY, curBI, &ambientLighting);
 	rendererManager->RenderAmbientColor(ambientLighting, curR, curG, curB, curA);
 
-    float t = tick / 480.0f; //24 second day cycles
+    float t = tick / 480.0f; //
     
 	curR = lerp(sR, wantR, t);
 	curG = lerp(sG, wantG, t);
@@ -70,7 +71,7 @@ void DayNightCamera::ApplyRenderFilters(SpriteRendererManager* rendererManager) 
 				wantX = -0.5f;
 				wantY = 0.5f;
 				wantS = 8.0f;
-				wantBI = 0.1f;
+				wantBI = 0.1f * bmFactor;
 				break;
 			//Afternoon
 			case 1:
@@ -81,7 +82,7 @@ void DayNightCamera::ApplyRenderFilters(SpriteRendererManager* rendererManager) 
 				wantX = 0.5f;
 				wantY = 0.5f;
 				wantS = 4.0f;
-				wantBI = 0.145f;
+				wantBI = 0.145f * bmFactor;
 				break;
 			//Evening
 			case 2:
@@ -92,7 +93,7 @@ void DayNightCamera::ApplyRenderFilters(SpriteRendererManager* rendererManager) 
 				wantX = 0.5f;
 				wantY = -0.5f;
 				wantS = 6.0f;
-				wantBI = 0.12f;
+				wantBI = 0.12f * bmFactor;
 				break;
 			//Night
 			case 3:
@@ -103,7 +104,7 @@ void DayNightCamera::ApplyRenderFilters(SpriteRendererManager* rendererManager) 
 				wantX = -0.5f;
 				wantY = -0.5f;
 				wantS = 12.0f;
-				wantBI = 0.08f;
+				wantBI = 0.08f * bmFactor;
 				break;
 		}
 	}

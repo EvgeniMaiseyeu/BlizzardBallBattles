@@ -8,7 +8,11 @@
 
 #define SPRITE_IDLE 0
 #define SPRITE_WALK 1
-#define SPRITE_SIMPLE_THROW 2
+#define SPRITE_THROW_SMALL 2
+#define SPRITE_THROW_BIG 3
+#define SPRITE_BUILD_BIG 4
+#define SPRITE_SPIN_BIG 5
+#define SPRITE_PICKUP_SMALL 6
 
 class Snowball;
 
@@ -28,6 +32,8 @@ public:
 	};
 	stats stats;
 	Snowball* _bigSnowball;
+	Snowball* _smallSnowball;
+
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
@@ -36,7 +42,7 @@ public:
 	void MoveTo(Vector2* position);
 	void Face(Vector2* position);
 	void TurnTo(Vector2* position);
-	bool Move(float x, float y, bool isRunning);
+	bool Move(float x, float y, bool isRunning, bool forces);
 	void MoveTo(GameObject* gameObject);
 	void Face(GameObject* gameObject);
 	void TurnTo(GameObject* gameObject);
@@ -60,12 +66,26 @@ public:
 	void LockToBattler(Snowball* sb);
 	void Unlock();
 	//--------------------//
+	// small ball//
+	void setCanFire();
+	void HandleSmallThrow(float deltaTime);
+	bool MakeSmallSnowball();
+	bool FireSmallSnowball();
+	bool GetSmallSnowball();
+
+	// ----------------//
 	bool DealtDamage(int damage);
 	Transform* _transform;
 	Physics* _physics;
 
 private:
 
+	//small snowball trackers//
+	float _maxDestination;
+	float _smallThrowPower;
+	bool _haveSmallSnowball;
+	float _destination;
+	bool _canFire;
 	//Big snowball trackers//
 	bool _fullLock;
 	float _timer;
@@ -94,5 +114,6 @@ private:
 	bool isSender;
 
 	ComplexSpriteinfo* GenerateSpriteInfo(int team);
+	void UpdateSprite(int ticks);
 };
 

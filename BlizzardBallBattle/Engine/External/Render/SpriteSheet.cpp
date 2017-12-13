@@ -49,6 +49,8 @@ void SpriteSheet::ResetIndex() {
 */
 
 void SpriteSheet::ReloadTextCoordinates() {
+	float testOffset = 0.01f;
+
     int maxIndex = columnCount * rowCount - 1;
     float columnPercent = 1.0f / ((float)columnCount); //1/2 = .5%, so 0%/50% or 0/1 out of 2
     int columnIndex = currentIndex % columnCount; //if index == 3, 3%2=1, index 3 is 2nd column
@@ -60,6 +62,9 @@ void SpriteSheet::ReloadTextCoordinates() {
     float endY = startY - rowPercent;
     startY = 1 - startY;
     endY = 1 - endY;
+	startX += testOffset;
+	endX -= testOffset;
+	//std::cout << "(" << startX << "," << startY << "),(" << endX << "," << endY << ")" << std::endl;
     textCoordinates = {
         endX, startY,  //Top Right
         endX, endY,    //Bottom Right
