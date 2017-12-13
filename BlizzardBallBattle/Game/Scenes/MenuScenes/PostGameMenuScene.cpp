@@ -5,12 +5,15 @@
 #include "Scenes.h"
 #include "SceneManager.h"
 #include "Transform.h"
+#include "AudioManager.h"
 
 PostGameMenuScene::PostGameMenuScene(int winningTeamID) {
     if (winningTeamID == 1) {
         winnerTextPath = "TeamOneWon.png";
+		AudioManager::GetInstance()->PlayMusicForWin("Game/Assets/Audio/victory.wav", 1);
     } else if (winningTeamID == 2) {
         winnerTextPath = "TeamTwoWon.png";
+		AudioManager::GetInstance()->PlayMusicForWin("Game/Assets/Audio/victory.wav", 1);
     } else {
         //ERROR
     }

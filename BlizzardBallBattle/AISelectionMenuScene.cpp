@@ -11,14 +11,11 @@ AISelectionMenuScene::AISelectionMenuScene() {}
 
 void AISelectionMenuScene::OnStart() {
 	BuildBaseScene();
-
-	title = new SimpleSprite("AIScene_Title.png", 0.0f, getGameTopY() - getGameHeight() / 7.0f, 0.0f, GAME_WIDTH * 0.5f, Shader::GetShader(SHADER_PIXEL));
-	ai1Preview = new SimpleSprite("AIScene_Preview1.png", getGameLeftX() + getGameWidth() / 5.0f, getGameTopY() - getGameHeight() / 2.5f, 0.0f, GAME_WIDTH * 0.2f, Shader::GetShader(SHADER_PIXEL));
-	ai2Preview = new SimpleSprite("AIScene_Preview2.png", getGameLeftX() + getGameWidth() / 2.0f, getGameTopY() - getGameHeight() / 2.5f, 0.0f, GAME_WIDTH * 0.2f, Shader::GetShader(SHADER_PIXEL));
-	ai3Preview = new SimpleSprite("AIScene_Preview3.png", getGameRightX() - getGameWidth() / 5.0f, getGameTopY() - getGameHeight() / 2.5f, 0.0f, GAME_WIDTH * 0.2f, Shader::GetShader(SHADER_PIXEL));
-	oneStatus = new SimpleSprite("AIScene_PlayerOneUnchecked.png", getGameLeftX() + getGameWidth() / 4.0f, getGameBottomY() + getGameHeight() / 5.0f, 0.0f, GAME_WIDTH * 0.4f, Shader::GetShader(SHADER_PIXEL));
-	twoStatus = new SimpleSprite("AIScene_PlayerTwoUnchecked.png", getGameRightX() - getGameWidth() / 4.0f, getGameBottomY() + getGameHeight() / 5.0f, 0.0f, GAME_WIDTH * 0.4f, Shader::GetShader(SHADER_PIXEL));
-
+	//title = new SimpleSprite("1235.png", 0.0f, 0.0f, 0.0f, GAME_WIDTH);
+	title = new SimpleSprite("frameLeft.s.png", getGameLeftX() + getGameWidth() / 4.0f, getGameTopY() - getGameHeight() / 6.0f, 0.0f, GAME_WIDTH * 0.4f);
+	ai2Preview = new SimpleSprite("frameRight.s.png", getGameRightX() - getGameWidth() / 4.0f, getGameTopY() - getGameHeight() / 6.0f, 0.0f, GAME_WIDTH * 0.4f);
+	oneStatus = new SimpleSprite("left.s.png", getGameLeftX() + getGameWidth() / 4.0f, getGameBottomY() + getGameHeight() / 2.5f, 0.0f, GAME_WIDTH * 0.4f);
+	twoStatus = new SimpleSprite("right.s.png", getGameRightX() - getGameWidth() / 4.0f, getGameBottomY() + getGameHeight() / 2.5f, 0.0f, GAME_WIDTH * 0.4f);
 	p1Done = false;
 	p2Done = false;
 }

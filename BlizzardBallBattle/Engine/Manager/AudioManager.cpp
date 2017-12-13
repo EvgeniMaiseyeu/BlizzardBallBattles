@@ -58,6 +58,14 @@ void AudioManager::PlaySEFhit(std::string filename, int loops, float volumeFacto
 	Mix_Volume(3, 35 * volumeFactor);
 }
 
+void AudioManager::PlayMusicForWin(std::string filename, int loops, float volumeFactor) {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		std::cout << "ERROR: " << Mix_GetError() << std::endl;
+	Mix_Chunk *bgm = Mix_LoadWAV(filename.c_str());
+	Mix_PlayChannel(4, bgm, 0);
+	Mix_Volume(4, 50 * volumeFactor);
+}
+
 void AudioManager::PauseMusic() {
 	if (Mix_PlayingMusic() != 0)
 		Mix_PauseMusic();
