@@ -8,8 +8,8 @@
 SimpleSprite::SimpleSprite(std::string path, float x, float y, float z, float scale, Shader* nonDefaultShader) : GameObject(false) { 
     std::string totalPath("Game/Assets/Sprites/" + path);
     GLuint titleTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath((char*)totalPath.c_str()));
+	sprite = new Sprite(titleTexture);
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
-    sprite = new Sprite(titleTexture);
     Transform* transform = GetTransform();
     if (nonDefaultShader != nullptr) {
         shader = nonDefaultShader;

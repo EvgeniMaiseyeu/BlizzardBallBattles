@@ -74,6 +74,7 @@ void Battler::UpdateSprite(int ticks) {
 			SetFPS(16);
 		}else if (_physics->getVelocity()->getMagnitude() > 0.5f) {
 			ChangeSprite(SPRITE_WALK);
+			SetFPS(10);
 			SetFPS(_physics->getVelocity()->getMagnitude() * 10);
 		}
 		else {
@@ -190,7 +191,7 @@ bool Battler::ThrowSnowball(float power, std::string networkID, bool isBig)
 		snowballColour = "Snowball3.png";
 
 	//LAST PARAMETER HERE IS THROW DISTANCE FOR ALL AI SO FOR THIS FUNCTION ADD PARAMETER THAT YOU CAN SEND WHICH WILL BE THE THROW DISTANCE
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, power, netID, isSender); 
+	Snowball* snowball = new Snowball(this, 11, radians, snowballColour, power, netID, isSender); 
 	snowball->GetTransform()->setZ(1.0f);
 	snowball->setBigSnowBall (isBig);
 

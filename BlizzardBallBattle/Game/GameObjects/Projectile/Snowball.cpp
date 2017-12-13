@@ -19,6 +19,7 @@
 
 
 Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, float destination, std::string networkID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
+
 	_physics = new Physics(this);
 	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
@@ -200,6 +201,22 @@ void Snowball::setHeld(bool held) {
 
 void Snowball::setBigSnowBall(bool bigSB) {
 	_bigSnowball = bigSB;
+	/*if (bigSB) {
+		Battler* player = dynamic_cast<Battler*>(_player);
+		if (player) {
+			std::string snowball;
+			if (player->stats.teamID == 1) {
+				snowball = "Snowball2big.png";
+			}
+			else {
+				snowball = "Snowball3big.png";
+			}
+			GLuint titleTexture = SpriteRendererManager::GetInstance()->GenerateTexture(BuildPath((char*)snowball.c_str()));
+			Sprite* sprite = new Sprite(titleTexture);
+			this->GetComponent<SpriteRenderer*>()->SetActiveSprite(sprite);
+		}
+	}*/
+	
 }
 	
 void Snowball::SetDistanceGoal(float dist) {

@@ -53,6 +53,7 @@ void ComplexSprite::UpdateFrames (float delta) {
 		lastFrame = timeAlive;
 		NextFrame ();
 	}
+	timeAlive += delta;
 }
 
 
@@ -67,7 +68,7 @@ void ComplexSprite::NextFrame() {
 }
 
 void ComplexSprite::ChangeSprite(int spriteIndexInComplexInfo) {
-	if (spriteIndexInComplexInfo != currentSpriteSheet && currentSpriteSheet > 0) {
+	if (spriteIndexInComplexInfo != currentSpriteSheet && currentSpriteSheet >= 0) {
 		sprites[currentSpriteSheet]->ResetIndex();
 		currentSpriteSheet = spriteIndexInComplexInfo;
 		GetComponent<SpriteRenderer*>()->SetActiveSprite(sprites[spriteIndexInComplexInfo]);
