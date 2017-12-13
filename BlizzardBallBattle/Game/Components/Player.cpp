@@ -47,7 +47,7 @@ void Player::OnUpdate(int timeDelta) {
 		if (InputManager::GetInstance()->onKey(shootKey)) {
 			if (!youBattler->stats.isRunning)
 			{
-				if (youBattler->GetSmallSnowball()) {
+				if (youBattler->GetSmallSnowball() && youBattler->_physics->getVelocity()->getMagnitude() < 3.0f) {//0.1f originally so you don't fire while moving
 					youBattler->FireSmallSnowball();
 				}
 			}
@@ -65,13 +65,6 @@ void Player::OnUpdate(int timeDelta) {
 		//	youBattler->ThrowSnowball();
 		}
 		 
-	}
-
-	if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
-		if (youBattler->_physics->getVelocity()->getMagnitude() < 3.0f) //0.1f originally so you don't fire while moving
-		{
-			youBattler->ThrowSnowball();
-		}
 	}
 
 	if (InputManager::GetInstance()->onKey(shootKey2)) {

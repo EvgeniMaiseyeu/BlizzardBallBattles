@@ -60,7 +60,7 @@ void Battler::InitStats(int team)
 
 void Battler::UpdateSprite(int ticks) {
 	int currentSprite = GetCurrentSprite();
-	bool isThrowing = currentSprite == SPRITE_THROW_BIG || currentSprite == SPRITE_THROW_SMALL;
+	bool isThrowing = currentSprite == SPRITE_THROW_BIG || currentSprite == SPRITE_THROW_SMALL || currentSprite == SPRITE_PICKUP_SMALL;
 	
 	if (_fullLock) {
 		ChangeSprite(SPRITE_SPIN_BIG);
@@ -458,6 +458,8 @@ void Battler::AnimateCreation() {
 void Battler::HandleSmallThrow(float deltaTime)
 {
 	if (_canFire) {
+		ChangeSprite(SPRITE_THROW_SMALL, SPRITE_IDLE);
+		SetFPS(20);
 		_smallSnowball->setHeld(false);
 		_smallSnowball->SetDestination(_destination);
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
@@ -478,6 +480,8 @@ bool Battler::MakeSmallSnowball() {
 	std::string snowballColour = "Snowball2.png";
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
+	ChangeSprite(SPRITE_PICKUP_SMALL, SPRITE_IDLE);
+	SetFPS(20);
 	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
 	_smallSnowball = new Snowball(this, 0, radians, snowballColour, 0);
 
@@ -494,7 +498,6 @@ bool Battler::MakeSmallSnowball() {
 
 bool Battler::FireSmallSnowball() {
 	if (_haveSmallSnowball) {
-
 		_destination += 0.3f; //ai wont care about this
 		if (_destination > _maxDestination) {
 			_destination = _maxDestination;
