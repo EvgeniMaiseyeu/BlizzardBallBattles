@@ -16,7 +16,7 @@
 
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
-	self->ThrowSnowball();
+	self->ThrowSnowball(0);
 }
 
 Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
@@ -160,7 +160,7 @@ Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
 }
 
-bool Battler::ThrowSnowball()
+bool Battler::ThrowSnowball(float power)
 {
 	if (!canFire)
 		return false;
@@ -180,8 +180,7 @@ bool Battler::ThrowSnowball()
 		snowballColour = "Snowball3.png";
 
 	//LAST PARAMETER HERE IS THROW DISTANCE FOR ALL AI SO FOR THIS FUNCTION ADD PARAMETER THAT YOU CAN SEND WHICH WILL BE THE THROW DISTANCE
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, 30); 
-
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, power); 
 
 	canFire = false;
 	return true;
@@ -222,8 +221,7 @@ bool Battler::DealtDamage(int damage)
 	}
 	if (stats.isattached)
 	{
-		ThrowSnowball();
-
+		ThrowSnowball(0);
 	}
 	else
 	{
@@ -383,7 +381,6 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
 		
-
 				return true;
 			}
 		}

@@ -49,7 +49,7 @@ public:
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
-	bool ThrowSnowball();
+	bool ThrowSnowball(float power);
 	bool IsAttached();
 	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);

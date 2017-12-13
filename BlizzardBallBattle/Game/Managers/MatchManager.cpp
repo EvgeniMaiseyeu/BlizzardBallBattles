@@ -23,7 +23,7 @@ MatchManager* MatchManager::GetInstance()
 
 MatchManager::MatchManager()
 {
-	TEAM_SIZE = 20;
+	TEAM_SIZE = 30;
 }
 
 void MatchManager::Stop() {
@@ -202,13 +202,13 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	for (int i = 0; i < teamOneAIUnits.size(); ++i)
 	{
 		float intelligence = randomFloatInRange(0.8f, 1.0f);
-		float courage = randomFloatInRange(0.0f, 1.0f);
-		float decisionFrequency = randomFloatInRange(0.7f, 4.0f);
+		float courage = randomFloatInRange(0.0f, 0.4f);
+		float decisionFrequency = randomFloatInRange(0.7f, 2.7f);
 
 		if (teamOneFormation == 3)
 		{
 			intelligence = randomFloatInRange(0.1f, 0.5f);
-			courage = randomFloatInRange(0.5f, 1.0f);
+			courage = randomFloatInRange(0.8f, 1.0f);
 			decisionFrequency = randomFloatInRange(0.5f, 1.5f);
 		}
 
@@ -217,14 +217,14 @@ void MatchManager::CreateBattlers(Shader *ourShader, GLuint characterTexture, GL
 	for (int i = 0; i < teamTwoAIUnits.size(); ++i)
 	{
 		float intelligence = randomFloatInRange(0.8f, 1.0f);
-		float courage = randomFloatInRange(0.0f, 1.0f);
-		float decisionFrequency = randomFloatInRange(0.7f, 4.0f);
+		float courage = randomFloatInRange(0.0f, 0.4f);
+		float decisionFrequency = randomFloatInRange(0.7f, 2.7f);
 
 		if (teamTwoFormation == 3)
 		{
 			intelligence = randomFloatInRange(0.1f, 0.5f);
-			courage = randomFloatInRange(0.5f, 1.0f);
-			decisionFrequency = randomFloatInRange(0.5f, 3.0f);
+			courage = randomFloatInRange(0.8f, 1.0f);
+			decisionFrequency = randomFloatInRange(0.5f, 1.5f);
 		}
 
 		teamTwoAIUnits[i]->Initialize(intelligence, courage, decisionFrequency);
