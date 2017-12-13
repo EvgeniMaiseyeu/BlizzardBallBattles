@@ -191,7 +191,7 @@ bool Battler::ThrowSnowball(float power, std::string networkID, bool isBig)
 
 	//LAST PARAMETER HERE IS THROW DISTANCE FOR ALL AI SO FOR THIS FUNCTION ADD PARAMETER THAT YOU CAN SEND WHICH WILL BE THE THROW DISTANCE
 	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, power, netID, isSender); 
-
+	snowball->GetTransform()->setZ(1.0f);
 	snowball->setBigSnowBall (isBig);
 
 
@@ -218,6 +218,7 @@ void Battler::UpdateAttachedSnowBalls(float deltaTimer) {
 	for (int i = 0; i < attachedSnowballs.size(); i++) {
 		attachedSnowballs[i]->GetTransform()->setX(attachedSnowballs[i]->getLockedOffsetX() + this->GetTransform()->getX());
 		attachedSnowballs[i]->GetTransform()->setY(attachedSnowballs[i]->getLockedOffsetY() + this->GetTransform()->getY());
+		attachedSnowballs[i]->GetTransform()->setZ(0.5f);
 	}
 }
 
@@ -373,6 +374,7 @@ void Battler::HandleBigThrow(float deltaTime) {
 		velocity = *velocity * _throwPower;
 		velocity->rotateVector(radians);
 		_bigSnowball->GetComponent<Physics*>()->setVelocity(velocity);
+		_bigSnowball->GetTransform()->setZ(1.0f);
 		_haveBigSnowball = false;
 		_fullLock = false;
 		_throwDistance = 25;
@@ -491,6 +493,7 @@ void Battler::HandleSmallThrow(float deltaTime)
 		_smallSnowball->GetComponent<Physics*>()->setVelocity(velocity);
 		_haveSmallSnowball = false;
 		_smallSnowball->setPower(_smallThrowPower);
+		_smallSnowball->GetTransform()->setZ(1.0f);
 		_canFire = false;
 		_destination = 4;
 	}
