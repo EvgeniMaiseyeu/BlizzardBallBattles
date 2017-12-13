@@ -294,8 +294,7 @@ void AI::Shoot()
 	{
 		snowballStrength = -snowballStrength;
 	}
-	snowballStrength *= 2;
-	//float snowballStrength = randomFloatInRange(15.0f, 65.0f);
+
 
 	if (isLearning)
 	{
