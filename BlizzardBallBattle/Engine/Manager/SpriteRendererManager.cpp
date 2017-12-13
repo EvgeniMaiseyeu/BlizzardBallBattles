@@ -53,22 +53,24 @@ void SpriteRendererManager::OnUpdate(int ticks)
 SpriteRendererManager::SpriteRendererManager()
 {
 	quadVertices = {
-		//Position
-		0.5f, 0.5f, 0.0f,   //Top Right
-		0.5f, -0.5f, 0.0f,  //Bottom Right
-		-0.5f, -0.5f, 0.0f, //Bottom Left
-		-0.5f, 0.5f, 0.0f,  //Top Left
+		-0.5f, -0.5f, 0.0f,  //BottomLeft
+		0.5f, -0.5f, 0.0f,   //BottomRight
+		0.5f, 0.5f, 0.0f,    //TopRight
+		-0.5f, 0.5f, 0.0f    //TopLeft
 	};
+
 	textCoordinates = {
-		1.0f, 1.0f, //Top Right
-		1.0f, 0.0f, //Bottom Right
-		0.0f, 0.0f, //Bottom Left
-		0.0f, 1.0f  //Top Left
+		0.0f, 0.0f, //BottomLeft
+		1.0f, 0.0f, //BottomRight
+		1.0f, 1.0f, //TopRight
+		0.0f, 1.0f  //TopLeft
 	};
+
 	indices = {
-		0, 1, 3, // First Triangle
-		1, 2, 3  // Second Triangle
+		0, 1, 2, // First Triangle. BottomRight
+		0, 2, 3  // Second Triangle. TopLeft
 	};
+
 
 	renderingThreadIsAlive = true;
 	rendering = false;
@@ -162,6 +164,8 @@ bool SpriteRendererManager::Init()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_ALPHA_TEST);
 
 	////Setup VBO/VAO/EBO's. This is for the concept of sprite specifically where we assume it will all be quads (two triangles) to make a sprite
 	glGenVertexArrays(1, &VAO);
@@ -175,17 +179,17 @@ bool SpriteRendererManager::Init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 	//4 points cause quad, 8 points cause x/y/z/r/g/b/tx/ty
 	//position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid *)0);
 	//color attribute
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	//glEnableVertexAttribArray(1);
 	//textture coordinate attribute
 	glBindBuffer(GL_ARRAY_BUFFER, CBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(textCoordinates), textCoordinates.data(), GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid *)0);
 	glEnableVertexAttribArray(1);
-	glBindVertexArray(0); //Unbind BAO
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid *)0);
+	glBindVertexArray(0); //Unbind VAO
 
 	fboPlainPass.init();
 	fboGaussianBlur.init();
@@ -223,8 +227,8 @@ GLuint SpriteRendererManager::GenerateTexture(std::string textureFileName)
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	SDL_Surface *temp = IMG_Load(textureFileName.c_str());
 	if (temp == nullptr)
 	{
@@ -389,8 +393,6 @@ void SpriteRendererManager::RenderShadowPass(float xSourceDirection, float ySour
 				glUniform3i(spriteSheetLocation, spriteSheet.GetColumnCount(), spriteSheet.GetRowCount(), spriteSheet.GetCurrentIndex());
 			}
 
-			//Draw
-			glDrawArrays(GL_TRIANGLES, 0, 3);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 	}
@@ -457,7 +459,6 @@ void SpriteRendererManager::RenderPass(int layerToRender, bool clearFirst)
 			}
 
 			//Draw
-			glDrawArrays(GL_TRIANGLES, 0, 3);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 	}
@@ -474,12 +475,13 @@ void SpriteRendererManager::RenderFBO(FrameBufferObject object, Shader* shader, 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE0);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	GLint ourTextureLocation = glGetUniformLocation(shader->Program, "fboTexture");
 	glUniform1i(ourTextureLocation, 0);
 	//object.bindToRead();
 	glBindTexture(GL_TEXTURE_2D, object.getTexture());
 	//object.unbindFrameBuffer();
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	//Render FBO object with given shader
 	if (toFbo != nullptr) {
@@ -526,7 +528,6 @@ void SpriteRendererManager::RenderAmbientColor(FrameBufferObject fboToColor, flo
 	glUniform1i(ourTextureLocation, 0);
 	glBindTexture(GL_TEXTURE_2D, fboToColor.getTexture());
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	if (toFbo != nullptr) {
@@ -552,7 +553,6 @@ void SpriteRendererManager::RenderDirectionalBloom(FrameBufferObject fboToBloom,
 	glUniform1i(ourTextureLocation, 0);
 	glBindTexture(GL_TEXTURE_2D, fboToBloom.getTexture());
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	fboBloomBrightness.unbindFrameBuffer();
 	//###########
@@ -585,7 +585,6 @@ void SpriteRendererManager::RenderDirectionalBloom(FrameBufferObject fboToBloom,
 	glUniform1i(ourTextureLocation, 1);
 	glBindTexture(GL_TEXTURE_2D, fboBloomBlurBrightness.getTexture());
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	if (toFbo != nullptr) {
