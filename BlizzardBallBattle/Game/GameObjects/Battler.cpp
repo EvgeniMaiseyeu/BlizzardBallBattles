@@ -305,11 +305,11 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 	} else {
 		info->AddInfo("Character2_IdleSheet.png", 8, 1);
 		info->AddInfo("Character2_MoveSheet.png", 8, 1);
-		info->AddInfo("Character_ThrowSmallSheet.png", 8, 1);
-		info->AddInfo("Character_ThrowBigSheet.png", 8, 1);
-		info->AddInfo("Character_BuildBigSheet.png", 8, 1);
-		info->AddInfo("Character_SpinBigSheet.png", 8, 1);
-		info->AddInfo("Character_PickupSmallSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowSmallSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowBigSheet.png", 8, 1);
+		info->AddInfo("Character2_BuildBigSheet.png", 8, 1);
+		info->AddInfo("Character2_SpinBigSheet.png", 8, 1);
+		info->AddInfo("Character2_PickupSmallSheet.png", 8, 1);
 	}
 	
 	return info;
