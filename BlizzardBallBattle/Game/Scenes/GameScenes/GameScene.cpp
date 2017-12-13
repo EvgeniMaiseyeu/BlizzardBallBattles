@@ -21,12 +21,12 @@ void PlayerWon(std::map<std::string, void*> payload) {
 	std::string* teamIDStrptr = (std::string*)payload["teamID"];
 	std::string teamIDStr = *teamIDStrptr;
 	int teamID = std::stoi(teamIDStr);
-	MessageManager::UnSubscribe("PlayerWon", playerWonSubscriptionReceipt);
+	MessageManager::UnSubscribe("Game|PlayerWon", playerWonSubscriptionReceipt);
 	SceneManager::GetInstance()->PushScene(new PostGameMenuScene(teamID));
 }
 
 GameScene::GameScene(int player1Choice, int player2Choice) {
-	MessageManager::Subscribe("PlayerWon", PlayerWon, this);
+	MessageManager::Subscribe("Game|PlayerWon", PlayerWon, this);
 	Camera::SetActiveCamera(new DayNightCamera());
 	AudioManager::GetInstance()->PlayMusic(BuildPath("Game/Assets/Audio/mario_.wav"), 1, 10);
 }

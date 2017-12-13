@@ -49,7 +49,7 @@ public:
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
-	bool ThrowSnowball(std::string networkID = "-1");
+	bool ThrowSnowball(float power, std::string networkID = "-1", bool isBig = false);
 	bool IsAttached();
 	bool CheckAndSetBounds(Transform *pos, Vector2 *move);
 	bool ApplyIceSliding(Vector2 *v);

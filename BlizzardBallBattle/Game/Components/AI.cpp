@@ -200,8 +200,26 @@ void AI::MoveToTargetBattler(bool isRunning)
 	}
 	if (posDiffX < MIN_DISTANCE_TO_TARGET_X - (courage * COURAGE_DISTANCE_X_MULTIPLIER))
 	{
-		directionX = (teamID == 1) ? -1 : 1;
+		//if (myBattler->stats.teamID == 1)
+		//{
+		//	cout << "TOO CLOSE!" << endl;
+		//	cout << "Position Difference: " << posDiffX << endl;
+		//}
+
+		if (posDiffX > 2.0)
+		{
+			directionX = 0;
+		}
+		else
+		{
+			directionX = (teamID == 1) ? -1 : 1;
+		}
 	}
+	//else
+	//{
+	//	if (myBattler->stats.teamID == 1)
+	//		cout << "TOO FAR!" << endl;
+	//}
 
 	// Check if this would take the battler out of bounds, if it does then don't move x
 	float posXToMoveTo = moveSpeed * directionX;
@@ -243,7 +261,10 @@ void AI::MoveToTargetPosition(bool isRunning)
 
 	float moveSpeed = isRunning ? myBattler->stats.runSpeed : myBattler->stats.moveSpeed;
 
-	myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, false, false);
+	if (!myBattler->Move(moveSpeed * directionX, moveSpeed * directionY, false, false))
+	{
+		currentState = idle;
+	}
 }
 
 void AI::SetLearnedVelocity()
@@ -268,6 +289,13 @@ void AI::Shoot()
 {
 	// The more intelligent the AI the higher chance he has to shoot
 	float chanceOfFiring = randomFloatInRange(0.0f, 1.0f);
+	float snowballStrength = targetBattler->GetTransform()->getX() - myTransform->getX();
+	if (snowballStrength < 0.0f)
+	{
+		snowballStrength = -snowballStrength;
+	}
+	snowballStrength *= 2;
+	//float snowballStrength = randomFloatInRange(15.0f, 65.0f);
 
 	if (isLearning)
 	{
@@ -287,7 +315,7 @@ void AI::Shoot()
 
 	if (chanceOfFiring + intelligence >= 1)
 	{
-		myBattler->ThrowSnowball();
+		myBattler->ThrowSnowball(snowballStrength);
 		AudioManager::GetInstance()->PlaySEFshoot("./Game/Assets/shoot.wav", 1, 0.6f);
 	}
 }

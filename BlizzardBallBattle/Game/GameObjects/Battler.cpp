@@ -17,8 +17,8 @@
 void ReceivedFireSnowball(std::map<std::string, void*> payload) {
 	Battler* self = (Battler*)payload["this"];
 	std::string snowballID = (*(std::string*)payload["fireNetworkID"]);
-	
-	self->ThrowSnowball(snowballID);
+	bool isBig = (int)payload["isBig"];
+	self->ThrowSnowball (0, snowballID, isBig);
 }
 
 Battler::Battler(int team, std::string textureFileName, std::string networkingID, bool isSender) : ComplexSprite(GenerateSpriteInfo(team), 0.0f, 0.0f)
@@ -167,7 +167,7 @@ Vector2 *Battler::GetVelocity() {
 	return _physics->getVelocity();
 }
 
-bool Battler::ThrowSnowball(std::string networkID)
+bool Battler::ThrowSnowball(float power, std::string networkID, bool isBig)
 {
 	if (!canFire)
 		return false;
@@ -189,7 +189,12 @@ bool Battler::ThrowSnowball(std::string networkID)
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
 
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, 30, netID, isSender);
+	//LAST PARAMETER HERE IS THROW DISTANCE FOR ALL AI SO FOR THIS FUNCTION ADD PARAMETER THAT YOU CAN SEND WHICH WILL BE THE THROW DISTANCE
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, power, netID, isSender); 
+
+	snowball->setBigSnowBall (isBig);
+
+
 	canFire = false;
 	return true;
 
@@ -229,8 +234,7 @@ bool Battler::DealtDamage(int damage)
 	}
 	if (stats.isattached)
 	{
-		ThrowSnowball();
-
+		ThrowSnowball(0);
 	}
 	else
 	{
@@ -287,15 +291,15 @@ void Battler::Die()
 		if (stats.teamID == 1)
 			winningTeam = 2;
 
-		if (NetworkingManager::GetInstance()->IsConnected() && isSender) {
+		if (isSender) {
 			std::map<std::string, std::string> payloadNet;
 			payloadNet["teamID"] = std::to_string(winningTeam);
-			NetworkingManager::GetInstance()->PrepareMessageForSending("PlayerWon", payloadNet);
+			NetworkingManager::GetInstance()->PrepareMessageForSending("Game|PlayerWon", payloadNet);
 		}
 
 		std::map<std::string, void*> payload;
 		payload["teamID"] = new std::string(std::to_string(winningTeam));
-		MessageManager::SendEvent("PlayerWon", payload);
+		MessageManager::SendEvent("Game|PlayerWon", payload);
 		
 	}
 	else if (HasComponent<AI*>()) {
@@ -395,7 +399,6 @@ bool Battler::MakeBigSnowball(float deltaTime, std::string networkID) {
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
 		
-
 				return true;
 			}
 		}
@@ -409,6 +412,7 @@ bool Battler::MakeBigSnowball(float deltaTime, std::string networkID) {
 			if (isSender) {
 				std::map<std::string, std::string> payload;
 				payload["fireNetworkID"] = netID;
+				payload["isBig"] = std::to_string ((int)true);
 				NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|FIRE", payload);
 			}
 			_bigSnowball = new Snowball(this, 0, radians, snowballColour, 0, netID, isSender);
@@ -505,6 +509,7 @@ bool Battler::MakeSmallSnowball(std::string networkID) {
 	if (isSender) {
 		std::map<std::string, std::string> payload;
 		payload["fireNetworkID"] = netID;
+		payload["isBig"] = std::to_string((int)false);
 		NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|FIRE", payload);
 	}
 	_smallSnowball = new Snowball(this, 0, radians, snowballColour, 0, netID, isSender);

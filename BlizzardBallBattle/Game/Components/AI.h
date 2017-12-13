@@ -9,7 +9,7 @@ class AI :
 	public Component
 {
 private:
-	float MIN_DISTANCE_TO_TARGET_X = 20.0f;
+	float MIN_DISTANCE_TO_TARGET_X = 13.0f;
 	float COURAGE_DISTANCE_X_MULTIPLIER = 5.0f;
 
 	Battler *myBattler;
