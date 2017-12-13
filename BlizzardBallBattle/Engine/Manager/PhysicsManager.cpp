@@ -30,13 +30,14 @@ void PhysicsManager::OnUpdate(int ticks) {
 			for (int j = i + 1; j < _sceneColliders.size(); j++) {
 				Collider* c1 = _sceneColliders[i];
 				Collider* c2 = _sceneColliders[j];
-
-				if (checkCollision(c1->getTransform(), c2->getTransform()) < (c1->getRadius()-0.2f + c2->getRadius())) {
-					c1->getTransform()->getY();
-					c1->addCollision(c2->GetGameObject());
-					c1->setCollision(true);
-					c2->setCollision(true);
-					c2->addCollision(c1->GetGameObject());
+				if (!c1->getDisabled() && !c2->getDisabled()) {
+					if (checkCollision(c1->getTransform(), c2->getTransform()) < (c1->getRadius() - 0.2f + c2->getRadius())) {
+						c1->getTransform()->getY();
+						c1->addCollision(c2->GetGameObject());
+						c1->setCollision(true);
+						c2->setCollision(true);
+						c2->addCollision(c1->GetGameObject());
+					}
 				}
 			}
 		}

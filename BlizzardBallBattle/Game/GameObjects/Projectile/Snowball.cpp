@@ -48,6 +48,12 @@ void Snowball::OnUpdate(int timeDelta)
 		//GetTransform()->setScale(0.00001f);
 		Destroy(this);
 	}
+	if (heldByPlayer) {
+		myCollider->setDisabled(true);
+	}
+	else {
+		myCollider->setDisabled(false);
+	}
 	if (_bigSnowball == false)
 	{
 		if (heldByPlayer) {
@@ -62,11 +68,18 @@ void Snowball::OnUpdate(int timeDelta)
 			
 
 		} else {
+			if (_distanceTraveled <= _destination - 5 && _distanceTraveled > 5) {
+				myCollider->setDisabled(true);
+			}
+			else {
+				myCollider->setDisabled(false);
+			}
+
 			_distanceTraveled += abs(_physics->getVelocity()->getX()) * (float)timeDelta / 1000;
-			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0) {
+			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0 && active) {
 				GetTransform()->addScale(0.015f );
 				//_physics->getVelocity->getX()* - 0.2f;
-			} else if (_distanceTraveled >= _destination / 2 && _distanceTraveled <= _destination && _distanceTraveled > 0) {
+			} else if (_distanceTraveled >= _destination / 2 && _distanceTraveled <= _destination && _distanceTraveled > 0 && active) {
 				GetTransform()->addScale(-0.015f);
 				//	_physics->getVelocity->getX()* + 0.2f;
 			}
@@ -84,56 +97,11 @@ void Snowball::OnUpdate(int timeDelta)
 			}
 		}
 	}
-
-
-	// team 2
-/*	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-		GetTransform()->setScale(0.1f);
-	}
-	if (heldByPlayer) {
-		if (dynamic_cast<Battler*>(_player)->stats.teamID == 2) {
-			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-		else {
-			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-	}
-	else {
-		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
-
-
-		if (_distanceTraveled <= _distanceGoal / 2)
-		{
-			GetTransform()->addScale(0.02f);
-			//_physics->getVelocity->getX()* - 0.2f;
-		}
-		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled < _distanceGoal) {
-			GetTransform()->addScale(-0.02f);
-			//	_physics->getVelocity->getX()* + 0.2f;
-
-		}
-	}
-		
-
-		*/
 	
 	//If the scene is not a GameScene, destroy self
 	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
 		Destroy(this);
 	}
-	//if (heldByPlayer) {
-	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
-	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-	//		GetTransform()->setY(_player->GetTransform()->getY());
-	//	}
-	//	else {
-	//		GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-	//		GetTransform()->setY(_player->GetTransform()->getY());
-	//_distanceTraveled += _physics->getVelocity()->getX() * timeDelta;
-	//	}
-	//}
 
 	if (active) {
 		if (_destination != 0 && _distanceTraveled >= _destination) {

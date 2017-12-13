@@ -379,7 +379,6 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				_makingSnowball = false;
 				attached = true;
 				//LockToBattler(_bigSnowball);
-				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
@@ -396,6 +395,7 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
 			_bigSnowball = new Snowball(this, 0, radians, snowballColour, 0);
 			_bigSnowball->setBigSnowBall(true);
+			_bigSnowball->setHeld(true);
 			if(this->stats.teamID == 1)
 				_bigSnowball->GetTransform()->addX(0.7f);
 			else
