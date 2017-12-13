@@ -31,10 +31,12 @@ void GameScene_Alpha_Networked::OnStart() {
 void GameScene_Alpha_Networked::OnEnd() {
 	//delete(player1);
 	//delete(player2);
+	//Purge ();
 }
 
 void GameScene_Alpha_Networked::OnPause () {
 	MatchManager::GetInstance ()->Stop ();
+	NetworkingManager::GetInstance ()->Close ();
 	ClearScene ();
 }
 

@@ -152,9 +152,10 @@ void GameScene::BuildBaseScene() {
 }
 
 void GameScene::ClearScene() {
-	for (int i = 0; i < thingsToClear.size(); i++) {
+	/*for (int i = 0; i < thingsToClear.size(); i++) {
 		GameManager::GetInstance()->RemoveGameObject(thingsToClear[i]);
-	}
+	}*/
+	Purge ();
 }
 
 bool GameScene::isInIceZone(float x, float y) {

@@ -32,15 +32,12 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
 	framesTilReturn = -1;
 }
 
-//ComplexSprite::~ComplexSprite() {
-    //TODO: Memory leak fix
-    //if (sprite != nullptr) {
-    //    delete(sprite);
-    //}
-    //if (shader != nullptr) {
-    //    delete(shader);
-    //}
-//}
+ComplexSprite::~ComplexSprite() {
+	for (int i = 0; i < sprites.size (); i++) {
+		delete(sprites[i]);
+	}
+	sprites.clear ();
+}
 
 void ComplexSprite::NextFrame() {
     sprites[currentSpriteSheet]->NextIndex();
@@ -53,7 +50,7 @@ void ComplexSprite::NextFrame() {
 }
 
 void ComplexSprite::ChangeSprite(int spriteIndexInComplexInfo) {
-	if (spriteIndexInComplexInfo != currentSpriteSheet) {
+	if (spriteIndexInComplexInfo != currentSpriteSheet && currentSpriteSheet > 0) {
 		sprites[currentSpriteSheet]->ResetIndex();
 		currentSpriteSheet = spriteIndexInComplexInfo;
 		GetComponent<SpriteRenderer*>()->SetActiveSprite(sprites[spriteIndexInComplexInfo]);

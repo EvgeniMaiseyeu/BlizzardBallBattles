@@ -28,7 +28,6 @@ private:
     bool Accept();
     bool Host();
     bool Join();
-    bool Close();
     void PollMessages();
     void PollMessagesThread();
     std::string SerializeMessage(Message message);
@@ -36,6 +35,7 @@ private:
     void SendEventToReceiver(std::map<std::string, void*> data);
 
 public:
+	bool Close ();
     NetworkingManager();
     static NetworkingManager* GetInstance();
     bool CreateHost();

@@ -14,8 +14,8 @@ SceneManager::SceneManager() {
 }
 
 void SceneManager::PushScene(Scene *scene) {
-    if (!scenes.empty()) 
-        scenes.top()->OnPause();
+	if (!scenes.empty ())
+		scenes.top ()->OnPause ();
     scenes.push(scene);
     scene->OnStart();
 }

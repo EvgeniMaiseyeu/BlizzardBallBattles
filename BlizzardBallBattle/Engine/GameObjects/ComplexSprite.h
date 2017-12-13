@@ -47,7 +47,7 @@ private:
 
 public:
     ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z = 0.0f, float scale = 1.0f, Shader* nonDefaultShader = nullptr);
-    //~ComplexSprite();
+    ~ComplexSprite();
 
     void NextFrame();
     void ChangeSprite(int spriteIndexInComplexInfo);

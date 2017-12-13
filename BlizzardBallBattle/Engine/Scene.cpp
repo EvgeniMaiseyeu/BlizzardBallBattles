@@ -30,14 +30,7 @@ void Scene::OnObjectsUpdate(int ticks) {
 
 
 void Scene::Purge() {
-	/*for (std::map<int, GameObject*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
-		SpriteRenderer* renderer = it->second->GetComponent<SpriteRenderer*>();
-		Collider* collider = it->second->GetComponent<Collider*>();
-		if (renderer != NULL) {
-			SpriteRendererManager::GetInstance()->RemoveSpriteFromRendering(renderer);
-		}
-		if (collider != NULL) {
-			PhysicsManager::GetInstance()->removeCollider(collider);
-		}
-	}*/
+	for (std::map<int, GameObject*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+		it->second->Destroy (it->second);
+	}
 }
