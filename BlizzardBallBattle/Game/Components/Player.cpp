@@ -30,7 +30,33 @@ void Player::OnUpdate(int timeDelta) {
 	{
 		MatchManager::GetInstance()->teamTwoNet.TrainData(youBattler, 1.0);
 	}
-	
+
+	if (youBattler->GetSmallSnowball() == false)
+	{
+		if (!youBattler->stats.isRunning)
+		{
+			if (InputManager::GetInstance()->onKeyPressed(shootKey)) {
+				youBattler->MakeSmallSnowball();
+			}
+		} 
+		if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
+			youBattler->setCanFire();
+		}
+	}else 
+	{
+		if (InputManager::GetInstance()->onKey(shootKey)) {
+			if (!youBattler->stats.isRunning)
+			{
+				if (youBattler->GetSmallSnowball()) {
+					youBattler->FireSmallSnowball();
+				}
+			}
+		}
+		if (InputManager::GetInstance()->onKeyReleased(shootKey)) {
+			youBattler->HandleSmallThrow(deltaTime);
+			youBattler->setCanFire();
+		}
+	}
 	if (InputManager::GetInstance()->onKeyPressed(shootKey2)) {
 		if(youBattler->GetBigSnowball()){
 			youBattler->FireBigSnowball();		

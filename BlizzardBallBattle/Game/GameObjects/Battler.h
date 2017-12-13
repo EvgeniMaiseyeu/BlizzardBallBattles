@@ -32,6 +32,8 @@ public:
 	};
 	stats stats;
 	Snowball* _bigSnowball;
+	Snowball* _smallSnowball;
+
 
 	Battler(int team, std::string textureFileName, std::string networkingID, bool isSender);
 	Battler(int team, std::string textureFileName);
@@ -64,12 +66,26 @@ public:
 	void LockToBattler(Snowball* sb);
 	void Unlock();
 	//--------------------//
+	// small ball//
+	void setCanFire();
+	void HandleSmallThrow(float deltaTime);
+	bool MakeSmallSnowball();
+	bool FireSmallSnowball();
+	bool GetSmallSnowball();
+
+	// ----------------//
 	bool DealtDamage(int damage);
 	Transform* _transform;
 	Physics* _physics;
 
 private:
 
+	//small snowball trackers//
+	float _maxDestination;
+	float _smallThrowPower;
+	bool _haveSmallSnowball;
+	float _destination;
+	bool _canFire;
 	//Big snowball trackers//
 	bool _fullLock;
 	float _timer;
