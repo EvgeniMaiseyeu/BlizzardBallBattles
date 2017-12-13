@@ -113,7 +113,11 @@ void Battler::OnUpdate(int ticks)
 				powerMult = power;
 			}
 			float angle = maxAngle * vec.getY() * powerMult;
-			angle += stats.teamID == 2 ? 180 : 0;
+
+			if (power == 0.0f || abs(vec.getY()) < 0.025f) {
+				angle = 0.0f;
+			}
+			angle += stats.teamID == 2 ? 180.0f : 0.0f;
 			t->setRotation(angle);
 		}
 	}
