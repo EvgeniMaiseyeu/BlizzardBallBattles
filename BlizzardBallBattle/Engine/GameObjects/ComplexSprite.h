@@ -44,11 +44,16 @@ private:
     int currentSpriteSheet;
 	int spriteToReturnTo;
 	int framesTilReturn;
+	int framesPerSecond;
+	double timeAlive = 0;
+	double lastFrame = 0;
 
 public:
-    ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z = 0.0f, float scale = 1.0f, Shader* nonDefaultShader = nullptr);
+	ComplexSprite (ComplexSpriteinfo* info, float x, float y, float z = 0.0f, float scale = 1.0f, Shader* nonDefaultShader = nullptr, int framesPerSecond = 8);
     ~ComplexSprite();
 
+	void SetFPS(int fps);
+	void UpdateFrames(float delta);
     void NextFrame();
     void ChangeSprite(int spriteIndexInComplexInfo);
 	int GetCurrentSprite();

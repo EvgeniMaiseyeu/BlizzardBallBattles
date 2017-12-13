@@ -16,6 +16,7 @@ private:
 	int playerID;
 	float _distanceTraveled;
 	float _distanceGoal;
+	float _destination;
 	Physics* _physics;
 	bool _bigSnowball;
 	float _lockOffsetX;
@@ -25,17 +26,18 @@ private:
 
 public:
 	void Snowball::setBigSnowBall(bool bigSB);
-	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, std::string networkID = "-1", bool isSender = false);
+	Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, float destination, std::string networkID, bool isSender);
 	void OnStart() {};
 	void OnUpdate(int ticks);
 	void OnEnd() {};
 	void DestructSnowball();
 	void setHeld(bool held);
 	void SetDistanceGoal(float dist);
-
+	void SetDestination(float desti);
+	void setPower(float value);
 	void setLockedOffsetX(float value);
 	float getLockedOffsetX();
-
 	void setLockedOffsetY(float value);
 	float getLockedOffsetY();
+
 };

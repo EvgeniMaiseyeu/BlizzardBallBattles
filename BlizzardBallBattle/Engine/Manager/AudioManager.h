@@ -17,6 +17,7 @@ public:
 	void PlayMusic(std::string filename, int loop = -1, float volumeFactor = 1.0f);
 	void PlaySEFhit(std::string filename, int loop = -1, float volumeFactor = 1.0f);
 	void PlaySEFshoot(std::string filename, int loop = -1, float volumeFactor = 1.0f);
+	void PlayMusicForWin(std::string filename, int loop = -1, float volumeFactor = 1.0f);
 	//Pauses the current music
 	void PauseMusic();
 	//Resume playing the music

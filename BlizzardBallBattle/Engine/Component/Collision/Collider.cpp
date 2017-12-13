@@ -8,6 +8,7 @@ Collider::Collider(GameObject* gameObject, float radius) : Component(gameObject)
 	//add to physics manager;
 	PhysicsManager::GetInstance()->addCollider(this);
 	transform = gameObject->GetComponent<Transform*>();
+	_disabled = false;
 }
 
 bool Collider::collisionDetected() {
@@ -16,6 +17,16 @@ bool Collider::collisionDetected() {
 
 void Collider::setCollision(bool collision) {
 	_collision = collision;
+}
+
+void Collider::setDisabled(bool value)
+{
+	_disabled = value;
+}
+
+bool Collider::getDisabled()
+{
+	return _disabled;
 }
 
 bool Collider::DoesCollide(GameObject* other) {

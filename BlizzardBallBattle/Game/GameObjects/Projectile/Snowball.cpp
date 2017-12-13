@@ -18,7 +18,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, std::string networkID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
+Snowball::Snowball(GameObject* player, float playerPower, float radians, std::string textureFileName, float destination, std::string networkID, bool isSender) : SimpleSprite(textureFileName, 0.0f, 0.0f),_player(player) {
 	_physics = new Physics(this);
 	AddComponent<Physics*>(_physics);
 	GetTransform()->setX(_player->GetTransform()->getX());
@@ -53,74 +53,70 @@ Snowball::Snowball(GameObject* player, float playerPower, float radians, std::st
 	GetComponent<SpriteRenderer*>()->SetLayer(RENDER_LAYER_SHADOWABLE);
 	heldByPlayer = false;
 	_bigSnowball = false;
+	_destination = destination;
 	//dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())->thingsToClear.push_back(this);
 }
 
 void Snowball::OnUpdate(int timeDelta)
 {
-	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
+	if (_destination != 0 && _distanceTraveled >= _destination) {
 		//GetTransform()->setScale(0.00001f);
 		DestructSnowball();
 	}
 	if (heldByPlayer) {
-		if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
-			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-		else {
-			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
+		myCollider->setDisabled(true);
 	}
 	else {
-		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta/1000;
+		myCollider->setDisabled(false);
+	}
+	if (_bigSnowball == false)
+	{
+		if (heldByPlayer) {
+			if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+				GetTransform()->setX(_player->GetTransform()->getX());
+				GetTransform()->setY(_player->GetTransform()->getY() - 0.5f);
+			}
+			else {
+				GetTransform()->setX(_player->GetTransform()->getX());
+				GetTransform()->setY(_player->GetTransform()->getY() + 0.5f);
+			}
+			
 
+		} else {
+			if (_distanceTraveled <= _destination - 5 && _distanceTraveled > 5) {
+				myCollider->setDisabled(true);
+			}
+			else {
+				myCollider->setDisabled(false);
+			}
 
-		if (_distanceTraveled <= _distanceGoal / 2  && _distanceTraveled > 0)
-		{
-			GetTransform()->addScale(0.1f);
-			//_physics->getVelocity->getX()* - 0.2f;
+			_distanceTraveled += abs(_physics->getVelocity()->getX()) * (float)timeDelta / 1000;
+			if (_distanceTraveled <= _destination / 2 && _distanceTraveled > 0 && active) {
+				GetTransform()->addScale(0.015f );
+				//_physics->getVelocity->getX()* - 0.2f;
+			} else if (_distanceTraveled >= _destination / 2 && _distanceTraveled <= _destination && _distanceTraveled > 0 && active) {
+				GetTransform()->addScale(-0.015f);
+				//	_physics->getVelocity->getX()* + 0.2f;
+			}
 		}
-		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled <= _distanceGoal && _distanceTraveled > 0) {
-			GetTransform()->addScale(-0.1f);
-			//	_physics->getVelocity->getX()* + 0.2f;
 
+	} else {
+		if (heldByPlayer) {
+			if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
+				GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
+				GetTransform()->setY(_player->GetTransform()->getY());
+			}
+			else {
+				GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
+				GetTransform()->setY(_player->GetTransform()->getY());
+			}
 		}
 	}
-	// team 2
-/*	if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-		GetTransform()->setScale(0.1f);
-	}
-	if (heldByPlayer) {
-		if (dynamic_cast<Battler*>(_player)->stats.teamID == 2) {
-			GetTransform()->setX(_player->GetTransform()->getX() - 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-		else {
-			GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
-			GetTransform()->setY(_player->GetTransform()->getY());
-		}
-	}
-	else {
-		_distanceTraveled += _physics->getVelocity()->getX() * (float)timeDelta / 1000;
-
-
-		if (_distanceTraveled <= _distanceGoal / 2)
-		{
-			GetTransform()->addScale(0.02f);
-			//_physics->getVelocity->getX()* - 0.2f;
-		}
-		else if (_distanceTraveled >= _distanceGoal / 2 && _distanceTraveled < _distanceGoal) {
-			GetTransform()->addScale(-0.02f);
-			//	_physics->getVelocity->getX()* + 0.2f;
-
-		}
-	}
-		
-
-		*/
 	
 	//If the scene is not a GameScene, destroy self
+	if (!dynamic_cast<GameScene*>(SceneManager::GetInstance()->GetCurrentScene())) {
+		Destroy(this);
+	}
 	//if (heldByPlayer) {
 	//	if (dynamic_cast<Battler*>(_player)->stats.teamID == 1) {
 	//		GetTransform()->setX(_player->GetTransform()->getX() + 0.7f);
@@ -135,7 +131,7 @@ void Snowball::OnUpdate(int timeDelta)
 
 	if (active) {
 		if (_distanceGoal != 0 && _distanceTraveled >= _distanceGoal) {
-			DestructSnowball();
+			Destroy(this);
 			return;
 		}
 		if(!heldByPlayer)
@@ -145,6 +141,7 @@ void Snowball::OnUpdate(int timeDelta)
 		{
 			std::vector<GameObject*> v = myCollider->getColliders();
 			char path[200];
+
 			AudioManager::GetInstance()->PlaySEFhit(BuildPath(path), 1, 10);
 			for (int i = 0; i < v.size(); i++) {
 				if (v[i] == NULL || v[i] == nullptr || v[i]->GetTransform() == NULL || v[i]->GetTransform() == nullptr) {
@@ -209,6 +206,16 @@ void Snowball::SetDistanceGoal(float dist) {
 	_distanceGoal = dist;
 }
 
+
+void Snowball::SetDestination(float desti) {
+	_destination = desti;
+}
+
+void Snowball::setPower(float value)
+{
+	_speed = value;
+}
+
 void Snowball::setLockedOffsetX(float value)
 {
 	_lockOffsetX = value;
@@ -227,4 +234,5 @@ void Snowball::setLockedOffsetY(float value)
 float Snowball::getLockedOffsetY()
 {
 	return _lockOffsetY;
+
 }

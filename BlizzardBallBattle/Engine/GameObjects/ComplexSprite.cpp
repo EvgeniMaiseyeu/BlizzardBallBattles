@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "HelperFunctions.h"
 
-ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z, float scale, Shader* nonDefaultShader) : GameObject(false) {
+ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z, float scale, Shader* nonDefaultShader, int framesPerSecond) : GameObject(false) {
     SpriteRenderer* spriteRenderer = new SpriteRenderer(this);
     spriteRenderer->SetActiveShader(Shader::GetShader(SHADER_SPRITESHEET));
     
@@ -30,14 +30,31 @@ ComplexSprite::ComplexSprite(ComplexSpriteinfo* info, float x, float y, float z,
     transform->setScale(scale);
     AddComponent<SpriteRenderer*>(spriteRenderer);
 	framesTilReturn = -1;
+	this->framesPerSecond = framesPerSecond;
+
 }
 
-ComplexSprite::~ComplexSprite() {
+ComplexSprite::~ComplexSprite () {
 	for (int i = 0; i < sprites.size (); i++) {
 		delete(sprites[i]);
+		sprites[i] = NULL;
 	}
 	sprites.clear ();
 }
+
+void ComplexSprite::SetFPS(int fps) {
+	framesPerSecond = fps;
+}
+
+void ComplexSprite::UpdateFrames (float delta) {
+	int timeSince = timeAlive - lastFrame;
+	float secondsPerFrame = 1.0f / (float)framesPerSecond * 1000;
+	if (timeSince > secondsPerFrame) {
+		lastFrame = timeAlive;
+		NextFrame ();
+	}
+}
+
 
 void ComplexSprite::NextFrame() {
     sprites[currentSpriteSheet]->NextIndex();
@@ -62,7 +79,9 @@ int ComplexSprite::GetCurrentSprite() {
 }
 
 void ComplexSprite::ChangeSprite(int spriteIndexInComplexInfo, int returnSprite) {
-	ChangeSprite(spriteIndexInComplexInfo);
-	spriteToReturnTo = returnSprite;
-	framesTilReturn = sprites[returnSprite]->GetColumnCount() * sprites[returnSprite]->GetRowCount();
+	if (sprites.size () > 0) {
+		ChangeSprite (spriteIndexInComplexInfo);
+		spriteToReturnTo = returnSprite;
+		framesTilReturn = sprites[returnSprite]->GetColumnCount () * sprites[returnSprite]->GetRowCount ();
+	}
 }

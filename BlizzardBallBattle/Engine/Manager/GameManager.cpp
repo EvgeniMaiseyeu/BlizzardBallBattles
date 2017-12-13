@@ -115,7 +115,9 @@ void GameManager::ClearObjectsToRemove() {
 
 	for (int i = 0; i < gameObjectsToRemove.size(); i++) {
 		GameObject* object = gameObjectsToRemove[i];
-		globalGameObjects.erase(object->getId());
+		if (object == NULL)
+			continue;
+ 		globalGameObjects.erase(object->getId());
 		SceneManager::GetInstance()->GetCurrentScene()->RemoveGameObject(object->getId());
 		delete(object);
 	}

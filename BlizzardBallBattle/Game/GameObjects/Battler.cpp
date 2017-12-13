@@ -55,8 +55,36 @@ void Battler::InitStats(int team)
 	stats.isattached = false;
 	_throwPower = 5;
 	_throwDistance = 25;
+	_destination = 4;
+	_maxDestination = 70;
+	_smallThrowPower = 15;
+	_canFire = false;
 }
 
+void Battler::UpdateSprite(int ticks) {
+	int currentSprite = GetCurrentSprite();
+	bool isThrowing = currentSprite == SPRITE_THROW_BIG || currentSprite == SPRITE_THROW_SMALL || currentSprite == SPRITE_PICKUP_SMALL;
+	
+	if (_fullLock) {
+		ChangeSprite(SPRITE_SPIN_BIG);
+		SetFPS(_throwPower);
+	} else if (!isThrowing) {
+		if (_makingSnowball) {
+			ChangeSprite(SPRITE_BUILD_BIG);
+			SetFPS(16);
+		}else if (_physics->getVelocity()->getMagnitude() > 0.5f) {
+			ChangeSprite(SPRITE_WALK);
+			SetFPS(_physics->getVelocity()->getMagnitude() * 10);
+		}
+		else {
+			ChangeSprite(SPRITE_IDLE);
+			SetFPS(8);
+		}
+	}
+
+	
+	UpdateFrames(ticks);
+}
 
 void Battler::OnUpdate(int ticks)
 {
@@ -74,22 +102,37 @@ void Battler::OnUpdate(int ticks)
 
 	UpdateThrowTimer(deltaTime);
 	UpdateAttachedSnowBalls(deltaTime);
+	UpdateSprite(ticks);
+
+	Transform *t = GetTransform();
+	if (t != nullptr && t != NULL) {
+		if (!_haveBigSnowball && !_fullLock && !_makingSnowball) {
+			float maxAngle = stats.teamID == 1 ? 30.0f : -30.0f;
+			float power = _physics->getVelocity()->getMagnitude();
+			Vector2 vec(*_physics->getVelocity());
+			vec.normalize();
+			float powerMult = 1.0f;
+			if (power < 1.0f) {
+				powerMult = power;
+			}
+			float angle = maxAngle * vec.getY() * powerMult;
+
+			if (power == 0.0f || abs(vec.getY()) < 0.025f) {
+				angle = 0.0f;
+			}
+			angle += stats.teamID == 2 ? 180.0f : 0.0f;
+			t->setRotation(angle);
+		}
+	}
 }
 
 bool Battler::Move(float x, float y, bool isRunning, bool forces)
+
 {
 	stats.isRunning = isRunning;
 	if (!CheckAndSetBounds(_transform, new Vector2(x, y)))
 	{
 		return false;
-	}
-
-	if (GetCurrentSprite() != SPRITE_SIMPLE_THROW) {
-		if (x >= .5 || x <= -.5 || y >= .5 || x <= -.5) {
-			ChangeSprite(SPRITE_WALK);
-		} else {
-			ChangeSprite(SPRITE_IDLE);
-		}
 	}
 
 	_physics->setApplyingForce(forces);
@@ -129,7 +172,8 @@ bool Battler::ThrowSnowball(std::string networkID)
 	if (!canFire)
 		return false;
 
-	ChangeSprite(SPRITE_SIMPLE_THROW, SPRITE_IDLE);
+	ChangeSprite(SPRITE_THROW_SMALL, SPRITE_IDLE);
+	SetFPS(20);
 
 	std::string netID = (isSender ? std::to_string(rand ()) : networkID);
 	std::cout << "ANOTHER ID: " << netID << std::endl;
@@ -145,7 +189,7 @@ bool Battler::ThrowSnowball(std::string networkID)
 	if (stats.teamID == 2)
 		snowballColour = "Snowball3.png";
 
-	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, netID, isSender);
+	Snowball* snowball = new Snowball(this, 5, radians, snowballColour, 30, netID, isSender);
 	canFire = false;
 	return true;
 
@@ -272,14 +316,21 @@ ComplexSpriteinfo* Battler::GenerateSpriteInfo(int team) {
 	if (team == 1) {
 		info->AddInfo("Character_IdleSheet.png", 8, 1);
 		info->AddInfo("Character_MoveSheet.png", 8, 1);
-		info->AddInfo("Character_ThrowSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowSmallSheet.png", 8, 1);
+		info->AddInfo("Character_ThrowBigSheet.png", 8, 1);
+		info->AddInfo("Character_BuildBigSheet.png", 8, 1);
+		info->AddInfo("Character_SpinBigSheet.png", 8, 1);
+		info->AddInfo("Character_PickupSmallSheet.png", 8, 1);
 	} else {
 		info->AddInfo("Character2_IdleSheet.png", 8, 1);
 		info->AddInfo("Character2_MoveSheet.png", 8, 1);
-		info->AddInfo("Character2_ThrowSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowSmallSheet.png", 8, 1);
+		info->AddInfo("Character2_ThrowBigSheet.png", 8, 1);
+		info->AddInfo("Character2_BuildBigSheet.png", 8, 1);
+		info->AddInfo("Character2_SpinBigSheet.png", 8, 1);
+		info->AddInfo("Character2_PickupSmallSheet.png", 8, 1);
 	}
 	
-
 	return info;
 }
 
@@ -306,9 +357,13 @@ void Battler::HandleBigThrow(float deltaTime) {
 	else if (_fullLock && _timer > 1.5) {
 		//launch snowball
 		//Unlock();
+		ChangeSprite(SPRITE_THROW_BIG, SPRITE_IDLE);
+		SetFPS(30);
+
 		attached = false;
 		_bigSnowball->setHeld(false);
 		_bigSnowball->SetDistanceGoal(_throwDistance);
+
 		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
 		Vector2* velocity = new Vector2(1, 0);
 		velocity = *velocity * _throwPower;
@@ -317,11 +372,11 @@ void Battler::HandleBigThrow(float deltaTime) {
 		_haveBigSnowball = false;
 		_fullLock = false;
 		_throwDistance = 25;
+		_throwPower = 5;
 	}
 }
 
-//keep calling until return true
-bool Battler::MakeBigSnowball(float deltaTime) {
+bool Battler::MakeBigSnowball(float deltaTime, std::string networkID) {
 	if (!_fullLock && !_haveBigSnowball) {
 		if (_makingSnowball) {
 			if (_timer < 2) {
@@ -336,7 +391,6 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 				_makingSnowball = false;
 				attached = true;
 				//LockToBattler(_bigSnowball);
-				_bigSnowball->setHeld(true);
 				_animate = false;
 				_physics->setDrag(0.4f);
 				_haveBigSnowball = true;
@@ -351,8 +405,15 @@ bool Battler::MakeBigSnowball(float deltaTime) {
 			if (stats.teamID == 2)
 				snowballColour = "Snowball3.png";
 			float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2;
-			_bigSnowball = new Snowball(this, 0, radians, snowballColour);
+			std::string netID = (isSender ? std::to_string (rand ()) : networkID);
+			if (isSender) {
+				std::map<std::string, std::string> payload;
+				payload["fireNetworkID"] = netID;
+				NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|FIRE", payload);
+			}
+			_bigSnowball = new Snowball(this, 0, radians, snowballColour, 0, netID, isSender);
 			_bigSnowball->setBigSnowBall(true);
+			_bigSnowball->setHeld(true);
 			if(this->stats.teamID == 1)
 				_bigSnowball->GetTransform()->addX(0.7f);
 			else
@@ -371,7 +432,6 @@ bool Battler::FireBigSnowball() {
 		if (_fullLock) {
 			_throwDistance += 1.0f; //ai wont care about this
 			_throwPower += 1.0f; //ai wont care about this
-
 			return true;
 		}
 		else{
@@ -388,16 +448,12 @@ bool Battler::GetBigSnowball() {
 	return _haveBigSnowball;
 }
 
-void Battler::AnimateCreation() {
-
-}
-
 void Battler::HandleCancels() {
 	if (!_fullLock) {
 		if (_timer < 2 && _makingSnowball) {
 			//cancel snowball creation
-			if(_bigSnowball != NULL){
-				Destroy(_bigSnowball);
+			if (_bigSnowball != NULL) {
+				_bigSnowball->DestructSnowball();
 				_bigSnowball = NULL;
 			}
 			_makingSnowball = false;
@@ -405,6 +461,84 @@ void Battler::HandleCancels() {
 			_animate = false;
 		}
 	}
+}
+void Battler::AnimateCreation() {
+
+}
+
+
+//------------------------------------------------------
+//SMALL SNOWBALL METHODS
+//------------------------------------------------------
+
+//should be called every update for each player/ai on screen
+
+void Battler::HandleSmallThrow(float deltaTime)
+{
+	if (_canFire) {
+		ChangeSprite(SPRITE_THROW_SMALL, SPRITE_IDLE);
+		SetFPS(20);
+		_smallSnowball->setHeld(false);
+		_smallSnowball->SetDestination(_destination);
+		float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180;
+		Vector2* velocity = new Vector2(1, 0);
+		velocity = *velocity * _smallThrowPower;
+		velocity->rotateVector(radians);
+		_smallSnowball->GetComponent<Physics*>()->setVelocity(velocity);
+		_haveSmallSnowball = false;
+		_smallSnowball->setPower(_smallThrowPower);
+		_canFire = false;
+		_destination = 4;
+	}
+}
+
+bool Battler::MakeSmallSnowball(std::string networkID) {
+
+	//starting to make snowball
+	std::string snowballColour = "Snowball2.png";
+	if (stats.teamID == 2)
+		snowballColour = "Snowball3.png";
+	ChangeSprite(SPRITE_PICKUP_SMALL, SPRITE_IDLE);
+	SetFPS(20);
+	float radians = GetComponent<Transform*>()->getRotation() * M_PI / 180 / 2; 
+	std::string netID = (isSender ? std::to_string (rand ()) : networkID);
+	if (isSender) {
+		std::map<std::string, std::string> payload;
+		payload["fireNetworkID"] = netID;
+		NetworkingManager::GetInstance ()->PrepareMessageForSending (networkingID + "|FIRE", payload);
+	}
+	_smallSnowball = new Snowball(this, 0, radians, snowballColour, 0, netID, isSender);
+
+	if (this->stats.teamID == 1)
+		_smallSnowball->GetTransform()->addY(-0.5f);
+	else
+		_smallSnowball->GetTransform()->addY(0.5f);
+	_smallSnowball->GetTransform()->setZ(-1);
+
+	_haveSmallSnowball = true;
+	_smallSnowball->setHeld(true);
+	return false;
+}
+
+bool Battler::FireSmallSnowball() {
+	if (_haveSmallSnowball) {
+		_destination += 0.3f; //ai wont care about this
+		if (_destination > _maxDestination) {
+			_destination = _maxDestination;
+		}
+	}
+
+	return false;
+}
+
+void Battler::setCanFire() {
+	if(_haveSmallSnowball)
+		_canFire = true;
+}
+
+bool Battler::GetSmallSnowball() {
+	return _haveSmallSnowball;
+
 }
 
 //-------------------------------------------------

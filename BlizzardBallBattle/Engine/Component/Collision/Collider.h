@@ -10,7 +10,7 @@ private:
 	float _radius;
 	bool _collision;
 	std::vector<GameObject*> _colliders;
-
+	bool _disabled;
 public:
 	Collider(GameObject* gameObject, float radius);
 	bool DoesCollide(GameObject* other);
@@ -19,6 +19,9 @@ public:
 
 	bool collisionDetected();
 	void setCollision(bool collision);
+
+	void setDisabled(bool value);
+	bool getDisabled();
 
 	GameObject* getColliderObj();
 	void setColliderObj(GameObject* collider);
